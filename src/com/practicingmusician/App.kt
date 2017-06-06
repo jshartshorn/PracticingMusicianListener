@@ -19,6 +19,8 @@ class App {
         timeKeeper.steppables.add(metronome)
         timeKeeper.steppables.add(pitch)
 
+        timeKeeper.analyzers.add(exerciseManager)
+
         metronome.setup()
 
         pitch.setup()

@@ -17,6 +17,8 @@ class TimeKeeper {
     //the list of steppables that will be notified each time there is a step
     val steppables = mutableListOf<TimeKeeperSteppable>()
 
+    val analyzers = mutableListOf<TimeKeeperAnalyzer>()
+
     /*
      * stores the offset time so that the beginning of our counter is 0 when the timer starts
      */
@@ -52,6 +54,13 @@ class TimeKeeper {
         }
 
         /*
+         * Now that the steppables are done, do any analysis
+         */
+        analyzers.forEach {
+            it.analyze(timestamp)
+        }
+
+        /*
          * If the state hasn't been changed to Stopped, then request the next step
          */
 
@@ -73,4 +82,8 @@ interface TimeKeeperSteppable {
     fun start()
     fun stop()
     var state : TimeKeeper.TimeKeeperState
+}
+
+interface TimeKeeperAnalyzer {
+    fun analyze(timestamp: Double)
 }

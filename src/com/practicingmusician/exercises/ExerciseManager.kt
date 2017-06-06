@@ -1,11 +1,12 @@
 package com.practicingmusician.exercises
 
+import com.practicingmusician.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
 
 /**
  * Created by jn on 6/6/17.
  */
-class ExerciseManager {
+class ExerciseManager : TimeKeeperAnalyzer {
 
     var currentExercise : ExerciseDefinition? = null
 
@@ -19,6 +20,11 @@ class ExerciseManager {
         exercise.notes.add(Note(64,1.0))
 
         currentExercise = exercise
+    }
+
+
+    override fun analyze(timestamp: Double) {
+        println("Analyzing at " + timestamp)
     }
 
 }
