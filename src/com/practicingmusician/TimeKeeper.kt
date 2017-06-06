@@ -24,6 +24,9 @@ class TimeKeeper {
      */
     var timeOffSet : Double = 0.0
 
+    //Amount of time the analyzer should run for
+    var runForTime : Double = 4000.0
+
     fun start() {
         timeOffSet = window.performance.now()
         state = TimeKeeperState.Running
@@ -42,7 +45,9 @@ class TimeKeeper {
     }
 
     //Gets called as often as possible
-    fun step(timestamp: Double) {
+    fun step(nonOffsetTimestamp: Double) {
+
+        val timestamp = nonOffsetTimestamp - timeOffSet
 
         /*
          * Go through each of the steppables and call step() on any of the that are currently running
@@ -58,6 +63,13 @@ class TimeKeeper {
          */
         analyzers.forEach {
             it.analyze(timestamp)
+        }
+
+        /*
+         * See if we need to changed to Stopped, since the length of the exercise is over
+         */
+        if (timestamp > runForTime) {
+            this.state = TimeKeeperState.Stopped
         }
 
         /*

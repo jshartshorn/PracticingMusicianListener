@@ -13,4 +13,9 @@ class ExerciseDefinition {
     var notes = mutableListOf<Note>()
     var tempo : Double = 120.0
 
+    fun getLength() : Double {
+        val beatSize = 1000.0 * 60.0 / tempo
+        return notes.map { it.duration }.reduce { acc, d -> d + acc } * beatSize
+    }
+
 }

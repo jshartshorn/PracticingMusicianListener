@@ -35,6 +35,9 @@ class App {
 
         exerciseManager.currentExercise?.let {
             metronome.tempo = it.tempo
+            timeKeeper.runForTime = it.getLength()
+
+            println("Loaded exercise of length " + timeKeeper.runForTime)
         }
 
     }
