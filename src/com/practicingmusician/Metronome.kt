@@ -72,7 +72,7 @@ class Metronome : TimeKeeperSteppable {
         var secondItem = -1.0
 
 
-        var lastItemBefore = -1
+        var lastItemBefore : Int
 
         for(index in beatTimes.indices) {
             val beat = beatTimes[index]
@@ -105,7 +105,7 @@ class Metronome : TimeKeeperSteppable {
 
         //now we need to figure out the index of the beat and add it
 
-        TODO("This isn't the correct return value yet")
+        //TODO: ("This isn't the correct return value yet")
         return percentageThroughBeat
     }
 
