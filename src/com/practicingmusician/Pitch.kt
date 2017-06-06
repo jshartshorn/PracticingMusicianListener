@@ -6,11 +6,13 @@ package com.practicingmusician
 
 
 external fun setupMedia()
-external fun updatePitch(timestamp: Double) : String
+external fun updatePitch(timestamp: Double) : Double
 external fun getSampleRate() : Int
 external var buflen : Int
 
 class Pitch : TimeKeeperSteppable {
+
+    var currentPitch : Double = -1.0
 
     fun setup() {
         setupMedia()
@@ -36,6 +38,8 @@ class Pitch : TimeKeeperSteppable {
         val timestampOfPitch = timestamp - lengthOfBuffer * 1000.0 //convert seconds to MS
 
         println("At timestamp: " + timestampOfPitch)
+
+        currentPitch = ac
     }
 
 

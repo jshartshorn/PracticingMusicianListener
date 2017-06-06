@@ -21,9 +21,22 @@ class App {
 
         timeKeeper.analyzers.add(exerciseManager)
 
+        exerciseManager.pitch = pitch
+        exerciseManager.metronome = metronome
+
         metronome.setup()
 
         pitch.setup()
+    }
+
+    @JsName("loadExercise")
+    fun loadExercise() {
+        exerciseManager.loadSampleExercise()
+
+        exerciseManager.currentExercise?.let {
+            metronome.tempo = it.tempo
+        }
+
     }
 
     @JsName("run")

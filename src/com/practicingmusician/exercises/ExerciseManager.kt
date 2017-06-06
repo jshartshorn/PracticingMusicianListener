@@ -1,5 +1,7 @@
 package com.practicingmusician.exercises
 
+import com.practicingmusician.Metronome
+import com.practicingmusician.Pitch
 import com.practicingmusician.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
 
@@ -9,6 +11,9 @@ import com.practicingmusician.notes.Note
 class ExerciseManager : TimeKeeperAnalyzer {
 
     var currentExercise : ExerciseDefinition? = null
+
+    lateinit var pitch : Pitch
+    lateinit var metronome : Metronome
 
 
     fun loadSampleExercise() {
@@ -25,6 +30,7 @@ class ExerciseManager : TimeKeeperAnalyzer {
 
     override fun analyze(timestamp: Double) {
         println("Analyzing at " + timestamp)
+        println("Pitch is " + pitch.currentPitch)
     }
 
 }

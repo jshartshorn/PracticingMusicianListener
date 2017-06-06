@@ -11,5 +11,6 @@ import com.practicingmusician.notes.Note
 class ExerciseDefinition {
 
     var notes = mutableListOf<Note>()
+    var tempo : Double = 120.0
 
 }
