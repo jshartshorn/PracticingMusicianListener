@@ -20,6 +20,10 @@ function setupMedia() {
         });
 }
 
+function getSampleRate() {
+    return audioContext.sampleRate
+}
+
 
 function gotStream(stream) {
     // Create an AudioNode from the stream.
@@ -35,7 +39,7 @@ function updatePitch(timestamp) {
     if (analyser == null)
         return
 
-    console.log("Updating pitch")
+    //console.log("Updating pitch")
 
     var cycles = new Array;
 	analyser.getFloatTimeDomainData( buf );

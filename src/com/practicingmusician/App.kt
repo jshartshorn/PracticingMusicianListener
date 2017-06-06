@@ -16,14 +16,29 @@ class App {
         timeKeeper.steppables.add(pitch)
 
         metronome.setup()
-        metronome.start()
 
         pitch.setup()
-        pitch.start()
     }
 
+    @JsName("run")
     fun run() {
+        metronome.start()
+        pitch.start()
         timeKeeper.start()
+    }
+
+    fun stop() {
+        timeKeeper.stop()
+        metronome.stop()
+        pitch.stop()
+    }
+
+    @JsName("toggleState")
+    fun toggleState() {
+        when (timeKeeper.state) {
+            TimeKeeper.TimeKeeperState.Stopped -> this.run()
+            TimeKeeper.TimeKeeperState.Running -> this.stop()
+        }
     }
 
 }
