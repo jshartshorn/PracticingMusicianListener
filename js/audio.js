@@ -29,7 +29,6 @@ function gotStream(stream) {
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
     mediaStreamSource.connect( analyser );
-    updatePitch();
 }
 
 function updatePitch(timestamp) {
@@ -39,13 +38,7 @@ function updatePitch(timestamp) {
 	analyser.getFloatTimeDomainData( buf );
 	var ac = autoCorrelate( buf, audioContext.sampleRate );
 
-    JSExperiment.cl.havePitchData(ac, timestamp)
-
-	//console.log("AC: " + ac);
-
-	if (!window.requestAnimationFrame)
-		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
-	rafID = window.requestAnimationFrame( updatePitch );
+    return ac
 }
 
 

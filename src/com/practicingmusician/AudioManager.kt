@@ -6,7 +6,7 @@ import kotlin.browser.window
  * Created by jn on 6/5/17.
  *
  *
- * This is the interface to the audio.js file
+ *
  *
  */
 
