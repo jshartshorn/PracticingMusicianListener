@@ -42,10 +42,18 @@ class TimeKeeper {
     //Gets called as often as possible
     fun step(timestamp: Double) {
 
+        /*
+         * Go through each of the steppables and call step() on any of the that are currently running
+         */
+
         steppables.forEach {
             if (it.state == TimeKeeperState.Running)
                 it.step(timestamp,this)
         }
+
+        /*
+         * If the state hasn't been changed to Stopped, then request the next step
+         */
 
         if (this.state != TimeKeeperState.Stopped)
             requestNextStep()
