@@ -32,6 +32,9 @@ function gotStream(stream) {
 }
 
 function updatePitch(timestamp) {
+    if (analyser == null)
+        return
+
     console.log("Updating pitch")
 
     var cycles = new Array;
