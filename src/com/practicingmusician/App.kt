@@ -1,5 +1,7 @@
 package com.practicingmusician
 
+import com.practicingmusician.exercises.ExerciseManager
+
 /**
  * Created by jn on 6/5/17.
  */
@@ -9,6 +11,8 @@ class App {
     val audioManager = AudioManager()
     var metronome = Metronome()
     var pitch = Pitch()
+
+    var exerciseManager = ExerciseManager()
 
     fun setup() {
         metronome.audioManager = audioManager
