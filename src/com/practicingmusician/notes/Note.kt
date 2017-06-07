@@ -27,7 +27,7 @@ class Note(value : Int, dur : Double) {
 
         fun createAllNotes() {
             ALL_NOTES = mutableListOf<Note>()
-            for (i in 0 until 128) {
+            for (i in 30 until 90) {
                 ALL_NOTES.add(Note(i,1.0))
             }
         }
@@ -35,14 +35,17 @@ class Note(value : Int, dur : Double) {
         fun closestNoteToFrequency(frequency : Double) : Int {
             var closestFrequency = Double.MAX_VALUE
             var closestNoteValue = -1
-            ALL_NOTES.forEach {
-                var diff = abs(it.getFrequency() - frequency)
+
+            for (note in ALL_NOTES) {
+                var diff = abs(note.getFrequency() - frequency)
                 if (diff < closestFrequency) {
                     closestFrequency = diff
-                    closestNoteValue = it.noteNumber
+                    closestNoteValue = note.noteNumber
+                } else if (diff > closestFrequency) {
+                    break
                 }
             }
-            println("Returning " + closestNoteValue + " for freq " + frequency)
+            //println("Returning " + closestNoteValue + " for freq " + frequency)
             return closestNoteValue
         }
 

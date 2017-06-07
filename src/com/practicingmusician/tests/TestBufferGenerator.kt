@@ -21,14 +21,14 @@ object TestBufferGenerator {
     }
 
     fun addPitchVariationToSamples(buffer : List<Double>) : List<Double>  {
-        //var pitchVariation = 3.0
+        val pitchVariation = 10.0
 
         return buffer.map {
-            it - 2
+            //it - 6
 
-            //this won't work until we have some leniency in grouping the values
-            //var randomAddition = Math.random() * pitchVariation * 2
+            val randomAddition = Math.random() * pitchVariation * 2
             //it - pitchVariation + randomAddition
+            it + randomAddition / 2.0
         }
 
     }

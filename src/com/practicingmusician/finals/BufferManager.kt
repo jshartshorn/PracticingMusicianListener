@@ -15,19 +15,22 @@ object BufferManager {
         //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
         val notes = mutableListOf<Note>()
 
-        var curFreq = -1.0
+        var curNoteNumber = -1
         var avgFreq = 0.0
         var curLengthInSamples = 0
 
         for (sample in samples) {
-            if (sample != curFreq) {
+
+            val noteNumberFromSample = Note.getNoteNumber(sample)
+
+            if (noteNumberFromSample != curNoteNumber) {
                 //this is starting a new note -- put the last one in
 
                 if (curLengthInSamples > 0) {
                     //TODO: if the sample isn't long enough, don't add it
 
                     val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-                    val noteNum = Note.getNoteNumber(curFreq)
+                    val noteNum = curNoteNumber
 
                     avgFreq = avgFreq / curLengthInSamples
 
@@ -43,14 +46,14 @@ object BufferManager {
             }
 
             avgFreq += sample
-            curFreq = sample
+            curNoteNumber = noteNumberFromSample
             curLengthInSamples += 1
         }
 
         //get the last item
         if (curLengthInSamples > 0) {
             val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-            val noteNum = Note.getNoteNumber(curFreq)
+            val noteNum = curNoteNumber
 
             avgFreq = avgFreq / curLengthInSamples
 
