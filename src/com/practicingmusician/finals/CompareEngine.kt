@@ -60,16 +60,22 @@ object CompareEngine {
             println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
 
             println("Avg freq of test item: " + testItem.avgFreq)
-            
-            if (testItem.getFrequency() - idealItem.getFrequency() > allowableFreqencyMargin) {
-                println("Test subject sharp")
-                isCorrect = false
-            } else if (testItem.getFrequency() - idealItem.getFrequency() < -allowableFreqencyMargin) {
-                println("Test subject flat")
-                isCorrect = false
-            } else {
-                println("PERFECT")
+
+            var avgFreq = testItem.avgFreq
+
+            if (avgFreq != null) {
+                if (avgFreq - idealItem.getFrequency() > allowableFreqencyMargin) {
+                    println("Test subject sharp")
+                    isCorrect = false
+                } else if (avgFreq - idealItem.getFrequency() < -allowableFreqencyMargin) {
+                    println("Test subject flat")
+                    isCorrect = false
+                } else {
+                    println("PERFECT")
+                }
             }
+
+
 
             if (isCorrect)
                 results.correct += 1
