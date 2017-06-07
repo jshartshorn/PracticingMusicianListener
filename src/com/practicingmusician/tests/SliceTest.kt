@@ -1,5 +1,6 @@
 package com.practicingmusician.tests
 
+import com.practicingmusician.PitchTracker
 import com.practicingmusician.models.Slice
 import com.practicingmusician.notes.Note
 import org.w3c.dom.HTMLElement
@@ -34,6 +35,19 @@ object SliceTest {
         println("Comparing converted correlated buffers...")
 
         compareNoteArrays(notes, generatedFromCorrelations)
+
+
+        val tracker = PitchTracker()
+
+        for (i in 24..1024 step 17) {
+            tracker.mapNewBufferToSamples(listOf<Double>(),i.toDouble())
+        }
+
+        val generatedFromPitchTracker = turnSamplesBufferIntoNotes(tracker.samples)
+
+        println("Comparing pitchTracker samples...")
+
+        compareNoteArrays(notes, generatedFromPitchTracker)
 
 
         //console.log("Number samples in exercise: " + exerciseSamples.count())
