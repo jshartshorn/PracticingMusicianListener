@@ -18,7 +18,6 @@ class Note(value : Int, dur : Double) {
         return equalTemperamentPitch
     }
 
-    //fake this for now
     companion object {
         fun getNoteNumber(frequency : Double) : Int {
             return closestNoteToFrequency(frequency)
@@ -30,24 +29,6 @@ class Note(value : Int, dur : Double) {
                 ALL_NOTES.add(Note(i,1.0))
             }
         }
-
-
-        /*
-        func closestNotes() -> [Note] {
-        guard _closestNotesStored == nil else {
-            return _closestNotesStored!
-        }
-        let sorted = Note.all.sorted { (first, second) -> Bool in
-            if abs(first.frequency - frequency) > abs(second.frequency - frequency) {
-                return false
-            } else {
-                return true
-            }
-        }
-        self._closestNotesStored = Array(sorted.prefix(2))
-        return _closestNotesStored!
-    }
-         */
 
         fun closestNoteToFrequency(frequency : Double) : Int {
             var closestFrequency = Double.MAX_VALUE
@@ -62,6 +43,9 @@ class Note(value : Int, dur : Double) {
             println("Returning " + closestNoteValue + " for freq " + frequency)
             return closestNoteValue
         }
+
+
+
 
     }
 }

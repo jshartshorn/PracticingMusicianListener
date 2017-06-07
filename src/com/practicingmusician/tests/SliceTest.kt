@@ -1,6 +1,8 @@
 package com.practicingmusician.tests
 
 import com.practicingmusician.PitchTracker
+import com.practicingmusician.finals.BufferManager
+import com.practicingmusician.finals.CompareEngine
 import com.practicingmusician.models.Slice
 import com.practicingmusician.notes.Note
 import org.w3c.dom.HTMLElement
@@ -19,9 +21,6 @@ object SliceTest {
     val bufferLengthInSamples = 1024
 
 
-    val allowableFreqencyMargin = 4.0
-    val allowableRhythmMargin = 0.25
-
 
     @JsName("runTest")
     fun runTest() : String {
@@ -30,17 +29,17 @@ object SliceTest {
 
         val exerciseSamples = convertNotesToSamples()
 
-        val generated = turnSamplesBufferIntoNotes(exerciseSamples)
+        val generated = BufferManager.turnSamplesBufferIntoNotes(exerciseSamples)
 
-        compareNoteArrays(notes, generated)
+        CompareEngine.compareNoteArrays(notes, generated)
 
         val micSamples = convertCorrelatedBuffersToSamples()
 
-        val generatedFromCorrelations = turnSamplesBufferIntoNotes(micSamples)
+        val generatedFromCorrelations = BufferManager.turnSamplesBufferIntoNotes(micSamples)
 
         println("Comparing converted correlated buffers...")
 
-        compareNoteArrays(notes, generatedFromCorrelations)
+        CompareEngine.compareNoteArrays(notes, generatedFromCorrelations)
 
 
         val tracker = PitchTracker()
@@ -49,11 +48,11 @@ object SliceTest {
             tracker.mapNewBufferToSamples(listOf<Double>(),i.toDouble())
         }
 
-        val generatedFromPitchTracker = turnSamplesBufferIntoNotes(tracker.samples)
+        val generatedFromPitchTracker = BufferManager.turnSamplesBufferIntoNotes(tracker.samples)
 
         println("Comparing pitchTracker samples...")
 
-        compareNoteArrays(notes, generatedFromPitchTracker)
+        CompareEngine.compareNoteArrays(notes, generatedFromPitchTracker)
 
 
         //console.log("Number samples in exercise: " + exerciseSamples.count())
@@ -90,91 +89,6 @@ object SliceTest {
         return samples
     }
 
-    fun turnSamplesBufferIntoNotes(samples : List<Double>) : List<Note> {
-        //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
-        val notes = mutableListOf<Note>()
-
-        var curFreq = -1.0
-        var curLengthInSamples = 0
-
-        for (sample in samples) {
-            if (sample != curFreq) {
-                //this is starting a new note -- put the last one in
-
-                if (curLengthInSamples > 0) {
-                    //TODO: if the sample isn't long enough, don't add it
-
-                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-                    val noteNum = Note.getNoteNumber(curFreq)
-
-                    notes.add(Note(noteNum,durationInBeats))
-                }
-
-                curLengthInSamples = -1
-            }
-
-            curFreq = sample
-            curLengthInSamples += 1
-        }
-
-        //get the last item
-        if (curLengthInSamples > 0) {
-            val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-            val noteNum = Note.getNoteNumber(curFreq)
-
-            notes.add(Note(noteNum,durationInBeats))
-        }
-
-        console.log("Turned samples into these notes: " + notes)
-
-        return notes
-    }
-
-    fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) {
-        console.log("Comparing...")
-
-        var idealBeatIndex = 0.0
-        var testBeatIndex = 0.0
-
-        for ((index, value) in ideal.withIndex()) {
-            val idealItem = value
-
-            //test to see if the index is out of bounds
-            if (index >= toTest.count()) {
-                println("Out of items!")
-                break
-            }
-
-            val testItem = toTest[index]
-            println("Comparing at index $index")
-            println("Durations : " + idealItem.duration + " | " + testItem.duration)
-            println("Starting points : " + idealBeatIndex + " | " + testBeatIndex)
-
-
-            if (idealBeatIndex - testBeatIndex > allowableRhythmMargin) {
-                println("Test subject rushing")
-            } else if (idealBeatIndex - testBeatIndex < -allowableRhythmMargin) {
-                println("Test subject dragging")
-            } else {
-                println("PERFECT")
-            }
-
-
-            idealBeatIndex += idealItem.duration
-            testBeatIndex += testItem.duration
-            println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
-
-            if (testItem.getFrequency() - idealItem.getFrequency() > allowableFreqencyMargin) {
-                println("Test subject sharp")
-            } else if (testItem.getFrequency() - idealItem.getFrequency() < -allowableFreqencyMargin) {
-                println("Test subject flat")
-            } else {
-                println("PERFECT")
-            }
-        }
-
-    }
-
 
     fun convertCorrelatedBuffersToSamples() : List<Double> {
         val lengthOfNotesInSeconds = notes.map { it.duration }.reduce { acc, d -> acc + d } * secondsPerBeat
@@ -205,49 +119,5 @@ object SliceTest {
         return samplesFromCorrelatedBuffers
     }
 
-
-    //Not using these right now....
-
-    fun getPremadeSlices() : List<Slice> {
-        val slices = mutableListOf<Slice>()
-
-        notes.forEach {
-            val numberSlices = it.duration * slicesPerBeat
-            for (i in 0 until numberSlices.toInt()) {
-                slices.add(Slice(it.getFrequency()))
-            }
-        }
-
-        return slices
-    }
-
-    fun convertTimestampsToSlices() {
-        val lengthOfNotesInSeconds = notes.map { it.duration }.reduce { acc, d -> acc + d } * secondsPerBeat
-        val numberTotalSamples = sampleRate * lengthOfNotesInSeconds
-
-        console.log("Length of notes in seconds: " + lengthOfNotesInSeconds)
-
-        console.log("Total slices should be: " + (lengthOfNotesInSeconds / secondsPerBeat * slicesPerBeat))
-
-        val sliceLengthInSamples = sampleRate * secondsPerBeat / slicesPerBeat
-
-        console.log("Slice length in samples: " + sliceLengthInSamples)
-
-        var correlatedAudioBuffer = mutableListOf<Double>()
-
-        for (i in 0 until (numberTotalSamples / bufferLengthInSamples).toInt()) {
-            correlatedAudioBuffer.add(440.0)
-        } //gets 86 items
-
-        //console.log("Correlated buffer: " + correlatedAudioBuffer)
-
-        val slicesPerCorrelatedBufferItem = (bufferLengthInSamples / sliceLengthInSamples).toInt()
-
-        console.log("Slices if converting the buffer: " + (slicesPerCorrelatedBufferItem * correlatedAudioBuffer.count()))
-
-        //take the correlated buffer and convert it to slices
-
-
-    }
 
 }
