@@ -23,7 +23,9 @@ object SliceTest {
 
         val exerciseSamples = convertNotesToSamples()
 
-        turnSamplesBufferIntoNotes(exerciseSamples)
+        val generated = turnSamplesBufferIntoNotes(exerciseSamples)
+
+        compareNoteArrays(notes, generated)
 
         val micSamples = convertCorrelatedBuffersToSamples()
 
@@ -61,7 +63,7 @@ object SliceTest {
         return samples
     }
 
-    fun turnSamplesBufferIntoNotes(samples : List<Double>) {
+    fun turnSamplesBufferIntoNotes(samples : List<Double>) : List<Note> {
         //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
         val notes = mutableListOf<Note>()
 
@@ -86,12 +88,37 @@ object SliceTest {
             curLengthInSamples += 1
         }
 
+        //get the last item
+        if (curLengthInSamples > 0) {
+            val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+            val noteNum = Note.getNoteNumber(curFreq)
+
+            notes.add(Note(noteNum,durationInBeats))
+        }
+
         console.log("Turned samples into these notes: " + notes)
+
+        return notes
     }
 
+    fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) {
+        console.log("Comparing...")
 
-    fun 
+        var idealBeatIndex = 0.0
+        var testBeatIndex = 0.0
 
+        for ((index, value) in ideal.withIndex()) {
+            val idealItem = value
+            val testItem = toTest[index]
+            println("Comparing at index $index")
+            println("Durations : " + idealItem.duration + " | " + testItem.duration)
+            println("Starting points : " + idealBeatIndex + " | " + testBeatIndex)
+            idealBeatIndex += idealItem.duration
+            testBeatIndex += testItem.duration
+            println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
+        }
+
+    }
 
 
     fun convertCorrelatedBuffersToSamples() : List<Double> {
