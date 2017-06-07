@@ -22,6 +22,8 @@ object SliceTest {
     @JsName("runTest")
     fun runTest() : String {
 
+        Note.createAllNotes()
+
         val exerciseSamples = convertNotesToSamples()
 
         val generated = turnSamplesBufferIntoNotes(exerciseSamples)
@@ -96,6 +98,8 @@ object SliceTest {
                 //this is starting a new note -- put the last one in
 
                 if (curLengthInSamples > 0) {
+                    //TODO: if the sample isn't long enough, don't add it
+
                     val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
                     val noteNum = Note.getNoteNumber(curFreq)
 
