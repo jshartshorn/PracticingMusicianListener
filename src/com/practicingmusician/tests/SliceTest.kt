@@ -27,7 +27,7 @@ object SliceTest {
 
         Note.createAllNotes()
 
-        val exerciseSamples = convertNotesToSamples()
+        val exerciseSamples = BufferManager.convertNotesToSamples(notes)
 
         val generated = BufferManager.turnSamplesBufferIntoNotes(exerciseSamples)
 
@@ -72,21 +72,6 @@ object SliceTest {
 //        convertTimestampsToSlices()
 
         return "Done"
-    }
-
-    fun convertNotesToSamples() : List<Double> {
-        val samples = mutableListOf<Double>()
-        val noteChangeIndexes = mutableListOf<Int>()
-        notes.forEach {
-            noteChangeIndexes.add(samples.count())
-            val numSamplesToCreate = it.duration * secondsPerBeat * sampleRate
-            val freq = it.getFrequency()
-            for (i in 0 until numSamplesToCreate.toInt()) {
-                samples.add(freq)
-            }
-        }
-        console.log("Note change indexes: " + noteChangeIndexes)
-        return samples
     }
 
 
