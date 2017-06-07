@@ -75,7 +75,7 @@ object SliceTest {
                 //this is starting a new note -- put the last one in
 
                 if (curLengthInSamples > 0) {
-                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate) + 0.2
                     val noteNum = Note.getNoteNumber(curFreq)
 
                     notes.add(Note(noteNum,durationInBeats))
@@ -113,9 +113,28 @@ object SliceTest {
             println("Comparing at index $index")
             println("Durations : " + idealItem.duration + " | " + testItem.duration)
             println("Starting points : " + idealBeatIndex + " | " + testBeatIndex)
+
+
+            if (idealBeatIndex - testBeatIndex > 1) {
+                println("Test subject rushing")
+            } else if (idealBeatIndex - testBeatIndex < 1) {
+                println("Test subject dragging")
+            } else {
+                println("PERFECT")
+            }
+
+
             idealBeatIndex += idealItem.duration
             testBeatIndex += testItem.duration
             println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
+
+            if (testItem.getFrequency() - idealItem.getFrequency() > 0) {
+                println("Test subject sharp")
+            } else if (testItem.getFrequency() - idealItem.getFrequency() < 0) {
+                println("Test subject flat")
+            } else {
+                println("PERFECT")
+            }
         }
 
     }
