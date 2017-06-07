@@ -19,6 +19,10 @@ object SliceTest {
     val bufferLengthInSamples = 1024
 
 
+    val allowableFreqencyMargin = 4.0
+    val allowableRhythmMargin = 0.25
+
+
     @JsName("runTest")
     fun runTest() : String {
 
@@ -147,9 +151,9 @@ object SliceTest {
             println("Starting points : " + idealBeatIndex + " | " + testBeatIndex)
 
 
-            if (idealBeatIndex - testBeatIndex > 0) {
+            if (idealBeatIndex - testBeatIndex > allowableRhythmMargin) {
                 println("Test subject rushing")
-            } else if (idealBeatIndex - testBeatIndex < 0) {
+            } else if (idealBeatIndex - testBeatIndex < -allowableRhythmMargin) {
                 println("Test subject dragging")
             } else {
                 println("PERFECT")
@@ -160,9 +164,9 @@ object SliceTest {
             testBeatIndex += testItem.duration
             println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
 
-            if (testItem.getFrequency() - idealItem.getFrequency() > 0) {
+            if (testItem.getFrequency() - idealItem.getFrequency() > allowableFreqencyMargin) {
                 println("Test subject sharp")
-            } else if (testItem.getFrequency() - idealItem.getFrequency() < 0) {
+            } else if (testItem.getFrequency() - idealItem.getFrequency() < -allowableFreqencyMargin) {
                 println("Test subject flat")
             } else {
                 println("PERFECT")

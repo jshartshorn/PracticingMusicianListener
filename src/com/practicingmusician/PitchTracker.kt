@@ -1,8 +1,11 @@
 package com.practicingmusician
 
+import kotlin.js.Math
+
 /**
  * Created by jn on 6/7/17.
  */
+
 
 class PitchTracker {
     val sampleRate = 44100.0
@@ -28,11 +31,17 @@ class PitchTracker {
     }
 
     fun getCorrelatedFrequencyOfBuffer(buffer: List<Double>) : Double {
+        //TODO: make this real
         REMOVE_THIS_COUNTER += 1
-        if (REMOVE_THIS_COUNTER % 2 == 1)
-            return 440.0 // for now
-        else
-            return 880.0
+        if (REMOVE_THIS_COUNTER % 2 == 1) {
+            var toRet = 440.0
+
+            var randomAddition = Math.random() * 4.0
+
+            return toRet + randomAddition
+        } else {
+            return 878.0
+        }
     }
 
 }
