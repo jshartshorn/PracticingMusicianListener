@@ -11,11 +11,12 @@ object BufferManager {
     val secondsPerBeat = 60.0 / tempo
     val sampleRate = 44100.0
 
-    fun turnSamplesBufferIntoNotes(samples : List<Double>) : List<Note> {
+    fun convertSamplesBufferToNotes(samples : List<Double>) : List<Note> {
         //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
         val notes = mutableListOf<Note>()
 
         var curFreq = -1.0
+        var avgFreq = 0.0
         var curLengthInSamples = 0
 
         for (sample in samples) {
@@ -28,12 +29,20 @@ object BufferManager {
                     val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
                     val noteNum = Note.getNoteNumber(curFreq)
 
-                    notes.add(Note(noteNum,durationInBeats))
+                    avgFreq = avgFreq / curLengthInSamples
+
+                    val note = Note(noteNum,durationInBeats)
+
+                    note.avgFreq = avgFreq
+
+                    notes.add(note)
                 }
 
+                avgFreq = 0.0
                 curLengthInSamples = -1
             }
 
+            avgFreq += sample
             curFreq = sample
             curLengthInSamples += 1
         }

@@ -29,13 +29,13 @@ object SliceTest {
 
         val exerciseSamples = BufferManager.convertNotesToSamples(notes)
 
-        val generated = BufferManager.turnSamplesBufferIntoNotes(exerciseSamples)
+        val generated = BufferManager.convertSamplesBufferToNotes(exerciseSamples)
 
         CompareEngine.compareNoteArrays(notes, generated)
 
         val micSamples = convertCorrelatedBuffersToSamples()
 
-        val generatedFromCorrelations = BufferManager.turnSamplesBufferIntoNotes(micSamples)
+        val generatedFromCorrelations = BufferManager.convertSamplesBufferToNotes(micSamples)
 
         println("Comparing converted correlated buffers...")
 
@@ -48,7 +48,7 @@ object SliceTest {
             tracker.mapNewBufferToSamples(listOf<Double>(),i.toDouble())
         }
 
-        val generatedFromPitchTracker = BufferManager.turnSamplesBufferIntoNotes(tracker.samples)
+        val generatedFromPitchTracker = BufferManager.convertSamplesBufferToNotes(tracker.samples)
 
         println("Comparing pitchTracker samples...")
 
@@ -62,7 +62,7 @@ object SliceTest {
         exerciseDiv.textContent = "Samples : " + exerciseSamples
 
         val micDiv = document.getElementById("micInput") as HTMLElement
-        micDiv.textContent = "Samples: " + micSamples
+        micDiv.textContent = "Samples: " + tracker.samples
 
 
 //        val slices = getPremadeSlices()

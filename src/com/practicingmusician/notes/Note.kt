@@ -12,6 +12,8 @@ class Note(value : Int, dur : Double) {
     val noteNumber = value
     val duration = dur
 
+    var avgFreq : Double? = null
+
     fun getFrequency() : Double {
         val A440_NoteNumber: Double = 69.0
         val equalTemperamentPitch = AppSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
