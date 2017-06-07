@@ -21,9 +21,41 @@ object SliceTest {
     val bufferLengthInSamples = 1024
 
 
-
     @JsName("runTest")
     fun runTest() : String {
+        Note.createAllNotes()
+
+        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes)
+
+        val exactCopyGenerated = BufferManager.convertSamplesBufferToNotes(exerciseSamples)
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        println("Comparing exact copies...")
+
+        CompareEngine.compareNoteArrays(notes, copyWithAvgData)
+
+        val copyWithVariedPitch = TestBufferGenerator.addPitchVariationToSamples(exerciseSamples)
+
+        val copyWithVariedPitchNotes = BufferManager.convertSamplesBufferToNotes(copyWithVariedPitch)
+
+        println("Comparing with pitch variation...")
+
+        CompareEngine.compareNoteArrays(notes, copyWithVariedPitchNotes)
+
+        val copyWithVariedRhythm = TestBufferGenerator.addRhythmVariationToSamples(exerciseSamples)
+
+        val copyWithVariedRhythmNotes = BufferManager.convertSamplesBufferToNotes(copyWithVariedRhythm)
+
+        println("Comparing with rhythm variation...")
+
+        CompareEngine.compareNoteArrays(notes, copyWithVariedRhythmNotes)
+
+        return "Done"
+    }
+
+    @JsName("oldRunTest")
+    fun oldRunTest() : String {
 
         Note.createAllNotes()
 

@@ -30,7 +30,8 @@ class PitchTracker {
         }
     }
 
-    fun getCorrelatedFrequencyOfBuffer(buffer: List<Double>) : Double {
+
+    fun getCorrelatedFrequencyOfBuffer(@Suppress("UNUSED_PARAMETER") buffer: List<Double>) : Double {
         //TODO: make this real
         REMOVE_THIS_COUNTER += 1
         if (REMOVE_THIS_COUNTER % 2 == 1) {

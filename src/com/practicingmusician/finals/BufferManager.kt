@@ -52,7 +52,12 @@ object BufferManager {
             val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
             val noteNum = Note.getNoteNumber(curFreq)
 
-            notes.add(Note(noteNum,durationInBeats))
+            avgFreq = avgFreq / curLengthInSamples
+
+            val note = Note(noteNum,durationInBeats)
+            note.avgFreq = avgFreq
+
+            notes.add(note)
         }
 
         console.log("Turned samples into these notes: " + notes)
