@@ -29,8 +29,15 @@ object SliceTest {
 
         val micSamples = convertCorrelatedBuffersToSamples()
 
-        console.log("Number samples in exercise: " + exerciseSamples.count())
-        console.log("Number samples in mic input: " + micSamples.count())
+        val generatedFromCorrelations = turnSamplesBufferIntoNotes(micSamples)
+
+        println("Comparing converted correlated buffers...")
+
+        compareNoteArrays(notes, generatedFromCorrelations)
+
+
+        //console.log("Number samples in exercise: " + exerciseSamples.count())
+        //console.log("Number samples in mic input: " + micSamples.count())
 
         val exerciseDiv = document.getElementById("exercise") as HTMLElement
         exerciseDiv.textContent = "Samples : " + exerciseSamples
@@ -75,7 +82,7 @@ object SliceTest {
                 //this is starting a new note -- put the last one in
 
                 if (curLengthInSamples > 0) {
-                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate) + 0.2
+                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
                     val noteNum = Note.getNoteNumber(curFreq)
 
                     notes.add(Note(noteNum,durationInBeats))
@@ -109,15 +116,22 @@ object SliceTest {
 
         for ((index, value) in ideal.withIndex()) {
             val idealItem = value
+
+            //test to see if the index is out of bounds
+            if (index >= toTest.count()) {
+                println("Out of items!")
+                break
+            }
+
             val testItem = toTest[index]
             println("Comparing at index $index")
             println("Durations : " + idealItem.duration + " | " + testItem.duration)
             println("Starting points : " + idealBeatIndex + " | " + testBeatIndex)
 
 
-            if (idealBeatIndex - testBeatIndex > 1) {
+            if (idealBeatIndex - testBeatIndex > 0) {
                 println("Test subject rushing")
-            } else if (idealBeatIndex - testBeatIndex < 1) {
+            } else if (idealBeatIndex - testBeatIndex < 0) {
                 println("Test subject dragging")
             } else {
                 println("PERFECT")
@@ -147,13 +161,18 @@ object SliceTest {
         console.log("Num correlated buffers: " + numCorrelatedBuffers)
 
         val correlatedBuffers = mutableListOf<Double>()
+        val samplesPerCorrelatedBuffer = 1024
 
         for (i in 0 until numCorrelatedBuffers.toInt()) {
             correlatedBuffers.add(440.0) //for now
         }
 
+        //put in fake values to test
+        correlatedBuffers[1] = 880.0
+        correlatedBuffers[2] = 440.0
+        correlatedBuffers[3] = 880.0
+
         val samplesFromCorrelatedBuffers = mutableListOf<Double>()
-        val samplesPerCorrelatedBuffer = 1024
 
         correlatedBuffers.forEach {
             for (i in 0 until samplesPerCorrelatedBuffer) {
