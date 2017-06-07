@@ -10,7 +10,7 @@ import kotlin.browser.document
  */
 object SliceTest {
 
-    val notes = listOf(Note(69,1.0),Note(69,1.0),Note(69,1.0),Note(69,1.0))
+    val notes = listOf(Note(69,1.0),Note(81,1.0),Note(69,1.0),Note(81,1.0))
     val tempo = 120.0
     val secondsPerBeat = 60.0 / tempo
     val slicesPerBeat = 32
@@ -18,17 +18,81 @@ object SliceTest {
     val bufferLengthInSamples = 1024
 
 
+    @JsName("runTest")
+    fun runTest() : String {
+
+        val exerciseSamples = convertNotesToSamples()
+
+        turnSamplesBufferIntoNotes(exerciseSamples)
+
+        val micSamples = convertCorrelatedBuffersToSamples()
+
+        console.log("Number samples in exercise: " + exerciseSamples.count())
+        console.log("Number samples in mic input: " + micSamples.count())
+
+        val exerciseDiv = document.getElementById("exercise") as HTMLElement
+        exerciseDiv.textContent = "Samples : " + exerciseSamples
+
+        val micDiv = document.getElementById("micInput") as HTMLElement
+        micDiv.textContent = "Samples: " + micSamples
+
+
+//        val slices = getPremadeSlices()
+//
+//        console.log("Number of slices: " + slices.count())
+//
+//        convertTimestampsToSlices()
+
+        return "Done"
+    }
+
     fun convertNotesToSamples() : List<Double> {
         val samples = mutableListOf<Double>()
+        val noteChangeIndexes = mutableListOf<Int>()
         notes.forEach {
+            noteChangeIndexes.add(samples.count())
             val numSamplesToCreate = it.duration * secondsPerBeat * sampleRate
             val freq = it.getFrequency()
             for (i in 0 until numSamplesToCreate.toInt()) {
                 samples.add(freq)
             }
         }
+        console.log("Note change indexes: " + noteChangeIndexes)
         return samples
     }
+
+    fun turnSamplesBufferIntoNotes(samples : List<Double>) {
+        //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
+        val notes = mutableListOf<Note>()
+
+        var curFreq = -1.0
+        var curLengthInSamples = 0
+
+        for (sample in samples) {
+            if (sample != curFreq) {
+                //this is starting a new note -- put the last one in
+
+                if (curLengthInSamples > 0) {
+                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+                    val noteNum = Note.getNoteNumber(curFreq)
+
+                    notes.add(Note(noteNum,durationInBeats))
+                }
+
+                curLengthInSamples = -1
+            }
+
+            curFreq = sample
+            curLengthInSamples += 1
+        }
+
+        console.log("Turned samples into these notes: " + notes)
+    }
+
+
+    fun 
+
+
 
     fun convertCorrelatedBuffersToSamples() : List<Double> {
         val lengthOfNotesInSeconds = notes.map { it.duration }.reduce { acc, d -> acc + d } * secondsPerBeat
@@ -68,32 +132,6 @@ object SliceTest {
         }
 
         return slices
-    }
-
-    @JsName("runTest")
-    fun runTest() : String {
-
-        val exerciseSamples = convertNotesToSamples()
-
-        val micSamples = convertCorrelatedBuffersToSamples()
-
-        console.log("Number samples in exercise: " + exerciseSamples.count())
-        console.log("Number samples in mic input: " + micSamples.count())
-
-        val exerciseDiv = document.getElementById("exercise") as HTMLElement
-        exerciseDiv.textContent = "Samples : " + exerciseSamples
-
-        val micDiv = document.getElementById("micInput") as HTMLElement
-        micDiv.textContent = "Samples: " + micSamples
-
-
-//        val slices = getPremadeSlices()
-//
-//        console.log("Number of slices: " + slices.count())
-//
-//        convertTimestampsToSlices()
-
-        return "Done"
     }
 
     fun convertTimestampsToSlices() {

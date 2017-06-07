@@ -17,4 +17,14 @@ class Note(value : Int, dur : Double) {
         return equalTemperamentPitch
     }
 
+    //fake this for now
+    companion object {
+        fun getNoteNumber(frequency : Double) : Int {
+            when(frequency) {
+                440.0 -> return 69
+                880.0 -> return 81
+            }
+            return -1
+        }
+    }
 }
