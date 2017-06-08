@@ -12,10 +12,21 @@ object PitchTrackerTest {
         val tracker = PitchTracker()
 
         for (i in 24..1024 step 17) {
-            tracker.mapNewBufferToSamples(listOf<Double>(),i.toDouble())
+            //tracker.mapNewBufferToSamples(listOf<Double>(),i.toDouble())
         }
 
         println("Samples: " + tracker.samples.count())
     }
+
+    @JsName("toogleTest")
+    fun toggleTest() {
+
+
+    }
+
+}
+
+class PitchTrackerTestClass {
+    val tracker = PitchTracker()
 
 }

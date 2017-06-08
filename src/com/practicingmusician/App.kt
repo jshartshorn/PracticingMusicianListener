@@ -1,6 +1,7 @@
 package com.practicingmusician
 
 import com.practicingmusician.exercises.ExerciseManager
+import com.practicingmusician.finals.BufferManager
 
 /**
  * Created by jn on 6/5/17.
@@ -10,7 +11,7 @@ class App {
     val timeKeeper = TimeKeeper()
     val audioManager = AudioManager()
     var metronome = Metronome()
-    var pitch = Pitch()
+    var pitch = PitchTracker()
 
     var exerciseManager = ExerciseManager()
 
@@ -53,6 +54,13 @@ class App {
         timeKeeper.stop()
         metronome.stop()
         pitch.stop()
+
+        //take the pitch and convert it
+        val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitch.samples)
+        println("Notes: ")
+        notesFromSamplesBuffer.forEach {
+            println("Note: " + it.noteNumber + " for " + it.duration)
+        }
     }
 
     @JsName("toggleState")

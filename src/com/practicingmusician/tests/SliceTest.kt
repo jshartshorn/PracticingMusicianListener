@@ -102,58 +102,6 @@ object SliceTest {
         return "Done"
     }
 
-    @JsName("oldRunTest")
-    fun oldRunTest() : String {
-
-        Note.createAllNotes()
-
-        val exerciseSamples = BufferManager.convertNotesToSamples(notes)
-
-        val generated = BufferManager.convertSamplesBufferToNotes(exerciseSamples)
-
-        CompareEngine.compareNoteArrays(notes, generated)
-
-        val micSamples = convertCorrelatedBuffersToSamples()
-
-        val generatedFromCorrelations = BufferManager.convertSamplesBufferToNotes(micSamples)
-
-        println("Comparing converted correlated buffers...")
-
-        CompareEngine.compareNoteArrays(notes, generatedFromCorrelations)
-
-
-        val tracker = PitchTracker()
-
-        for (i in 24..1024 step 17) {
-            tracker.mapNewBufferToSamples(listOf<Double>(),i.toDouble())
-        }
-
-        val generatedFromPitchTracker = BufferManager.convertSamplesBufferToNotes(tracker.samples)
-
-        println("Comparing pitchTracker samples...")
-
-        CompareEngine.compareNoteArrays(notes, generatedFromPitchTracker)
-
-
-        //console.log("Number samples in exercise: " + exerciseSamples.count())
-        //console.log("Number samples in mic input: " + micSamples.count())
-
-        val exerciseDiv = document.getElementById("exercise") as HTMLElement
-        exerciseDiv.textContent = "Samples : " + exerciseSamples
-
-        val micDiv = document.getElementById("micInput") as HTMLElement
-        micDiv.textContent = "Samples: " + tracker.samples
-
-
-//        val slices = getPremadeSlices()
-//
-//        console.log("Number of slices: " + slices.count())
-//
-//        convertTimestampsToSlices()
-
-        return "Done"
-    }
-
 
     fun convertCorrelatedBuffersToSamples() : List<Double> {
         val lengthOfNotesInSeconds = notes.map { it.duration }.reduce { acc, d -> acc + d } * secondsPerBeat

@@ -5,18 +5,19 @@
     <title>Practicing Musician Notation</title>
 
     <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
+    <!-- https://unpkg.com/vexflow/releases/vexflow-min.js -->
 </head>
 <body>
 
-<div id="boo"></div>
+<canvas id="myCanvas" width="500" height="300"></canvas>
 
 <script>
 
 VF = Vex.Flow;
 
 // Create an SVG renderer and attach it to the DIV element named "boo".
-var div = document.getElementById("boo")
-var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+var div = document.getElementById("myCanvas")
+var renderer = new VF.Renderer(div, VF.Renderer.Backends.CANVAS);
 
 // Configure the rendering context.
 renderer.resize(500, 500);
@@ -26,7 +27,7 @@ context.setFont("Arial", 10, "").setBackgroundFillStyle("#ccc");
 
 
 // Create a stave of width 400 at position 10, 40 on the canvas.
-var stave = new VF.Stave(20, 40, 250);
+var stave = new VF.Stave(20, 40, 400);
 
 // Add a clef and time signature.
 stave.addClef("treble").addTimeSignature("4/4");
@@ -41,9 +42,11 @@ var notes = [
   // A quarter-note D.
   new VF.StaveNote({clef: "treble", keys: ["d/4"], duration: "q" }),
 
+    new VF.BarNote(),
+
   // A quarter-note rest. Note that the key (b/4) specifies the vertical
   // position of the rest.
-  new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }).addAnnotation(0, new VF.Annotation("test").setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM))
+  new VF.StaveNote({clef: "treble", keys: ["b/4"], duration: "qr" }).addAnnotation(0, new VF.Annotation("⭐️").setVerticalJustification(VF.Annotation.VerticalJustify.BOTTOM))
   ,
 
   new VF.BarNote(),
@@ -58,10 +61,40 @@ voice.addTickables(notes);
 
 
 // Format and justify the notes to 400 pixels.
-var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 200);
+var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 350);
 
 // Render voice
 voice.draw(context, stave);
+
+//animation?
+var xToAnimateTo = voice.tickables[4].getAbsoluteX()
+
+var topY = stave.getYForLine(0)
+var bottomY = stave.getYForLine(4)
+//var bottomY = stave.getBoundingBox().y + stave.height
+
+function drawShape(){
+  // get the canvas element using the DOM
+  var canvas = document.getElementById('myCanvas');
+
+  // Make sure we don't execute when canvas isn't supported
+  if (canvas.getContext) {
+
+	   // use getContext to use the canvas for drawing
+	   var ctx = canvas.getContext('2d');
+
+	   // Stroked triangle
+	   ctx.beginPath();
+	   ctx.moveTo(xToAnimateTo,bottomY);
+	   ctx.lineTo(xToAnimateTo,topY);
+	   ctx.lineTo(45,bottomY);
+	   ctx.closePath();
+	   ctx.stroke();
+
+  }
+}
+
+drawShape()
 
 </script>
 
