@@ -1,13 +1,9 @@
 package com.practicingmusician.tests
 
-import com.practicingmusician.PitchTracker
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.finals.CompareEngine
 import com.practicingmusician.finals.CompareResults
-import com.practicingmusician.models.Slice
 import com.practicingmusician.notes.Note
-import org.w3c.dom.HTMLElement
-import kotlin.browser.document
 import kotlin.browser.window
 
 /**

@@ -1,6 +1,6 @@
-package com.practicingmusician
+package com.practicingmusician.steppable
 
-import kotlin.browser.window
+import com.practicingmusician.steppable.*
 
 /**
  * Created by jn on 6/5/17.
@@ -9,7 +9,7 @@ class Metronome : TimeKeeperSteppable {
 
     final val audioKey = "metronomeSound"
 
-    lateinit var audioManager : AudioManager
+    lateinit var audioManager : com.practicingmusician.audio.AudioManager
 
     override var state = TimeKeeper.TimeKeeperState.Stopped
 

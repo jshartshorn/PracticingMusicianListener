@@ -1,9 +1,8 @@
 package com.practicingmusician.exercises
 
-import com.practicingmusician.Metronome
-import com.practicingmusician.Pitch
-import com.practicingmusician.PitchTracker
-import com.practicingmusician.TimeKeeperAnalyzer
+import com.practicingmusician.steppable.Metronome
+import com.practicingmusician.steppable.PitchTracker
+import com.practicingmusician.steppable.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
 
 /**

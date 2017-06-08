@@ -1,6 +1,6 @@
 package com.practicingmusician.tests
 
-import com.practicingmusician.PitchTracker
+import com.practicingmusician.steppable.PitchTracker
 
 /**
  * Created by jn on 6/7/17.

@@ -1,4 +1,4 @@
-package com.practicingmusician
+package com.practicingmusician.audio
 
 import kotlin.browser.window
 

@@ -1,7 +1,11 @@
 package com.practicingmusician
 
+import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.BufferManager
+import com.practicingmusician.steppable.Metronome
+import com.practicingmusician.steppable.PitchTracker
+import com.practicingmusician.steppable.TimeKeeper
 
 /**
  * Created by jn on 6/5/17.
