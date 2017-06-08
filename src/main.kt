@@ -18,5 +18,5 @@ fun main(args: Array<String>) {
 
 fun runProgram() {
     println("Running...")
-    app.setup()
+    app.exerciseManager.setup()
 }

@@ -1,19 +1,73 @@
 package com.practicingmusician.exercises
 
+import com.practicingmusician.audio.Audio
+import com.practicingmusician.audio.AudioManager
+import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.TimeKeeper
 
 /**
  * Created by jn on 6/6/17.
  */
-class ExerciseManager : TimeKeeperAnalyzer {
+class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     var currentExercise : ExerciseDefinition? = null
 
-    lateinit var pitch : PitchTracker
-    lateinit var metronome : Metronome
+    val timeKeeper = TimeKeeper()
+    var metronome = Metronome()
+    var pitchTracker = PitchTracker()
+
+    var audioManager = am
+
+    fun setup() {
+        metronome.audioManager = audioManager
+        timeKeeper.steppables.add(metronome)
+        timeKeeper.steppables.add(pitchTracker)
+
+        timeKeeper.analyzers.add(this)
+
+        timeKeeper.finishedActions.add {
+            //take the pitch and convert it
+            audioManager.cancelAllAudio()
+
+            val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
+            println("Notes: ")
+            notesFromSamplesBuffer.forEach {
+                println("Note: " + it.noteNumber + " for " + it.duration)
+            }
+        }
+
+        metronome.setup()
+
+        pitchTracker.setup()
+    }
+
+    @JsName("run")
+    fun run() {
+        metronome.start()
+        pitchTracker.start()
+        timeKeeper.start()
+    }
+
+    fun stop() {
+        timeKeeper.stop()
+        metronome.stop()
+        pitchTracker.stop()
+    }
+
+    @JsName("loadExercise")
+    fun loadExercise() {
+        loadSampleExercise()
+
+        currentExercise?.let {
+            metronome.tempo = it.tempo
+            timeKeeper.runForTime = it.getLength()
+            println("Loaded exercise of length " + timeKeeper.runForTime)
+        }
+    }
 
 
     fun loadSampleExercise() {

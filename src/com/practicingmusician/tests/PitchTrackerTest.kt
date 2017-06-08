@@ -18,7 +18,7 @@ object PitchTrackerTest {
         println("Samples: " + tracker.samples.count())
     }
 
-    @JsName("toogleTest")
+    @JsName("toggleTest")
     fun toggleTest() {
 
 
