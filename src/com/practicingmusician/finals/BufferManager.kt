@@ -10,6 +10,7 @@ object BufferManager {
     val tempo = 120.0
     val secondsPerBeat = 60.0 / tempo
     val sampleRate = 44100.0
+    val minDurationInBeats = 0.25
 
     fun convertSamplesBufferToNotes(samples : List<Double>) : List<Note> {
         //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
@@ -63,9 +64,21 @@ object BufferManager {
             notes.add(note)
         }
 
-        console.log("Turned samples into these notes: " + notes)
+        println("Length before purge: " + notes.count())
 
-        return notes
+        //scan through and remove any that are too short?
+        val notesCopy = notes.toMutableList()
+        notes.forEach {
+            if (it.duration < minDurationInBeats) {
+                notesCopy.remove(it)
+            }
+        }
+
+        println("Length after purge: " + notesCopy.count())
+
+        console.log("Turned samples into these notes: " + notesCopy)
+
+        return notesCopy
     }
 
 

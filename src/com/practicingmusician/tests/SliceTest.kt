@@ -3,10 +3,12 @@ package com.practicingmusician.tests
 import com.practicingmusician.PitchTracker
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.finals.CompareEngine
+import com.practicingmusician.finals.CompareResults
 import com.practicingmusician.models.Slice
 import com.practicingmusician.notes.Note
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
+import kotlin.browser.window
 
 /**
  * Created by jn on 6/7/17.
@@ -21,9 +23,23 @@ object SliceTest {
     val bufferLengthInSamples = 1024
 
 
+    fun testShouldBe(ideal : CompareResults, testValue : CompareResults) {
+        if (ideal.attempted == testValue.attempted && ideal.correct == testValue.correct) {
+            println("---- PASSED -----")
+        } else {
+            window.alert("Failed")
+            println("----- FAILED -----")
+        }
+    }
+
     @JsName("runTest")
     fun runTest() : String {
+
+        //setup
         Note.createAllNotes()
+
+
+        //tests
 
         val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes)
 
@@ -33,7 +49,10 @@ object SliceTest {
 
         println("Comparing exact copies...")
 
-        CompareEngine.compareNoteArrays(notes, copyWithAvgData)
+        testShouldBe(CompareResults(4,4),CompareEngine.compareNoteArrays(notes, copyWithAvgData))
+
+
+
 
         val copyWithVariedPitch = TestBufferGenerator.addPitchVariationToSamples(exerciseSamples)
 
@@ -41,7 +60,10 @@ object SliceTest {
 
         println("Comparing with pitch variation...")
 
-        CompareEngine.compareNoteArrays(notes, copyWithVariedPitchNotes)
+        testShouldBe(CompareResults(0,4),CompareEngine.compareNoteArrays(notes, copyWithVariedPitchNotes))
+
+
+
 
         val copyWithVariedRhythm = TestBufferGenerator.addRhythmVariationToSamples(exerciseSamples)
 
@@ -49,7 +71,18 @@ object SliceTest {
 
         println("Comparing with rhythm variation...")
 
-        CompareEngine.compareNoteArrays(notes, copyWithVariedRhythmNotes)
+        testShouldBe(CompareResults(1,4),CompareEngine.compareNoteArrays(notes, copyWithVariedRhythmNotes))
+
+
+        val copyWithShortItems = TestBufferGenerator.addShortItemsThatShouldBeRemoved(exerciseSamples)
+
+        val copyWithShortItemsNotes = BufferManager.convertSamplesBufferToNotes(copyWithShortItems)
+
+        println("Comparing with short values that should be removed...")
+
+        testShouldBe(CompareResults(4,4),CompareEngine.compareNoteArrays(notes, copyWithShortItemsNotes))
+
+
 
         return "Done"
     }

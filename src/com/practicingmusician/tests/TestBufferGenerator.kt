@@ -53,4 +53,25 @@ object TestBufferGenerator {
         return newBuffer
     }
 
+    fun addShortItemsThatShouldBeRemoved(buffer : List<Double>) : List<Double> {
+        var newBuffer = buffer.toMutableList()
+
+        for (i in 0..5) {
+            newBuffer.add(0, 2.0)
+        }
+
+
+        for (i in 0..15) {
+            newBuffer.add(100, 2.0)
+        }
+//
+        for (i in 0..3) {
+            newBuffer.add(10000, 2.0)
+        }
+
+
+        return newBuffer
+    }
+
+
 }

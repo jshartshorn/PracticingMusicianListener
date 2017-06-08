@@ -13,7 +13,7 @@ object CompareEngine {
     val allowableFreqencyMargin = 4.0
     val allowableRhythmMargin = 0.25
 
-    fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) {
+    fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
         console.log("Comparing...")
 
         var idealBeatIndex = 0.0
@@ -81,7 +81,9 @@ object CompareEngine {
                 results.correct += 1
         }
 
-        println("Results : " + results.correct + "/" + results.attempted)
+        println("---- Results : " + results.correct + "/" + results.attempted)
+
+        return results
     }
 
 }
