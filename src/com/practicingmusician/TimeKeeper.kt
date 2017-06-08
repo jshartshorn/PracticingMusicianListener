@@ -37,7 +37,7 @@ class TimeKeeper {
     var timeOffSet : Double = -1.0
 
     //Amount of time the analyzer should run for
-    var runForTime : Double = 4000.0
+    var runForTime : Double = 4100.0
 
     fun start() {
         state = TimeKeeperState.Running

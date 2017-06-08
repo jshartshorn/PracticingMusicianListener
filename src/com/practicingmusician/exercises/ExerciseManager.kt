@@ -19,7 +19,7 @@ class ExerciseManager : TimeKeeperAnalyzer {
 
     fun loadSampleExercise() {
         val exercise = ExerciseDefinition()
-        exercise.tempo = 85.0
+        exercise.tempo = 120.0
         exercise.notes.add(Note(60,1.0))
         exercise.notes.add(Note(61,1.0))
         exercise.notes.add(Note(62,1.0))

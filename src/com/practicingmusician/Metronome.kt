@@ -38,6 +38,7 @@ class Metronome : TimeKeeperSteppable {
 
         if (lastBeatOccuredAt == -1.0) {
             //this is the first run
+            println("First run")
             lastBeatOccuredAt = timestamp - beatSize
         }
 

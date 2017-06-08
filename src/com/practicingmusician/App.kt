@@ -24,6 +24,8 @@ class App {
 
         timeKeeper.finishedActions.add {
             //take the pitch and convert it
+            audioManager.cancelAllAudio()
+
             val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitch.samples)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
