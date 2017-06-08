@@ -70,7 +70,7 @@ object SliceTest {
 
         println("Comparing with rhythm variation...")
 
-        testShouldBe(CompareResults(1,4),CompareEngine.compareNoteArrays(notes, copyWithVariedRhythmNotes))
+        testShouldBe(CompareResults(0,4),CompareEngine.compareNoteArrays(notes, copyWithVariedRhythmNotes))
 
 
         val copyWithShortItems = TestBufferGenerator.addShortItemsThatShouldBeRemoved(exerciseSamples)
@@ -84,9 +84,8 @@ object SliceTest {
 
         //add an extraneous note in the middle to misalign the indexes
 
-        val notesWithExtra = notes.toMutableList()
-
-        notesWithExtra.add(1,Note(60,0.33))
+        //val notes =        listOf(Note(69,1.0),Note(81,1.0),Note(69,1.0),Note(81,1.0))
+        val notesWithExtra = listOf(Note(69,1.0),Note(81,0.5),Note(60,0.5),Note(69,1.0),Note(81,1.0))
 
         val exerciseSamplesWithExtra = TestBufferGenerator.generateExactBufferFromNotes(notesWithExtra)
 
@@ -96,7 +95,7 @@ object SliceTest {
 
         println("Comparing copies with extra note...")
 
-        testShouldBe(CompareResults(correct = 4,attempted = 4),CompareEngine.compareNoteArrays(notes, copyWithAvgDataWithExtra))
+        testShouldBe(CompareResults(correct = 3,attempted = 4),CompareEngine.compareNoteArrays(notes, copyWithAvgDataWithExtra))
 
 
 
