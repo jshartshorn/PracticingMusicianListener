@@ -27,7 +27,7 @@ object SliceTest {
             println("---- PASSED -----")
         } else {
             window.alert("Failed")
-            println("----- FAILED -----")
+            println("----- ***** FAILED ****** -----")
         }
     }
 
@@ -80,6 +80,23 @@ object SliceTest {
         println("Comparing with short values that should be removed...")
 
         testShouldBe(CompareResults(4,4),CompareEngine.compareNoteArrays(notes, copyWithShortItemsNotes))
+
+
+        //add an extraneous note in the middle to misalign the indexes
+
+        val notesWithExtra = notes.toMutableList()
+
+        notesWithExtra.add(1,Note(60,0.33))
+
+        val exerciseSamplesWithExtra = TestBufferGenerator.generateExactBufferFromNotes(notesWithExtra)
+
+        val exactCopyGeneratedWithExtra = BufferManager.convertSamplesBufferToNotes(exerciseSamplesWithExtra)
+
+        val copyWithAvgDataWithExtra = TestBufferGenerator.addAvgPitchToSamples(exactCopyGeneratedWithExtra)
+
+        println("Comparing copies with extra note...")
+
+        testShouldBe(CompareResults(correct = 4,attempted = 4),CompareEngine.compareNoteArrays(notes, copyWithAvgDataWithExtra))
 
 
 
