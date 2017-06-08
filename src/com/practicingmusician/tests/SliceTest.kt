@@ -18,7 +18,6 @@ object SliceTest {
     val notes = listOf(Note(69,1.0),Note(81,1.0),Note(69,1.0),Note(81,1.0))
     val tempo = 120.0
     val secondsPerBeat = 60.0 / tempo
-    val slicesPerBeat = 32
     val sampleRate = 44100.0
     val bufferLengthInSamples = 1024
 
@@ -37,11 +36,11 @@ object SliceTest {
 
         //setup
         Note.createAllNotes()
+        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes)
+
 
 
         //tests
-
-        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes)
 
         val exactCopyGenerated = BufferManager.convertSamplesBufferToNotes(exerciseSamples)
 
@@ -49,7 +48,7 @@ object SliceTest {
 
         println("Comparing exact copies...")
 
-        testShouldBe(CompareResults(4,4),CompareEngine.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(CompareResults(correct = 4,attempted = 4),CompareEngine.compareNoteArrays(notes, copyWithAvgData))
 
 
 
