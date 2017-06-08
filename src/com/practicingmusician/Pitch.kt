@@ -5,10 +5,8 @@ package com.practicingmusician
  */
 
 
-external fun setupMedia()
-external fun updatePitch(timestamp: Double) : Double
-external fun getSampleRate() : Int
-external var buflen : Int
+//outdated -- use PitchTracker
+
 
 class Pitch : TimeKeeperSteppable {
 

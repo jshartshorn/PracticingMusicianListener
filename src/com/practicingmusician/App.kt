@@ -22,6 +22,15 @@ class App {
 
         timeKeeper.analyzers.add(exerciseManager)
 
+        timeKeeper.finishedActions.add {
+            //take the pitch and convert it
+            val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitch.samples)
+            println("Notes: ")
+            notesFromSamplesBuffer.forEach {
+                println("Note: " + it.noteNumber + " for " + it.duration)
+            }
+        }
+
         exerciseManager.pitch = pitch
         exerciseManager.metronome = metronome
 
@@ -54,13 +63,6 @@ class App {
         timeKeeper.stop()
         metronome.stop()
         pitch.stop()
-
-        //take the pitch and convert it
-        val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitch.samples)
-        println("Notes: ")
-        notesFromSamplesBuffer.forEach {
-            println("Note: " + it.noteNumber + " for " + it.duration)
-        }
     }
 
     @JsName("toggleState")

@@ -8,11 +8,23 @@ import kotlin.browser.window
 
 class TimeKeeper {
 
+    var finishedActions = mutableListOf<() -> Unit>()
+
     enum class TimeKeeperState {
         Stopped, Running
     }
 
     var state : TimeKeeperState = TimeKeeperState.Stopped
+    set(value) {
+        field = value
+
+        //when the state is set to stopped, do the finished actions
+        if (value == TimeKeeperState.Stopped) {
+            finishedActions.forEach {
+                it()
+            }
+        }
+    }
 
     //the list of steppables that will be notified each time there is a step
     val steppables = mutableListOf<TimeKeeperSteppable>()
@@ -22,13 +34,12 @@ class TimeKeeper {
     /*
      * stores the offset time so that the beginning of our counter is 0 when the timer starts
      */
-    var timeOffSet : Double = 0.0
+    var timeOffSet : Double = -1.0
 
     //Amount of time the analyzer should run for
     var runForTime : Double = 4000.0
 
     fun start() {
-        timeOffSet = window.performance.now()
         state = TimeKeeperState.Running
 
         requestNextStep()
@@ -36,6 +47,7 @@ class TimeKeeper {
 
     fun stop() {
         state = TimeKeeperState.Stopped
+        timeOffSet = -1.0
     }
 
     fun requestNextStep() {
@@ -47,11 +59,17 @@ class TimeKeeper {
     //Gets called as often as possible
     fun step(nonOffsetTimestamp: Double) {
 
+        if (timeOffSet == -1.0) {
+            timeOffSet = nonOffsetTimestamp
+        }
+
         val timestamp = nonOffsetTimestamp - timeOffSet
 
         /*
          * Go through each of the steppables and call step() on any of the that are currently running
          */
+
+        println("Calling step at : " + timestamp + " (raw: $nonOffsetTimestamp)")
 
         steppables.forEach {
             if (it.state == TimeKeeperState.Running)

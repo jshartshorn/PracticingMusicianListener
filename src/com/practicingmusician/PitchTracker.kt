@@ -7,6 +7,11 @@ import kotlin.js.Math
  */
 
 
+external fun setupMedia()
+external fun updatePitch(timestamp: Double) : Double
+external fun getSampleRate() : Int
+external var buflen : Int
+
 class PitchTracker : TimeKeeperSteppable {
     val sampleRate = 44100.0
 
