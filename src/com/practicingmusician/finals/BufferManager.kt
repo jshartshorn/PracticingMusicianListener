@@ -17,6 +17,98 @@ object BufferManager {
         val notes = mutableListOf<Note>()
 
         var curNoteNumber = -1
+
+        val noteNumbers = samples.map {
+            Note.getNoteNumber(it)
+        }
+
+        val pairs = samples.zip(noteNumbers)
+
+        val groups = mutableListOf<List<Pair<Double,Int>>>()
+
+        var curList = mutableListOf<Pair<Double,Int>>()
+        pairs.forEach {
+            if (it.second == curNoteNumber) {
+                curList.add(it)
+            } else {
+                if (curList.count() > 0) {
+                    groups.add(curList)
+                    curList = mutableListOf<Pair<Double,Int>>()
+                }
+            }
+            curNoteNumber = it.second
+        }
+        if (curList.count() > 0) {
+            groups.add(curList)
+        }
+
+        val groupsOfAcceptableLength = groups.filter {
+            it.count() > (secondsPerBeat * minDurationInBeats * sampleRate)
+        }
+
+        println("Converted into number groups: " + groupsOfAcceptableLength.count())
+
+        val flattened = groupsOfAcceptableLength.flatMap { it }
+
+        //calculate the length of each group
+
+        curNoteNumber = -1
+        var curLengthInSamples = 0
+        var avgFreq = 0.0
+
+        for (pair in flattened) {
+            var noteNumberFromSample = pair.second
+            var freqFromSample = pair.first
+
+            if (noteNumberFromSample != curNoteNumber) {
+                //this is starting a new note -- put the last one in
+
+                if (curLengthInSamples > 0) {
+
+                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+                    val noteNum = curNoteNumber
+
+                    avgFreq = avgFreq / curLengthInSamples
+
+                    val note = Note(noteNum,durationInBeats)
+
+                    note.avgFreq = avgFreq
+
+                    notes.add(note)
+                }
+
+                avgFreq = 0.0
+                curLengthInSamples = -1
+            }
+
+            avgFreq += freqFromSample
+            curNoteNumber = noteNumberFromSample
+            curLengthInSamples += 1
+        }
+
+        //get the last item
+        if (curLengthInSamples > 0) {
+            val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+            val noteNum = curNoteNumber
+
+            avgFreq = avgFreq / curLengthInSamples
+
+            val note = Note(noteNum,durationInBeats)
+            note.avgFreq = avgFreq
+
+            notes.add(note)
+        }
+
+        console.log("Turned samples into these notes: " + notes)
+
+        return notes
+    }
+
+    fun OLD_convertSamplesBufferToNotes(samples : List<Double>) : List<Note> {
+        //later, we will need to be able to do approx. frequencies -- for now, absolute values will be fine
+        val notes = mutableListOf<Note>()
+
+        var curNoteNumber = -1
         var avgFreq = 0.0
         var curLengthInSamples = 0
 
