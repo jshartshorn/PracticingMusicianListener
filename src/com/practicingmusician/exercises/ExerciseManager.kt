@@ -96,11 +96,18 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     fun loadSampleExercise() {
         val exercise = ExerciseDefinition()
         exercise.tempo = 80.0
+//        exercise.notes.add(Note(69,1.0))
+//        exercise.notes.add(Note(70,1.0))
+//        exercise.notes.add(Note(69,1.0))
+//        exercise.notes.add(Note(68,1.0))
+//        exercise.notes.add(Note(64,1.0))
+
+        exercise.notes.add(Note(65,1.0))
+        exercise.notes.add(Note(67,1.0))
         exercise.notes.add(Note(69,1.0))
         exercise.notes.add(Note(70,1.0))
-        exercise.notes.add(Note(69,1.0))
-        exercise.notes.add(Note(68,1.0))
-        exercise.notes.add(Note(64,1.0))
+        exercise.notes.add(Note(72,1.0))
+
 
         currentExercise = exercise
     }

@@ -45,7 +45,7 @@ object BufferManager {
             it.count() > (secondsPerBeat * minDurationInBeats * sampleRate)
         }
 
-        println("Converted into number groups: " + groupsOfAcceptableLength.count())
+        println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
 
         val flattened = groupsOfAcceptableLength.flatMap { it }
 
