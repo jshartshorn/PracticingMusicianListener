@@ -17,8 +17,16 @@ class App {
     @JsName("toggleState")
     fun toggleState() {
         when (exerciseManager.timeKeeper.state) {
-            TimeKeeper.TimeKeeperState.Stopped -> exerciseManager.run()
-            TimeKeeper.TimeKeeperState.Running -> exerciseManager.stop()
+            TimeKeeper.TimeKeeperState.Stopped -> {
+                exerciseManager.createSteppables()
+                exerciseManager.setup()
+                exerciseManager.loadExercise()
+
+                exerciseManager.run()
+            }
+            TimeKeeper.TimeKeeperState.Running -> {
+                exerciseManager.stop()
+            }
         }
     }
 
