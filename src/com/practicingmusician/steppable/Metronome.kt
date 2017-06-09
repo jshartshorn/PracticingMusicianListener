@@ -1,6 +1,8 @@
 package com.practicingmusician.steppable
 
-import com.practicingmusician.steppable.*
+import org.w3c.dom.HTMLElement
+import kotlin.browser.document
+import kotlin.browser.window
 
 /**
  * Created by jn on 6/5/17.
@@ -55,6 +57,12 @@ class Metronome : TimeKeeperSteppable {
 
         audioManager.playAudio(audioKey,difference.toInt())
 
+        //TODO: Cancel these if stopped
+        val curBeatCopy = currentBeat
+        window.setTimeout({
+            updateUI(curBeatCopy)
+        }, difference.toInt())
+
         println("Going to play at " + newTime.toInt())
 
         lastBeatOccuredAt = newTime
@@ -62,6 +70,12 @@ class Metronome : TimeKeeperSteppable {
         beatTimes.add(newTime)
         currentBeat++
 
+
+    }
+
+    fun updateUI(beat : Int) {
+        val el = document.getElementById("metronome") as HTMLElement
+        el.textContent = "$beat"
     }
 
     /*
