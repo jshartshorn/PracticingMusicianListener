@@ -17,7 +17,7 @@ class PitchTracker : TimeKeeperSteppable {
     val samples = mutableListOf<Double>()
 
     fun setup() {
-        setupMedia()
+
     }
 
     override fun start() {

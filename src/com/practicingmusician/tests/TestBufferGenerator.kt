@@ -9,8 +9,8 @@ import kotlin.js.Math
  */
 object TestBufferGenerator {
 
-    fun generateExactBufferFromNotes(notes : List<Note>) : List<Double> {
-        return BufferManager.convertNotesToSamples(notes)
+    fun generateExactBufferFromNotes(notes : List<Note>, tempo : Double) : List<Double> {
+        return BufferManager.convertNotesToSamples(notes, tempo)
     }
 
     fun addAvgPitchToSamples(notes : List<Note>) : List<Note> {

@@ -32,13 +32,13 @@ object SliceTest {
 
         //setup
         Note.createAllNotes()
-        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes)
+        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes, tempo)
 
 
 
         //tests
 
-        val exactCopyGenerated = BufferManager.convertSamplesBufferToNotes(exerciseSamples)
+        val exactCopyGenerated = BufferManager.convertSamplesBufferToNotes(exerciseSamples, tempo)
 
         val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
 
@@ -51,7 +51,7 @@ object SliceTest {
 
         val copyWithVariedPitch = TestBufferGenerator.addPitchVariationToSamples(exerciseSamples)
 
-        val copyWithVariedPitchNotes = BufferManager.convertSamplesBufferToNotes(copyWithVariedPitch)
+        val copyWithVariedPitchNotes = BufferManager.convertSamplesBufferToNotes(copyWithVariedPitch, tempo)
 
         println("Comparing with pitch variation...")
 
@@ -62,7 +62,7 @@ object SliceTest {
 
         val copyWithVariedRhythm = TestBufferGenerator.addRhythmVariationToSamples(exerciseSamples)
 
-        val copyWithVariedRhythmNotes = BufferManager.convertSamplesBufferToNotes(copyWithVariedRhythm)
+        val copyWithVariedRhythmNotes = BufferManager.convertSamplesBufferToNotes(copyWithVariedRhythm, tempo)
 
         println("Comparing with rhythm variation...")
 
@@ -71,7 +71,7 @@ object SliceTest {
 
         val copyWithShortItems = TestBufferGenerator.addShortItemsThatShouldBeRemoved(exerciseSamples)
 
-        val copyWithShortItemsNotes = BufferManager.convertSamplesBufferToNotes(copyWithShortItems)
+        val copyWithShortItemsNotes = BufferManager.convertSamplesBufferToNotes(copyWithShortItems, tempo)
 
         println("Comparing with short values that should be removed...")
 
@@ -83,9 +83,9 @@ object SliceTest {
         //val notes =        listOf(Note(69,1.0),Note(81,1.0),Note(69,1.0),Note(81,1.0))
         val notesWithExtra = listOf(Note(69,1.0),Note(81,0.5),Note(60,0.5),Note(69,1.0),Note(81,1.0))
 
-        val exerciseSamplesWithExtra = TestBufferGenerator.generateExactBufferFromNotes(notesWithExtra)
+        val exerciseSamplesWithExtra = TestBufferGenerator.generateExactBufferFromNotes(notesWithExtra, tempo)
 
-        val exactCopyGeneratedWithExtra = BufferManager.convertSamplesBufferToNotes(exerciseSamplesWithExtra)
+        val exactCopyGeneratedWithExtra = BufferManager.convertSamplesBufferToNotes(exerciseSamplesWithExtra, tempo)
 
         val copyWithAvgDataWithExtra = TestBufferGenerator.addAvgPitchToSamples(exactCopyGeneratedWithExtra)
 

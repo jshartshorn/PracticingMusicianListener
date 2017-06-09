@@ -2,6 +2,7 @@ package com.practicingmusician.exercises
 
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.finals.BufferManager
+import com.practicingmusician.finals.CompareEngine
 import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
@@ -46,12 +47,16 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             //take the pitch and convert it
             audioManager.cancelAllAudio()
 
-            val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
+            val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitchTracker.samples,metronome.tempo)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
                 println("Note: " + it.noteNumber + " for " + it.duration)
             }
 
+            currentExercise?.let {
+                println("Comparing...")
+                CompareEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+            }
         }
 
         metronome.setup()
@@ -86,11 +91,11 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     fun loadSampleExercise() {
         val exercise = ExerciseDefinition()
-        exercise.tempo = 120.0
-        exercise.notes.add(Note(60,1.0))
-        exercise.notes.add(Note(61,1.0))
-        exercise.notes.add(Note(62,1.0))
-        exercise.notes.add(Note(63,1.0))
+        exercise.tempo = 80.0
+        exercise.notes.add(Note(69,1.0))
+        exercise.notes.add(Note(70,1.0))
+        exercise.notes.add(Note(69,1.0))
+        exercise.notes.add(Note(68,1.0))
         exercise.notes.add(Note(64,1.0))
 
         currentExercise = exercise
