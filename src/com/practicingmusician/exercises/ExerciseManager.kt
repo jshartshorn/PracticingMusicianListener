@@ -1,6 +1,5 @@
 package com.practicingmusician.exercises
 
-import com.practicingmusician.audio.Audio
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.steppable.Metronome
@@ -14,15 +13,29 @@ import com.practicingmusician.steppable.TimeKeeper
  */
 class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
+
     var currentExercise : ExerciseDefinition? = null
 
-    val timeKeeper = TimeKeeper()
+    var timeKeeper = TimeKeeper()
     var metronome = Metronome()
     var pitchTracker = PitchTracker()
 
     var audioManager = am
 
+    init {
+        println("Init")
+        createSteppables()
+        setup()
+    }
+
+    fun createSteppables() {
+        timeKeeper = TimeKeeper()
+        metronome = Metronome()
+        pitchTracker = PitchTracker()
+    }
+
     fun setup() {
+        println("Setup")
         metronome.audioManager = audioManager
         timeKeeper.steppables.add(metronome)
         timeKeeper.steppables.add(pitchTracker)
@@ -38,6 +51,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             notesFromSamplesBuffer.forEach {
                 println("Note: " + it.noteNumber + " for " + it.duration)
             }
+
         }
 
         metronome.setup()
