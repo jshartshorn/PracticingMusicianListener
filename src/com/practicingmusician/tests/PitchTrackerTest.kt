@@ -1,6 +1,6 @@
 package com.practicingmusician.tests
 
-import com.practicingmusician.PitchTracker
+import com.practicingmusician.steppable.PitchTracker
 
 /**
  * Created by jn on 6/7/17.
@@ -18,7 +18,7 @@ object PitchTrackerTest {
         println("Samples: " + tracker.samples.count())
     }
 
-    @JsName("toogleTest")
+    @JsName("toggleTest")
     fun toggleTest() {
 
 

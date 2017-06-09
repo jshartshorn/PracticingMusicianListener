@@ -11,7 +11,7 @@ data class CompareResults(var correct : Int, var attempted : Int)
 
 object CompareEngine {
 
-    val allowableFreqencyMargin = 4.0
+    val allowableFreqencyMargin = 10.0 //TODO: this should be cents, not hz
     val allowableRhythmMargin = 0.25
 
     fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {

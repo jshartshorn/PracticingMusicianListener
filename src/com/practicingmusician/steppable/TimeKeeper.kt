@@ -1,6 +1,7 @@
-package com.practicingmusician
+package com.practicingmusician.steppable
 
 import kotlin.browser.window
+
 
 /**
  * Created by jn on 6/5/17.
@@ -15,16 +16,16 @@ class TimeKeeper {
     }
 
     var state : TimeKeeperState = TimeKeeperState.Stopped
-    set(value) {
-        field = value
+        set(value) {
+            field = value
 
-        //when the state is set to stopped, do the finished actions
-        if (value == TimeKeeperState.Stopped) {
-            finishedActions.forEach {
-                it()
+            //when the state is set to stopped, do the finished actions
+            if (value == TimeKeeperState.Stopped) {
+                finishedActions.forEach {
+                    it()
+                }
             }
         }
-    }
 
     //the list of steppables that will be notified each time there is a step
     val steppables = mutableListOf<TimeKeeperSteppable>()

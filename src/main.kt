@@ -1,6 +1,7 @@
 import com.practicingmusician.*
 import com.practicingmusician.notes.ALL_NOTES
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.setupMedia
 import kotlin.browser.window
 
 /**
@@ -12,11 +13,11 @@ val app = App()
 fun main(args: Array<String>) {
     window.onload = {
         Note.createAllNotes()
+        setupMedia()
         runProgram()
     }
 }
 
 fun runProgram() {
     println("Running...")
-    app.setup()
 }
