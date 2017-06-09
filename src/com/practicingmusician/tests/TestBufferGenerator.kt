@@ -21,7 +21,7 @@ object TestBufferGenerator {
     }
 
     fun addPitchVariationToSamples(buffer : List<Double>) : List<Double>  {
-        val pitchVariation = 10.0
+        val pitchVariation = 15.0
 
         return buffer.map {
             //it - 6

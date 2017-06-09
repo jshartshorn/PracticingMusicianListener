@@ -13,6 +13,8 @@ external var buflen : Int
 class PitchTracker : TimeKeeperSteppable {
     val sampleRate = 44100.0
 
+    var lengthOfPrerollToIgnore = 0.0
+
     //this is assumed to start at timestamp 0
     val samples = mutableListOf<Double>()
 
@@ -44,8 +46,15 @@ class PitchTracker : TimeKeeperSteppable {
 
         val currentTimestampOfSamplesBuffer = samples.count() / sampleRate * 1000.0
 
+        var timestampOffsetWithPreroll = timestamp - lengthOfPrerollToIgnore
+
         //the number of samples that we should fill with the new frequency value
-        val samplesToFill = (timestamp - currentTimestampOfSamplesBuffer) * sampleRate / 1000.0
+        val samplesToFill = (timestampOffsetWithPreroll - currentTimestampOfSamplesBuffer) * sampleRate / 1000.0
+
+        if (samplesToFill < 0) {
+            println("Not filling yet...")
+            return
+        }
 
         println("Filling " + samplesToFill)
         for (i in 0 until samplesToFill.toInt()) {

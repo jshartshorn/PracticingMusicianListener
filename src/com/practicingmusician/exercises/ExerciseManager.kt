@@ -47,6 +47,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             //take the pitch and convert it
             audioManager.cancelAllAudio()
 
+            val samplesLength = (pitchTracker.samples.count() / 44100.0)
+            println("Total samples recorded: " + pitchTracker.samples.count() + " length: " + samplesLength)
+
             val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitchTracker.samples,metronome.tempo)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
@@ -83,7 +86,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         currentExercise?.let {
             metronome.tempo = it.tempo
-            timeKeeper.runForTime = it.getLength()
+            timeKeeper.runForTime = it.getLength() + it.prerollLength()
+            pitchTracker.lengthOfPrerollToIgnore = it.prerollLength()
             println("Loaded exercise of length " + timeKeeper.runForTime)
         }
     }
