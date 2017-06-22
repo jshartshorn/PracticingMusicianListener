@@ -6,6 +6,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 
 external fun moveToPosition(beat : Double)
+external fun highlightMetronomeItem(itemNumber : Int)
 
 /**
  * Created by jn on 6/5/17.
@@ -17,6 +18,8 @@ class Metronome : TimeKeeperSteppable {
     lateinit var audioManager : com.practicingmusician.audio.AudioManager
 
     override var state = TimeKeeper.TimeKeeperState.Stopped
+
+    var timeSignature = 4
 
     var tempo : Double = 120.0
     var currentBeat : Int = 0
@@ -71,7 +74,7 @@ class Metronome : TimeKeeperSteppable {
         //TODO: Cancel these if stopped
         val curBeatCopy = currentBeat
         window.setTimeout({
-            updateTextUI(curBeatCopy)
+            updateMetronomeUI(curBeatCopy)
         }, difference.toInt())
 
         println("Going to play at " + newTime.toInt())
@@ -86,12 +89,12 @@ class Metronome : TimeKeeperSteppable {
 
     fun updateIndicatorUI(beat : Double) {
         moveToPosition(beat)
-
     }
 
-    fun updateTextUI(beat : Int) {
-        val el = document.getElementById("metronome") as HTMLElement
-        el.textContent = "$beat"
+    fun updateMetronomeUI(beat : Int) {
+        //val el = document.getElementById("metronome") as HTMLElement
+        //el.textContent = "$beat"
+        highlightMetronomeItem(beat % timeSignature)
     }
 
     /*

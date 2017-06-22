@@ -21,7 +21,6 @@
     <script>
         PracticingMusician.app.exerciseManager.loadExercise()
     </script>
-    <a href="javascript:PracticingMusician.app.toggleState()">On/Off</a>
     <div id="metronome">
 
     </div>
@@ -30,7 +29,7 @@
 <div id="notationWindow">
     <div id="notationHeader">
         <span id="settingsButton"></span>
-        <span id="playPauseButton"></span>
+        <span id="playPauseButton" onclick="javascript:PracticingMusician.app.toggleState()"></span>
         <span id="repeatButton"></span>
 
         <div id="metronomeContainer">

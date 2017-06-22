@@ -36,3 +36,14 @@ function moveToPosition(beat) {
     VexFlowUtil.drawIndicatorLine(indicatorCanvas, stave, VexFlowUtil.getPositionForBeat(voice.tickables, beat))
 }
 
+var metronomeItems = document.getElementById("metronomeItems").getElementsByClassName("metronomeItem");
+
+function highlightMetronomeItem(itemNumber) {
+    for (index in metronomeItems) {
+        var item = metronomeItems[index]
+        item.className = "metronomeItem"
+
+        if (itemNumber == index)
+            item.className += " highlighted"
+    }
+}
