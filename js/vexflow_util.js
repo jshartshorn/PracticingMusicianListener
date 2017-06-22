@@ -41,8 +41,8 @@ var VexFlowUtil = {
     getPositionForBeat: function(tickables, beat) {
         var ts = VexFlowUtil.getTickablesForBeat(tickables, beat)
 
-        console.log("TS: at beat " + beat)
-        console.log(ts)
+        //console.log("TS: at beat " + beat)
+        //console.log(ts)
 
         var distance = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.nextItemIndex]) - VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
         var initialPos = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
