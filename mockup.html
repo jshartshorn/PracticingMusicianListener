@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Practicing Musician -- Sheet Music Page</title>
     <link rel="stylesheet" type="text/css" href="css/notation.css">
+    <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
 </head>
 <body>
 
@@ -14,19 +15,25 @@
             <span id="repeatButton"></span>
 
             <div id="metronomeContainer">
-                <span class="metronomeItem highlighted"></span>
-                <span class="metronomeItem"></span>
-                <span class="metronomeItem"></span>
-                <span class="metronomeItem"></span>
+                <div id="metronomeItems">
+                    <span class="metronomeItem highlighted"></span>
+                    <span class="metronomeItem"></span>
+                    <span class="metronomeItem"></span>
+                    <span class="metronomeItem"></span>
+                </div>
+                <span id="tempoMarking">80<br/>BPM</span>
             </div>
 
             <span id="medalIndicator"></span>
             <span id="exitFullScreenButton"></span>
         </div>
         <div id="notationBody">
-            Notation
+            <canvas id="notationCanvas" width="1024" height="300"></canvas>
         </div>
     </div>
+    <script src="js/exercises/CMajorScale.js"></script>
+    <script src="js/mockup.js"></script>
+</script>
 
 </body>
 </html>

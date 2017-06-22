@@ -47,11 +47,25 @@ span#medalIndicator {
 }
 
 div#metronomeContainer {
-    min-width: 160px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+}
+
+div#metronomeItems {
+    min-width: 160px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+span#tempoMarking {
+    display: block;
+    color: #bbb;
+    text-align: center;
 }
 
 span.metronomeItem {
