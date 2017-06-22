@@ -125,13 +125,13 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         exercise.notationItems.add(Note(71,1.0,"b/4"))
         exercise.notationItems.add(Note(72,1.0,"c/5"))
 
-        var n = VexFlowUtil.asDynamic().notesFromKotlinNotationItems(exercise.notationItems)
+        //var n = VexFlowUtil.asDynamic().notesFromKotlinNotationItems(exercise.notationItems)
 
-        console.log("Got back: " + n)
+        //console.log("Got back: " + n)
 
         exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
 
-        console.log("Exercise notes: " + exercise.notes)
+        //console.log("Exercise notes: " + exercise.notes)
 
         currentExercise = exercise
     }

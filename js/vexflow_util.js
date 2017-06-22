@@ -38,9 +38,80 @@ var VexFlowUtil = {
         return stave.start_x;
     },
 
+    getTickablesForBeat: function(tickables, beat) {
+        //convert beat to 0 index rather than 1
+        beat -= 1
+
+        //go through and find
+        var beatSize = 4096
+
+        var currentPosition = 0
+
+        var beginningItemIndex = null
+        var endingItemIndex = null
+
+        var lastNoteIndex = 0
+        var lastNoteBeatPosition = 0
+
+        var percent = null
+
+        for (index in tickables) {
+            var item = tickables[index]
+
+            var duration = (item.ticks.numerator / beatSize)
+            var type = item.constructor.name
+
+            if (type != "StaveNote") {
+                            //could be a bar line or something else we don't care about
+                            continue
+                        }
+
+            if (endingItemIndex == null) {
+                if (currentPosition >= beat) {
+                                    //it is somewhere in here
+                                    endingItemIndex = index
+                                    beginningItemIndex = lastNoteIndex
+
+                                    var beatPositionAtBeginningItem = lastNoteBeatPosition
+                                    var beatPositionAtEndItem = currentPosition
+
+                                    var distanceBetween = beatPositionAtEndItem - beatPositionAtBeginningItem
+
+                                    console.log("Position at beginning" + beatPositionAtBeginningItem)
+
+                                    var beatDifferenceFromFirstItem = beat - beatPositionAtBeginningItem
+
+                                    percent = beatDifferenceFromFirstItem / distanceBetween
+
+                                    break
+                }
+            }
+
+            lastNoteIndex = index
+            lastNoteBeatPosition = currentPosition
+
+
+            console.log("Adding " + duration + " for " + item.constructor.name)
+
+            currentPosition += duration
+
+        }
+
+        console.log("End pos: " + currentPosition)
+        return {
+            "currentItemIndex": beginningItemIndex,
+            "nextItemIndex": endingItemIndex,
+            "percent" : percent
+        }
+    },
+
+    middlePositionOfItem: function(item) {
+        return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
+    },
+
     animateIndicatorLine: function(canvas, stave, indicatorItem1, indicatorItem2, time) {
-        var indicatorPosition1 = indicatorItem1.getAbsoluteX() + indicatorItem1.getBoundingBox().w / 2.0
-        var indicatorPosition2 = indicatorItem2.getAbsoluteX() + indicatorItem2.getBoundingBox().w / 2.0
+        var indicatorPosition1 = VexFlowUtil.middlePositionOfItem(indicatorItem1)
+        var indicatorPosition2 = VexFlowUtil.middlePositionOfItem(indicatorItem2)
 
         var distance = (indicatorPosition2 - indicatorPosition1)
 
@@ -60,7 +131,7 @@ var VexFlowUtil = {
 
             var percentageDone = 1.0 - ((endTime - timestamp) / time)
 
-            console.log("Animating..." + percentageDone)
+            //console.log("Animating..." + percentageDone)
 
             var indicatorPosition = (distance * percentageDone) + indicatorPosition1
 
@@ -106,11 +177,10 @@ var VexFlowUtil = {
 
         for (index in arrayOfNotes) {
             var item = arrayOfNotes[index]
-            console.log("Checking item " + item.constructor.name)
+            //console.log("Checking item " + item.constructor.name)
 
             switch(item.constructor.name) {
                 case "Barline":
-                console.log("Bar line")
                 items.push(new VF.BarNote());
                 break
                 case "Note":
@@ -134,7 +204,7 @@ var VexFlowUtil = {
 
         }
 
-        console.log("Came up with : " + items)
+        //console.log("Came up with : " + items)
 
         return {
             notes: items,

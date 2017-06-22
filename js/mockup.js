@@ -21,8 +21,6 @@ stave.addClef("treble").addTimeSignature("4/4");
 stave.setContext(context).draw();
 
 
-
-
 var exercise = getExerciseNotes(); //pulls from the loaded js file
 
 var voice = VexFlowUtil.inputExercise(context, stave, exercise);
@@ -35,5 +33,15 @@ var canvas = document.getElementById(canvasName);
 var indicatorCanvas = document.getElementById(indicatorCanvasName);
 
 //VexFlowUtil.drawIndicatorLine(canvas, stave, indicatorItem.getAbsoluteX())
+
+var ts = VexFlowUtil.getTickablesForBeat(voice.tickables, 4.2)
+
+var distance = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.nextItemIndex]) - VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
+var initialPos = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
+
+//console.log("TS: ")
+console.log(ts)
+
+VexFlowUtil.drawIndicatorLine(canvas, stave, initialPos + distance * ts.percent)
 
 VexFlowUtil.animateIndicatorLine(indicatorCanvas,stave,voice.tickables[0],voice.tickables[2],1000)
