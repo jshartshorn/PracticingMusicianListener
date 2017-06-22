@@ -32,16 +32,6 @@ var indicatorItem = voice.tickables[6]
 var canvas = document.getElementById(canvasName);
 var indicatorCanvas = document.getElementById(indicatorCanvasName);
 
-//VexFlowUtil.drawIndicatorLine(canvas, stave, indicatorItem.getAbsoluteX())
-
-var ts = VexFlowUtil.getTickablesForBeat(voice.tickables, 4.2)
-
-var distance = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.nextItemIndex]) - VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
-var initialPos = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
-
-//console.log("TS: ")
-console.log(ts)
-
-VexFlowUtil.drawIndicatorLine(canvas, stave, initialPos + distance * ts.percent)
+VexFlowUtil.drawIndicatorLine(canvas, stave, VexFlowUtil.getPositionForBeat(voice.tickables, 4.2))
 
 VexFlowUtil.animateIndicatorLine(indicatorCanvas,stave,voice.tickables[0],voice.tickables[2],1000)

@@ -38,6 +38,19 @@ var VexFlowUtil = {
         return stave.start_x;
     },
 
+    getPositionForBeat: function(tickables, beat) {
+        var ts = VexFlowUtil.getTickablesForBeat(tickables, beat)
+
+        var distance = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.nextItemIndex]) - VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
+        var initialPos = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
+
+        //console.log("TS: ")
+        console.log(ts)
+
+        return initialPos + distance * ts.percent
+
+    },
+
     getTickablesForBeat: function(tickables, beat) {
         //convert beat to 0 index rather than 1
         beat -= 1
