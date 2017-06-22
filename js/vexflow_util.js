@@ -51,7 +51,8 @@ var VexFlowUtil = {
         	   // use getContext to use the canvas for drawing
         	   var ctx = canvas.getContext('2d');
 
-               ctx.strokeStyle = '#ff0000';
+               ctx.strokeStyle = '#4990E2';
+               ctx.lineWidth = 3;
 
         	   // Stroked triangle
         	   ctx.beginPath();

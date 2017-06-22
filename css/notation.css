@@ -25,19 +25,19 @@ span#settingsButton, span#playPauseButton, span#repeatButton, span#medalIndicato
 }
 
 span#settingsButton {
-    background-image: url("../images/settings_icon.png");
+    background-image: url("../images/ic_settings_24px.png");
 }
 
 span#playPauseButton {
-    background-image: url("../images/play_button.png");
+    background-image: url("../images/ic_play_arrow_24px.png");
 }
 
 span#repeatButton {
-    background-image: url("../images/repeat_button.png");
+    background-image: url("../images/ic_repeat_24px.png");
 }
 
 span#exitFullScreenButton {
-    background-image: url("../images/fullscreen_icon.png");
+    background-image: url("../images/ic_fullscreen_exit_24px.png");
 }
 
 span#medalIndicator {
