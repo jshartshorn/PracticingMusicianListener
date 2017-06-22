@@ -30,6 +30,8 @@ class Metronome : TimeKeeperSteppable {
     // Timestamp of the last beat that happened
     var lastBeatOccuredAt = -1.0
 
+    val timeoutKeys = mutableListOf<Int>()
+
     fun setup() {
         audioManager.loadAudioFile("Cowbell.wav",audioKey)
     }
@@ -107,9 +109,11 @@ class Metronome : TimeKeeperSteppable {
 
         //TODO: Cancel these if stopped
         val curBeatCopy = currentBeat
-        window.setTimeout({
+        val timeoutKey = window.setTimeout({
             updateMetronomeUI(curBeatCopy)
         }, difference.toInt())
+
+        timeoutKeys.add(timeoutKey)
 
         println("Going to play at " + newTime.toInt())
 
@@ -119,6 +123,14 @@ class Metronome : TimeKeeperSteppable {
         currentBeat++
 
 
+    }
+
+    fun cancelAllUIUpdates() {
+        timeoutKeys.reversed().forEach {
+            println("Cancelling item... $it")
+            window.clearTimeout(it)
+        }
+        timeoutKeys.removeAll { true }
     }
 
     fun updateIndicatorUI(beat : Double) {
