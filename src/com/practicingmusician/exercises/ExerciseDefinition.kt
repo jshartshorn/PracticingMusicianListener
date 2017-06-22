@@ -1,5 +1,6 @@
 package com.practicingmusician.exercises
 
+import com.practicingmusician.notes.NotationItem
 import com.practicingmusician.notes.Note
 
 /**
@@ -11,6 +12,9 @@ import com.practicingmusician.notes.Note
 class ExerciseDefinition {
 
     var notes = mutableListOf<Note>()
+
+    var notationItems = mutableListOf<NotationItem>()
+
     var tempo : Double = 120.0
 
     fun getLength() : Double {

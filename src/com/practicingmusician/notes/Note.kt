@@ -7,10 +7,11 @@ import kotlin.js.Math.pow
 /**
  * Created by jn on 6/6/17.
  */
-class Note(value : Int, dur : Double) {
+class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem {
 
     val noteNumber = value
     val duration = dur
+    val textValue = textVal
 
     var avgFreq : Double? = null
 

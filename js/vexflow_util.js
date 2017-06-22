@@ -95,6 +95,46 @@ var VexFlowUtil = {
         	   ctx.stroke();
 
           }
-    }
+    },
+
+
+    notesFromKotlinNotationItems : function(notes) {
+        var items = Array()
+        var arrayOfNotes = notes.toArray()
+
+        for (index in arrayOfNotes) {
+            var item = arrayOfNotes[index]
+            console.log("Checking item " + item.constructor.name)
+
+            switch(item.constructor.name) {
+                case "Barline":
+                console.log("Bar line")
+                items.push(new VF.BarNote());
+                break
+                case "Note":
+                var duration = function() {
+                    switch(item.duration) {
+                        case 1.0:
+                        return "q"
+                        default:
+                        console.log("Duration error")
+                        return "err"
+                    }
+                }()
+                items.push( new VF.StaveNote({clef: "treble", keys: [item.textValue], duration: duration }) )
+                break
+                default:
+                console.log("Not found " + item.constructor.name)
+                break
+            }
+
+
+        }
+
+        console.log("Came up with : " + items)
+
+        return items
+    },
+
 
 }
