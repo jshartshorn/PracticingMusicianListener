@@ -41,83 +41,83 @@ var VexFlowUtil = {
     getPositionForBeat: function(tickables, beat) {
         var ts = VexFlowUtil.getTickablesForBeat(tickables, beat)
 
+        console.log("TS: at beat " + beat)
+        console.log(ts)
+
         var distance = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.nextItemIndex]) - VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
         var initialPos = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
-
-        //console.log("TS: ")
-        console.log(ts)
 
         return initialPos + distance * ts.percent
 
     },
 
     getTickablesForBeat: function(tickables, beat) {
-        //convert beat to 0 index rather than 1
+            //convert beat to 0 index rather than 1
 
-        //go through and find
-        var beatSize = 4096
+            //go through and find
+            var beatSize = 4096
 
-        var currentPosition = 0
+            var currentPosition = 0
 
-        var beginningItemIndex = null
-        var endingItemIndex = null
+            var beginningItemIndex = null
+            var endingItemIndex = null
 
-        var lastNoteIndex = 0
-        var lastNoteBeatPosition = 0
+            var firstItemBeatPosition = 0
+            var lastItemBeatPosition = 0
 
-        var percent = null
+            var percent = null
 
-        for (index in tickables) {
-            var item = tickables[index]
+            for (index in tickables) {
+                var item = tickables[index]
 
-            var duration = (item.ticks.numerator / beatSize)
-            var type = item.constructor.name
+                var duration = (item.ticks.numerator / beatSize)
+                var type = item.constructor.name
 
-            if (type != "StaveNote") {
-                            //could be a bar line or something else we don't care about
-                            continue
-                        }
-
-            if (endingItemIndex == null) {
-                if (currentPosition >= beat) {
-                                    //it is somewhere in here
-                                    endingItemIndex = index
-                                    beginningItemIndex = lastNoteIndex
-
-                                    var beatPositionAtBeginningItem = lastNoteBeatPosition
-                                    var beatPositionAtEndItem = currentPosition
-
-                                    var distanceBetween = beatPositionAtEndItem - beatPositionAtBeginningItem
-
-                                    console.log("Position at beginning" + beatPositionAtBeginningItem + "for beat " + beat)
-
-                                    var beatDifferenceFromFirstItem = beat - beatPositionAtBeginningItem
-
-                                    percent = beatDifferenceFromFirstItem / distanceBetween
-
-                                    if (percent < 0 || isNaN(percent)) percent = 0
-
-                                    break
+                if (type != "StaveNote") {
+                    //could be a bar line or something else we don't care about
+                    continue
                 }
+
+
+                if (currentPosition < beat) {
+                    beginningItemIndex = index
+                    endingItemIndex = index
+
+                    firstItemBeatPosition = currentPosition
+                    lastNoteBeatPosition = currentPosition
+                } else {
+                    if (beginningItemIndex == null) {
+                        beginningItemIndex = index
+                        firstItemBeatPosition = currentPosition
+                    }
+                    //set the end item index
+                    endingItemIndex = index
+                    lastItemBeatPosition = currentPosition
+
+                    if (currentPosition >= beat) {
+                        break
+                    }
+                }
+
+                currentPosition += duration
+
             }
 
-            lastNoteIndex = index
-            lastNoteBeatPosition = currentPosition
+            var distanceBetween = lastItemBeatPosition - firstItemBeatPosition
+            var beatDistanceFromFirstItem = beat - firstItemBeatPosition
 
+            percent = beatDistanceFromFirstItem / distanceBetween
 
-            console.log("Adding " + duration + " for " + item.constructor.name)
+            if (percent < 0 || isNaN(percent)) percent = 0
 
-            currentPosition += duration
+            console.log("End pos: " + currentPosition)
+            return {
+                "currentItemIndex": beginningItemIndex,
+                "nextItemIndex": endingItemIndex,
+                "percent" : percent
+            }
+     },
 
-        }
-
-        console.log("End pos: " + currentPosition)
-        return {
-            "currentItemIndex": beginningItemIndex,
-            "nextItemIndex": endingItemIndex,
-            "percent" : percent
-        }
-    },
 
     middlePositionOfItem: function(item) {
         return item.getAbsoluteX() + item.getBoundingBox().w / 2.0

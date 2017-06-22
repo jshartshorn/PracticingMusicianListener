@@ -20,6 +20,7 @@ class Metronome : TimeKeeperSteppable {
     override var state = TimeKeeper.TimeKeeperState.Stopped
 
     var timeSignature = 4
+    var prerollBeats = timeSignature
 
     var tempo : Double = 120.0
     var currentBeat : Int = 0
@@ -88,7 +89,7 @@ class Metronome : TimeKeeperSteppable {
     }
 
     fun updateIndicatorUI(beat : Double) {
-        moveToPosition(beat)
+        moveToPosition(beat - prerollBeats)
     }
 
     fun updateMetronomeUI(beat : Int) {
