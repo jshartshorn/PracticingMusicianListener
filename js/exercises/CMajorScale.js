@@ -1,3 +1,5 @@
+//CURRENTLY NOT USED -- GENERATED IN KOTLIN INSTEAD
+
 function getExerciseNotes() {
     var notes = [
       // A quarter-note C.
