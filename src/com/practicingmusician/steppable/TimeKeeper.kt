@@ -87,7 +87,8 @@ class TimeKeeper {
         /*
          * See if we need to changed to Stopped, since the length of the exercise is over
          */
-        if (timestamp > runForTime) {
+        if (timestamp >= runForTime) {
+            console.log("STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))")
             this.state = TimeKeeperState.Stopped
         }
 

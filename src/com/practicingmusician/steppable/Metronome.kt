@@ -45,6 +45,39 @@ class Metronome : TimeKeeperSteppable {
     override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
         val beatSize = 1000.0 * 60.0 / tempo
 
+        if (timeKeeper.runForTime - timestamp < beatSize / 2) {
+            console.log("Less than beat size..")
+            //this keeps it from playing an extra beat at the end that actually doesn't exist during the exercise
+            return
+        }
+
+        if (lastBeatOccuredAt == -1.0) {
+            //this is the first run
+            lastBeatOccuredAt = timestamp - beatSize
+        }
+
+        val nextBeatTime = lastBeatOccuredAt + beatSize
+
+
+        var absoluteBeatPosition = timestamp / beatSize
+        updateIndicatorUI(absoluteBeatPosition)
+
+        if (timestamp >= nextBeatTime) {
+            //TODO: wind to the specific time?
+            audioManager.playAudioNow(audioKey)
+            lastBeatOccuredAt = nextBeatTime
+
+            updateMetronomeUI(currentBeat)
+
+            currentBeat++
+        }
+
+
+    }
+
+    fun oldStep(timestamp: Double, timeKeeper: TimeKeeper) {
+        val beatSize = 1000.0 * 60.0 / tempo
+
         if (lastBeatOccuredAt == -1.0) {
             //this is the first run
             println("First run")

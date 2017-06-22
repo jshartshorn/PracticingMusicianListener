@@ -24,11 +24,18 @@ class AudioManager {
         return audio
     }
 
+    fun playAudioNow(key : String) {
+        console.log("**** (( Playing...")
+        val audio = loadedAudio[key]
+        audio.asDynamic().currentTime = 0
+        audio.asDynamic().play()
+    }
+
     fun playAudio(key : String, atTime : Int) {
         val audio = loadedAudio[key]
 
         val timeoutKey = window.setTimeout({
-            console.log("Playing..." + atTime)
+            console.log("(( Playing..." + atTime)
             audio.asDynamic().currentTime = 0
             audio.asDynamic().play()
         }, atTime)
