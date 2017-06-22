@@ -3,6 +3,7 @@ VF = Vex.Flow;
 
 
 var canvasName = "notationCanvas";
+var indicatorCanvasName = "indicatorCanvas";
 
 var context = VexFlowUtil.setupCanvas(document.getElementById(canvasName));
 
@@ -31,5 +32,8 @@ var voice = VexFlowUtil.inputExercise(context, stave, exercise);
 var indicatorItem = voice.tickables[6]
 
 var canvas = document.getElementById(canvasName);
+var indicatorCanvas = document.getElementById(indicatorCanvasName);
 
-VexFlowUtil.drawIndicatorLine(canvas, stave, indicatorItem)
+//VexFlowUtil.drawIndicatorLine(canvas, stave, indicatorItem.getAbsoluteX())
+
+VexFlowUtil.animateIndicatorLine(indicatorCanvas,stave,voice.tickables[0],voice.tickables[2],1000)

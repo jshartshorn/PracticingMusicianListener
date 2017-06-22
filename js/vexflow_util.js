@@ -38,8 +38,41 @@ var VexFlowUtil = {
         return stave.start_x;
     },
 
-    drawIndicatorLine: function(canvas, stave, indicatorItem) {
-        var indicatorPosition = indicatorItem.getAbsoluteX() + indicatorItem.getBoundingBox().w / 2.0
+    animateIndicatorLine: function(canvas, stave, indicatorItem1, indicatorItem2, time) {
+        var indicatorPosition1 = indicatorItem1.getAbsoluteX() + indicatorItem1.getBoundingBox().w / 2.0
+        var indicatorPosition2 = indicatorItem2.getAbsoluteX() + indicatorItem2.getBoundingBox().w / 2.0
+
+        var distance = (indicatorPosition2 - indicatorPosition1)
+
+        var endTime = -1
+
+        var animate = function(timestamp) {
+            if (endTime == -1) {
+                endTime = timestamp + time
+            }
+
+            if (timestamp >= endTime) {
+                //return
+            } else {
+                //keep animating
+                 window.requestAnimationFrame(animate)
+            }
+
+            var percentageDone = 1.0 - ((endTime - timestamp) / time)
+
+            console.log("Animating..." + percentageDone)
+
+            var indicatorPosition = (distance * percentageDone) + indicatorPosition1
+
+            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
+            VexFlowUtil.drawIndicatorLine(canvas, stave, indicatorPosition)
+        }
+
+        window.requestAnimationFrame(animate)
+    },
+
+    drawIndicatorLine: function(canvas, stave, indicatorPosition) {
 
         var indicatorOverflow = 20
 

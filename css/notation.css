@@ -86,3 +86,7 @@ span.metronomeItem.highlighted {
 div#notationBody {
     width: 100%;
 }
+
+div#notationBody canvas {
+    position: absolute;
+}
