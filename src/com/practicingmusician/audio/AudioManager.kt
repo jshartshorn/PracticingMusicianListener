@@ -28,6 +28,7 @@ class AudioManager {
         val audio = loadedAudio[key]
 
         val timeoutKey = window.setTimeout({
+            console.log("Playing..." + atTime)
             audio.asDynamic().currentTime = 0
             audio.asDynamic().play()
         }, atTime)
@@ -38,7 +39,7 @@ class AudioManager {
 
     fun cancelAllAudio() {
         timeoutKeys.reversed().forEach {
-            println("Cancelling item...")
+            println("Cancelling item... $it")
             window.clearTimeout(it)
         }
         timeoutKeys.removeAll { true }
