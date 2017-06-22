@@ -51,6 +51,20 @@ var VexFlowUtil = {
 
     },
 
+    drawFeedbackOnTickable(canvas, tickableItem, feedbackItemType) {
+        var boundingBox = tickableItem.getBoundingBox()
+        var feedbackY = boundingBox.y + boundingBox.h
+        var feedbackX = boundingBox.x
+
+        var ctx = canvas.getContext('2d');
+
+        ctx.font = "30px Arial"
+        ctx.textBaseline = "top";
+        ctx.fillText(feedbackItemType,feedbackX,feedbackY)
+
+        //ctx.strokeRect(boundingBox.x,boundingBox.y,boundingBox.w,boundingBox.h)
+    },
+
     getTickablesForBeat: function(tickables, beat) {
             //convert beat to 0 index rather than 1
 

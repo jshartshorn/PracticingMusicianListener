@@ -3,6 +3,7 @@ VF = Vex.Flow;
 
 var canvasName = "notationCanvas";
 var indicatorCanvasName = "indicatorCanvas";
+var feedbackCanvasName = "feedbackCanvas"
 
 var context = VexFlowUtil.setupCanvas(document.getElementById(canvasName));
 
@@ -30,6 +31,7 @@ var indicatorItem = voice.tickables[6]
 
 var canvas = document.getElementById(canvasName);
 var indicatorCanvas = document.getElementById(indicatorCanvasName);
+var feedbackCanvas = document.getElementById(feedbackCanvasName);
 
 function moveToPosition(beat) {
     indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
@@ -47,3 +49,6 @@ function highlightMetronomeItem(itemNumber) {
             item.className += " highlighted"
     }
 }
+
+VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[0],"^")
+VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[1],"-")
