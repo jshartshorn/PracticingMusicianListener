@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <title>Practicing Musician</title>
 
+    <link rel="stylesheet" type="text/css" href="css/notation.css">
+
+
     <script type="text/javascript" src="out/production/PracticingMusician/lib/kotlin.js"></script>
-    <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
-    <script type="text/javascript" src="js/audio.js"></script>
-    <script src="js/vexflow_util.js"></script>
     <script type="text/javascript" src="out/production/PracticingMusician/PracticingMusician.js"></script>
+
+    <script src="js/audio.js"></script>
+
+    <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
+    <script src="js/vexflow_util.js"></script>
 </head>
 <body>
 
@@ -21,6 +26,40 @@
 
     </div>
 </div>
+
+<div id="notationWindow">
+    <div id="notationHeader">
+        <span id="settingsButton"></span>
+        <span id="playPauseButton"></span>
+        <span id="repeatButton"></span>
+
+        <div id="metronomeContainer">
+            <div id="metronomeItems">
+                <span class="metronomeItem highlighted"></span>
+                <span class="metronomeItem"></span>
+                <span class="metronomeItem"></span>
+                <span class="metronomeItem"></span>
+            </div>
+            <span id="tempoMarking">80<br/>BPM</span>
+        </div>
+
+        <span id="medalIndicator"></span>
+        <span id="exitFullScreenButton"></span>
+    </div>
+    <div id="notationBody">
+        <canvas id="notationCanvas" width="1024" height="300"></canvas>
+        <canvas id="indicatorCanvas" width="1024" height="300"></canvas>
+    </div>
+</div>
+<script>
+        PracticingMusician.app.exerciseManager.loadExercise()
+        function getExerciseNotes() {
+            var notes = VexFlowUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
+
+            return notes
+        }
+</script>
+<script src="js/index.js"></script>
 
 </body>
 </html>

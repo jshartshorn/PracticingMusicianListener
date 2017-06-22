@@ -1,8 +1,11 @@
 package com.practicingmusician.steppable
 
+import com.practicingmusician.exercises.VexFlowUtil
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.browser.window
+
+external fun moveToPosition(beat : Double)
 
 /**
  * Created by jn on 6/5/17.
@@ -44,23 +47,31 @@ class Metronome : TimeKeeperSteppable {
             lastBeatOccuredAt = timestamp - beatSize
         }
 
-        //if the last beat hasn't even occured yet, don't bother calculating the next one
-        if (lastBeatOccuredAt > timestamp) {
-            return
-        }
-
         //calculate when the new beat will happen
         val newTime = lastBeatOccuredAt + beatSize
 
         //how long from now will it happen
         val difference = newTime - timestamp
 
+        var absoluteBeatPosition = timestamp / beatSize
+
+        console.log("At beat : " + absoluteBeatPosition)
+
+        updateIndicatorUI(absoluteBeatPosition)
+
+        //if the last beat hasn't even occured yet, don't bother calculating the next one
+        if (lastBeatOccuredAt > timestamp) {
+            return
+        }
+
+
+
         audioManager.playAudio(audioKey,difference.toInt())
 
         //TODO: Cancel these if stopped
         val curBeatCopy = currentBeat
         window.setTimeout({
-            updateUI(curBeatCopy)
+            updateTextUI(curBeatCopy)
         }, difference.toInt())
 
         println("Going to play at " + newTime.toInt())
@@ -73,7 +84,12 @@ class Metronome : TimeKeeperSteppable {
 
     }
 
-    fun updateUI(beat : Int) {
+    fun updateIndicatorUI(beat : Double) {
+        moveToPosition(beat)
+
+    }
+
+    fun updateTextUI(beat : Int) {
         val el = document.getElementById("metronome") as HTMLElement
         el.textContent = "$beat"
     }

@@ -99,7 +99,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     fun loadSampleExercise() {
         val exercise = ExerciseDefinition()
-        exercise.tempo = 80.0
+        exercise.tempo = 120.0
 //        exercise.notes.add(Note(69,1.0))
 //        exercise.notes.add(Note(70,1.0))
 //        exercise.notes.add(Note(69,1.0))

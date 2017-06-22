@@ -53,7 +53,6 @@ var VexFlowUtil = {
 
     getTickablesForBeat: function(tickables, beat) {
         //convert beat to 0 index rather than 1
-        beat -= 1
 
         //go through and find
         var beatSize = 4096
@@ -90,11 +89,13 @@ var VexFlowUtil = {
 
                                     var distanceBetween = beatPositionAtEndItem - beatPositionAtBeginningItem
 
-                                    console.log("Position at beginning" + beatPositionAtBeginningItem)
+                                    console.log("Position at beginning" + beatPositionAtBeginningItem + "for beat " + beat)
 
                                     var beatDifferenceFromFirstItem = beat - beatPositionAtBeginningItem
 
                                     percent = beatDifferenceFromFirstItem / distanceBetween
+
+                                    if (percent < 0 || isNaN(percent)) percent = 0
 
                                     break
                 }
