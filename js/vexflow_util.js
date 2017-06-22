@@ -102,6 +102,8 @@ var VexFlowUtil = {
         var items = Array()
         var arrayOfNotes = notes.toArray()
 
+        var totalDuration = 0
+
         for (index in arrayOfNotes) {
             var item = arrayOfNotes[index]
             console.log("Checking item " + item.constructor.name)
@@ -121,6 +123,7 @@ var VexFlowUtil = {
                         return "err"
                     }
                 }()
+                totalDuration += item.duration
                 items.push( new VF.StaveNote({clef: "treble", keys: [item.textValue], duration: duration }) )
                 break
                 default:
@@ -133,7 +136,10 @@ var VexFlowUtil = {
 
         console.log("Came up with : " + items)
 
-        return items
+        return {
+            notes: items,
+            beats: totalDuration
+        }
     },
 
 
