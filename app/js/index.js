@@ -4,7 +4,9 @@ var exercise = getExerciseNotes(); //pulls from the loaded js file
 
 EasyScoreUtil.setupOnElement("notationWindow")
 
-EasyScoreUtil.notateExercise(exercise)
+EasyScoreUtil.exercise = exercise
+
+EasyScoreUtil.notateExercise()
 
 ///*  Measure 1 */
 //var system = EasyScoreUtil.makeSystem(220);

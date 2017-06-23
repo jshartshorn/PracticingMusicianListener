@@ -10,12 +10,15 @@ var EasyScoreUtil = {
     scorePositionX : 60,
     scorePositionY : 0,
 
+    exercise: null,
 
     vf : null,
     registry: null,
     score: null,
     voice: null,
     beam: null,
+
+    noteIDNumber: 0,
 
     setupOnElement: function(elementID) {
         this.vf = new Vex.Flow.Factory({
@@ -90,7 +93,7 @@ var EasyScoreUtil = {
             }
         },
 
-    notateExercise: function(exercise) {
+    notateExercise: function() {
 
         this.score.set({ time: '4/4' });
 
@@ -105,12 +108,28 @@ var EasyScoreUtil = {
 
             var system = EasyScoreUtil.makeSystem(measureWidth);
 
-            var bar = exercise.bars[barIndex]
+            var bar = this.exercise.bars[barIndex]
 
             console.log("Content: ")
             console.log(bar)
 
-            var notesString = bar.join(",")
+
+            var notesString = ""
+
+            for (var noteIndex in bar) {
+                var note = bar[noteIndex]
+
+                if (noteIndex > 0) {
+                    notesString += ","
+                }
+                notesString += note
+
+                notesString += "[id=\"note" + this.noteIDNumber + "\"]"
+
+                this.noteIDNumber++
+            }
+
+            //var notesString = bar.join(",")
 
             console.log(notesString)
 
