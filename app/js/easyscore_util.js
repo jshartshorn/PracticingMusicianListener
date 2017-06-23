@@ -1,14 +1,41 @@
-var scorePositionX = 60
-var scorePositionY = 0
+
+
+VF = Vex.Flow;
+
+function concat(a, b) { return a.concat(b); }
+
 
 var EasyScoreUtil = {
 
+    scorePositionX : 60,
+    scorePositionY : 0,
 
+
+    vf : null,
+    registry: null,
+    score: null,
+    voice: null,
+    beam: null,
+
+    setupOnElement: function(elementID) {
+        this.vf = new Vex.Flow.Factory({
+                renderer: {selector: elementID, width: 1100, height: 900}
+                });
+
+        this.registry = new VF.Registry();
+        VF.Registry.enableDefaultRegistry(this.registry);
+
+        this.score = this.vf.EasyScore({ throwOnError: true });
+
+        this.voice = this.score.voice.bind(this.score);
+        this.notes = this.score.notes.bind(this.score);
+        this.beam = this.score.beam.bind(this.score);
+    },
 
     makeSystem: function (width) {
 
-        var system = vf.System({ x: scorePositionX, y: scorePositionY, width: width, spaceBetweenStaves: 10 });
-        scorePositionX += width;
+        var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
+        this.scorePositionX += width;
         return system;
     },
 
@@ -63,5 +90,41 @@ var EasyScoreUtil = {
             }
         },
 
+    notateExercise: function(exercise) {
+
+        this.score.set({ time: '4/4' });
+
+        for (barIndex in exercise.bars) {
+            console.log("Making bar...")
+
+            var measureWidth = 160;
+
+            if (barIndex == 0) {
+                measureWidth = 220;
+            }
+
+            var system = EasyScoreUtil.makeSystem(measureWidth);
+
+            var bar = exercise.bars[barIndex]
+
+            console.log("Content: ")
+            console.log(bar)
+
+            var notesString = bar.join(",")
+
+            console.log(notesString)
+
+            var stave = system.addStave({ voices: [this.voice(this.notes(notesString))] });
+
+            if (barIndex == 0) {
+                stave.addClef('treble')
+                stave.addKeySignature("C")
+                stave.addTimeSignature("4/4")
+            }
+        }
+
+        this.vf.draw();
+        VF.Registry.disableDefaultRegistry();
+    }
 
 }

@@ -1,58 +1,10 @@
 
-VF = Vex.Flow;
-
-function concat(a, b) { return a.concat(b); }
-
 var exercise = getExerciseNotes(); //pulls from the loaded js file
 
 
+EasyScoreUtil.setupOnElement("notationWindow")
 
-
-var vf = new Vex.Flow.Factory({
-        renderer: {selector: 'notationWindow', width: 1100, height: 900}
-        });
-
-var registry = new VF.Registry();
-VF.Registry.enableDefaultRegistry(registry);
-
-var score = vf.EasyScore({ throwOnError: true });
-
-var voice = score.voice.bind(score);
-var notes = score.notes.bind(score);
-var beam = score.beam.bind(score);
-
-
-
-score.set({ time: '4/4' });
-
-for (barIndex in exercise.bars) {
-    console.log("Making bar...")
-
-    var measureWidth = 160;
-
-    if (barIndex == 0) {
-        measureWidth = 220;
-    }
-
-    var system = EasyScoreUtil.makeSystem(measureWidth);
-
-    var bar = exercise.bars[barIndex]
-
-    console.log("Content: ")
-    console.log(bar)
-
-    var notesString = bar.join(",")
-
-    console.log(notesString)
-
-    var stave = system.addStave({ voices: [voice(notes(notesString))] });
-
-    if (barIndex == 0) {
-        stave.addClef('treble')
-        stave.addKeySignature("C")
-        stave.addTimeSignature("4/4")
-    }
-}
+EasyScoreUtil.notateExercise(exercise)
 
 ///*  Measure 1 */
 //var system = EasyScoreUtil.makeSystem(220);
@@ -74,9 +26,6 @@ for (barIndex in exercise.bars) {
 //
 //system = EasyScoreUtil.makeSystem(150);
 //system.addStave({ voices: [voice(notes('D5/q[id="m2a"], G4[id="m2b"], G4[id="m2c"], G5'))] });
-
-vf.draw();
-VF.Registry.disableDefaultRegistry();
 
 
 //animation?
