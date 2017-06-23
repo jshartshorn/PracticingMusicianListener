@@ -43,11 +43,12 @@
         <canvas id="indicatorCanvas" width="1024" height="300"></canvas>
     </div>
 </div>
+<script src="js/exercises/CMajorScale.js"></script>
 <script>
+        generatedExercise = generateKotlinExercise()
         PracticingMusician.app.exerciseManager.loadExercise()
         function getExerciseNotes() {
             var notes = VexFlowUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
-
             return notes
         }
 </script>

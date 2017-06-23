@@ -13,6 +13,7 @@ import com.practicingmusician.steppable.TimeKeeper
 external object VexFlowUtil
 external fun addFeedbackItem(beat : Double, item : String)
 external fun clearFeedbackItems()
+external val generatedExercise : ExerciseDefinition
 
 
 /**
@@ -99,7 +100,13 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     @JsName("loadExercise")
     fun loadExercise() {
-        loadSampleExercise()
+        //loadSampleExercise()
+
+        val exercise = generatedExercise
+
+        exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
+
+        currentExercise = exercise
 
         currentExercise?.let {
             metronome.tempo = it.tempo
@@ -110,6 +117,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     }
 
 
+    //NOT USED -- LOADING IN JS INSTEAD
     fun loadSampleExercise() {
         val exercise = ExerciseDefinition()
         exercise.tempo = 110.0
