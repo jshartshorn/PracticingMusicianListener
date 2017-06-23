@@ -33,7 +33,7 @@ class Metronome : TimeKeeperSteppable {
     val timeoutKeys = mutableListOf<Int>()
 
     fun setup() {
-        audioManager.loadAudioFile("Cowbell.wav",audioKey)
+        audioManager.loadAudioFile("audio/Cowbell.wav",audioKey)
     }
 
     override fun start() {
