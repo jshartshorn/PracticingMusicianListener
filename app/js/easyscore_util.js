@@ -236,12 +236,15 @@ var EasyScoreUtil = {
               return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
       },
 
+    getCurrentStave : function() {
+        return this.systems[0].parts[0].stave
+    },
 
     drawIndicatorLine: function(canvas, indicatorPosition) {
 
             var indicatorOverflow = 20
 
-            var stave = this.systems[0].parts[0].stave
+            var stave = EasyScoreUtil.getCurrentStave()
 
             var topY = stave.getYForLine(0) - indicatorOverflow
             var bottomY = stave.getYForLine(4) + indicatorOverflow
@@ -263,5 +266,20 @@ var EasyScoreUtil = {
 
               }
         },
+
+    getFeedbackYPosition : function() {
+        return EasyScoreUtil.getCurrentStave().getBoundingBox().y + EasyScoreUtil.getCurrentStave().getBoundingBox().h
+    },
+
+
+    drawFeedbackAtPosition(canvas,feedbackItemType,x,y) {
+
+            var ctx = canvas.getContext('2d');
+
+            ctx.font = "30px Arial"
+            ctx.textBaseline = "top";
+            ctx.fillText(feedbackItemType,x,y)
+
+    },
 
 }

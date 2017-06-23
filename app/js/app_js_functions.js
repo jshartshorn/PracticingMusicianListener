@@ -24,7 +24,7 @@ function clearFeedbackItems() {
 }
 
 function addFeedbackItem(beat,item) {
-    var positionX = VexFlowUtil.getPositionForBeat(voice.tickables, beat)
-    var positionY = VexFlowUtil.getFeedbackYPosition(stave)
-    VexFlowUtil.drawFeedbackAtPosition(feedbackCanvas,item,positionX,positionY)
+    var positionX = EasyScoreUtil.getPositionForBeat(beat)
+    var positionY = EasyScoreUtil.getFeedbackYPosition()
+    EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,item,positionX,positionY)
 }
