@@ -3,6 +3,7 @@ package com.practicingmusician.exercises
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.finals.CompareEngine
+import com.practicingmusician.finals.IncrementalBufferManager
 import com.practicingmusician.finals.IncrementalComparisonEngine
 import com.practicingmusician.notes.Barline
 import com.practicingmusician.steppable.Metronome
@@ -29,6 +30,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     var metronome = Metronome()
     var pitchTracker = PitchTracker()
 
+    var bufferManager = IncrementalBufferManager()
+    var comparisonEngine = IncrementalComparisonEngine()
+
     var audioManager = am
 
     init {
@@ -39,6 +43,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         timeKeeper = TimeKeeper()
         metronome = Metronome()
         pitchTracker = PitchTracker()
+
+        bufferManager = IncrementalBufferManager()
+        comparisonEngine = IncrementalComparisonEngine()
     }
 
     fun setup() {
@@ -61,7 +68,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             val samplesLength = (pitchTracker.samples.count() / 44100.0)
             println("Total samples recorded: " + pitchTracker.samples.count() + " length: " + samplesLength)
 
-            val notesFromSamplesBuffer = BufferManager.convertSamplesBufferToNotes(pitchTracker.samples,metronome.tempo)
+            bufferManager.tempo = metronome.tempo
+
+            val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
                 println("Note: " + it.noteNumber + " for " + it.duration)
@@ -70,7 +79,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             currentExercise?.let {
                 println("Comparing...")
 
-                var comparisonEngine = IncrementalComparisonEngine()
 
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
                 println("Results $results")
@@ -114,6 +122,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         currentExercise?.let {
             metronome.tempo = it.tempo
+
+            bufferManager.tempo = it.tempo
+
             timeKeeper.runForTime = it.getLength() + it.prerollLength()
             pitchTracker.lengthOfPrerollToIgnore = it.prerollLength()
             println("Loaded exercise of length " + timeKeeper.runForTime)
