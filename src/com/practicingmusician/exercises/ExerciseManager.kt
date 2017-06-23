@@ -3,6 +3,7 @@ package com.practicingmusician.exercises
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.finals.CompareEngine
+import com.practicingmusician.finals.IncrementalComparisonEngine
 import com.practicingmusician.notes.Barline
 import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
@@ -68,7 +69,10 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
             currentExercise?.let {
                 println("Comparing...")
-                val results = CompareEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+
+                var comparisonEngine = IncrementalComparisonEngine()
+
+                val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
                 println("Results $results")
 
                 results.feedbackItems.forEach {
