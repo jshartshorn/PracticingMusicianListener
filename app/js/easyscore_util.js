@@ -20,6 +20,8 @@ var EasyScoreUtil = {
 
     noteIDNumber: 0,
 
+    systems: Array(),
+
     setupOnElement: function(elementID) {
         this.vf = new Vex.Flow.Factory({
                 renderer: {selector: elementID, width: 1100, height: 900}
@@ -43,10 +45,12 @@ var EasyScoreUtil = {
     },
 
 
-    id: function (id) { return registry.getElementById(id); },
+    id: function (id) { return this.registry.getElementById(id); },
 
 
     notesFromKotlinNotationItems : function(notes) {
+            var rawNotes = Array() //just the raw notes, without bar numbers
+
             var bars = Array()
             var arrayOfNotes = notes.toArray()
 
@@ -76,6 +80,9 @@ var EasyScoreUtil = {
                     totalDuration += item.duration
                     //items.push( new VF.StaveNote({clef: "treble", keys: [item.textValue], duration: duration }) )
                     currentBar.push(item.textValue)
+
+                    rawNotes.push(item)
+
                     break
                     default:
                     console.log("Not found " + item.constructor.name)
@@ -88,6 +95,7 @@ var EasyScoreUtil = {
             //console.log("Came up with : " + items)
 
             return {
+                rawNotes: rawNotes,
                 bars: bars,
                 beats: totalDuration
             }
@@ -97,7 +105,7 @@ var EasyScoreUtil = {
 
         this.score.set({ time: '4/4' });
 
-        for (barIndex in exercise.bars) {
+        for (barIndex in this.exercise.bars) {
             console.log("Making bar...")
 
             var measureWidth = 160;
@@ -107,6 +115,8 @@ var EasyScoreUtil = {
             }
 
             var system = EasyScoreUtil.makeSystem(measureWidth);
+
+            this.systems.push(system)
 
             var bar = this.exercise.bars[barIndex]
 
@@ -144,6 +154,114 @@ var EasyScoreUtil = {
 
         this.vf.draw();
         VF.Registry.disableDefaultRegistry();
-    }
+    },
+
+
+
+    getElementsForBeat: function(beat) {
+            //convert beat to 0 index rather than 1
+
+
+            var currentPosition = 0
+
+            var beginningItemIndex = null
+            var endingItemIndex = null
+
+            var firstItemBeatPosition = 0
+            var lastItemBeatPosition = 0
+
+            var percent = null
+
+            console.log("Searching for beat " + beat + " in")
+            console.log(this.exercise.rawNotes)
+
+            for (index in this.exercise.rawNotes) {
+                var item = this.exercise.rawNotes[index]
+
+                var duration = item.duration
+
+                if (currentPosition < beat) {
+                    beginningItemIndex = index
+                    endingItemIndex = index
+
+                    firstItemBeatPosition = currentPosition
+                    lastNoteBeatPosition = currentPosition
+                } else {
+                    if (beginningItemIndex == null) {
+                        beginningItemIndex = index
+                        firstItemBeatPosition = currentPosition
+                    }
+                    //set the end item index
+                    endingItemIndex = index
+                    lastItemBeatPosition = currentPosition
+
+                    if (currentPosition >= beat) {
+                        break
+                    }
+                }
+
+                currentPosition += duration
+
+            }
+
+            var distanceBetween = lastItemBeatPosition - firstItemBeatPosition
+            var beatDistanceFromFirstItem = beat - firstItemBeatPosition
+
+            percent = beatDistanceFromFirstItem / distanceBetween
+
+            if (percent < 0 || isNaN(percent)) percent = 0
+
+            console.log("End pos: " + currentPosition)
+            return {
+                "currentItemIndex": beginningItemIndex,
+                "nextItemIndex": endingItemIndex,
+                "percent" : percent
+            }
+     },
+
+    getPositionForBeat: function(beat) {
+             var ts = EasyScoreUtil.getElementsForBeat(beat)
+
+             var currentItem = EasyScoreUtil.id("note" + ts.currentItemIndex)
+             var nextItem = EasyScoreUtil.id("note" + ts.nextItemIndex)
+
+             var distance = EasyScoreUtil.middlePositionOfItem(nextItem) - EasyScoreUtil.middlePositionOfItem(currentItem)
+             var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
+
+             return initialPos + distance * ts.percent
+
+      },
+
+     middlePositionOfItem: function(item) {
+              return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
+      },
+
+
+    drawIndicatorLine: function(canvas, indicatorPosition) {
+
+            var indicatorOverflow = 20
+
+            var stave = this.systems[0].parts[0].stave
+
+            var topY = stave.getYForLine(0) - indicatorOverflow
+            var bottomY = stave.getYForLine(4) + indicatorOverflow
+
+            if (canvas.getContext) {
+
+            	   // use getContext to use the canvas for drawing
+            	   var ctx = canvas.getContext('2d');
+
+                   ctx.strokeStyle = '#4990E2';
+                   ctx.lineWidth = 3;
+
+            	   // Stroked triangle
+            	   ctx.beginPath();
+            	   ctx.moveTo(indicatorPosition,bottomY);
+            	   ctx.lineTo(indicatorPosition,topY);
+            	   ctx.closePath();
+            	   ctx.stroke();
+
+              }
+        },
 
 }

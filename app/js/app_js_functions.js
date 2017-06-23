@@ -5,7 +5,7 @@ var feedbackCanvasName = "feedbackCanvas"
 
 function moveToPosition(beat) {
     indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
-    VexFlowUtil.drawIndicatorLine(indicatorCanvas, stave, VexFlowUtil.getPositionForBeat(voice.tickables, beat))
+    EasyScoreUtil.drawIndicatorLine(indicatorCanvas, EasyScoreUtil.getPositionForBeat(beat))
 }
 
 function highlightMetronomeItem(itemNumber) {

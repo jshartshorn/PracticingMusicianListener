@@ -8,6 +8,8 @@ EasyScoreUtil.exercise = exercise
 
 EasyScoreUtil.notateExercise()
 
+console.log(EasyScoreUtil.getElementsForBeat(5))
+
 ///*  Measure 1 */
 //var system = EasyScoreUtil.makeSystem(220);
 //
