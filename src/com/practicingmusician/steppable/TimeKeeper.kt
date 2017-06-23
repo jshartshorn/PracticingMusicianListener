@@ -79,6 +79,8 @@ class TimeKeeper {
 
         /*
          * Now that the steppables are done, do any analysis
+         *
+         * Right now, not really doing anything with this
          */
         analyzers.forEach {
             it.analyze(timestamp)

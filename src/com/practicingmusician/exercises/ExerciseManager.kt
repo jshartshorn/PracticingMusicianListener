@@ -11,6 +11,7 @@ import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 
 external object VexFlowUtil
+external fun addFeedbackItem(beat : Double, item : String)
 
 
 /**
@@ -64,7 +65,15 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
             currentExercise?.let {
                 println("Comparing...")
-                CompareEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+                val results = CompareEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+                println("Results $results")
+
+                results.feedbackItems.forEach {
+                    val beat = it.beat
+                    println("Feedback item at $beat")
+                    addFeedbackItem(beat,it.feedbackItemType)
+                }
+
             }
         }
 

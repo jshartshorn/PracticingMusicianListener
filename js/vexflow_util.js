@@ -56,13 +56,18 @@ var VexFlowUtil = {
         var feedbackY = boundingBox.y + boundingBox.h
         var feedbackX = boundingBox.x
 
+        VexFlowUtil.drawFeedbackAtPosition(feedbackItemType,feedbackX,feedbackY)
+
+        //ctx.strokeRect(boundingBox.x,boundingBox.y,boundingBox.w,boundingBox.h)
+    },
+
+    drawFeedbackAtPosition(feedbackItemType,x,y) {
         var ctx = canvas.getContext('2d');
 
         ctx.font = "30px Arial"
         ctx.textBaseline = "top";
-        ctx.fillText(feedbackItemType,feedbackX,feedbackY)
+        ctx.fillText(feedbackItemType,x,y)
 
-        //ctx.strokeRect(boundingBox.x,boundingBox.y,boundingBox.w,boundingBox.h)
     },
 
     getTickablesForBeat: function(tickables, beat) {

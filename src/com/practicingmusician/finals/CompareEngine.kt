@@ -7,7 +7,13 @@ import kotlin.js.Math.abs
  * Created by jn on 6/7/17.
  */
 
-data class CompareResults(var correct : Int, var attempted : Int)
+data class FeedbackItem(var beat : Double, var feedbackItemType : String)
+
+class CompareResults {
+    var correct : Int = 0
+    var attempted : Int = 0
+    var feedbackItems = mutableListOf<FeedbackItem>()
+}
 
 object CompareEngine {
 
@@ -16,7 +22,7 @@ object CompareEngine {
 
     fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
 
-        var results = CompareResults(correct = 0, attempted =  0)
+        var results = CompareResults()
 
         var curBeatPosition : Double = 0.0
 
@@ -42,6 +48,10 @@ object CompareEngine {
             }
 
             println("Going to compare ideal index $index to test index $indexOnToTest")
+
+            var feedbackItem = FeedbackItem(curBeatPosition,"T")
+
+            results.feedbackItems.add(feedbackItem)
 
             if (indexOnToTest == -1) {
                 continue
@@ -122,7 +132,7 @@ object CompareEngine {
         var testBeatIndex = 0.0
 
 
-        var results = CompareResults(correct = 0, attempted =  0)
+        var results = CompareResults()
 
 
         //TODO: probably need to rewind/fast-forward on toTest instead of just using the same index
