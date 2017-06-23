@@ -5,7 +5,7 @@ var feedbackCanvasName = "feedbackCanvas"
 
 function moveToPosition(beat) {
     indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
-    VexFlowUtil.drawIndicatorLine(indicatorCanvas, stave, VexFlowUtil.getPositionForBeat(voice.tickables, beat))
+    EasyScoreUtil.drawIndicatorLine(indicatorCanvas, EasyScoreUtil.getPositionForBeat(beat))
 }
 
 function highlightMetronomeItem(itemNumber) {
@@ -24,7 +24,7 @@ function clearFeedbackItems() {
 }
 
 function addFeedbackItem(beat,item) {
-    var positionX = VexFlowUtil.getPositionForBeat(voice.tickables, beat)
-    var positionY = VexFlowUtil.getFeedbackYPosition(stave)
-    VexFlowUtil.drawFeedbackAtPosition(feedbackCanvas,item,positionX,positionY)
+    var positionX = EasyScoreUtil.getPositionForBeat(beat)
+    var positionY = EasyScoreUtil.getFeedbackYPosition()
+    EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,item,positionX,positionY)
 }

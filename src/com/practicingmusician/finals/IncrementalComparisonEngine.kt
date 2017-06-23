@@ -1,34 +1,48 @@
 package com.practicingmusician.finals
 
 import com.practicingmusician.notes.Note
-import kotlin.js.Math.abs
+import kotlin.js.Math
 
 /**
- * Created by jn on 6/7/17.
+ * Created by jn on 6/23/17.
  */
-
-object CompareEngine {
+class IncrementalComparisonEngine {
 
     val allowableFreqencyMargin = 10.0 //TODO: this should be cents, not hz
     val allowableRhythmMargin = 0.25
 
+    /* State information about what has been compared */
+
+    var results = CompareResults()
+    var curBeatPosition : Double = 0.0
+
+    var idealIndexPosition = 0 //the ideal index to test against, so we don't start at the beginning each time
+    var testPositionIndex = 0 //don't search before here in the test positions
+
+    /* End state */
+
+
     fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
 
-        var results = CompareResults()
+        for (index in idealIndexPosition until ideal.count()) {
+            var value = ideal[index]
 
-        var curBeatPosition : Double = 0.0
+            //TODO: make sure we have enough data to test against the item
 
-        for ((index, value) in ideal.withIndex()) {
+
+            //TODO: okay, we have enough to test, so set the new idealIndexPosition
+            idealIndexPosition = index
 
             //find the corresponding item in toTest based on our beat position
             var indexOnToTest = -1
             var toTestBeatPositionAtIndexToTest = 0.0
             var toTestBeatPosition = 0.0
             var diffFromIdealBeatPosition = Double.MAX_VALUE
-            for (i in toTest.indices) {
+
+            for (i in testPositionIndex until toTest.count()) {
                 val item = toTest[i]
 
-                val diff = abs(curBeatPosition - toTestBeatPosition)
+                val diff = Math.abs(curBeatPosition - toTestBeatPosition)
 
                 if (diff < diffFromIdealBeatPosition) {
                     indexOnToTest = i
@@ -45,9 +59,14 @@ object CompareEngine {
 
             results.feedbackItems.add(feedbackItem)
 
+            //TODO: not sure if we should do this, or just stop
             if (indexOnToTest == -1) {
                 continue
             }
+
+            //don't test before this index later on
+            testPositionIndex = indexOnToTest
+
 
             results.attempted += 1
 
@@ -119,7 +138,6 @@ object CompareEngine {
 
             if (isCorrect)
                 results.correct += 1
-
         }
 
         println("---- Results : " + results.correct + "/" + results.attempted)
