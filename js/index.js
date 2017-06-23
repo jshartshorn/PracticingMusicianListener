@@ -1,9 +1,6 @@
 
 VF = Vex.Flow;
 
-var canvasName = "notationCanvas";
-var indicatorCanvasName = "indicatorCanvas";
-var feedbackCanvasName = "feedbackCanvas"
 
 var context = VexFlowUtil.setupCanvas(document.getElementById(canvasName));
 
@@ -33,28 +30,7 @@ var canvas = document.getElementById(canvasName);
 var indicatorCanvas = document.getElementById(indicatorCanvasName);
 var feedbackCanvas = document.getElementById(feedbackCanvasName);
 
-function moveToPosition(beat) {
-    indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
-    VexFlowUtil.drawIndicatorLine(indicatorCanvas, stave, VexFlowUtil.getPositionForBeat(voice.tickables, beat))
-}
-
 var metronomeItems = document.getElementById("metronomeItems").getElementsByClassName("metronomeItem");
-
-function highlightMetronomeItem(itemNumber) {
-    for (index in metronomeItems) {
-        var item = metronomeItems[index]
-        item.className = "metronomeItem"
-
-        if (itemNumber == index)
-            item.className += " highlighted"
-    }
-}
-
-function addFeedbackItem(beat,item) {
-    var positionX = VexFlowUtil.getPositionForBeat(voice.tickables, beat)
-    var positionY = VexFlowUtil.getFeedbackYPosition(stave)
-    VexFlowUtil.drawFeedbackAtPosition(item,positionX,positionY)
-}
 
 //VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[0],"^")
 //VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[1],"-")

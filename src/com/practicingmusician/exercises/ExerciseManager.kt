@@ -31,8 +31,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     init {
         println("Init")
-        createSteppables()
-        setup()
     }
 
     fun createSteppables() {

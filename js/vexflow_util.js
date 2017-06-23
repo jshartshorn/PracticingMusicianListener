@@ -61,7 +61,7 @@ var VexFlowUtil = {
         //ctx.strokeRect(boundingBox.x,boundingBox.y,boundingBox.w,boundingBox.h)
     },
 
-    drawFeedbackAtPosition(feedbackItemType,x,y) {
+    drawFeedbackAtPosition(canvas,feedbackItemType,x,y) {
         var ctx = canvas.getContext('2d');
 
         ctx.font = "30px Arial"
