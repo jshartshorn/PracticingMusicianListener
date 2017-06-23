@@ -13,6 +13,7 @@
     <script src="js/audio.js"></script>
 
     <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
+    <script src="js/easyscore_util.js"></script>
     <script src="js/vexflow_util.js"></script>
     <script src="js/app_js_functions.js"></script>
 </head>
@@ -43,12 +44,12 @@
         <canvas id="indicatorCanvas" width="1024" height="300"></canvas>
     </div>
 </div>
-<script src="js/exercises/FMajorScale.js"></script>
+<script src="js/exercises/CMajorScale.js"></script>
 <script>
         generatedExercise = generateKotlinExercise()
         PracticingMusician.app.exerciseManager.loadExercise()
         function getExerciseNotes() {
-            var notes = VexFlowUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
+            var notes = EasyScoreUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
             return notes
         }
 </script>
