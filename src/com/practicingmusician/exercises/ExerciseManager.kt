@@ -12,6 +12,7 @@ import com.practicingmusician.steppable.TimeKeeper
 
 external object VexFlowUtil
 external fun addFeedbackItem(beat : Double, item : String)
+external fun clearFeedbackItems()
 
 
 /**
@@ -42,6 +43,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     fun setup() {
         println("Setup")
+
+        clearFeedbackItems()
+
         metronome.audioManager = audioManager
         timeKeeper.steppables.add(metronome)
         timeKeeper.steppables.add(pitchTracker)
