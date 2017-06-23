@@ -70,6 +70,10 @@ var VexFlowUtil = {
 
     },
 
+    getFeedbackYPosition : function(stave) {
+        return stave.getBoundingBox().y + stave.getBoundingBox().h
+    },
+
     getTickablesForBeat: function(tickables, beat) {
             //convert beat to 0 index rather than 1
 

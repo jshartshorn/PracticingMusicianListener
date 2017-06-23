@@ -52,8 +52,9 @@ function highlightMetronomeItem(itemNumber) {
 
 function addFeedbackItem(beat,item) {
     var positionX = VexFlowUtil.getPositionForBeat(voice.tickables, beat)
-    VexFlowUtil.drawFeedbackAtPosition(item,positionX,0)
+    var positionY = VexFlowUtil.getFeedbackYPosition(stave)
+    VexFlowUtil.drawFeedbackAtPosition(item,positionX,positionY)
 }
 
-VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[0],"^")
-VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[1],"-")
+//VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[0],"^")
+//VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[1],"-")
