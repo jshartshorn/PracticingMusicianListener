@@ -28,7 +28,13 @@ score.set({ time: '4/4' });
 for (barIndex in exercise.bars) {
     console.log("Making bar...")
 
-    var system = EasyScoreUtil.makeSystem(160);
+    var measureWidth = 160;
+
+    if (barIndex == 0) {
+        measureWidth = 220;
+    }
+
+    var system = EasyScoreUtil.makeSystem(measureWidth);
 
     var bar = exercise.bars[barIndex]
 
@@ -39,7 +45,13 @@ for (barIndex in exercise.bars) {
 
     console.log(notesString)
 
-    system.addStave({ voices: [voice(notes(notesString))] });
+    var stave = system.addStave({ voices: [voice(notes(notesString))] });
+
+    if (barIndex == 0) {
+        stave.addClef('treble')
+        stave.addKeySignature("C")
+        stave.addTimeSignature("4/4")
+    }
 }
 
 ///*  Measure 1 */
