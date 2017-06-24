@@ -55,7 +55,7 @@ class IncrementalBufferManager {
 
         val pairs = mutableListOf<Pair<Double,Int>>()
         collectedPairs.forEach {
-            //TODO: build it out
+            //TODO: build it out 
         }
 
         println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
