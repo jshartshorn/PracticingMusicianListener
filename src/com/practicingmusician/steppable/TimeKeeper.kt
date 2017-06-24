@@ -5,16 +5,22 @@ import kotlin.browser.window
 
 /**
  * Created by jn on 6/5/17.
+ *
+ * This class is responsible for keeping time and delegating tasks to the metronome, pitchTracker, etc
+ *
  */
 
 class TimeKeeper {
 
+    //list of closures to complete once the timeKeeper is stopped
     var finishedActions = mutableListOf<() -> Unit>()
 
     enum class TimeKeeperState {
         Stopped, Running
     }
 
+    //current state
+    //when this gets set, it calls the finishedActions if it has been set to Stopped
     var state : TimeKeeperState = TimeKeeperState.Stopped
         set(value) {
             field = value
@@ -30,6 +36,7 @@ class TimeKeeper {
     //the list of steppables that will be notified each time there is a step
     val steppables = mutableListOf<TimeKeeperSteppable>()
 
+    //analyzers that will be run after each step
     val analyzers = mutableListOf<TimeKeeperAnalyzer>()
 
     /*
@@ -51,19 +58,23 @@ class TimeKeeper {
         timeOffSet = -1.0
     }
 
+    //this is the function that keeps the steps going, by requesting animation frames from the window object
+    //Theoretically, this should get about 60fps, or 16ms per step
     fun requestNextStep() {
         window.requestAnimationFrame {
             this.step(it)
         }
     }
 
-    //Gets called as often as possible
+    //Gets called by requestNextStep -- roughly 60fps
     fun step(nonOffsetTimestamp: Double) {
 
+        //if this is the first run, set the timeOffset so that we can get a 0-based timestamp
         if (timeOffSet == -1.0) {
             timeOffSet = nonOffsetTimestamp
         }
 
+        //this should be the 0-based timestamp
         val timestamp = nonOffsetTimestamp - timeOffSet
 
         /*
@@ -105,6 +116,7 @@ class TimeKeeper {
     /*
      * Retrieves the current time, accounting for the timeOffset stored when the TimeKeeper was started
      */
+    //NOT CURRENTLY USED
     fun currentTime() : Double {
         return window.performance.now() - timeOffSet
     }
