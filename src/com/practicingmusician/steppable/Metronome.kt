@@ -13,26 +13,35 @@ external fun highlightMetronomeItem(itemNumber : Int)
  */
 class Metronome : TimeKeeperSteppable {
 
+    //this is the key that we use to store the sound in the AudioManager
     final val audioKey = "metronomeSound"
 
     lateinit var audioManager : com.practicingmusician.audio.AudioManager
 
+    //current state of the Metronome
     override var state = TimeKeeper.TimeKeeperState.Stopped
 
     var timeSignature = 4
+
+    //length of the preroll
     var prerollBeats = timeSignature
 
     var tempo : Double = 120.0
+
+    //the current beat the metronome is on
     var currentBeat : Int = 0
 
+    //the timestamps that the beats occured at
     val beatTimes = mutableListOf<Double>()
 
     // Timestamp of the last beat that happened
     var lastBeatOccuredAt = -1.0
 
+    //keys for setTimeout so that we can cancel them later
     val timeoutKeys = mutableListOf<Int>()
 
     fun setup() {
+        //load the audio file
         audioManager.loadAudioFile("audio/Cowbell.wav",audioKey)
     }
 
@@ -45,25 +54,32 @@ class Metronome : TimeKeeperSteppable {
     }
 
     override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
+        //calculate the size of a beat in ms, based on the tempo
         val beatSize = 1000.0 * 60.0 / tempo
 
+        //this keeps it from playing an extra beat at the end that actually doesn't exist during the exercise
         if (timeKeeper.runForTime - timestamp < beatSize / 2) {
             console.log("Less than beat size..")
-            //this keeps it from playing an extra beat at the end that actually doesn't exist during the exercise
             return
         }
 
+        //if this is the first run, make sure that the first beat will happen at 0, which should be the current timestamp
         if (lastBeatOccuredAt == -1.0) {
             //this is the first run
             lastBeatOccuredAt = timestamp - beatSize
         }
 
+        //the next beat will occur at the time of the last beat, plus the size of the beat
         val nextBeatTime = lastBeatOccuredAt + beatSize
 
 
+        //update the indicator UI based on the current timestamp
         var absoluteBeatPosition = timestamp / beatSize
         updateIndicatorUI(absoluteBeatPosition)
 
+        //if the timestamp is at the time we are supposed to have the next beat
+        //(or passed it -- hopefully this will be impossible by any more than about 16ms)
+        //then play the metronome sound, set the lastBeatOccuredAt, update the metronome UI and increment the current beat counter
         if (timestamp >= nextBeatTime) {
             //TODO: wind to the specific time?
             audioManager.playAudioNow(audioKey)
@@ -77,6 +93,7 @@ class Metronome : TimeKeeperSteppable {
 
     }
 
+    //NOT CURRENTLY USED
     fun oldStep(timestamp: Double, timeKeeper: TimeKeeper) {
         val beatSize = 1000.0 * 60.0 / tempo
 
@@ -146,6 +163,7 @@ class Metronome : TimeKeeperSteppable {
     /*
      * Given a certain timestamp, figure out which beat it belongs to
      */
+    //NOT CURRENTLY USED
     fun getBeatOfTimestamp(timestamp : Double) : Double {
 
         var firstItem = -1.0
