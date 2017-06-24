@@ -276,7 +276,7 @@ var EasyScoreUtil = {
 
             var ctx = canvas.getContext('2d');
 
-            ctx.font = "30px Arial"
+            ctx.font = "20px Arial"
             ctx.textBaseline = "top";
             ctx.fillText(feedbackItemType,x,y)
 
