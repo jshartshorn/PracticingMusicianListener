@@ -7,6 +7,7 @@ var buflen = 1024;
 var buf = new Float32Array( buflen );
 var rafID = null;
 
+//setup the Web Audio API streaming stuff
 function setupMedia() {
         audioContext = new AudioContext();
         var constraints = { audio: true, video: false }
@@ -35,6 +36,7 @@ function gotStream(stream) {
     mediaStreamSource.connect( analyser );
 }
 
+//get the current pitch
 function updatePitch(timestamp) {
     if (analyser == null)
         return

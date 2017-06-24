@@ -1,14 +1,14 @@
 
 var exercise = getExerciseNotes(); //pulls from the loaded js file
 
-
+//setup the score
 EasyScoreUtil.setupOnElement("notationWindow")
 
+//make sure it has a reference to the loaded exercise
 EasyScoreUtil.exercise = exercise
 
+//notate it
 EasyScoreUtil.notateExercise()
-
-console.log(EasyScoreUtil.getElementsForBeat(5))
 
 ///*  Measure 1 */
 //var system = EasyScoreUtil.makeSystem(220);
@@ -32,12 +32,12 @@ console.log(EasyScoreUtil.getElementsForBeat(5))
 //system.addStave({ voices: [voice(notes('D5/q[id="m2a"], G4[id="m2b"], G4[id="m2c"], G5'))] });
 
 
-//animation?
-
+//global variables for the different canvases
 var canvas = document.getElementById(canvasName);
 var indicatorCanvas = document.getElementById(indicatorCanvasName);
 var feedbackCanvas = document.getElementById(feedbackCanvasName);
 
+//references to the HTML metronome indicators
 var metronomeItems = document.getElementById("metronomeItems").getElementsByClassName("metronomeItem");
 
 //VexFlowUtil.drawFeedbackOnTickable(feedbackCanvas,voice.tickables[0],"^")
