@@ -191,17 +191,19 @@ var EasyScoreUtil = {
     //So, in a bar of quarter notes, 1.5 should return the first and second items, with
     //percent at 0.5
     getElementsForBeat: function(beat) {
-            //convert beat to 0 index rather than 1
 
-
+            //current position to scan
             var currentPosition = 0
 
+            //these will be the elements we store and return
             var beginningItemIndex = null
             var endingItemIndex = null
 
+            //the beat positions of those elements
             var firstItemBeatPosition = 0
             var lastItemBeatPosition = 0
 
+            //percentage between the elements that the beat exists in
             var percent = null
 
             console.log("Searching for beat " + beat + " in")
@@ -245,33 +247,42 @@ var EasyScoreUtil = {
 
             console.log("End pos: " + currentPosition)
             return {
-                "currentItemIndex": beginningItemIndex,
-                "nextItemIndex": endingItemIndex,
-                "percent" : percent
+                "currentItemIndex": beginningItemIndex, //item at or before the beat
+                "nextItemIndex": endingItemIndex, //item after the beat
+                "percent" : percent //percent that describes the distance
             }
      },
 
+    //get the position (coordinates) for a certain beat
     getPositionForBeat: function(beat) {
-             var ts = EasyScoreUtil.getElementsForBeat(beat)
+        //get the elements on either side
+        var ts = EasyScoreUtil.getElementsForBeat(beat)
 
-             var currentItem = EasyScoreUtil.id("note" + ts.currentItemIndex)
-             var nextItem = EasyScoreUtil.id("note" + ts.nextItemIndex)
+        //use the ids to get the actual elements
+        var currentItem = EasyScoreUtil.id("note" + ts.currentItemIndex)
+        var nextItem = EasyScoreUtil.id("note" + ts.nextItemIndex)
 
-             var distance = EasyScoreUtil.middlePositionOfItem(nextItem) - EasyScoreUtil.middlePositionOfItem(currentItem)
-             var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
+        //find the middles of the items
+        var distance = EasyScoreUtil.middlePositionOfItem(nextItem) - EasyScoreUtil.middlePositionOfItem(currentItem)
+        var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
 
-             return initialPos + distance * ts.percent
+        //account for the percent distance too
+        return initialPos + distance * ts.percent
 
       },
 
+    //helper function to find the middle of an item
      middlePositionOfItem: function(item) {
               return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
       },
 
+    //get the current staff
+    //WARNING: currently just returns the first one
     getCurrentStave : function() {
         return this.systems[0].parts[0].stave
     },
 
+    //draw the indicator line (blue line that shows current position)
     drawIndicatorLine: function(canvas, indicatorPosition) {
 
             var indicatorOverflow = 20
@@ -299,11 +310,12 @@ var EasyScoreUtil = {
               }
         },
 
+    //get the Y coordinate for feedback items
     getFeedbackYPosition : function() {
         return EasyScoreUtil.getCurrentStave().getBoundingBox().y + EasyScoreUtil.getCurrentStave().getBoundingBox().h
     },
 
-
+    //draw feedback item at a given position
     drawFeedbackAtPosition(canvas,feedbackItemType,x,y) {
 
             var ctx = canvas.getContext('2d');
