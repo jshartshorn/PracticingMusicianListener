@@ -1,6 +1,7 @@
 package com.practicingmusician.finals
 
 import com.practicingmusician.notes.Note
+import kotlin.browser.window
 
 /**
  * Created by jn on 6/23/17.
@@ -36,6 +37,8 @@ class IncrementalBufferManager {
     //and then stitching the remaining like-values together
     fun convertSamplesBufferToNotes(samples : List<Double>) : List<Note> {
 
+        val functionStartTimestamp = window.performance.now()
+
         val secondsPerBeat = 60.0 / tempo
 
         //get only the samples we haven't tested yet
@@ -48,6 +51,8 @@ class IncrementalBufferManager {
 
         //tie the samples to the note numbers, so we know which is which
         val pairs = samplesSublist.zip(noteNumbers)
+
+        println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
         //update our counter
         positionInSamples = samples.count() - 1
@@ -73,6 +78,8 @@ class IncrementalBufferManager {
         if (curList.count() > 0) {
             groups.add(curList)
         }
+
+        println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
 
         //remove groups that aren't long enough
         val groupsOfAcceptableLength = groups.filter {
@@ -136,6 +143,10 @@ class IncrementalBufferManager {
         }
 
         console.log("Turned samples into these notes: " + notes)
+
+        val functionEndTimestamp = window.performance.now()
+
+        println("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
 
         return notes
     }

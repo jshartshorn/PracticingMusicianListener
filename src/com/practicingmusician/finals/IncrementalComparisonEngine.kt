@@ -1,6 +1,7 @@
 package com.practicingmusician.finals
 
 import com.practicingmusician.notes.Note
+import kotlin.browser.window
 import kotlin.js.Math
 
 /**
@@ -29,6 +30,8 @@ class IncrementalComparisonEngine {
     //Comapares the ideal (which should be generated from the exercise) to the toTest
     //which should be generated from the microphone samples
     fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
+
+        val functionStartTimestamp = window.performance.now()
 
         //loop throug the ideal items to test against
         //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
@@ -164,6 +167,10 @@ class IncrementalComparisonEngine {
         }
 
         println("---- Results : " + results.correct + "/" + results.attempted)
+
+        val functionEndTimestamp = window.performance.now()
+
+        println("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
 
         return results
 

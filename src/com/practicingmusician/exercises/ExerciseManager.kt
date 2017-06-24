@@ -100,6 +100,17 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
                 println("Results $results")
 
+//                comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer.subList(0,2)).feedbackItems.forEach {
+//                    val beat = it.beat
+//                    println("Feedback item at $beat")
+//                    addFeedbackItem(beat,it.feedbackItemType)
+//                }
+//                comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer.subList(2,notesFromSamplesBuffer.count() - 1)).feedbackItems.forEach {
+//                    val beat = it.beat
+//                    println("Feedback item at $beat")
+//                    addFeedbackItem(beat,it.feedbackItemType)
+//                }
+
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
                     val beat = it.beat
