@@ -23,9 +23,10 @@ external val generatedExercise : ExerciseDefinition
  */
 class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
-
+    //The current exercise that has been loaded by the page
     var currentExercise : ExerciseDefinition? = null
 
+    //these get reset in createSteppables before every run
     var timeKeeper = TimeKeeper()
     var metronome = Metronome()
     var pitchTracker = PitchTracker()
@@ -33,12 +34,14 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     var bufferManager = IncrementalBufferManager()
     var comparisonEngine = IncrementalComparisonEngine()
 
+    //the audio manager (which manages playback of audio gets set in the initializer
     var audioManager = am
 
     init {
         println("Init")
     }
 
+    //called before each run of the exercise -- resets values by creating new objects
     fun createSteppables() {
         timeKeeper = TimeKeeper()
         metronome = Metronome()
@@ -51,38 +54,53 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     fun setup() {
         println("Setup")
 
+        //clear the existing feedback items on the screen
         clearFeedbackItems()
 
+        //make sure the metronome has a reference to the audio manager so that it can play audio
         metronome.audioManager = audioManager
+
+        //add steppables to the timeKeeper that will get called on each step
         timeKeeper.steppables.add(metronome)
         timeKeeper.steppables.add(pitchTracker)
 
+        //after each step, analysis can happen -- this will make sure analyze(timestamp) is called after each step
         timeKeeper.analyzers.add(this)
 
+
+        //These actions are called when the timeKeeper is running and then the state is set to Stopped
+        //This will happen at the end of a run, or if the pause/stop button is pressed
         timeKeeper.finishedActions.add {
-            //take the pitch and convert it
+
+            //make sure any future audio calls are cancelled (that would happen after the current timestamp)
             audioManager.cancelAllAudio()
 
+            //cancel any future UI calls
             metronome.cancelAllUIUpdates()
 
+            //Find the length of the samples in seconds
             val samplesLength = (pitchTracker.samples.count() / 44100.0)
             println("Total samples recorded: " + pitchTracker.samples.count() + " length: " + samplesLength)
 
+            //set the bufferManager tempo so that it can do informed analysis
             bufferManager.tempo = metronome.tempo
 
+            //convert the buffer of samples into Note objects
             val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
                 println("Note: " + it.noteNumber + " for " + it.duration)
             }
 
+
             currentExercise?.let {
                 println("Comparing...")
 
-
+                //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
                 println("Results $results")
 
+                //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
                     val beat = it.beat
                     println("Feedback item at $beat")
@@ -92,6 +110,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             }
         }
 
+        //do setup on the metronome and pitchTracker
         metronome.setup()
 
         pitchTracker.setup()
@@ -112,20 +131,26 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     @JsName("loadExercise")
     fun loadExercise() {
-        //loadSampleExercise()
 
+        //get the exercise from an external JavaScript source
         val exercise = generatedExercise
 
+        //get just the notes (not barlines, etc) from the notation items
         exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
 
+        //set our current exercise to what we just loaded
         currentExercise = exercise
 
         currentExercise?.let {
-            metronome.tempo = it.tempo
 
+            //sync the tempos from the exercise to the objects that need to know the tempo
+            metronome.tempo = it.tempo
             bufferManager.tempo = it.tempo
 
+            //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
             timeKeeper.runForTime = it.getLength() + it.prerollLength()
+
+            //don't track pitch during the preroll countoff
             pitchTracker.lengthOfPrerollToIgnore = it.prerollLength()
             println("Loaded exercise of length " + timeKeeper.runForTime)
         }
@@ -172,7 +197,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         currentExercise = exercise
     }
 
-
+    //called from timeKeeper.analyzers
     override fun analyze(timestamp: Double) {
         println("Analyzing at " + timestamp)
         //println("Pitch is " + pitch.currentPitch)

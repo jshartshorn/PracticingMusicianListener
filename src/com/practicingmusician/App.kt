@@ -14,6 +14,14 @@ class App {
     var exerciseManager = ExerciseManager(audioManager)
 
 
+    /*
+      This should be called by a button on the UI
+
+      If the timeKeeper is currently stopped (including on first run), the exerciseManager is set up, and then run
+
+      If the timeKeeper is running, the manager is stopped (which also triggers the finishedActions
+     */
+
     @JsName("toggleState")
     fun toggleState() {
         when (exerciseManager.timeKeeper.state) {
