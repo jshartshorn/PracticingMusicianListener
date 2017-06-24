@@ -8,20 +8,22 @@ import kotlin.js.Math
  */
 class IncrementalComparisonEngine {
 
+    //the margins in which a note can vary from the ideal and still be considered acceptable
     val allowableFreqencyMargin = 10.0 //TODO: this should be cents, not hz
     val allowableRhythmMargin = 0.25
 
     /* State information about what has been compared */
 
-    var results = CompareResults()
-    var curBeatPosition : Double = 0.0
+    var results = CompareResults() //the results of the comparison
+    var curBeatPosition : Double = 0.0 //current beat position that is being compared
 
     var idealIndexPosition = 0 //the ideal index to test against, so we don't start at the beginning each time
     var testPositionIndex = 0 //don't search before here in the test positions
 
     /* End state */
 
-
+    //Comapares the ideal (which should be generated from the exercise) to the toTest
+    //which should be generated from the microphone samples
     fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
 
         for (index in idealIndexPosition until ideal.count()) {
