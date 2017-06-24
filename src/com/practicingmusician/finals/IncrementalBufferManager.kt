@@ -4,29 +4,41 @@ import com.practicingmusician.notes.Note
 
 /**
  * Created by jn on 6/23/17.
+ *
+ *
+ * This class deals with converting the microphone samples into notes and notes into samples
+ *
  */
 class IncrementalBufferManager {
 
+    //must be set so that it knows how long a beat should be
     var tempo = 0.0
 
-
+    //sample rate should be constant
     val sampleRate = 44100.0
+
+    //the minimum duration a note is assumed to be
+    //so, if there's a note that is 0.1 beats long, we assume that it's an anomaly and ignore it
     val minDurationInBeats = 0.25
 
+    //this stores the notes that have been converted from samples
     val notes = mutableListOf<Note>()
 
     /* State information about what has been converted */
 
+    //the position in the sample array that has been convered so far
     var positionInSamples = 0
-
-
 
     /* End state */
 
+    //This takes samples from the microphone and attempts to convert them into meaningful Notes
+    //It attempts to do some smart analysis, including getting rid of short values
+    //and then stitching the remaining like-values together
     fun convertSamplesBufferToNotes(samples : List<Double>) : List<Note> {
 
         val secondsPerBeat = 60.0 / tempo
 
+        //get only the samples we haven't tested yet
         val samplesSublist = samples.subList(positionInSamples,samples.count() - 1)
 
         //get the note number for each sample in the buffer
@@ -72,7 +84,6 @@ class IncrementalBufferManager {
         val flattened = groupsOfAcceptableLength.flatMap { it }
 
         //calculate the length of each group
-
         curNoteNumber = -1
         var curLengthInSamples = 0
         var avgFreq = 0.0
@@ -82,13 +93,16 @@ class IncrementalBufferManager {
             var freqFromSample = pair.first
 
             if (noteNumberFromSample != curNoteNumber) {
+                //the new note number doesn't equal that last one
                 //this is starting a new note -- put the last one in
 
                 if (curLengthInSamples > 0) {
 
+                    //find the duration
                     val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
                     val noteNum = curNoteNumber
 
+                    //calculate the average frequency
                     avgFreq = avgFreq / curLengthInSamples
 
                     val note = Note(noteNum,durationInBeats)
@@ -98,6 +112,7 @@ class IncrementalBufferManager {
                     notes.add(note)
                 }
 
+                //reset the values for the next one
                 avgFreq = 0.0
                 curLengthInSamples = -1
             }
