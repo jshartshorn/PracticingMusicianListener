@@ -206,8 +206,8 @@ var EasyScoreUtil = {
             //percentage between the elements that the beat exists in
             var percent = null
 
-            console.log("Searching for beat " + beat + " in")
-            console.log(this.exercise.rawNotes)
+            //console.log("Searching for beat " + beat + " in")
+            //console.log(this.exercise.rawNotes)
 
             for (index in this.exercise.rawNotes) {
                 var item = this.exercise.rawNotes[index]
@@ -245,7 +245,7 @@ var EasyScoreUtil = {
 
             if (percent < 0 || isNaN(percent)) percent = 0
 
-            console.log("End pos: " + currentPosition)
+            //console.log("End pos: " + currentPosition)
             return {
                 "currentItemIndex": beginningItemIndex, //item at or before the beat
                 "nextItemIndex": endingItemIndex, //item after the beat
