@@ -1,6 +1,7 @@
 package com.practicingmusician.finals
 
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.SampleCollection
 import kotlin.browser.window
 
 /**
@@ -35,7 +36,7 @@ class IncrementalBufferManager {
     //This takes samples from the microphone and attempts to convert them into meaningful Notes
     //It attempts to do some smart analysis, including getting rid of short values
     //and then stitching the remaining like-values together
-    fun convertSamplesBufferToNotes(samples : List<Double>) : List<Note> {
+    fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<Note> {
 
         val functionStartTimestamp = window.performance.now()
 
@@ -46,11 +47,16 @@ class IncrementalBufferManager {
 
         //get the note number for each sample in the buffer
         val noteNumbers = samplesSublist.map {
-            Note.getNoteNumber(it)
+            Note.getNoteNumber(it.freq)
         }
 
         //tie the samples to the note numbers, so we know which is which
-        val pairs = samplesSublist.zip(noteNumbers)
+        val collectedPairs = samplesSublist.zip(noteNumbers)
+
+        val pairs = mutableListOf<Pair<Double,Int>>()
+        collectedPairs.forEach {
+            //TODO: build it out
+        }
 
         println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 

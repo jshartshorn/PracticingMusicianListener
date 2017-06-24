@@ -10,6 +10,8 @@ external fun updatePitch(timestamp: Double) : Double
 external fun getSampleRate() : Int
 external var buflen : Int
 
+data class SampleCollection(val freq : Double, val lengthInSamples : Int)
+
 class PitchTracker : TimeKeeperSteppable {
 
     //sample rate of the microphone should be static
@@ -19,7 +21,7 @@ class PitchTracker : TimeKeeperSteppable {
     var lengthOfPrerollToIgnore = 0.0
 
     //this is assumed to start at timestamp 0
-    val samples = mutableListOf<Double>()
+    val samples = mutableListOf<SampleCollection>()
 
     fun setup() {
 
@@ -66,9 +68,10 @@ class PitchTracker : TimeKeeperSteppable {
         //Basically, if someone played the note A(440) for one second, we should have 44100 items in the samples buffer
         //that are all equal to 440.0 (or variations when the intonation varies)
         println("Filling " + samplesToFill)
-        for (i in 0 until samplesToFill.toInt()) {
-            samples.add(correlatedFrequency)
-        }
+//        for (i in 0 until samplesToFill.toInt()) {
+//            samples.add(correlatedFrequency)
+//        }
+        samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
     }
 
 
