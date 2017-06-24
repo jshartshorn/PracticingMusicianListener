@@ -5,6 +5,10 @@ import kotlin.js.Math
 
 /**
  * Created by jn on 6/23/17.
+ *
+ * This should take a given set of notes generated from the samples and compare it to the ideal
+ * (generated from the exercise)
+ *
  */
 class IncrementalComparisonEngine {
 
