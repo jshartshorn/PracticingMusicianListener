@@ -45,18 +45,17 @@ class IncrementalBufferManager {
         //get only the samples we haven't tested yet
         val samplesSublist = samples.subList(positionInSamples,samples.count() - 1)
 
+        println("Converting how many samples: " + samplesSublist.count())
+
         //get the note number for each sample in the buffer
         val noteNumbers = samplesSublist.map {
             Note.getNoteNumber(it.freq)
         }
 
         //tie the samples to the note numbers, so we know which is which
+        //first item is the SampleCollection (frequency and length), second is the note number
         val collectedPairs = samplesSublist.zip(noteNumbers)
 
-        val pairs = mutableListOf<Pair<Double,Int>>()
-        collectedPairs.forEach {
-            //TODO: build it out
-        }
 
         println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
@@ -64,19 +63,21 @@ class IncrementalBufferManager {
         positionInSamples = samples.count() - 1
 
         //this will store groups of like-numbered sample/note pairs
-        val groups = mutableListOf<List<Pair<Double,Int>>>()
+        val groups = mutableListOf<List<Pair<SampleCollection,Int>>>()
 
         //go through the pairs and group them together with like-numbered sample/note pairs
-        var curList = mutableListOf<Pair<Double,Int>>()
+        var curList = mutableListOf<Pair<SampleCollection,Int>>()
         var curNoteNumber = -1
 
-        pairs.forEach {
+        collectedPairs.forEach {
             if (it.second == curNoteNumber) {
                 curList.add(it)
             } else {
                 if (curList.count() > 0) {
                     groups.add(curList)
-                    curList = mutableListOf<Pair<Double,Int>>()
+                    console.log("Made group for " + curNoteNumber)
+                    curList.removeAll { true }
+                    //curList = mutableListOf<Pair<Double,Int>>()
                 }
             }
             curNoteNumber = it.second
@@ -88,13 +89,17 @@ class IncrementalBufferManager {
         println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
 
         //remove groups that aren't long enough
+        //TODO: Add this back in
         val groupsOfAcceptableLength = groups.filter {
-            it.count() > (secondsPerBeat * minDurationInBeats * sampleRate)
+            true
+            //it.count() > (secondsPerBeat * minDurationInBeats * sampleRate)
         }
 
         println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
 
         val flattened = groupsOfAcceptableLength.flatMap { it }
+
+        console.log(flattened)
 
         //calculate the length of each group
         curNoteNumber = -1
@@ -102,8 +107,9 @@ class IncrementalBufferManager {
         var avgFreq = 0.0
 
         for (pair in flattened) {
-            var noteNumberFromSample = pair.second
-            var freqFromSample = pair.first
+            console.log("Item")
+            val noteNumberFromSample = pair.second
+            val freqFromSample = pair.first.freq
 
             if (noteNumberFromSample != curNoteNumber) {
                 //the new note number doesn't equal that last one
@@ -122,17 +128,18 @@ class IncrementalBufferManager {
 
                     note.avgFreq = avgFreq
 
+                    console.log("Adding note")
                     notes.add(note)
                 }
 
                 //reset the values for the next one
                 avgFreq = 0.0
-                curLengthInSamples = -1
+                curLengthInSamples = 0
             }
 
-            avgFreq += freqFromSample
+            avgFreq += (freqFromSample * pair.first.lengthInSamples)
             curNoteNumber = noteNumberFromSample
-            curLengthInSamples += 1
+            curLengthInSamples += pair.first.lengthInSamples
         }
 
         //get the last item
@@ -148,7 +155,8 @@ class IncrementalBufferManager {
             notes.add(note)
         }
 
-        console.log("Turned samples into these notes: " + notes)
+        console.log("Turned samples into these notes: ")
+        console.log(notes)
 
         val functionEndTimestamp = window.performance.now()
 

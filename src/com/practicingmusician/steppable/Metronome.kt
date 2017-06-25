@@ -93,55 +93,6 @@ class Metronome : TimeKeeperSteppable {
 
     }
 
-    //NOT CURRENTLY USED
-    fun oldStep(timestamp: Double, timeKeeper: TimeKeeper) {
-        val beatSize = 1000.0 * 60.0 / tempo
-
-        if (lastBeatOccuredAt == -1.0) {
-            //this is the first run
-            println("First run")
-            lastBeatOccuredAt = timestamp - beatSize
-        }
-
-        //calculate when the new beat will happen
-        val newTime = lastBeatOccuredAt + beatSize
-
-        //how long from now will it happen
-        val difference = newTime - timestamp
-
-        var absoluteBeatPosition = timestamp / beatSize
-
-        console.log("At beat : " + absoluteBeatPosition)
-
-        updateIndicatorUI(absoluteBeatPosition)
-
-        //if the last beat hasn't even occured yet, don't bother calculating the next one
-        if (lastBeatOccuredAt > timestamp) {
-            return
-        }
-
-
-
-        audioManager.playAudio(audioKey,difference.toInt())
-
-        //TODO: Cancel these if stopped
-        val curBeatCopy = currentBeat
-        val timeoutKey = window.setTimeout({
-            updateMetronomeUI(curBeatCopy)
-        }, difference.toInt())
-
-        timeoutKeys.add(timeoutKey)
-
-        println("Going to play at " + newTime.toInt())
-
-        lastBeatOccuredAt = newTime
-
-        beatTimes.add(newTime)
-        currentBeat++
-
-
-    }
-
     fun cancelAllUIUpdates() {
         timeoutKeys.reversed().forEach {
             println("Cancelling item... $it")

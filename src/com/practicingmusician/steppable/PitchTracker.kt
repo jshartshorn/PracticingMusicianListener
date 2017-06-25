@@ -23,11 +23,18 @@ class PitchTracker : TimeKeeperSteppable {
     //this is assumed to start at timestamp 0
     val samples = mutableListOf<SampleCollection>()
 
+    /* State */
+
+    var samplesRecorded = 0
+
+    /* End state */
+
     fun setup() {
 
     }
 
     override fun start() {
+        samplesRecorded = 0
         state = TimeKeeper.TimeKeeperState.Running
     }
 
@@ -51,7 +58,7 @@ class PitchTracker : TimeKeeperSteppable {
         println("Buffer started at timestamp: " + timestampOfPitch)
 
         //timestamp at the end of the samples array
-        val currentTimestampOfSamplesBuffer = samples.count() / sampleRate * 1000.0
+        val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
 
         //remove the offset of the preroll
         var timestampOffsetWithPreroll = timestamp - lengthOfPrerollToIgnore
@@ -72,6 +79,8 @@ class PitchTracker : TimeKeeperSteppable {
 //            samples.add(correlatedFrequency)
 //        }
         samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
+
+        samplesRecorded += samplesToFill.toInt()
     }
 
 
