@@ -1,8 +1,6 @@
 package com.practicingmusician.tests
 
-import com.practicingmusician.finals.BufferManager
-import com.practicingmusician.finals.CompareEngine
-import com.practicingmusician.finals.CompareResults
+import com.practicingmusician.finals.*
 import com.practicingmusician.notes.Note
 import kotlin.browser.window
 
@@ -11,7 +9,7 @@ import kotlin.browser.window
  */
 object SliceTest {
 
-    val notes = listOf(Note(69,1.0),Note(81,1.0),Note(69,1.0),Note(81,1.0))
+    val notes = listOf(Note(69,0.5),Note(81,1.0),Note(69,1.0),Note(81,1.0))
     val tempo = 120.0
     val secondsPerBeat = 60.0 / tempo
     val sampleRate = 44100.0
@@ -45,8 +43,31 @@ object SliceTest {
 
         println("Comparing exact copies...")
 
-        //testShouldBe(CompareResults(correct = 4,attempted = 4),CompareEngine.compareNoteArrays(notes, copyWithAvgData))
+        val expectedResults = CompareResults()
+        expectedResults.correct = 4
+        expectedResults.attempted = 4
+        testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData))
 
+
+        //incremental
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        val exactCopyGenerated2 = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        val copyWithAvgData2 = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated2)
+
+        println("Comparing exact copies (incremental)...")
+
+        val expectedResults2 = CompareResults()
+        expectedResults2.correct = 4
+        expectedResults2.attempted = 4
+
+        var incrementalComparison = IncrementalComparisonEngine()
+
+        testShouldBe(expectedResults2,incrementalComparison.compareNoteArrays(notes, copyWithAvgData2))
 
 
 

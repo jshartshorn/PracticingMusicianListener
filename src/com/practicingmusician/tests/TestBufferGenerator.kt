@@ -2,6 +2,7 @@ package com.practicingmusician.tests
 
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.SampleCollection
 import kotlin.js.Math
 
 /**
@@ -11,6 +12,37 @@ object TestBufferGenerator {
 
     fun generateExactBufferFromNotes(notes : List<Note>, tempo : Double) : List<Double> {
         return BufferManager.convertNotesToSamples(notes, tempo)
+    }
+
+    fun generateExactBufferCollectionFromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
+        val samples = mutableListOf<Double>()
+        val secondsPerBeat = 60.0 / tempo
+
+
+        return notes.map {
+
+            val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * BufferManager.sampleRate).toInt())
+
+            collection
+        }
+//
+//        val noteChangeIndexes = mutableListOf<Int>()
+//        notes.forEach {
+//            noteChangeIndexes.add(samples.count())
+//            val numSamplesToCreate = it.duration * secondsPerBeat * BufferManager.sampleRate
+//            val freq = it.getFrequency()
+//            for (i in 0 until numSamplesToCreate.toInt()) {
+//                samples.add(freq)
+//            }
+//        }
+//        console.log("Note change indexes: " + noteChangeIndexes)
+//
+//        val collections = samples.map {
+//            val collection = SampleCollection(freq = it, lengthInSamples = 1)
+//            collection
+//        }
+//
+//        return collections
     }
 
     fun addAvgPitchToSamples(notes : List<Note>) : List<Note> {

@@ -43,7 +43,7 @@ class IncrementalBufferManager {
         val secondsPerBeat = 60.0 / tempo
 
         //get only the samples we haven't tested yet
-        val samplesSublist = samples.subList(positionInSamples,samples.count() - 1)
+        val samplesSublist = samples.subList(positionInSamples,samples.count())
 
         println("Converting how many samples: " + samplesSublist.count())
 
@@ -69,45 +69,37 @@ class IncrementalBufferManager {
 
         //go through the pairs and group them together with like-numbered sample/note pairs
         var curList = mutableListOf<Pair<SampleCollection,Int>>()
-        var curNoteNumber = -1
+        var curNoteNumber = Int.MIN_VALUE
+
 
         collectedPairs.forEach {
-            if (it.second == curNoteNumber) {
-                curList.add(it)
-            } else {
-                if (curList.count() > 0) {
-                    groups.add(curList)
-                    console.log("Made group for " + curNoteNumber)
-                    curList = mutableListOf<Pair<SampleCollection,Int>>()
-                }
+            if (curNoteNumber != it.second) {
+                //see if we should add it
+                groups.add(curList)
+                curList = mutableListOf()
             }
-            curNoteNumber = it.second
+            curList.add(it)
         }
-        if (curList.count() > 0) {
-            groups.add(curList)
-        }
+        groups.add(curList)
+
 
         println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
 
-//        for (pair in collectedPairs) {
-//            var note = Note(pair.second,pair.first.lengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
-//            note.avgFreq = pair.first.freq
-//            notes.add(note)
-//        }
-//
-//        console.log("Turned samples into these notes: ")
-//        console.log(notes)
-//
-//        return notes
 
         //console.log("Groups:")
         //console.log(groups)
 
         //remove groups that aren't long enough
-        //TODO: Add this back in
         val groupsOfAcceptableLength = groups.filter {
-            true
-            //it.count() > (secondsPerBeat * minDurationInBeats * sampleRate)
+            if (it.count() != 0) {
+                val lengthOfGroups = it.map { it.first.lengthInSamples / (secondsPerBeat * sampleRate) }.reduce { acc, d -> acc + d }
+                console.log("Group length " + lengthOfGroups)
+                if (lengthOfGroups > minDurationInBeats) {
+                    return@filter true
+                }
+            }
+
+            return@filter false
         }
 
         println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
