@@ -58,7 +58,9 @@ object SliceTest {
             val sublist = copyWithAvgData.subList(0,index)
             console.log("Sublist:" + sublist.count())
             console.log(sublist)
-            CompareEngine.compareNoteArrays(notes, sublist)
+
+            testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(notes,sublist))
+            //CompareEngine.compareNoteArrays(notes, sublist)
         }
 
         //testShouldBe(expectedResults,incrementalComparison.results)

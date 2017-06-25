@@ -19,11 +19,12 @@ class IncrementalComparisonEngine {
 
     /* State information about what has been compared */
 
-    var results = CompareResults() //the results of the comparison
-    var curBeatPosition : Double = 0.0 //current beat position that is being compared
+//    var results = CompareResults() //the results of the comparison
+//    var curBeatPosition : Double = 0.0 //current beat position that is being compared
+//
+//    var idealIndexPosition = 0 //the ideal index to test against, so we don't start at the beginning each time
+//    var testPositionIndex = 0 //don't search before here in the test positions
 
-    var idealIndexPosition = 0 //the ideal index to test against, so we don't start at the beginning each time
-    var testPositionIndex = 0 //don't search before here in the test positions
 
     /* End state */
 
@@ -31,11 +32,16 @@ class IncrementalComparisonEngine {
     //which should be generated from the microphone samples
     fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
 
+        val results = CompareResults()
+        var curBeatPosition : Double = 0.0
+        var lastTestedIndexInTest = -1
+
+
         val functionStartTimestamp = window.performance.now()
 
         //loop throug the ideal items to test against
         //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
-        for (index in idealIndexPosition until ideal.count()) {
+        for (index in 0 until ideal.count()) {
             var value = ideal[index]
 
             //TODO: make sure we have enough data to test against the item
@@ -52,7 +58,7 @@ class IncrementalComparisonEngine {
 
             //loop through the test items
             //don't start before the ones we've already tested (based on testPositionIndex)
-            for (i in testPositionIndex until toTest.count()) {
+            for (i in 0 until toTest.count()) {
                 val item = toTest[i]
 
                 //find the difference between the current beat position (where we are in the ideal)
@@ -70,6 +76,13 @@ class IncrementalComparisonEngine {
                 //increment the current position of toTest
                 toTestBeatPosition += item.duration
             }
+
+            if (indexOnToTest <= lastTestedIndexInTest) {
+                println("Already tested here......")
+                break
+            }
+
+            lastTestedIndexInTest = indexOnToTest
 
             println("Going to compare ideal index $index to test index $indexOnToTest")
 
