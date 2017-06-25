@@ -56,6 +56,8 @@ class IncrementalBufferManager {
         //first item is the SampleCollection (frequency and length), second is the note number
         val collectedPairs = samplesSublist.zip(noteNumbers)
 
+        console.log("Collected pairs:")
+        console.log(collectedPairs)
 
         println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
@@ -76,8 +78,7 @@ class IncrementalBufferManager {
                 if (curList.count() > 0) {
                     groups.add(curList)
                     console.log("Made group for " + curNoteNumber)
-                    curList.removeAll { true }
-                    //curList = mutableListOf<Pair<Double,Int>>()
+                    curList = mutableListOf<Pair<SampleCollection,Int>>()
                 }
             }
             curNoteNumber = it.second
@@ -87,6 +88,20 @@ class IncrementalBufferManager {
         }
 
         println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
+
+//        for (pair in collectedPairs) {
+//            var note = Note(pair.second,pair.first.lengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
+//            note.avgFreq = pair.first.freq
+//            notes.add(note)
+//        }
+//
+//        console.log("Turned samples into these notes: ")
+//        console.log(notes)
+//
+//        return notes
+
+        //console.log("Groups:")
+        //console.log(groups)
 
         //remove groups that aren't long enough
         //TODO: Add this back in
@@ -99,15 +114,16 @@ class IncrementalBufferManager {
 
         val flattened = groupsOfAcceptableLength.flatMap { it }
 
-        console.log(flattened)
+        //console.log(flattened)
 
         //calculate the length of each group
         curNoteNumber = -1
         var curLengthInSamples = 0
         var avgFreq = 0.0
 
+        //TODO: build this with lists so we can get the right duration
         for (pair in flattened) {
-            console.log("Item")
+            //console.log("Item")
             val noteNumberFromSample = pair.second
             val freqFromSample = pair.first.freq
 
@@ -128,7 +144,7 @@ class IncrementalBufferManager {
 
                     note.avgFreq = avgFreq
 
-                    console.log("Adding note")
+                    //console.log("Adding note")
                     notes.add(note)
                 }
 
