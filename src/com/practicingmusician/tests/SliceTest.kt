@@ -25,17 +25,108 @@ object SliceTest {
         }
     }
 
+    fun exactIncrementalTest() {
+        println("****** Beginning incremental test")
+        //incremental
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        println("Comparing exact copies (incremental)...")
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 4
+        expectedResults.attempted = 4
+
+        var incrementalComparison = IncrementalComparisonEngine()
+
+        testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData))
+
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+
+    }
+
+    fun rushedTest() {
+        println("****** Beginning rushed test")
+
+        val incrementalComparison = IncrementalComparisonEngine()
+
+
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val rushedNotes = listOf(Note(69,0.5),Note(81,(1.0 - incrementalComparison.allowableRhythmMargin - .01)),Note(69,1.0),Note(81,1.0))
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(rushedNotes, tempo)
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 1
+        expectedResults.attempted = 4
+
+
+        println("Comparing rushed...")
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+    }
+
+    //TODO: I think that the effect of the short notes on the starting points gets ignored, which should probably not be the case
+    fun shortNotesTest() {
+        println("****** Beginning short notes test")
+
+        val incrementalComparison = IncrementalComparisonEngine()
+
+
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val notesWithShortNotes = listOf(Note(69,0.5),Note(32,0.11),Note(81,1.0),Note(69,1.0),Note(32,0.11),Note(81,1.0))
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notesWithShortNotes, tempo)
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 4
+        expectedResults.attempted = 4
+
+
+        println("Comparing short notes...")
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+    }
+
     @JsName("runTest")
     fun runTest() : String {
 
         //setup
         Note.createAllNotes()
-        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes, tempo)
-
-
-        //TODO: uncomment testShouldBe
 
         //tests
+
+        exactIncrementalTest()
+
+
+        rushedTest()
+
+
+        shortNotesTest()
+
+        return "Done"
+
+    }
+
+    fun oldTests() {
+
+        val exerciseSamples = TestBufferGenerator.generateExactBufferFromNotes(notes, tempo)
 
         val exactCopyGenerated = BufferManager.convertSamplesBufferToNotes(exerciseSamples, tempo)
 
@@ -47,30 +138,6 @@ object SliceTest {
         expectedResults.correct = 4
         expectedResults.attempted = 4
         testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData))
-
-
-        //incremental
-        val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
-
-        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
-
-        val exactCopyGenerated2 = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
-
-        val copyWithAvgData2 = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated2)
-
-        println("Comparing exact copies (incremental)...")
-
-        val expectedResults2 = CompareResults()
-        expectedResults2.correct = 4
-        expectedResults2.attempted = 4
-
-        var incrementalComparison = IncrementalComparisonEngine()
-
-        testShouldBe(expectedResults2,CompareEngine.compareNoteArrays(notes, copyWithAvgData2))
-
-        testShouldBe(expectedResults2,incrementalComparison.compareNoteArrays(notes, copyWithAvgData2))
-
 
 
         val copyWithVariedPitch = TestBufferGenerator.addPitchVariationToSamples(exerciseSamples)
@@ -117,9 +184,6 @@ object SliceTest {
 
         //testShouldBe(CompareResults(correct = 3,attempted = 4),CompareEngine.compareNoteArrays(notes, copyWithAvgDataWithExtra))
 
-
-
-        return "Done"
     }
 
 

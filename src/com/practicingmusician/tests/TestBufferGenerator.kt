@@ -15,7 +15,6 @@ object TestBufferGenerator {
     }
 
     fun generateExactBufferCollectionFromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
-        val samples = mutableListOf<Double>()
         val secondsPerBeat = 60.0 / tempo
 
 
@@ -26,6 +25,7 @@ object TestBufferGenerator {
             collection
         }
 //
+//        val samples = mutableListOf<Double>()
 //        val noteChangeIndexes = mutableListOf<Int>()
 //        notes.forEach {
 //            noteChangeIndexes.add(samples.count())

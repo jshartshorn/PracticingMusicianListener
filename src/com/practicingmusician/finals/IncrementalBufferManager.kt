@@ -56,8 +56,8 @@ class IncrementalBufferManager {
         //first item is the SampleCollection (frequency and length), second is the note number
         val collectedPairs = samplesSublist.zip(noteNumbers)
 
-        console.log("Collected pairs:")
-        console.log(collectedPairs)
+        //console.log("Collected pairs:")
+        //console.log(collectedPairs)
 
         println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
@@ -71,7 +71,6 @@ class IncrementalBufferManager {
         var curList = mutableListOf<Pair<SampleCollection,Int>>()
         var curNoteNumber = Int.MIN_VALUE
 
-
         collectedPairs.forEach {
             if (curNoteNumber != it.second) {
                 //see if we should add it
@@ -79,12 +78,11 @@ class IncrementalBufferManager {
                 curList = mutableListOf()
             }
             curList.add(it)
+            curNoteNumber = it.second
         }
         groups.add(curList)
 
-
         println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
-
 
         //console.log("Groups:")
         //console.log(groups)
@@ -92,9 +90,9 @@ class IncrementalBufferManager {
         //remove groups that aren't long enough
         val groupsOfAcceptableLength = groups.filter {
             if (it.count() != 0) {
-                val lengthOfGroups = it.map { it.first.lengthInSamples / (secondsPerBeat * sampleRate) }.reduce { acc, d -> acc + d }
-                console.log("Group length " + lengthOfGroups)
-                if (lengthOfGroups > minDurationInBeats) {
+                val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
+                console.log("Group length " + lengthOfGroupsInSamples)
+                if (lengthOfGroupsInSamples > (secondsPerBeat * minDurationInBeats * sampleRate)) {
                     return@filter true
                 }
             }
@@ -113,7 +111,6 @@ class IncrementalBufferManager {
         var curLengthInSamples = 0
         var avgFreq = 0.0
 
-        //TODO: build this with lists so we can get the right duration
         for (pair in flattened) {
             //console.log("Item")
             val noteNumberFromSample = pair.second
