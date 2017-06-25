@@ -67,6 +67,8 @@ object SliceTest {
 
         var incrementalComparison = IncrementalComparisonEngine()
 
+        testShouldBe(expectedResults2,CompareEngine.compareNoteArrays(notes, copyWithAvgData2))
+
         testShouldBe(expectedResults2,incrementalComparison.compareNoteArrays(notes, copyWithAvgData2))
 
 

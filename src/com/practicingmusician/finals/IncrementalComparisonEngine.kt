@@ -86,8 +86,9 @@ class IncrementalComparisonEngine {
                 continue
             }
 
+            //TODO: For speed reasons, do I need to implement this again?
             //don't test before this index later on
-            testPositionIndex = indexOnToTest
+            //testPositionIndex = indexOnToTest
 
             //no matter what happens, we know it's an attempt
             results.attempted += 1
