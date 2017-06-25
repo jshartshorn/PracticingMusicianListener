@@ -2,6 +2,7 @@ package com.practicingmusician.tests
 
 import com.practicingmusician.finals.*
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.SampleCollection
 import kotlin.browser.window
 
 /**
@@ -25,12 +26,51 @@ object SliceTest {
         }
     }
 
-    fun trueIncrementalBufferTest() {
+    fun trueIncrementalBufferAndComparisonTest() {
         //TODO: implement
     }
 
-    fun trueIncrementalBufferAndComparisonTest() {
-        //TODO: implement
+    fun trueIncrementalBufferTest() {
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionWithSize1FromNotes(notes, tempo)
+
+        console.log("Starting with " + exerciseSamplesCollection.count())
+
+        var runningListOfSampleCollections = mutableListOf<SampleCollection>()
+
+        //incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        var curSampleIndex = 0
+        var sampleSliceSize = 700
+        while(true) {
+            var endIndex = curSampleIndex + sampleSliceSize
+            if (endIndex >= exerciseSamplesCollection.count()) {
+                endIndex = exerciseSamplesCollection.count()
+            }
+
+            val sliceOfSamples = exerciseSamplesCollection.subList(curSampleIndex,endIndex)
+
+            //console.log("Slice:" + sliceOfSamples.count())
+            //console.log(sliceOfSamples.toList())
+
+            runningListOfSampleCollections.addAll(sliceOfSamples)
+
+            incrementalBufferManager.positionInSamples = 0
+            val notes = incrementalBufferManager.convertSamplesBufferToNotes(runningListOfSampleCollections)
+
+            curSampleIndex += sampleSliceSize
+
+            if (endIndex == exerciseSamplesCollection.count()) {
+                break
+            }
+
+            console.log("Notes after slicing:")
+            console.log(notes)
+        }
+
+
     }
 
     fun trueIncrementalComparisonTest() {

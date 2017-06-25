@@ -24,7 +24,7 @@ class IncrementalBufferManager {
     val minDurationInBeats = 0.25
 
     //this stores the notes that have been converted from samples
-    val notes = mutableListOf<Note>()
+
 
     /* State information about what has been converted */
 
@@ -37,6 +37,8 @@ class IncrementalBufferManager {
     //It attempts to do some smart analysis, including getting rid of short values
     //and then stitching the remaining like-values together
     fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<Note> {
+
+        val notes = mutableListOf<Note>()
 
         val functionStartTimestamp = window.performance.now()
 

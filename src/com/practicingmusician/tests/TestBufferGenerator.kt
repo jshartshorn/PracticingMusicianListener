@@ -14,35 +14,41 @@ object TestBufferGenerator {
         return BufferManager.convertNotesToSamples(notes, tempo)
     }
 
+    fun generateExactBufferCollectionWithSize1FromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
+        val secondsPerBeat = 60.0 / tempo
+
+        val samples = mutableListOf<Double>()
+        val noteChangeIndexes = mutableListOf<Int>()
+        notes.forEach {
+            noteChangeIndexes.add(samples.count())
+            val numSamplesToCreate = it.duration * secondsPerBeat * BufferManager.sampleRate
+            val freq = it.getFrequency()
+            for (i in 0 until numSamplesToCreate.toInt()) {
+                samples.add(freq)
+            }
+        }
+        console.log("Note change indexes: " + noteChangeIndexes)
+
+        val collections = samples.map {
+            val collection = SampleCollection(freq = it, lengthInSamples = 1)
+            collection
+        }
+
+        return collections
+    }
+
     fun generateExactBufferCollectionFromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
         val secondsPerBeat = 60.0 / tempo
 
 
-        return notes.map {
+        var notesMap = notes.map {
 
             val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * BufferManager.sampleRate).toInt())
 
             collection
         }
-//
-//        val samples = mutableListOf<Double>()
-//        val noteChangeIndexes = mutableListOf<Int>()
-//        notes.forEach {
-//            noteChangeIndexes.add(samples.count())
-//            val numSamplesToCreate = it.duration * secondsPerBeat * BufferManager.sampleRate
-//            val freq = it.getFrequency()
-//            for (i in 0 until numSamplesToCreate.toInt()) {
-//                samples.add(freq)
-//            }
-//        }
-//        console.log("Note change indexes: " + noteChangeIndexes)
-//
-//        val collections = samples.map {
-//            val collection = SampleCollection(freq = it, lengthInSamples = 1)
-//            collection
-//        }
-//
-//        return collections
+
+        return notesMap
     }
 
     fun addAvgPitchToSamples(notes : List<Note>) : List<Note> {
