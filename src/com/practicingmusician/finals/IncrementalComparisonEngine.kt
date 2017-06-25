@@ -42,7 +42,7 @@ class IncrementalComparisonEngine {
 
 
             //TODO: okay, we have enough to test, so set the new idealIndexPosition
-            idealIndexPosition = index
+            //idealIndexPosition = index
 
             //find the corresponding item in toTest based on our beat position
             var indexOnToTest = -1 //this will store the index on toTest that we will compare

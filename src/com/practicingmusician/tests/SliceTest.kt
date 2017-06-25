@@ -25,8 +25,16 @@ object SliceTest {
         }
     }
 
-    fun exactIncrementalTestInBulk() {
-        println("****** Beginning incremental test")
+    fun trueIncrementalBufferTest() {
+        //TODO: implement
+    }
+
+    fun trueIncrementalBufferAndComparisonTest() {
+        //TODO: implement
+    }
+
+    fun trueIncrementalComparisonTest() {
+        println("****** Beginning true incremental test")
         //incremental
         val incrementalBufferManager = IncrementalBufferManager()
         incrementalBufferManager.tempo = tempo
@@ -43,7 +51,39 @@ object SliceTest {
         expectedResults.correct = 4
         expectedResults.attempted = 4
 
-        var incrementalComparison = IncrementalComparisonEngine()
+
+        val incrementalComparison = IncrementalComparisonEngine()
+
+        for (index in 0..copyWithAvgData.count()) {
+            val sublist = copyWithAvgData.subList(0,index)
+            console.log("Sublist:" + sublist.count())
+            console.log(sublist)
+            CompareEngine.compareNoteArrays(notes, sublist)
+        }
+
+        //testShouldBe(expectedResults,incrementalComparison.results)
+
+    }
+
+    fun exactIncrementalTestInBulk() {
+        println("****** Beginning incremental bulk test")
+        //incremental
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        println("Comparing exact copies (incremental)...")
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 4
+        expectedResults.attempted = 4
+
+        val incrementalComparison = IncrementalComparisonEngine()
 
         testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData))
 
@@ -147,6 +187,10 @@ object SliceTest {
         sharpTest()
 
         shortNotesTest()
+
+        trueIncrementalComparisonTest()
+
+        trueIncrementalBufferTest()
 
         return "Done"
 
