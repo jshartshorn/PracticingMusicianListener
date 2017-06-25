@@ -47,7 +47,9 @@ object TestBufferGenerator {
 
     fun addAvgPitchToSamples(notes : List<Note>) : List<Note> {
         return notes.map {
-            it.avgFreq = it.getFrequency()
+            if (it.avgFreq == null) {
+                it.avgFreq = it.getFrequency()
+            }
             it
         }
     }

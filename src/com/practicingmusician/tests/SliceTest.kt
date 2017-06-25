@@ -25,7 +25,7 @@ object SliceTest {
         }
     }
 
-    fun exactIncrementalTest() {
+    fun exactIncrementalTestInBulk() {
         println("****** Beginning incremental test")
         //incremental
         val incrementalBufferManager = IncrementalBufferManager()
@@ -49,6 +49,33 @@ object SliceTest {
 
         testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
 
+    }
+
+    fun sharpTest() {
+        println("****** Beginning sharp test")
+        val incrementalComparison = IncrementalComparisonEngine()
+
+
+        //incremental
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        exactCopyGenerated[1].avgFreq = exactCopyGenerated[1].getFrequency() + incrementalComparison.allowableFreqencyMargin + 1
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        println("Comparing sharp copy...")
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 3
+        expectedResults.attempted = 4
+
+
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
     }
 
     fun rushedTest() {
@@ -112,11 +139,12 @@ object SliceTest {
 
         //tests
 
-        exactIncrementalTest()
+        exactIncrementalTestInBulk()
 
 
         rushedTest()
 
+        sharpTest()
 
         shortNotesTest()
 
