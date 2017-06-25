@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practicing Musician</title>
+
+    <link rel="stylesheet" type="text/css" href="css/notation.css">
+
+
+    <script type="text/javascript" src="js/kotlin.js"></script>
+    <script type="text/javascript" src="js/practicingmusician.js"></script>
+
+    <script src="js/audio.js"></script>
+
+    <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
+    <script src="js/easyscore_util.js"></script>
+    <script src="js/app_js_functions.js"></script>
+</head>
+<body>
+
+<div id="notationWindow">
+    <div id="notationHeader">
+        <span id="settingsButton"></span>
+        <span id="playPauseButton" onclick="javascript:PracticingMusician.app.toggleState()"></span>
+        <span id="repeatButton"></span>
+
+        <div id="metronomeContainer">
+            <div id="metronomeItems">
+                <span class="metronomeItem highlighted"></span>
+                <span class="metronomeItem"></span>
+                <span class="metronomeItem"></span>
+                <span class="metronomeItem"></span>
+            </div>
+            <span id="tempoMarking">80<br/>BPM</span>
+        </div>
+
+        <span id="medalIndicator"></span>
+        <span id="exitFullScreenButton"></span>
+    </div>
+    <div id="notationBody">
+        <canvas id="notationCanvas" width="1024" height="300"></canvas>
+        <canvas id="feedbackCanvas" width="1024" height="300"></canvas>
+        <canvas id="indicatorCanvas" width="1024" height="300"></canvas>
+    </div>
+</div>
+<script src="js/exercises/FMajorScale.js"></script>
+<script>
+        generatedExercise = generateKotlinExercise()
+        PracticingMusician.app.exerciseManager.loadExercise()
+        function getExerciseNotes() {
+            var notes = EasyScoreUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
+            return notes
+        }
+</script>
+<script src="js/index.js"></script>
+
+</body>
+</html>
