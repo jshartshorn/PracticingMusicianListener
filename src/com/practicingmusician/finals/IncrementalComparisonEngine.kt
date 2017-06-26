@@ -131,10 +131,10 @@ class IncrementalComparisonEngine {
             //test the durations of the notes
             if (idealItem.duration - testItem.note.duration > allowableRhythmMargin) {
                 println("Test subject too short")
-                isCorrect = false
+                //isCorrect = false
             } else if (idealItem.duration - testItem.note.duration < -allowableRhythmMargin) {
                 println("Test subject too long")
-                isCorrect = false
+                //isCorrect = false
             } else {
                 println("PERFECT")
             }

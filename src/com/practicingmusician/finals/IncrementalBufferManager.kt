@@ -240,8 +240,10 @@ class IncrementalBufferManager {
 //            notes.add(note)
 //        }
 
-        console.log("Turned samples into these notes: ")
-        console.log(notes)
+        console.log("Turned samples into these notes (before purging): ")
+        notes.forEach {
+            println("Note: " + it.noteNumber + " for " + it.duration)
+        }
 
         val lengthOfNotesInBeats = notes.map { it.duration }.reduce { acc, d -> acc + d }
         println("Length of notes in beats: $lengthOfNotesInBeats")
