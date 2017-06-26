@@ -30,6 +30,11 @@ function highlightMetronomeItem(itemNumber) {
 function clearFeedbackItems() {
     console.log("Clearing")
     feedbackCanvas.getContext("2d").clearRect(0,0,feedbackCanvas.width,feedbackCanvas.height)
+
+    var items = document.getElementsByClassName('feedbackItem');
+    while(items[0]) {
+        items[0].parentNode.removeChild(items[0])
+    }
 }
 
 //add a feedback item to a certain beat
@@ -37,4 +42,5 @@ function addFeedbackItem(beat,item) {
     var positionX = EasyScoreUtil.getPositionForBeat(beat)
     var positionY = EasyScoreUtil.getFeedbackYPosition()
     EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,item,positionX,positionY)
+    EasyScoreUtil.createFeedbackHTMLElement(item,positionX,positionY)
 }

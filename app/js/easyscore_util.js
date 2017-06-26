@@ -278,4 +278,14 @@ var EasyScoreUtil = {
 //                        	   ctx.stroke();
     },
 
+    createFeedbackHTMLElement(feedbackItemType,x,y) {
+        var obj = document.createElement('div');
+        obj.className = "feedbackItem"
+        obj.textContent = feedbackItemType
+        obj.style.position = "absolute"
+        obj.style.top = "" + y + "px"
+        obj.style.left = "" + x - (16 / 2) + "px"
+        document.getElementById("notationBody").appendChild(obj)
+    },
+
 }

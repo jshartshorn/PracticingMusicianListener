@@ -16,6 +16,21 @@ div#notationHeader {
     align-items: center;
 }
 
+div#notationBody {
+    width: 100%;
+    position: relative;
+}
+
+div#notationBody canvas {
+    position: absolute;
+}
+
+div.feedbackItem {
+    width: 16px;
+    height: 16px;
+    background-color: #CCC;
+}
+
 /* header buttons */
 
 span#settingsButton, span#playPauseButton, span#repeatButton, span#medalIndicator, span#exitFullScreenButton {
@@ -81,12 +96,4 @@ span.metronomeItem.highlighted {
     height: 24px;
     border-radius: 12px;
     background-color: #AD6039;
-}
-
-div#notationBody {
-    width: 100%;
-}
-
-div#notationBody canvas {
-    position: absolute;
 }
