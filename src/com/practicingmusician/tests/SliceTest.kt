@@ -35,7 +35,7 @@ object SliceTest {
         val pt = PitchTracker()
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
 
-        val latencyTime = 0
+        val latencyTime = 0//180
 
         var timestamp = 0.0
 

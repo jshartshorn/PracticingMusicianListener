@@ -161,7 +161,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             bufferManager.tempo = it.tempo
 
             //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
-            timeKeeper.runForTime = it.getLength() + it.prerollLength()
+            timeKeeper.runForTime = it.getLength() + it.prerollLength() + pitchTracker.latencyTime
 
             //don't track pitch during the preroll countoff
             pitchTracker.lengthOfPrerollToIgnore = it.prerollLength()

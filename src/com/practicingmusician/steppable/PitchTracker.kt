@@ -21,6 +21,8 @@ class PitchTracker : TimeKeeperSteppable {
     //length of the preroll to ignore before we start tracking the pitch
     var lengthOfPrerollToIgnore = 0.0
 
+    val latencyTime = 180
+
     //this is assumed to start at timestamp 0
     val samples = mutableListOf<SampleCollection>()
 
@@ -53,7 +55,6 @@ class PitchTracker : TimeKeeperSteppable {
         println("Pitch: " + correlatedFrequency)
         val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) //this result is in seconds
 
-        val latencyTime = 180
         stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, latencyTime, timeKeeper)
     }
 
