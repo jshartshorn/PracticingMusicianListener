@@ -30,6 +30,10 @@ var EasyScoreUtil = {
     voice: null,
     beam: null,
 
+    canvasWidth: 1024,
+    barWidth : 160,
+    firstBarWidth: 220,
+
     //counter so that we can get an individual ID for each note
     noteIDNumber: 0,
 
@@ -39,8 +43,14 @@ var EasyScoreUtil = {
 
     //setup the basic notation stuff
     setupOnElement: function(elementID) {
+        var totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarWidth - this.barWidth
+
+        this.scorePositionX = (this.canvasWidth / 2) - (totalWidthWillBe / 2)
+
+        console.log("Total width will be " + totalWidthWillBe)
+
         this.vf = new Vex.Flow.Factory({
-                renderer: {selector: elementID, width: 1100, height: 900}
+                renderer: {selector: elementID, width: this.canvasWidth, height: 400}
                 });
 
         this.registry = new VF.Registry();

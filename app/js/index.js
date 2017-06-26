@@ -27,11 +27,11 @@ PracticingMusician.app.exerciseManager.loadExercise()
 
 var exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
 
-//setup the score
-EasyScoreUtil.setupOnElement("notationWindow")
-
 //make sure it has a reference to the loaded exercise
 EasyScoreUtil.exercise = exercise
+
+//setup the score
+EasyScoreUtil.setupOnElement("notationBody")
 
 //notate it
 EasyScoreUtil.notateExercise()
