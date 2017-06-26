@@ -157,7 +157,10 @@ class IncrementalBufferManager {
             curNoteNumber = it.second
         }
         //add the last remaining one
-        noteList.add(Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)))
+        var lastNote = Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
+        avgFreq = avgFreq / curLengthInSamples
+        lastNote.avgFreq = avgFreq
+        noteList.add(lastNote)
 
         //get rid of the notes that are listed as -1
         notes.addAll(noteList.filter { it.noteNumber != -1 })
