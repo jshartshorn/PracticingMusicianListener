@@ -140,11 +140,6 @@ object SliceTest {
 
         println("Comparing exact copies (incremental)...")
 
-        val expectedResults = CompareResults()
-        expectedResults.correct = 4
-        expectedResults.attempted = 4
-
-
         val incrementalComparison = IncrementalComparisonEngine()
 
         for (index in 0..copyWithAvgData.count()) {
@@ -302,11 +297,12 @@ object SliceTest {
 
         shortNotesTest()
 
-        //trueIncrementalComparisonTest()
-
         //trueIncrementalBufferTest()
 
         pitchTrackerTest()
+
+        trueIncrementalComparisonTest()
+
 
         return "Done"
 

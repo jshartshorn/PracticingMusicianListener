@@ -215,16 +215,15 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     //called from timeKeeper.analyzers
     override fun analyze(timestamp: Double) {
         //TODO: analyze
-        return
+        //return
 
-        if (timestamp - lastAnalysisTimestamp > 500) {
+        if (timestamp - lastAnalysisTimestamp > 200) {
             lastAnalysisTimestamp = timestamp
         } else {
             return
         }
         println("Analyzing at " + timestamp)
 
-        //TODO: probably don't want to do this every frame -- maybe every .5 seconds?
         currentExercise?.let {
 
             println("Samples length: " + pitchTracker.samples.count())

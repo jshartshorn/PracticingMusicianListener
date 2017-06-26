@@ -38,6 +38,11 @@ class IncrementalComparisonEngine {
         var lastTestedIndexInTest = -1
 
 
+        var doNotTestBeyond = 0.0
+        if (toTest.count() > 0) {
+            doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
+        }
+
         val functionStartTimestamp = window.performance.now()
 
         //loop throug the ideal items to test against
@@ -79,8 +84,14 @@ class IncrementalComparisonEngine {
                 //increment the current position of toTest
             }
 
+            if (curBeatPosition >= doNotTestBeyond) {
+                println("Too far")
+                break
+            }
+
             if (indexOnToTest <= lastTestedIndexInTest) {
-                println("Already tested here......")
+                println("Already tested here...... $indexOnToTest <= $lastTestedIndexInTest")
+                //TODO: Fix this? -- need new method for seeing how far to test
                 //break
             }
 
