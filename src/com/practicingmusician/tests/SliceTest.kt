@@ -226,7 +226,7 @@ object SliceTest {
         val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
 
         val expectedResults = CompareResults()
-        expectedResults.correct = 1
+        expectedResults.correct = 2
         expectedResults.attempted = 4
 
 

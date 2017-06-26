@@ -11,6 +11,7 @@ import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
+import kotlin.browser.window
 
 external object VexFlowUtil
 external fun addFeedbackItem(beat : Double, item : String)
@@ -100,18 +101,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
-                println("Results $results")
-
-//                comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer.subList(0,2)).feedbackItems.forEach {
-//                    val beat = it.beat
-//                    println("Feedback item at $beat")
-//                    addFeedbackItem(beat,it.feedbackItemType)
-//                }
-//                comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer.subList(2,notesFromSamplesBuffer.count() - 1)).feedbackItems.forEach {
-//                    val beat = it.beat
-//                    println("Feedback item at $beat")
-//                    addFeedbackItem(beat,it.feedbackItemType)
-//                }
 
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
@@ -120,6 +109,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                     addFeedbackItem(beat,it.feedbackItemType)
                 }
 
+                window.alert("Your results are: " + results.correct + "/" + results.attempted)
             }
         }
 
