@@ -1,4 +1,12 @@
 
+function getExerciseNotes() {
+    var notes = EasyScoreUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
+    return notes
+}
+
+generatedExercise = generateKotlinExercise()
+PracticingMusician.app.exerciseManager.loadExercise()
+
 var exercise = getExerciseNotes(); //pulls from the loaded js file
 
 //setup the score
