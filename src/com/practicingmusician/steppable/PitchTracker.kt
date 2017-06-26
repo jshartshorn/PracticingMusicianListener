@@ -53,12 +53,13 @@ class PitchTracker : TimeKeeperSteppable {
         println("Pitch: " + correlatedFrequency)
         val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) //this result is in seconds
 
-        stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, timeKeeper)
+        val latencyTime = 180
+        stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, latencyTime, timeKeeper)
     }
 
-    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBufferInSamples : Double, timeKeeper: TimeKeeper) {
+    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBufferInSamples : Double, latencyTime : Int, timeKeeper: TimeKeeper) {
 
-        val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0)
+        val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0) - latencyTime
 
         println("Timestamp that the buffer starts at $timestampOfPitch")
 
@@ -77,7 +78,7 @@ class PitchTracker : TimeKeeperSteppable {
             return
         }
 
-        println("Filling " + samplesToFill)
+        println("Filling " + samplesToFill + " with $correlatedFrequency")
 
         samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
 

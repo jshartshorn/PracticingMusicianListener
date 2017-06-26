@@ -31,9 +31,11 @@ object SliceTest {
     fun pitchTrackerTest() {
         println("***** Pitch tracker test")
 
-        var timekeeper = TimeKeeper()
-        var pt = PitchTracker()
+        val timekeeper = TimeKeeper()
+        val pt = PitchTracker()
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        val latencyTime = 0
 
         var timestamp = 0.0
 
@@ -41,7 +43,7 @@ object SliceTest {
         pt.lengthOfPrerollToIgnore = secondsPerBeat * 4 * 1000.0
 
         println("Sending preroll")
-        pt.stepWithFrequency(pt.lengthOfPrerollToIgnore,1.0,pt.lengthOfPrerollToIgnore * 44.1, timekeeper)
+        pt.stepWithFrequency(pt.lengthOfPrerollToIgnore,1.0,pt.lengthOfPrerollToIgnore * 44.1, latencyTime,timekeeper)
 
         timestamp = pt.lengthOfPrerollToIgnore
 
@@ -50,7 +52,7 @@ object SliceTest {
         for (item in exerciseSamplesCollection) {
             timestamp += item.lengthInSamples / 44100.0 * 1000.0
             println("sending " + item.lengthInSamples + " at $timestamp")
-            pt.stepWithFrequency(timestamp,item.freq,item.lengthInSamples.toDouble(),timekeeper)
+            pt.stepWithFrequency(timestamp,item.freq,item.lengthInSamples.toDouble(),latencyTime,timekeeper)
             println("--------")
         }
 

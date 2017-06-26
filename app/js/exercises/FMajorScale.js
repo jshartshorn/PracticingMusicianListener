@@ -2,7 +2,7 @@ var generatedExercise = null
 
 function generateKotlinExercise() {
     var exercise = new PracticingMusician.com.practicingmusician.exercises.ExerciseDefinition()
-    exercise.tempo = 110.0;
+    exercise.tempo = 120.0;
     exercise.notationItems.add_11rb$(new PracticingMusician.com.practicingmusician.notes.Note(65, 1.0, 'F4/q'));
     exercise.notationItems.add_11rb$(new PracticingMusician.com.practicingmusician.notes.Note(67, 1.0, 'G4/q'));
     exercise.notationItems.add_11rb$(new PracticingMusician.com.practicingmusician.notes.Note(69, 1.0, 'A4/q'));
