@@ -2,7 +2,9 @@ package com.practicingmusician.tests
 
 import com.practicingmusician.finals.*
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.SampleCollection
+import com.practicingmusician.steppable.TimeKeeper
 import kotlin.browser.window
 
 /**
@@ -24,6 +26,25 @@ object SliceTest {
             window.alert("Failed")
             println("----- ***** FAILED ****** -----")
         }
+    }
+
+    fun pitchTrackerTest() {
+        var timekeeper = TimeKeeper()
+        var pt = PitchTracker()
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        var timestamp = 0.0
+        pt.stepWithFrequency(timestamp,0.0,0.0,timekeeper)
+        for (item in exerciseSamplesCollection) {
+            println("sending " + item.lengthInSamples + "at $timestamp")
+            pt.stepWithFrequency(timestamp,item.freq,item.lengthInSamples.toDouble(),timekeeper)
+            timestamp += item.lengthInSamples / 44100.0 * 1000.0
+            println("--------")
+        }
+
+        val originalSampleLength = exerciseSamplesCollection.map { it.lengthInSamples }.reduce { acc, i -> acc + i }
+        val pitchTrackerSamplesLength = pt.samples.map { it.lengthInSamples }.reduce { acc, i -> acc + i  }
+        println("Sample lengths :  $originalSampleLength | $pitchTrackerSamplesLength")
     }
 
     fun trueIncrementalBufferAndComparisonTest() {
@@ -251,6 +272,8 @@ object SliceTest {
         //trueIncrementalComparisonTest()
 
         //trueIncrementalBufferTest()
+
+        pitchTrackerTest()
 
         return "Done"
 

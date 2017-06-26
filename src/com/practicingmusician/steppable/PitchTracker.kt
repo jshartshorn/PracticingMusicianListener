@@ -8,7 +8,8 @@ package com.practicingmusician.steppable
 external fun setupMedia()
 external fun updatePitch(timestamp: Double) : Double
 external fun getSampleRate() : Int
-external var buflen : Int
+
+var buflen : Int = 1024
 
 data class SampleCollection(val freq : Double, val lengthInSamples : Int)
 
@@ -50,21 +51,29 @@ class PitchTracker : TimeKeeperSteppable {
         val correlatedFrequency = com.practicingmusician.steppable.updatePitch(timestamp)
         println("Timestamp: " + timestamp)
         println("Pitch: " + correlatedFrequency)
+        val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) //this result is in seconds
 
+        stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, timeKeeper)
+    }
+
+    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBuffer : Double, timeKeeper: TimeKeeper) {
         //the pitch for the buffer of length buflen was ac -- we should store that time
-        val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) / com.practicingmusician.steppable.getSampleRate().toDouble() //this result is in seconds
-        val timestampOfPitch = timestamp - lengthOfBuffer * 1000.0 //convert seconds to MS
+        val timestampOfPitch = timestamp - (lengthOfBuffer / 44100.0 * 1000.0) //convert seconds to MS
 
         println("Buffer started at timestamp: " + timestampOfPitch)
 
         //timestamp at the end of the samples array
         val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
 
+        println("Current timestamp of samples buffer : $currentTimestampOfSamplesBuffer")
+
         //remove the offset of the preroll
         var timestampOffsetWithPreroll = timestamp - lengthOfPrerollToIgnore
 
+        println("Timestamp offset with preroll $timestampOffsetWithPreroll")
+
         //the number of samples that we should fill with the new frequency value
-        val samplesToFill = (timestampOffsetWithPreroll - currentTimestampOfSamplesBuffer) * sampleRate / 1000.0
+        val samplesToFill = lengthOfBuffer - samplesRecorded + timestamp * 44.1 //TODO: Timestamp of pitch?
 
         if (samplesToFill < 0) {
             println("Not filling yet...")
@@ -82,6 +91,5 @@ class PitchTracker : TimeKeeperSteppable {
 
         samplesRecorded += samplesToFill.toInt()
     }
-
 
 }

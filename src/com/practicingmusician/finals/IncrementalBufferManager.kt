@@ -73,8 +73,6 @@ class IncrementalBufferManager {
 
         println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
-        //update our counter
-        positionInSamples = samples.count() - 1
 
         //this will store groups of like-numbered sample/note pairs
         val groups = mutableListOf<List<Pair<SampleCollection,Int>>>()
@@ -122,7 +120,7 @@ class IncrementalBufferManager {
 //            return@filter false
 //        }
 
-        var bogusNoteNumber = -100
+        val BOGUS_NOTE_NUMBER = -100
 
         val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
             val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
@@ -130,7 +128,7 @@ class IncrementalBufferManager {
             if (lengthOfGroupsInSamples < (secondsPerBeat * minDurationInBeats * sampleRate)) {
                 println("Under threshold")
                 return@map it.map {
-                    Pair(it.first,bogusNoteNumber)
+                    Pair(it.first,BOGUS_NOTE_NUMBER)
                 }
             } else {
                 return@map it
@@ -186,12 +184,12 @@ class IncrementalBufferManager {
 
         notes.addAll(noteList.filter { it.noteNumber != -1 })
 
-        var pos = 0.0
-        var notePlacements = notes.map {
-            var np =  NotePlacement(it, pos)
+        var pos = 0.0 //- (0.3 / secondsPerBeat)
+        val notePlacements = notes.map {
+            val np =  NotePlacement(it, pos)
             pos += it.duration
             return@map np
-        }.filter { it.note.noteNumber != bogusNoteNumber  }
+        }.filter { it.note.noteNumber != BOGUS_NOTE_NUMBER  }
 
 //        for (pair in flattened) {
 //            //console.log("Item")
