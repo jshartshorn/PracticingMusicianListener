@@ -14,8 +14,9 @@ import kotlin.js.Math
 class IncrementalComparisonEngine {
 
     //the margins in which a note can vary from the ideal and still be considered acceptable
-    val allowableFreqencyMargin = 10.0 //TODO: this should be cents, not hz
+    val allowableFreqencyMargin = 20.0 //TODO: this should be cents, not hz
     val allowableRhythmMargin = 0.25
+    val allowableLengthMargin = 0.25 //TODO: use this
 
     /* State information about what has been compared */
 
@@ -172,6 +173,8 @@ class IncrementalComparisonEngine {
                 }
             }
 
+            feedbackItem.feedbackItemType = "" + testItem.noteNumber
+
             //increment the current position based on the duration of the ideal
             curBeatPosition += value.duration
 
@@ -179,6 +182,7 @@ class IncrementalComparisonEngine {
             if (isCorrect)
                 results.correct += 1
         }
+
 
         println("---- Results : " + results.correct + "/" + results.attempted)
 

@@ -52,6 +52,10 @@ class IncrementalBufferManager {
 
         println("Converting how many samples: " + samplesSublist.count())
 
+        val lengthOfSamplesInBeats = (samplesSublist.map { it.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
+
+        println("Total length of samples in beats: $lengthOfSamplesInBeats")
+
         //get the note number for each sample in the buffer
         val noteNumbers = samplesSublist.map {
             Note.getNoteNumber(it.freq)
@@ -89,11 +93,21 @@ class IncrementalBufferManager {
 
         println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
 
+        val lengthOfCollectedPairsInBeats = (collectedPairs.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
+
+        println("Total length of collected pairs in beats: $lengthOfCollectedPairsInBeats")
+
+        val lengthOfGroupsInBeats = (groups.flatMap { it }.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
+
+        println("Total length of groups: $lengthOfGroupsInBeats")
+
         //console.log("Groups:")
         //console.log(groups)
 
         //remove groups that aren't long enough
         val groupsOfAcceptableLength = groups.filter {
+            //return@filter true
+
             if (it.count() != 0) {
                 val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
                 //console.log("Group length " + lengthOfGroupsInSamples)
@@ -108,6 +122,11 @@ class IncrementalBufferManager {
         println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
 
         val flattened = groupsOfAcceptableLength.flatMap { it }
+
+        val lengthOfAcceptableGroupsInBeats = (flattened.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
+
+        println("Total length of acceptable groups pairs in beats: $lengthOfAcceptableGroupsInBeats")
+
 
         //console.log(flattened)
 
@@ -167,6 +186,9 @@ class IncrementalBufferManager {
 
         console.log("Turned samples into these notes: ")
         console.log(notes)
+
+        val lengthOfNotesInBeats = notes.map { it.duration }.reduce { acc, d -> acc + d }
+        println("Length of notes in beats: $lengthOfNotesInBeats")
 
         val functionEndTimestamp = window.performance.now()
 
