@@ -81,7 +81,7 @@ class IncrementalComparisonEngine {
 
             if (indexOnToTest <= lastTestedIndexInTest) {
                 println("Already tested here......")
-                break
+                //break
             }
 
             lastTestedIndexInTest = indexOnToTest

@@ -172,11 +172,14 @@ class IncrementalBufferManager {
         flattened.forEach {
             if (curNoteNumber != it.second) {
                 var note = Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
+                avgFreq = avgFreq / curLengthInSamples
+                note.avgFreq = avgFreq
                 noteList.add(note)
                 curLengthInSamples = 0
-                //TODO: avg freq
+                avgFreq = 0.0
             }
             curLengthInSamples += it.first.lengthInSamples
+            avgFreq += (it.first.freq *it.first.lengthInSamples)
             curNoteNumber = it.second
         }
         noteList.add(Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)))
