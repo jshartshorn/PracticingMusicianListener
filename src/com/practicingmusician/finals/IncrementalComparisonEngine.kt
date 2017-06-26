@@ -59,7 +59,7 @@ class IncrementalComparisonEngine {
             //find the corresponding item in toTest based on our beat position
             var indexOnToTest = -1 //this will store the index on toTest that we will compare
             var toTestBeatPositionAtIndexToTest = 0.0 //the beat position at that index
-            var toTestBeatPosition = 0.0 //the current beat position on toTest
+            var toTestBeatPosition : Double //the current beat position on toTest
             var diffFromIdealBeatPosition = Double.MAX_VALUE //the difference in position from the ideal to the test subject
 
             //loop through the test items

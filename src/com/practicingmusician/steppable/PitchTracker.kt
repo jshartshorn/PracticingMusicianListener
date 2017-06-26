@@ -55,10 +55,10 @@ class PitchTracker : TimeKeeperSteppable {
         println("Pitch: " + correlatedFrequency)
         val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) //this result is in seconds
 
-        stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, latencyTime, timeKeeper)
+        stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, latencyTime)
     }
 
-    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBufferInSamples : Double, latencyTime : Int, timeKeeper: TimeKeeper) {
+    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBufferInSamples : Double, latencyTime : Int) {
 
         val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0) - latencyTime
 
@@ -81,42 +81,6 @@ class PitchTracker : TimeKeeperSteppable {
 
         println("Filling " + samplesToFill + " with $correlatedFrequency")
 
-        samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
-
-        samplesRecorded += samplesToFill.toInt()
-    }
-
-    fun OLDstepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBuffer : Double, timeKeeper: TimeKeeper) {
-        //the pitch for the buffer of length buflen was ac -- we should store that time
-        val timestampOfPitch = timestamp - (lengthOfBuffer / 44100.0 * 1000.0) //convert seconds to MS
-
-        println("Buffer started at timestamp: " + timestampOfPitch)
-
-        //timestamp at the end of the samples array
-        val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
-
-        println("Current timestamp of samples buffer : $currentTimestampOfSamplesBuffer")
-
-        //remove the offset of the preroll
-        var timestampOffsetWithPreroll = timestamp - lengthOfPrerollToIgnore
-
-        println("Timestamp offset with preroll $timestampOffsetWithPreroll")
-
-        //the number of samples that we should fill with the new frequency value
-        val samplesToFill = lengthOfBuffer - samplesRecorded + timestampOfPitch * 44.1 //TODO: Timestamp of pitch?
-
-        if (samplesToFill < 0) {
-            println("Not filling yet...")
-            return
-        }
-
-        //fill the samples buffer with the correct number of frequency items
-        //Basically, if someone played the note A(440) for one second, we should have 44100 items in the samples buffer
-        //that are all equal to 440.0 (or variations when the intonation varies)
-        println("Filling " + samplesToFill)
-//        for (i in 0 until samplesToFill.toInt()) {
-//            samples.add(correlatedFrequency)
-//        }
         samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
 
         samplesRecorded += samplesToFill.toInt()
