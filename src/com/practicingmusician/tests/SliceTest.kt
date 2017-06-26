@@ -29,6 +29,8 @@ object SliceTest {
     }
 
     fun pitchTrackerTest() {
+        println("***** Pitch tracker test")
+
         var timekeeper = TimeKeeper()
         var pt = PitchTracker()
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
@@ -55,6 +57,25 @@ object SliceTest {
         val originalSampleLength = exerciseSamplesCollection.map { it.lengthInSamples }.reduce { acc, i -> acc + i }
         val pitchTrackerSamplesLength = pt.samples.map { it.lengthInSamples }.reduce { acc, i -> acc + i  }
         println("Sample lengths :  $originalSampleLength | $pitchTrackerSamplesLength")
+
+        val exerciseSamplesCollectionFromPitchTracker = pt.samples
+
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollectionFromPitchTracker)
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        println("Comparing exact copies (incremental)...")
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 4
+        expectedResults.attempted = 4
+
+        val incrementalComparison = IncrementalComparisonEngine()
+
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
     }
 
     fun trueIncrementalBufferAndComparisonTest() {
