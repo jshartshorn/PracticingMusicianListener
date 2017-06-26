@@ -56,7 +56,35 @@ class PitchTracker : TimeKeeperSteppable {
         stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, timeKeeper)
     }
 
-    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBuffer : Double, timeKeeper: TimeKeeper) {
+    fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBufferInSamples : Double, timeKeeper: TimeKeeper) {
+
+        val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0)
+
+        println("Timestamp that the buffer starts at $timestampOfPitch")
+
+        val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
+
+        println("Current endpoint of the samples buffer : $currentTimestampOfSamplesBuffer")
+
+        val timestampAccountingForPreroll = timestampOfPitch - lengthOfPrerollToIgnore
+
+        println("Timestamp accounting for preroll $timestampAccountingForPreroll")
+
+        var samplesToFill = lengthOfBufferInSamples - samplesRecorded + timestampAccountingForPreroll * 44.1
+
+        if (samplesToFill < 0) {
+            println("Not filling yet...")
+            return
+        }
+
+        println("Filling " + samplesToFill)
+
+        samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
+
+        samplesRecorded += samplesToFill.toInt()
+    }
+
+    fun OLDstepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBuffer : Double, timeKeeper: TimeKeeper) {
         //the pitch for the buffer of length buflen was ac -- we should store that time
         val timestampOfPitch = timestamp - (lengthOfBuffer / 44100.0 * 1000.0) //convert seconds to MS
 
@@ -73,7 +101,7 @@ class PitchTracker : TimeKeeperSteppable {
         println("Timestamp offset with preroll $timestampOffsetWithPreroll")
 
         //the number of samples that we should fill with the new frequency value
-        val samplesToFill = lengthOfBuffer - samplesRecorded + timestamp * 44.1 //TODO: Timestamp of pitch?
+        val samplesToFill = lengthOfBuffer - samplesRecorded + timestampOfPitch * 44.1 //TODO: Timestamp of pitch?
 
         if (samplesToFill < 0) {
             println("Not filling yet...")

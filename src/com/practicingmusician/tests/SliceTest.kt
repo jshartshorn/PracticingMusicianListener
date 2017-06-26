@@ -34,11 +34,21 @@ object SliceTest {
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
 
         var timestamp = 0.0
-        pt.stepWithFrequency(timestamp,0.0,0.0,timekeeper)
+
+        //do the preroll
+        pt.lengthOfPrerollToIgnore = secondsPerBeat * 4 * 1000.0
+
+        println("Sending preroll")
+        pt.stepWithFrequency(pt.lengthOfPrerollToIgnore,1.0,pt.lengthOfPrerollToIgnore * 44.1, timekeeper)
+
+        timestamp = pt.lengthOfPrerollToIgnore
+
+        println("------")
+
         for (item in exerciseSamplesCollection) {
-            println("sending " + item.lengthInSamples + "at $timestamp")
-            pt.stepWithFrequency(timestamp,item.freq,item.lengthInSamples.toDouble(),timekeeper)
             timestamp += item.lengthInSamples / 44100.0 * 1000.0
+            println("sending " + item.lengthInSamples + " at $timestamp")
+            pt.stepWithFrequency(timestamp,item.freq,item.lengthInSamples.toDouble(),timekeeper)
             println("--------")
         }
 
