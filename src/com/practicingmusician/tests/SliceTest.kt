@@ -57,7 +57,6 @@ object SliceTest {
 
             runningListOfSampleCollections.addAll(sliceOfSamples)
 
-            incrementalBufferManager.positionInSamples = 0
             val notes = incrementalBufferManager.convertSamplesBufferToNotes(runningListOfSampleCollections)
 
             curSampleIndex += sampleSliceSize
@@ -232,7 +231,7 @@ object SliceTest {
 
         trueIncrementalComparisonTest()
 
-        trueIncrementalBufferTest()
+        //trueIncrementalBufferTest()
 
         return "Done"
 

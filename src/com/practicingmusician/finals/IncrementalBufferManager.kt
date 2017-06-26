@@ -29,7 +29,6 @@ class IncrementalBufferManager {
     /* State information about what has been converted */
 
     //the position in the sample array that has been convered so far
-    var positionInSamples = 0
 
     /* End state */
 
@@ -38,7 +37,11 @@ class IncrementalBufferManager {
     //and then stitching the remaining like-values together
     fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<Note> {
 
+        var positionInSamples = 0
+
         val notes = mutableListOf<Note>()
+
+        if (samples.count() == 0) { return notes }
 
         val functionStartTimestamp = window.performance.now()
 
@@ -93,7 +96,7 @@ class IncrementalBufferManager {
         val groupsOfAcceptableLength = groups.filter {
             if (it.count() != 0) {
                 val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
-                console.log("Group length " + lengthOfGroupsInSamples)
+                //console.log("Group length " + lengthOfGroupsInSamples)
                 if (lengthOfGroupsInSamples > (secondsPerBeat * minDurationInBeats * sampleRate)) {
                     return@filter true
                 }

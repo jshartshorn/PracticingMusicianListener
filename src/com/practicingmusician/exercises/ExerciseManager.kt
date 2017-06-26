@@ -49,6 +49,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         bufferManager = IncrementalBufferManager()
         comparisonEngine = IncrementalComparisonEngine()
+
+        lastAnalysisTimestamp = Double.MIN_VALUE
     }
 
     fun setup() {
@@ -208,9 +210,39 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         currentExercise = exercise
     }
 
+    var lastAnalysisTimestamp = Double.MIN_VALUE
+
     //called from timeKeeper.analyzers
     override fun analyze(timestamp: Double) {
+        if (timestamp - lastAnalysisTimestamp > 500) {
+            lastAnalysisTimestamp = timestamp
+        } else {
+            return
+        }
         println("Analyzing at " + timestamp)
+
+        //TODO: probably don't want to do this every frame -- maybe every .5 seconds?
+        currentExercise?.let {
+
+            println("Samples length: " + pitchTracker.samples.count())
+
+            val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
+
+            //println("Notes from samples buffer length: " + notesFromSamplesBuffer.count())
+
+            val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+            //println("Results $results")
+
+            clearFeedbackItems()
+
+            results.feedbackItems.forEach {
+                val beat = it.beat
+                //println("Feedback item at $beat")
+                addFeedbackItem(beat,it.feedbackItemType)
+            }
+        }
+
+
         //println("Pitch is " + pitch.currentPitch)
     }
 
