@@ -38,13 +38,13 @@ class IncrementalBufferManager {
     //This takes samples from the microphone and attempts to convert them into meaningful Notes
     //It attempts to do some smart analysis, including getting rid of short values
     //and then stitching the remaining like-values together
-    fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<Note> {
+    fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<NotePlacement> {
 
         var positionInSamples = 0
 
         val notes = mutableListOf<Note>()
 
-        if (samples.count() == 0) { return notes }
+        if (samples.count() == 0) { return listOf() }
 
         val functionStartTimestamp = window.performance.now()
 
@@ -122,13 +122,15 @@ class IncrementalBufferManager {
 //            return@filter false
 //        }
 
+        var bogusNoteNumber = -100
+
         val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
             val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
             console.log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
             if (lengthOfGroupsInSamples < (secondsPerBeat * minDurationInBeats * sampleRate)) {
                 println("Under threshold")
                 return@map it.map {
-                    Pair(it.first,-100)
+                    Pair(it.first,bogusNoteNumber)
                 }
             } else {
                 return@map it
@@ -181,7 +183,12 @@ class IncrementalBufferManager {
 
         notes.addAll(noteList.filter { it.noteNumber != -1 })
 
-        notes.map {  }
+        var pos = 0.0
+        var notePlacements = notes.map {
+            var np =  NotePlacement(it, pos)
+            pos += it.duration
+            return@map np
+        }.filter { it.note.noteNumber != bogusNoteNumber  }
 
 //        for (pair in flattened) {
 //            //console.log("Item")
@@ -242,7 +249,9 @@ class IncrementalBufferManager {
 
         println("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
 
-        return notes
+        //return notes
+
+        return notePlacements
     }
 
 }

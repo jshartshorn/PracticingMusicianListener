@@ -1,6 +1,7 @@
 package com.practicingmusician.tests
 
 import com.practicingmusician.finals.BufferManager
+import com.practicingmusician.finals.NotePlacement
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.SampleCollection
 import kotlin.js.Math
@@ -51,10 +52,10 @@ object TestBufferGenerator {
         return notesMap
     }
 
-    fun addAvgPitchToSamples(notes : List<Note>) : List<Note> {
+    fun addAvgPitchToSamples(notes : List<NotePlacement>) : List<NotePlacement> {
         return notes.map {
-            if (it.avgFreq == null) {
-                it.avgFreq = it.getFrequency()
+            if (it.note.avgFreq == null) {
+                it.note.avgFreq = it.note.getFrequency()
             }
             it
         }

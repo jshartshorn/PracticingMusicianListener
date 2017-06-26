@@ -31,7 +31,7 @@ class IncrementalComparisonEngine {
 
     //Comapares the ideal (which should be generated from the exercise) to the toTest
     //which should be generated from the microphone samples
-    fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
+    fun compareNoteArrays(ideal : List<Note>, toTest : List<NotePlacement>) : CompareResults {
 
         val results = CompareResults()
         var curBeatPosition : Double = 0.0
@@ -62,6 +62,8 @@ class IncrementalComparisonEngine {
             for (i in 0 until toTest.count()) {
                 val item = toTest[i]
 
+                toTestBeatPosition = item.positionInBeats
+
                 //find the difference between the current beat position (where we are in the ideal)
                 //and the test beat position
                 val diff = Math.abs(curBeatPosition - toTestBeatPosition)
@@ -75,7 +77,6 @@ class IncrementalComparisonEngine {
                 }
 
                 //increment the current position of toTest
-                toTestBeatPosition += item.duration
             }
 
             if (indexOnToTest <= lastTestedIndexInTest) {
@@ -114,13 +115,13 @@ class IncrementalComparisonEngine {
 
             val testItem = toTest[indexOnToTest]
 
-            println("Durations : " + idealItem.duration + " | " + testItem.duration)
+            println("Durations : " + idealItem.duration + " | " + testItem.note.duration)
 
             //test the durations of the notes
-            if (idealItem.duration - testItem.duration > allowableRhythmMargin) {
+            if (idealItem.duration - testItem.note.duration > allowableRhythmMargin) {
                 println("Test subject too short")
                 isCorrect = false
-            } else if (idealItem.duration - testItem.duration < -allowableRhythmMargin) {
+            } else if (idealItem.duration - testItem.note.duration < -allowableRhythmMargin) {
                 println("Test subject too long")
                 isCorrect = false
             } else {
@@ -147,13 +148,13 @@ class IncrementalComparisonEngine {
                 println("PERFECT")
             }
 
-            println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
+            println("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency())
 
-            println("Avg freq of test item: " + testItem.avgFreq)
+            println("Avg freq of test item: " + testItem.note.avgFreq)
 
 
             //test the intonation of the notes
-            var avgFreq = testItem.avgFreq
+            val avgFreq = testItem.note.avgFreq
 
             if (avgFreq != null) {
                 if (avgFreq - idealItem.getFrequency() > allowableFreqencyMargin) {
@@ -173,7 +174,7 @@ class IncrementalComparisonEngine {
                 }
             }
 
-            feedbackItem.feedbackItemType = "" + testItem.noteNumber
+            feedbackItem.feedbackItemType = "" + testItem.note.noteNumber
 
             //increment the current position based on the duration of the ideal
             curBeatPosition += value.duration
