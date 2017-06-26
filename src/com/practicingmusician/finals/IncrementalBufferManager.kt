@@ -90,6 +90,7 @@ class IncrementalBufferManager {
             curList.add(it)
             curNoteNumber = it.second
         }
+        //add the last one
         groups.add(curList)
 
         println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
@@ -105,23 +106,10 @@ class IncrementalBufferManager {
         //console.log("Groups:")
         //console.log(groups)
 
-        //remove groups that aren't long enough
-//        val groupsOfAcceptableLength = groups.filter {
-//            //return@filter true
-//
-//            if (it.count() != 0) {
-//                val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
-//                //console.log("Group length " + lengthOfGroupsInSamples)
-//                if (lengthOfGroupsInSamples > (secondsPerBeat * minDurationInBeats * sampleRate)) {
-//                    return@filter true
-//                }
-//            }
-//
-//            return@filter false
-//        }
 
         val BOGUS_NOTE_NUMBER = -100
 
+        //tkae any groups that aren't of acceptable length, and assign BOGUS_NOTE_NUMBER to them so that they can be identified later
         val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
             val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
             console.log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
@@ -149,23 +137,11 @@ class IncrementalBufferManager {
 
         //console.log(flattened)
 
-        //calculate the length of each group
         curNoteNumber = -1
         var curLengthInSamples = 0
         var avgFreq = 0.0
 
-
-//        collectedPairs.forEach {
-//            if (curNoteNumber != it.second) {
-//                //see if we should add it
-//                groups.add(curList)
-//                curList = mutableListOf()
-//            }
-//            curList.add(it)
-//            curNoteNumber = it.second
-//        }
-//        groups.add(curList)
-
+        //combine the groups into single Note objects for the correct duration and average frequency
         var noteList = mutableListOf<Note>()
         flattened.forEach {
             if (curNoteNumber != it.second) {
@@ -180,66 +156,22 @@ class IncrementalBufferManager {
             avgFreq += (it.first.freq *it.first.lengthInSamples)
             curNoteNumber = it.second
         }
+        //add the last remaining one
         noteList.add(Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)))
 
+        //get rid of the notes that are listed as -1
         notes.addAll(noteList.filter { it.noteNumber != -1 })
 
-        var pos = 0.0 //- (0.3 / secondsPerBeat)
+        //take the notes, and make NotePlacements out of them, which record the beat placement of each note
+        var pos = 0.0
         val notePlacements = notes.map {
             val np =  NotePlacement(it, pos)
             pos += it.duration
             return@map np
-        }.filter { it.note.noteNumber != BOGUS_NOTE_NUMBER  }
+        }.filter { it.note.noteNumber != BOGUS_NOTE_NUMBER  } //filter out any that are bogus
 
-//        for (pair in flattened) {
-//            //console.log("Item")
-//            val noteNumberFromSample = pair.second
-//            val freqFromSample = pair.first.freq
-//
-//            if (noteNumberFromSample != curNoteNumber) {
-//                //the new note number doesn't equal that last one
-//                //this is starting a new note -- put the last one in
-//
-//                if (curLengthInSamples > 0) {
-//
-//                    //find the duration
-//                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-//                    val noteNum = curNoteNumber
-//
-//                    //calculate the average frequency
-//                    avgFreq = avgFreq / curLengthInSamples
-//
-//                    val note = Note(noteNum,durationInBeats)
-//
-//                    note.avgFreq = avgFreq
-//
-//                    //console.log("Adding note")
-//                    notes.add(note)
-//                }
-//
-//                //reset the values for the next one
-//                avgFreq = 0.0
-//                curLengthInSamples = 0
-//            }
-//
-//            avgFreq += (freqFromSample * pair.first.lengthInSamples)
-//            curNoteNumber = noteNumberFromSample
-//            curLengthInSamples += pair.first.lengthInSamples
-//        }
-//
-//        //get the last item
-//        if (curLengthInSamples > 0) {
-//            val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-//            val noteNum = curNoteNumber
-//
-//            avgFreq = avgFreq / curLengthInSamples
-//
-//            val note = Note(noteNum,durationInBeats)
-//            note.avgFreq = avgFreq
-//
-//            notes.add(note)
-//        }
 
+        //print out the notes that we had before filtering the bogus ones, for comparison
         console.log("Turned samples into these notes (before purging): ")
         notes.forEach {
             println("Note: " + it.noteNumber + " for " + it.duration)
