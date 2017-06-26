@@ -11,6 +11,9 @@ import kotlin.browser.window
  * This class deals with converting the microphone samples into notes and notes into samples
  *
  */
+
+data class NotePlacement(val note : Note, val positionInBeats : Double)
+
 class IncrementalBufferManager {
 
     //must be set so that it knows how long a beat should be
@@ -105,19 +108,35 @@ class IncrementalBufferManager {
         //console.log(groups)
 
         //remove groups that aren't long enough
-        val groupsOfAcceptableLength = groups.filter {
-            //return@filter true
+//        val groupsOfAcceptableLength = groups.filter {
+//            //return@filter true
+//
+//            if (it.count() != 0) {
+//                val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
+//                //console.log("Group length " + lengthOfGroupsInSamples)
+//                if (lengthOfGroupsInSamples > (secondsPerBeat * minDurationInBeats * sampleRate)) {
+//                    return@filter true
+//                }
+//            }
+//
+//            return@filter false
+//        }
 
-            if (it.count() != 0) {
-                val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
-                //console.log("Group length " + lengthOfGroupsInSamples)
-                if (lengthOfGroupsInSamples > (secondsPerBeat * minDurationInBeats * sampleRate)) {
-                    return@filter true
+        val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
+            val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
+            console.log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
+            if (lengthOfGroupsInSamples < (secondsPerBeat * minDurationInBeats * sampleRate)) {
+                println("Under threshold")
+                return@map it.map {
+                    Pair(it.first,-100)
                 }
+            } else {
+                return@map it
             }
-
-            return@filter false
         }
+
+        console.log("Groups:")
+        console.log(groupsOfAcceptableLength)
 
         println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
 
@@ -135,54 +154,83 @@ class IncrementalBufferManager {
         var curLengthInSamples = 0
         var avgFreq = 0.0
 
-        for (pair in flattened) {
-            //console.log("Item")
-            val noteNumberFromSample = pair.second
-            val freqFromSample = pair.first.freq
 
-            if (noteNumberFromSample != curNoteNumber) {
-                //the new note number doesn't equal that last one
-                //this is starting a new note -- put the last one in
+//        collectedPairs.forEach {
+//            if (curNoteNumber != it.second) {
+//                //see if we should add it
+//                groups.add(curList)
+//                curList = mutableListOf()
+//            }
+//            curList.add(it)
+//            curNoteNumber = it.second
+//        }
+//        groups.add(curList)
 
-                if (curLengthInSamples > 0) {
-
-                    //find the duration
-                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-                    val noteNum = curNoteNumber
-
-                    //calculate the average frequency
-                    avgFreq = avgFreq / curLengthInSamples
-
-                    val note = Note(noteNum,durationInBeats)
-
-                    note.avgFreq = avgFreq
-
-                    //console.log("Adding note")
-                    notes.add(note)
-                }
-
-                //reset the values for the next one
-                avgFreq = 0.0
+        var noteList = mutableListOf<Note>()
+        flattened.forEach {
+            if (curNoteNumber != it.second) {
+                var note = Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
+                noteList.add(note)
                 curLengthInSamples = 0
+                //TODO: avg freq
             }
-
-            avgFreq += (freqFromSample * pair.first.lengthInSamples)
-            curNoteNumber = noteNumberFromSample
-            curLengthInSamples += pair.first.lengthInSamples
+            curLengthInSamples += it.first.lengthInSamples
+            curNoteNumber = it.second
         }
+        noteList.add(Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)))
 
-        //get the last item
-        if (curLengthInSamples > 0) {
-            val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
-            val noteNum = curNoteNumber
+        notes.addAll(noteList.filter { it.noteNumber != -1 })
 
-            avgFreq = avgFreq / curLengthInSamples
+        notes.map {  }
 
-            val note = Note(noteNum,durationInBeats)
-            note.avgFreq = avgFreq
-
-            notes.add(note)
-        }
+//        for (pair in flattened) {
+//            //console.log("Item")
+//            val noteNumberFromSample = pair.second
+//            val freqFromSample = pair.first.freq
+//
+//            if (noteNumberFromSample != curNoteNumber) {
+//                //the new note number doesn't equal that last one
+//                //this is starting a new note -- put the last one in
+//
+//                if (curLengthInSamples > 0) {
+//
+//                    //find the duration
+//                    val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+//                    val noteNum = curNoteNumber
+//
+//                    //calculate the average frequency
+//                    avgFreq = avgFreq / curLengthInSamples
+//
+//                    val note = Note(noteNum,durationInBeats)
+//
+//                    note.avgFreq = avgFreq
+//
+//                    //console.log("Adding note")
+//                    notes.add(note)
+//                }
+//
+//                //reset the values for the next one
+//                avgFreq = 0.0
+//                curLengthInSamples = 0
+//            }
+//
+//            avgFreq += (freqFromSample * pair.first.lengthInSamples)
+//            curNoteNumber = noteNumberFromSample
+//            curLengthInSamples += pair.first.lengthInSamples
+//        }
+//
+//        //get the last item
+//        if (curLengthInSamples > 0) {
+//            val durationInBeats = curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate)
+//            val noteNum = curNoteNumber
+//
+//            avgFreq = avgFreq / curLengthInSamples
+//
+//            val note = Note(noteNum,durationInBeats)
+//            note.avgFreq = avgFreq
+//
+//            notes.add(note)
+//        }
 
         console.log("Turned samples into these notes: ")
         console.log(notes)

@@ -195,7 +195,25 @@ object SliceTest {
         val incrementalBufferManager = IncrementalBufferManager()
         incrementalBufferManager.tempo = tempo
 
-        val notesWithShortNotes = listOf(Note(69,0.5),Note(32,0.11),Note(81,1.0),Note(69,1.0),Note(32,0.11),Note(81,1.0))
+        val notesWithShortNotes = //listOf(Note(69,0.5),Note(32,0.11),Note(34,0.11),Note(81,1.0),Note(69,1.0),Note(32,0.11),Note(34,0.11),Note(36,0.11),Note(81,1.0))
+
+        listOf(
+                Note(35,0.05), //small value
+                Note(69,0.26),
+                Note(35,0.05), //small value
+                Note(69,0.14), //small value
+
+                Note(81,1.0),
+
+                //extraneous
+                Note(34,0.11),
+                Note(35,0.11),
+                Note(37,0.11),
+
+                Note(69,1.0),
+
+                Note(81,1.0)
+        )
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notesWithShortNotes, tempo)
 
@@ -204,7 +222,7 @@ object SliceTest {
         val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
 
         val expectedResults = CompareResults()
-        expectedResults.correct = 4
+        expectedResults.correct = 2
         expectedResults.attempted = 4
 
 
@@ -229,7 +247,7 @@ object SliceTest {
 
         shortNotesTest()
 
-        trueIncrementalComparisonTest()
+        //trueIncrementalComparisonTest()
 
         //trueIncrementalBufferTest()
 
