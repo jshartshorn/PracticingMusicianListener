@@ -1,6 +1,28 @@
 var generatedExercise = null
 
+var UserSettings = {
+    transposition: 0, //-2 would be Bb transposition
+    tempo: -1, //-1 if we don't want to change the value
+    applyToExercise: function(exerciseObject) {
+
+        exerciseObject.notes = exerciseObject.notes.map(function(it) {
+            if (UserSettings.transposition != 0)
+                it.noteNumber += UserSettings.transposition
+
+            return it
+        })
+
+        if (this.tempo != -1)
+            exerciseObject.tempo = this.tempo
+
+        return exerciseObject
+    }
+}
+
 generatedExercise = generateExerciseForKotlin()
+
+generatedExercise = UserSettings.applyToExercise(generatedExercise)
+
 PracticingMusician.app.exerciseManager.loadExercise()
 
 var exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
