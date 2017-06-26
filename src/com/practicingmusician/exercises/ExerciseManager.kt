@@ -91,7 +91,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
-                println("Note: " + it.note.noteNumber + " for " + it.note.duration)
+                println("Note: " + it.note.noteNumber + " for " + it.note.duration + " at " + it.positionInBeats)
             }
 
 
