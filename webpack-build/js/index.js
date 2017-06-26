@@ -1,9 +1,5 @@
-var generatedExercise = null
 
-generatedExercise = generateExerciseForKotlin()
-PracticingMusician.app.exerciseManager.loadExercise()
-
-var exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
+var exercise = getExerciseNotes(); //pulls from the loaded js file
 
 //setup the score
 EasyScoreUtil.setupOnElement("notationWindow")

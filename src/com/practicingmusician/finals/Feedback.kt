@@ -7,8 +7,8 @@ package com.practicingmusician.finals
 
 data class FeedbackItem(var beat : Double, var feedbackItemType : String)
 
-class CompareResults {
-    var correct : Int = 0
-    var attempted : Int = 0
+class CompareResults(val c : Int = 0, val a : Int = 0) {
+    var correct : Int = c
+    var attempted : Int = a
     var feedbackItems = mutableListOf<FeedbackItem>()
 }

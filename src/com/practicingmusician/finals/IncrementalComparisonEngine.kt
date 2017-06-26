@@ -14,35 +14,47 @@ import kotlin.js.Math
 class IncrementalComparisonEngine {
 
     //the margins in which a note can vary from the ideal and still be considered acceptable
-    val allowableFreqencyMargin = 10.0 //TODO: this should be cents, not hz
+    val allowableFreqencyMargin = 20.0 //TODO: this should be cents, not hz
     val allowableRhythmMargin = 0.25
+    val allowableLengthMargin = 0.25 //TODO: use this
 
     /* State information about what has been compared */
 
-    var results = CompareResults() //the results of the comparison
-    var curBeatPosition : Double = 0.0 //current beat position that is being compared
+//    var results = CompareResults() //the results of the comparison
+//    var curBeatPosition : Double = 0.0 //current beat position that is being compared
+//
+//    var idealIndexPosition = 0 //the ideal index to test against, so we don't start at the beginning each time
+//    var testPositionIndex = 0 //don't search before here in the test positions
 
-    var idealIndexPosition = 0 //the ideal index to test against, so we don't start at the beginning each time
-    var testPositionIndex = 0 //don't search before here in the test positions
 
     /* End state */
 
     //Comapares the ideal (which should be generated from the exercise) to the toTest
     //which should be generated from the microphone samples
-    fun compareNoteArrays(ideal : List<Note>, toTest : List<Note>) : CompareResults {
+    fun compareNoteArrays(ideal : List<Note>, toTest : List<NotePlacement>) : CompareResults {
+
+        val results = CompareResults()
+        var curBeatPosition : Double = 0.0
+        var lastTestedIndexInTest = -1
+
+
+        var doNotTestBeyond = 0.0
+        if (toTest.count() > 0) {
+            doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
+        }
 
         val functionStartTimestamp = window.performance.now()
 
         //loop throug the ideal items to test against
         //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
-        for (index in idealIndexPosition until ideal.count()) {
+        for (index in 0 until ideal.count()) {
             var value = ideal[index]
 
             //TODO: make sure we have enough data to test against the item
 
 
             //TODO: okay, we have enough to test, so set the new idealIndexPosition
-            idealIndexPosition = index
+            //idealIndexPosition = index
 
             //find the corresponding item in toTest based on our beat position
             var indexOnToTest = -1 //this will store the index on toTest that we will compare
@@ -52,8 +64,10 @@ class IncrementalComparisonEngine {
 
             //loop through the test items
             //don't start before the ones we've already tested (based on testPositionIndex)
-            for (i in testPositionIndex until toTest.count()) {
+            for (i in 0 until toTest.count()) {
                 val item = toTest[i]
+
+                toTestBeatPosition = item.positionInBeats
 
                 //find the difference between the current beat position (where we are in the ideal)
                 //and the test beat position
@@ -68,8 +82,20 @@ class IncrementalComparisonEngine {
                 }
 
                 //increment the current position of toTest
-                toTestBeatPosition += item.duration
             }
+
+            if (curBeatPosition >= doNotTestBeyond) {
+                println("Too far")
+                break
+            }
+
+            if (indexOnToTest <= lastTestedIndexInTest) {
+                println("Already tested here...... $indexOnToTest <= $lastTestedIndexInTest")
+                //TODO: Fix this? -- need new method for seeing how far to test
+                //break
+            }
+
+            lastTestedIndexInTest = indexOnToTest
 
             println("Going to compare ideal index $index to test index $indexOnToTest")
 
@@ -86,8 +112,9 @@ class IncrementalComparisonEngine {
                 continue
             }
 
+            //TODO: For speed reasons, do I need to implement this again?
             //don't test before this index later on
-            testPositionIndex = indexOnToTest
+            //testPositionIndex = indexOnToTest
 
             //no matter what happens, we know it's an attempt
             results.attempted += 1
@@ -99,15 +126,15 @@ class IncrementalComparisonEngine {
 
             val testItem = toTest[indexOnToTest]
 
-            println("Durations : " + idealItem.duration + " | " + testItem.duration)
+            println("Durations : " + idealItem.duration + " | " + testItem.note.duration)
 
             //test the durations of the notes
-            if (idealItem.duration - testItem.duration > allowableRhythmMargin) {
+            if (idealItem.duration - testItem.note.duration > allowableRhythmMargin) {
                 println("Test subject too short")
-                isCorrect = false
-            } else if (idealItem.duration - testItem.duration < -allowableRhythmMargin) {
+                //isCorrect = false
+            } else if (idealItem.duration - testItem.note.duration < -allowableRhythmMargin) {
                 println("Test subject too long")
-                isCorrect = false
+                //isCorrect = false
             } else {
                 println("PERFECT")
             }
@@ -132,13 +159,13 @@ class IncrementalComparisonEngine {
                 println("PERFECT")
             }
 
-            println("Pitch : " + idealItem.getFrequency() + " | " + testItem.getFrequency())
+            println("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency())
 
-            println("Avg freq of test item: " + testItem.avgFreq)
+            println("Avg freq of test item: " + testItem.note.avgFreq)
 
 
             //test the intonation of the notes
-            var avgFreq = testItem.avgFreq
+            val avgFreq = testItem.note.avgFreq
 
             if (avgFreq != null) {
                 if (avgFreq - idealItem.getFrequency() > allowableFreqencyMargin) {
@@ -158,6 +185,8 @@ class IncrementalComparisonEngine {
                 }
             }
 
+            feedbackItem.feedbackItemType = "" + testItem.note.noteNumber
+
             //increment the current position based on the duration of the ideal
             curBeatPosition += value.duration
 
@@ -165,6 +194,7 @@ class IncrementalComparisonEngine {
             if (isCorrect)
                 results.correct += 1
         }
+
 
         println("---- Results : " + results.correct + "/" + results.attempted)
 

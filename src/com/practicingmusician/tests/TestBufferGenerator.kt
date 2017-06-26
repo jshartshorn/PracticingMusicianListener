@@ -1,7 +1,9 @@
 package com.practicingmusician.tests
 
 import com.practicingmusician.finals.BufferManager
+import com.practicingmusician.finals.NotePlacement
 import com.practicingmusician.notes.Note
+import com.practicingmusician.steppable.SampleCollection
 import kotlin.js.Math
 
 /**
@@ -13,9 +15,48 @@ object TestBufferGenerator {
         return BufferManager.convertNotesToSamples(notes, tempo)
     }
 
-    fun addAvgPitchToSamples(notes : List<Note>) : List<Note> {
+    fun generateExactBufferCollectionWithSize1FromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
+        val secondsPerBeat = 60.0 / tempo
+
+        val samples = mutableListOf<Double>()
+        val noteChangeIndexes = mutableListOf<Int>()
+        notes.forEach {
+            noteChangeIndexes.add(samples.count())
+            val numSamplesToCreate = it.duration * secondsPerBeat * BufferManager.sampleRate
+            val freq = it.getFrequency()
+            for (i in 0 until numSamplesToCreate.toInt()) {
+                samples.add(freq)
+            }
+        }
+        console.log("Note change indexes: " + noteChangeIndexes)
+
+        val collections = samples.map {
+            val collection = SampleCollection(freq = it, lengthInSamples = 1)
+            collection
+        }
+
+        return collections
+    }
+
+    fun generateExactBufferCollectionFromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
+        val secondsPerBeat = 60.0 / tempo
+
+
+        var notesMap = notes.map {
+
+            val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * BufferManager.sampleRate).toInt())
+
+            collection
+        }
+
+        return notesMap
+    }
+
+    fun addAvgPitchToSamples(notes : List<NotePlacement>) : List<NotePlacement> {
         return notes.map {
-            it.avgFreq = it.getFrequency()
+            if (it.note.avgFreq == null) {
+                it.note.avgFreq = it.note.getFrequency()
+            }
             it
         }
     }

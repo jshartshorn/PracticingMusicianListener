@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" href="css/notation.css">
 
 
-    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
-    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
+    <script type="text/javascript" src="js/kotlin.js"></script>
+    <script type="text/javascript" src="js/practicingmusician.js"></script>
 
     <script src="js/audio.js"></script>
 
@@ -43,7 +43,15 @@
         <canvas id="indicatorCanvas" width="1024" height="300"></canvas>
     </div>
 </div>
-<script src="js/exercises/CMajorScale.js"></script>
+<script src="js/exercises/FMajorScale.js"></script>
+<script>
+        generatedExercise = generateKotlinExercise()
+        PracticingMusician.app.exerciseManager.loadExercise()
+        function getExerciseNotes() {
+            var notes = EasyScoreUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
+            return notes
+        }
+</script>
 <script src="js/index.js"></script>
 
 </body>

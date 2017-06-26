@@ -11,12 +11,12 @@ import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
+import kotlin.browser.window
 
 external object VexFlowUtil
 external fun addFeedbackItem(beat : Double, item : String)
 external fun clearFeedbackItems()
-external val generatedExercise : ExerciseDefinition
-
+external val generatedExercise : dynamic
 
 /**
  * Created by jn on 6/6/17.
@@ -49,6 +49,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         bufferManager = IncrementalBufferManager()
         comparisonEngine = IncrementalComparisonEngine()
+
+        lastAnalysisTimestamp = Double.MIN_VALUE
     }
 
     fun setup() {
@@ -89,7 +91,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
             println("Notes: ")
             notesFromSamplesBuffer.forEach {
-                println("Note: " + it.noteNumber + " for " + it.duration)
+                println("Note: " + it.note.noteNumber + " for " + it.note.duration + " at " + it.positionInBeats)
             }
 
 
@@ -98,18 +100,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
-                println("Results $results")
-
-//                comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer.subList(0,2)).feedbackItems.forEach {
-//                    val beat = it.beat
-//                    println("Feedback item at $beat")
-//                    addFeedbackItem(beat,it.feedbackItemType)
-//                }
-//                comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer.subList(2,notesFromSamplesBuffer.count() - 1)).feedbackItems.forEach {
-//                    val beat = it.beat
-//                    println("Feedback item at $beat")
-//                    addFeedbackItem(beat,it.feedbackItemType)
-//                }
 
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
@@ -118,6 +108,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                     addFeedbackItem(beat,it.feedbackItemType)
                 }
 
+                window.alert("Your results are: " + results.correct + "/" + results.attempted)
             }
         }
 
@@ -142,24 +133,31 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     @JsName("loadExercise")
     fun loadExercise() {
+        console.log("Loading exericse:")
+        console.log(generatedExercise)
+        //console.log("Tempo: " + exercise.tempo)
+        val exerciseDefinition = ExerciseDefinition()
+        exerciseDefinition.tempo = generatedExercise.tempo
 
-        //get the exercise from an external JavaScript source
-        val exercise = generatedExercise
+        val jsNotes = generatedExercise.notes as Array<dynamic>
 
-        //get just the notes (not barlines, etc) from the notation items
-        exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
+        exerciseDefinition.notes = jsNotes.map {
+            Note(it.noteNumber,it.duration)
+        }.toMutableList()
+
+        console.log("Loaded " + exerciseDefinition.notes.count() + " notes")
+        console.log(exerciseDefinition.notes)
 
         //set our current exercise to what we just loaded
-        currentExercise = exercise
+        currentExercise = exerciseDefinition
 
         currentExercise?.let {
-
             //sync the tempos from the exercise to the objects that need to know the tempo
             metronome.tempo = it.tempo
             bufferManager.tempo = it.tempo
 
             //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
-            timeKeeper.runForTime = it.getLength() + it.prerollLength()
+            timeKeeper.runForTime = it.getLength() + it.prerollLength() + pitchTracker.latencyTime
 
             //don't track pitch during the preroll countoff
             pitchTracker.lengthOfPrerollToIgnore = it.prerollLength()
@@ -168,49 +166,41 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     }
 
 
-    //NOT USED -- LOADING IN JS INSTEAD
-    fun loadSampleExercise() {
-        val exercise = ExerciseDefinition()
-        exercise.tempo = 110.0
-//        exercise.notes.add(Note(69,1.0))
-//        exercise.notes.add(Note(70,1.0))
-//        exercise.notes.add(Note(69,1.0))
-//        exercise.notes.add(Note(68,1.0))
-//        exercise.notes.add(Note(64,1.0))
-
-//        exercise.notes.add(Note(65,1.0))
-//        exercise.notes.add(Note(67,1.0))
-//        exercise.notes.add(Note(69,1.0))
-//        exercise.notes.add(Note(70,1.0))
-//        exercise.notes.add(Note(72,1.0))
-
-
-        exercise.notationItems.add(Note(60,1.0,"c/4"))
-        exercise.notationItems.add(Note(62,1.0,"d/4"))
-        exercise.notationItems.add(Note(64,1.0,"e/4"))
-        exercise.notationItems.add(Note(65,1.0,"f/4"))
-
-        exercise.notationItems.add(Barline())
-
-        exercise.notationItems.add(Note(67,1.0,"g/4"))
-        exercise.notationItems.add(Note(69,1.0,"a/4"))
-        exercise.notationItems.add(Note(71,1.0,"b/4"))
-        exercise.notationItems.add(Note(72,1.0,"c/5"))
-
-        //var n = VexFlowUtil.asDynamic().notesFromKotlinNotationItems(exercise.notationItems)
-
-        //console.log("Got back: " + n)
-
-        exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
-
-        //console.log("Exercise notes: " + exercise.notes)
-
-        currentExercise = exercise
-    }
+    var lastAnalysisTimestamp = Double.MIN_VALUE
 
     //called from timeKeeper.analyzers
     override fun analyze(timestamp: Double) {
+        //TODO: analyze
+        //return
+
+        if (timestamp - lastAnalysisTimestamp > 200) {
+            lastAnalysisTimestamp = timestamp
+        } else {
+            return
+        }
         println("Analyzing at " + timestamp)
+
+        currentExercise?.let {
+
+            println("Samples length: " + pitchTracker.samples.count())
+
+            val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
+
+            //println("Notes from samples buffer length: " + notesFromSamplesBuffer.count())
+
+            val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+            //println("Results $results")
+
+            clearFeedbackItems()
+
+            results.feedbackItems.forEach {
+                val beat = it.beat
+                //println("Feedback item at $beat")
+                addFeedbackItem(beat,it.feedbackItemType)
+            }
+        }
+
+
         //println("Pitch is " + pitch.currentPitch)
     }
 
