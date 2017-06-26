@@ -159,10 +159,18 @@ class IncrementalComparisonEngine {
                 println("PERFECT")
             }
 
+            println("Notes : " + idealItem.noteNumber + " | " + testItem.note.noteNumber)
+            //are they the same note?
+            if (idealItem.noteNumber == testItem.note.noteNumber) {
+                //now test the pitch
+            } else {
+                //it's a wrong note
+                println("WRONG NOTE *&*&*&*&*&*&*&*")
+            }
+
             println("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency())
 
             println("Avg freq of test item: " + testItem.note.avgFreq)
-
 
             //test the intonation of the notes
             val avgFreq = testItem.note.avgFreq

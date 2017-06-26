@@ -101,6 +101,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
 
+                clearFeedbackItems()
+
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
                     val beat = it.beat

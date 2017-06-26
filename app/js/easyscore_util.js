@@ -261,10 +261,21 @@ var EasyScoreUtil = {
 
             var ctx = canvas.getContext('2d');
 
-            ctx.font = "20px Arial"
+            ctx.font = "16px Arial"
+            ctx.textAlign = "center"
             ctx.textBaseline = "top";
             ctx.fillText(feedbackItemType,x,y)
 
+            //to test location
+//            ctx.strokeStyle = '#4990E2';
+//                               ctx.lineWidth = 3;
+//
+//                        	   // Stroked triangle
+//                        	   ctx.beginPath();
+//                        	   ctx.moveTo(x,y);
+//                        	   ctx.lineTo(x + 2,y);
+//                        	   ctx.closePath();
+//                        	   ctx.stroke();
     },
 
 }
