@@ -37,7 +37,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem 
         //create an array of notes (so that we can test for frequencies
         fun createAllNotes() {
             ALL_NOTES = mutableListOf<Note>()
-            for (i in 30 until 90) {
+            for (i in 30 until 110) {
                 ALL_NOTES.add(Note(i,1.0))
             }
         }

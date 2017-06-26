@@ -124,7 +124,7 @@ class IncrementalComparisonEngine {
 
             val idealItem = value
 
-            val testItem = toTest[indexOnToTest]
+            var testItem = toTest[indexOnToTest]
 
             println("Durations : " + idealItem.duration + " | " + testItem.note.duration)
 
@@ -160,6 +160,20 @@ class IncrementalComparisonEngine {
             }
 
             println("Notes : " + idealItem.noteNumber + " | " + testItem.note.noteNumber)
+
+            //normalize octaves?
+            if (testItem.note.noteNumber == idealItem.noteNumber + 12 || testItem.note.noteNumber == idealItem.noteNumber - 2) {
+                println("Octave shifted")
+                var n = Note(idealItem.noteNumber,testItem.note.duration)
+                if (testItem.note.noteNumber < idealItem.noteNumber) {
+                    n.avgFreq = testItem.note.avgFreq?.times(2)
+                } else {
+                    n.avgFreq = testItem.note.avgFreq?.div(2)
+                }
+                testItem = NotePlacement(n,testItem.positionInBeats)
+                //testItem.note.noteNumber = idealItem.noteNumber
+            }
+
             //are they the same note?
             if (idealItem.noteNumber == testItem.note.noteNumber) {
                 //now test the pitch
