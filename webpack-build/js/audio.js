@@ -10,7 +10,7 @@ var rafID = null;
 //setup the Web Audio API streaming stuff
 function setupMedia() {
         audioContext = new AudioContext();
-        var constraints = { audio: true, video: false }
+        var constraints = { audio: {latency: 0.002}, video: false }
         navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
             /* use the stream */
             console.log("Using the stream")
