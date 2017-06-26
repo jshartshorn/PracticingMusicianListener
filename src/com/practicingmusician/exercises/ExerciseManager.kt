@@ -16,8 +16,7 @@ import kotlin.browser.window
 external object VexFlowUtil
 external fun addFeedbackItem(beat : Double, item : String)
 external fun clearFeedbackItems()
-external val generatedExercise : ExerciseDefinition
-
+external val generatedExercise : dynamic
 
 /**
  * Created by jn on 6/6/17.
@@ -134,18 +133,25 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     @JsName("loadExercise")
     fun loadExercise() {
+        console.log("Loading exericse:")
+        console.log(generatedExercise)
+        //console.log("Tempo: " + exercise.tempo)
+        val exerciseDefinition = ExerciseDefinition()
+        exerciseDefinition.tempo = generatedExercise.tempo
 
-        //get the exercise from an external JavaScript source
-        val exercise = generatedExercise
+        val jsNotes = generatedExercise.notes as Array<dynamic>
 
-        //get just the notes (not barlines, etc) from the notation items
-        exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
+        exerciseDefinition.notes = jsNotes.map {
+            Note(it.noteNumber,it.duration)
+        }.toMutableList()
+
+        console.log("Loaded " + exerciseDefinition.notes.count() + " notes")
+        console.log(exerciseDefinition.notes)
 
         //set our current exercise to what we just loaded
-        currentExercise = exercise
+        currentExercise = exerciseDefinition
 
         currentExercise?.let {
-
             //sync the tempos from the exercise to the objects that need to know the tempo
             metronome.tempo = it.tempo
             bufferManager.tempo = it.tempo
@@ -159,46 +165,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         }
     }
 
-
-    //NOT USED -- LOADING IN JS INSTEAD
-    fun loadSampleExercise() {
-        val exercise = ExerciseDefinition()
-        exercise.tempo = 110.0
-//        exercise.notes.add(Note(69,1.0))
-//        exercise.notes.add(Note(70,1.0))
-//        exercise.notes.add(Note(69,1.0))
-//        exercise.notes.add(Note(68,1.0))
-//        exercise.notes.add(Note(64,1.0))
-
-//        exercise.notes.add(Note(65,1.0))
-//        exercise.notes.add(Note(67,1.0))
-//        exercise.notes.add(Note(69,1.0))
-//        exercise.notes.add(Note(70,1.0))
-//        exercise.notes.add(Note(72,1.0))
-
-
-        exercise.notationItems.add(Note(60,1.0,"c/4"))
-        exercise.notationItems.add(Note(62,1.0,"d/4"))
-        exercise.notationItems.add(Note(64,1.0,"e/4"))
-        exercise.notationItems.add(Note(65,1.0,"f/4"))
-
-        exercise.notationItems.add(Barline())
-
-        exercise.notationItems.add(Note(67,1.0,"g/4"))
-        exercise.notationItems.add(Note(69,1.0,"a/4"))
-        exercise.notationItems.add(Note(71,1.0,"b/4"))
-        exercise.notationItems.add(Note(72,1.0,"c/5"))
-
-        //var n = VexFlowUtil.asDynamic().notesFromKotlinNotationItems(exercise.notationItems)
-
-        //console.log("Got back: " + n)
-
-        exercise.notes = (exercise.notationItems.filter { it is Note } as List<Note>).toMutableList()
-
-        //console.log("Exercise notes: " + exercise.notes)
-
-        currentExercise = exercise
-    }
 
     var lastAnalysisTimestamp = Double.MIN_VALUE
 

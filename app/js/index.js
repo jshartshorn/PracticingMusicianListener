@@ -1,13 +1,9 @@
+var generatedExercise = null
 
-function getExerciseNotes() {
-    var notes = EasyScoreUtil.notesFromKotlinNotationItems(PracticingMusician.app.exerciseManager.currentExercise.notationItems);
-    return notes
-}
-
-generatedExercise = generateKotlinExercise()
+generatedExercise = generateExerciseForKotlin()
 PracticingMusician.app.exerciseManager.loadExercise()
 
-var exercise = getExerciseNotes(); //pulls from the loaded js file
+var exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
 
 //setup the score
 EasyScoreUtil.setupOnElement("notationWindow")
