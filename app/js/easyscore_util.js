@@ -230,7 +230,7 @@ var EasyScoreUtil = {
 
                 var duration = item.duration
 
-                if (currentPosition < beat) {
+                if (currentPosition <= beat) {
                     beginningItemIndex = index
                     endingItemIndex = index
 
