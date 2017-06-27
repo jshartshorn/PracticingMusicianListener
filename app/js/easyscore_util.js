@@ -87,6 +87,8 @@ var EasyScoreUtil = {
             }
             var system = EasyScoreUtil.makeSystem(measureWidth)
 
+            this.systems.push(system)
+
             var notesArray = Array()
             //add all the notes
             for (groupIndex in curBar.groups) {

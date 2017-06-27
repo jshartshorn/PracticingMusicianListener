@@ -37,7 +37,7 @@ function generateExerciseEasyScoreCode() {
                         {
                             beam:true,
                             stem_direction:"down",
-                            notes:['D5/8','E5','F#5','G5']
+                            notes:['D5/8','E5','F5','G5']
                         },
                     ]
 
@@ -47,7 +47,7 @@ function generateExerciseEasyScoreCode() {
                     {
                         beam:true,
                         stem_direction:"down",
-                        notes:['G5/8','F#5','E5','D5']
+                        notes:['G5/8','F5','E5','D5']
                     },
                     {
                         beam:true,
