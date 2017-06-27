@@ -5,7 +5,7 @@ package com.practicingmusician.finals
  */
 
 
-data class FeedbackItem(var beat : Double, var feedbackItemType : String)
+data class FeedbackItem(var beat : Double, var feedbackItemType : List<String>)
 
 class CompareResults(val c : Int = 0, val a : Int = 0) {
     var correct : Int = c

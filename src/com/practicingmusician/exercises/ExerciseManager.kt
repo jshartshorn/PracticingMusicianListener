@@ -14,7 +14,7 @@ import com.practicingmusician.steppable.TimeKeeper
 import kotlin.browser.window
 
 external object VexFlowUtil
-external fun addFeedbackItem(beat : Double, item : String)
+external fun addFeedbackItem(beat : Double, items : List<String>)
 external fun clearFeedbackItems()
 external val generatedExercise : dynamic
 external fun pm_log(message: Any, priority : Int = definedExternally)

@@ -38,9 +38,9 @@ function clearFeedbackItems() {
 }
 
 //add a feedback item to a certain beat
-function addFeedbackItem(beat,item) {
+function addFeedbackItem(beat,items) {
     var positionForBeat = EasyScoreUtil.getPositionForBeat(beat)
     var positionY = EasyScoreUtil.getFeedbackYPosition(positionForBeat.y)
-    EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,item,positionForBeat.x,positionY)
-    EasyScoreUtil.createFeedbackHTMLElement(item,positionForBeat.x,positionY)
+    //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
+    EasyScoreUtil.createFeedbackHTMLElement(items.toArray(),positionForBeat.x,positionY)
 }

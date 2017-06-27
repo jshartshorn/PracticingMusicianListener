@@ -27,8 +27,11 @@ div#notationBody canvas {
 
 div.feedbackItem {
     width: 16px;
-    height: 16px;
     background-color: #CCC;
+}
+
+span.feedbackItemElement {
+    display: block;
 }
 
 /* header buttons */

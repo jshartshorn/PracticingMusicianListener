@@ -41,7 +41,7 @@ object CompareEngine {
 
             println("Going to compare ideal index $index to test index $indexOnToTest")
 
-            var feedbackItem = FeedbackItem(curBeatPosition,"")
+            var feedbackItem = FeedbackItem(curBeatPosition, listOf<String>())
 
             results.feedbackItems.add(feedbackItem)
 

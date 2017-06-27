@@ -38,6 +38,7 @@ var EasyScoreUtil = {
     beam: null,
 
     //formatting info for the notation
+    contentScaleFactor: 1.25,
     canvasWidth: 1024,
     barWidth : 200, //TODO: change dynamically based on window size?
     barHeight: 160,
@@ -379,7 +380,7 @@ var EasyScoreUtil = {
     createFeedbackHTMLElement(feedbackItemType,x,y) {
         var obj = document.createElement('div');
         obj.className = "feedbackItem"
-        obj.textContent = feedbackItemType
+        obj.innerHTML = feedbackItemType.map(function(item){ return '<span class="feedbackItemElement">' + item + '</span>' }).join("")
         obj.style.position = "absolute"
         obj.style.top = "" + y + "px"
         obj.style.left = "" + x - (16 / 2) + "px"
