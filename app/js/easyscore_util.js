@@ -279,16 +279,23 @@ var EasyScoreUtil = {
         var nextItem = EasyScoreUtil.id("note" + ts.nextItemIndex)
 
         var staveYPos = currentItem.stave.getYForLine(0)
+        var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
 
         //find the middles of the items
         var distance = EasyScoreUtil.middlePositionOfItem(nextItem) - EasyScoreUtil.middlePositionOfItem(currentItem)
-        var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
 
-        //account for the percent distance too
-        return {
-            x: (initialPos + distance * ts.percent),
-            y: staveYPos
+
+        if (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y) {
+            //the nextItem appears on the next line
+
+            distance = currentItem.stave.end_x - EasyScoreUtil.middlePositionOfItem(currentItem)
         }
+
+        return {
+                x: (initialPos + distance * ts.percent),
+                y: staveYPos
+            }
+
 
       },
 
