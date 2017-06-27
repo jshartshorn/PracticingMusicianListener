@@ -185,7 +185,7 @@ var EasyScoreUtil = {
                             stave.addKeySignature(attr.value)
                             break
                         default:
-                            println("Unknown attribute")
+                            pm_log("Unknown attribute",10)
                             break
                     }
                 }
