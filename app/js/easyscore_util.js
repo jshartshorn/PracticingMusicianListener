@@ -38,7 +38,7 @@ var EasyScoreUtil = {
     beam: null,
 
     //formatting info for the notation
-    contentScaleFactor: 1.25,
+    contentScaleFactor: 1.0,
     canvasWidth: 1024,
     barWidth : 200, //TODO: change dynamically based on window size?
     barHeight: 160,
@@ -69,6 +69,8 @@ var EasyScoreUtil = {
         this.vf = new Vex.Flow.Factory({
                 renderer: {selector: elementID, width: this.canvasWidth, height: totalLines * this.barHeight}
                 });
+
+        this.vf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
 
         this.registry = new VF.Registry();
         VF.Registry.enableDefaultRegistry(this.registry);
@@ -322,7 +324,7 @@ var EasyScoreUtil = {
 
             var indicatorPosition = EasyScoreUtil.getPositionForBeat(beat)
 
-            var indicatorOverflow = 20
+            var indicatorOverflow = 20 * this.contentScaleFactor
 
             var stave = EasyScoreUtil.getBasicStave()
             var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
@@ -340,8 +342,8 @@ var EasyScoreUtil = {
 
             	   // Stroked path
             	   ctx.beginPath();
-            	   ctx.moveTo(indicatorPosition.x,bottomY);
-            	   ctx.lineTo(indicatorPosition.x,topY);
+            	   ctx.moveTo(indicatorPosition.x * this.contentScaleFactor,bottomY * this.contentScaleFactor);
+            	   ctx.lineTo(indicatorPosition.x * this.contentScaleFactor,topY * this.contentScaleFactor);
             	   ctx.closePath();
             	   ctx.stroke();
 
@@ -363,7 +365,7 @@ var EasyScoreUtil = {
             ctx.font = "16px Arial"
             ctx.textAlign = "center"
             ctx.textBaseline = "top";
-            ctx.fillText(feedbackItemType,x,y)
+            ctx.fillText(feedbackItemType,x * this.contentScaleFactor,y * this.contentScaleFactor)
 
             //to test location
 //            ctx.strokeStyle = '#4990E2';
@@ -378,12 +380,13 @@ var EasyScoreUtil = {
     },
 
     createFeedbackHTMLElement(feedbackItemType,x,y) {
+        var feedbackWidth = 16 * this.contentScaleFactor
         var obj = document.createElement('div');
         obj.className = "feedbackItem"
         obj.innerHTML = feedbackItemType.map(function(item){ return '<span class="feedbackItemElement">' + item + '</span>' }).join("")
         obj.style.position = "absolute"
-        obj.style.top = "" + y + "px"
-        obj.style.left = "" + x - (16 / 2) + "px"
+        obj.style.top = "" + y  * this.contentScaleFactor + "px"
+        obj.style.left = "" + x * this.contentScaleFactor - (feedbackWidth / 2) + "px"
         document.getElementById("notationBody").appendChild(obj)
     },
 
