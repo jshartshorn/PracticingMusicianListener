@@ -30,9 +30,11 @@ var EasyScoreUtil = {
     voice: null,
     beam: null,
 
+    //formatting info for the notation
     canvasWidth: 1024,
     barWidth : 200,
     firstBarAddition: 60,
+    barsPerLine: 4,
 
     //counter so that we can get an individual ID for each note
     noteIDNumber: 0,
@@ -129,6 +131,7 @@ var EasyScoreUtil = {
 
             }
 
+            //create the measure and connect all the groups with the reduce(concat) function
             var stave = system.addStave({ voices: [this.voice(
                             notesArray.reduce(concat)
                             )] });
@@ -154,6 +157,7 @@ var EasyScoreUtil = {
                 }
             }
 
+            //if it's the last bar, make the bar line the correct end bar
             if (barIndex == this.exercise.bars.length - 1) {
                 stave.setEndBarType(VF.Barline.type.END)
             }
@@ -278,7 +282,7 @@ var EasyScoreUtil = {
                    ctx.strokeStyle = '#4990E2';
                    ctx.lineWidth = 3;
 
-            	   // Stroked triangle
+            	   // Stroked path
             	   ctx.beginPath();
             	   ctx.moveTo(indicatorPosition,bottomY);
             	   ctx.lineTo(indicatorPosition,topY);
