@@ -1,5 +1,6 @@
 package com.practicingmusician.steppable
 
+import com.practicingmusician.exercises.pm_log
 import kotlin.browser.window
 
 
@@ -81,7 +82,7 @@ class TimeKeeper {
          * Go through each of the steppables and call step() on any of the that are currently running
          */
 
-        println("Calling step at : " + timestamp + " (raw: $nonOffsetTimestamp)")
+        pm_log("Calling step at : " + timestamp + " (raw: $nonOffsetTimestamp)")
 
         steppables.forEach {
             if (it.state == TimeKeeperState.Running)
@@ -101,7 +102,7 @@ class TimeKeeper {
          * See if we need to changed to Stopped, since the length of the exercise is over
          */
         if (timestamp >= runForTime) {
-            console.log("STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))")
+            pm_log("STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))",9)
             this.state = TimeKeeperState.Stopped
         }
 

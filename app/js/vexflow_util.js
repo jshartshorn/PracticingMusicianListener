@@ -43,8 +43,8 @@ var VexFlowUtil = {
     getPositionForBeat: function(tickables, beat) {
         var ts = VexFlowUtil.getTickablesForBeat(tickables, beat)
 
-        //console.log("TS: at beat " + beat)
-        //console.log(ts)
+        //pm_log("TS: at beat " + beat)
+        //pm_log(ts)
 
         var distance = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.nextItemIndex]) - VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
         var initialPos = VexFlowUtil.middlePositionOfItem(voice.tickables[ts.currentItemIndex])
@@ -135,7 +135,7 @@ var VexFlowUtil = {
 
             if (percent < 0 || isNaN(percent)) percent = 0
 
-            console.log("End pos: " + currentPosition)
+            pm_log("End pos: " + currentPosition)
             return {
                 "currentItemIndex": beginningItemIndex,
                 "nextItemIndex": endingItemIndex,
@@ -170,7 +170,7 @@ var VexFlowUtil = {
 
             var percentageDone = 1.0 - ((endTime - timestamp) / time)
 
-            //console.log("Animating..." + percentageDone)
+            //pm_log("Animating..." + percentageDone)
 
             var indicatorPosition = (distance * percentageDone) + indicatorPosition1
 
@@ -216,7 +216,7 @@ var VexFlowUtil = {
 
         for (index in arrayOfNotes) {
             var item = arrayOfNotes[index]
-            //console.log("Checking item " + item.constructor.name)
+            //pm_log("Checking item " + item.constructor.name)
 
             switch(item.constructor.name) {
                 case "Barline":
@@ -228,7 +228,7 @@ var VexFlowUtil = {
                         case 1.0:
                         return "q"
                         default:
-                        console.log("Duration error")
+                        pm_log("Duration error")
                         return "err"
                     }
                 }()
@@ -236,14 +236,14 @@ var VexFlowUtil = {
                 items.push( new VF.StaveNote({clef: "treble", keys: [item.textValue], duration: duration }) )
                 break
                 default:
-                console.log("Not found " + item.constructor.name)
+                pm_log("Not found " + item.constructor.name)
                 break
             }
 
 
         }
 
-        //console.log("Came up with : " + items)
+        //pm_log("Came up with : " + items)
 
         return {
             notes: items,

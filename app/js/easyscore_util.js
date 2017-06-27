@@ -62,8 +62,8 @@ var EasyScoreUtil = {
 
         this.scorePositionInitialX = (this.canvasWidth / 2) - (totalWidthWillBe / 2)
 
-        console.log("Total width will be " + totalWidthWillBe)
-        console.log("Total height will be " + totalLines * this.barHeight)
+        pm_log("Total width will be " + totalWidthWillBe)
+        pm_log("Total height will be " + totalLines * this.barHeight)
 
         this.vf = new Vex.Flow.Factory({
                 renderer: {selector: elementID, width: this.canvasWidth, height: totalLines * this.barHeight}
@@ -87,10 +87,10 @@ var EasyScoreUtil = {
         var width = this.barWidth
 
 
-        console.log("Width: " + width)
+        pm_log("Width: " + width)
 
         if (this.positionInLine == 0) {
-            //console.log("NEW LINE")
+            //pm_log("NEW LINE")
             width += this.firstBarAddition
             this.scorePositionX = this.scorePositionInitialX
             if (this.scorePositionY == 0) {
@@ -99,11 +99,11 @@ var EasyScoreUtil = {
                 this.scorePositionY += this.barHeight
             }
         } else {
-            //console.log("SAME LINE")
+            //pm_log("SAME LINE")
         }
 //
-//        console.log("Creating at x " + this.scorePositionX)
-//        console.log("Creating at y " + this.scorePositionY)
+//        pm_log("Creating at x " + this.scorePositionX)
+//        pm_log("Creating at y " + this.scorePositionY)
 
         var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
 
@@ -221,8 +221,8 @@ var EasyScoreUtil = {
             //percentage between the elements that the beat exists in
             var percent = null
 
-            //console.log("Searching for beat " + beat + " in")
-            //console.log(this.exercise.rawNotes)
+            //pm_log("Searching for beat " + beat + " in")
+            //pm_log(this.exercise.rawNotes)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
             for (index in generatedExercise.notes) {
@@ -261,7 +261,7 @@ var EasyScoreUtil = {
 
             if (percent < 0 || isNaN(percent)) percent = 0
 
-            //console.log("End pos: " + currentPosition)
+            //pm_log("End pos: " + currentPosition)
             return {
                 "currentItemIndex": beginningItemIndex, //item at or before the beat
                 "nextItemIndex": endingItemIndex, //item after the beat

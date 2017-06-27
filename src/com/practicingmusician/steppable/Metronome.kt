@@ -1,6 +1,7 @@
 package com.practicingmusician.steppable
 
 import com.practicingmusician.exercises.VexFlowUtil
+import com.practicingmusician.exercises.pm_log
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.browser.window
@@ -59,7 +60,7 @@ class Metronome : TimeKeeperSteppable {
 
         //this keeps it from playing an extra beat at the end that actually doesn't exist during the exercise
         if (timeKeeper.runForTime - timestamp < beatSize / 2) {
-            console.log("Less than beat size..")
+            pm_log("Less than beat size..")
             return
         }
 
@@ -95,7 +96,7 @@ class Metronome : TimeKeeperSteppable {
 
     fun cancelAllUIUpdates() {
         timeoutKeys.reversed().forEach {
-            println("Cancelling item... $it")
+            pm_log("Cancelling item... $it")
             window.clearTimeout(it)
         }
         timeoutKeys.removeAll { true }

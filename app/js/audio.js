@@ -1,4 +1,4 @@
-//console.log("Setting up audio js...")
+//pm_log("Setting up audio js...")
 
 var sourceNode = null;
 var analyser = null;
@@ -13,11 +13,11 @@ function setupMedia() {
         var constraints = { audio: {latency: 0.002}, video: false }
         navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
             /* use the stream */
-            console.log("Using the stream")
+            pm_log("Using the stream")
             gotStream(stream)
         }).catch(function(err) {
             /* handle the error */
-            console.log("Error: " + err)
+            pm_log("Error: " + err,10)
         });
 }
 
@@ -41,7 +41,7 @@ function updatePitch(timestamp) {
     if (analyser == null)
         return
 
-    //console.log("Updating pitch")
+    //pm_log("Updating pitch")
 
     var cycles = new Array;
 	analyser.getFloatTimeDomainData( buf );
@@ -102,7 +102,7 @@ function autoCorrelate( buf, sampleRate ) {
 		lastCorrelation = correlation;
 	}
 	if (best_correlation > 0.01) {
-		// console.log("f = " + sampleRate/best_offset + "Hz (rms: " + rms + " confidence: " + best_correlation + ")")
+		// pm_log("f = " + sampleRate/best_offset + "Hz (rms: " + rms + " confidence: " + best_correlation + ")")
 		return sampleRate/best_offset;
 	}
 	return -1;

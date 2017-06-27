@@ -9,6 +9,8 @@ external fun setupMedia()
 external fun updatePitch(timestamp: Double) : Double
 external fun getSampleRate() : Int
 
+external fun pm_log(message: Any, priority : Int = definedExternally)
+
 var buflen : Int = 1024
 
 data class SampleCollection(val freq : Double, val lengthInSamples : Int)
@@ -51,8 +53,8 @@ class PitchTracker : TimeKeeperSteppable {
 
         //get the pitch at the current timestamp
         val correlatedFrequency = com.practicingmusician.steppable.updatePitch(timestamp)
-        println("Timestamp: " + timestamp)
-        println("Pitch: " + correlatedFrequency)
+        pm_log("Timestamp: " + timestamp)
+        pm_log("Pitch: " + correlatedFrequency)
         val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) //this result is in seconds
 
         stepWithFrequency(timestamp, correlatedFrequency, lengthOfBuffer, latencyTime)
@@ -62,24 +64,24 @@ class PitchTracker : TimeKeeperSteppable {
 
         val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0) - latencyTime
 
-        //println("Timestamp that the buffer starts at $timestampOfPitch")
+        //pm_log("Timestamp that the buffer starts at $timestampOfPitch")
 
         //val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
 
-        //println("Current endpoint of the samples buffer : $currentTimestampOfSamplesBuffer")
+        //pm_log("Current endpoint of the samples buffer : $currentTimestampOfSamplesBuffer")
 
         val timestampAccountingForPreroll = timestampOfPitch - lengthOfPrerollToIgnore
 
-        println("Timestamp accounting for preroll $timestampAccountingForPreroll")
+        pm_log("Timestamp accounting for preroll $timestampAccountingForPreroll")
 
         var samplesToFill = lengthOfBufferInSamples - samplesRecorded + timestampAccountingForPreroll * 44.1
 
         if (samplesToFill < 0) {
-            println("Not filling yet...")
+            pm_log("Not filling yet...")
             return
         }
 
-        println("Filling " + samplesToFill + " with $correlatedFrequency")
+        pm_log("Filling " + samplesToFill + " with $correlatedFrequency")
 
         samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
 

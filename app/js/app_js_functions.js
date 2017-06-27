@@ -28,7 +28,7 @@ function highlightMetronomeItem(itemNumber) {
 
 //clear existing feedback items from the screen
 function clearFeedbackItems() {
-    console.log("Clearing")
+    pm_log("Clearing")
     feedbackCanvas.getContext("2d").clearRect(0,0,feedbackCanvas.width,feedbackCanvas.height)
 
     var items = document.getElementsByClassName('feedbackItem');

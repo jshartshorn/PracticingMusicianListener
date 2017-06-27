@@ -4,6 +4,8 @@ import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.SampleCollection
 import kotlin.browser.window
 
+external fun pm_log(message: Any, priority : Int = definedExternally)
+
 /**
  * Created by jn on 6/23/17.
  *
@@ -53,11 +55,11 @@ class IncrementalBufferManager {
         //get only the samples we haven't tested yet
         val samplesSublist = samples.subList(positionInSamples,samples.count())
 
-        println("Converting how many samples: " + samplesSublist.count())
+        pm_log("Converting how many samples: " + samplesSublist.count())
 
         val lengthOfSamplesInBeats = (samplesSublist.map { it.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
 
-        println("Total length of samples in beats: $lengthOfSamplesInBeats")
+        pm_log("Total length of samples in beats: $lengthOfSamplesInBeats")
 
         //get the note number for each sample in the buffer
         val noteNumbers = samplesSublist.map {
@@ -68,10 +70,10 @@ class IncrementalBufferManager {
         //first item is the SampleCollection (frequency and length), second is the note number
         val collectedPairs = samplesSublist.zip(noteNumbers)
 
-        //console.log("Collected pairs:")
-        //console.log(collectedPairs)
+        //pm_log("Collected pairs:")
+        //pm_log(collectedPairs)
 
-        println("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
+        pm_log("After mapping and zipping: " + (window.performance.now() - functionStartTimestamp))
 
 
         //this will store groups of like-numbered sample/note pairs
@@ -93,18 +95,18 @@ class IncrementalBufferManager {
         //add the last one
         groups.add(curList)
 
-        println("After making pairs: " + (window.performance.now() - functionStartTimestamp))
+        pm_log("After making pairs: " + (window.performance.now() - functionStartTimestamp))
 
         val lengthOfCollectedPairsInBeats = (collectedPairs.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
 
-        println("Total length of collected pairs in beats: $lengthOfCollectedPairsInBeats")
+        pm_log("Total length of collected pairs in beats: $lengthOfCollectedPairsInBeats")
 
         val lengthOfGroupsInBeats = (groups.flatMap { it }.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
 
-        println("Total length of groups: $lengthOfGroupsInBeats")
+        pm_log("Total length of groups: $lengthOfGroupsInBeats")
 
-        //console.log("Groups:")
-        //console.log(groups)
+        //pm_log("Groups:")
+        //pm_log(groups)
 
 
         val BOGUS_NOTE_NUMBER = -100
@@ -112,9 +114,9 @@ class IncrementalBufferManager {
         //tkae any groups that aren't of acceptable length, and assign BOGUS_NOTE_NUMBER to them so that they can be identified later
         val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
             val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
-            //console.log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
+            //pm_log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
             if (lengthOfGroupsInSamples < (secondsPerBeat * minDurationInBeats * sampleRate)) {
-                //println("Under threshold")
+                //pm_log("Under threshold")
                 return@map it.map {
                     Pair(it.first,BOGUS_NOTE_NUMBER)
                 }
@@ -123,19 +125,19 @@ class IncrementalBufferManager {
             }
         }
 
-        //console.log("Groups:")
-        //console.log(groupsOfAcceptableLength)
+        //pm_log("Groups:")
+        //pm_log(groupsOfAcceptableLength)
 
-        println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
+        pm_log("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
 
         val flattened = groupsOfAcceptableLength.flatMap { it }
 
         val lengthOfAcceptableGroupsInBeats = (flattened.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d } / sampleRate) / secondsPerBeat
 
-        println("Total length of acceptable groups pairs in beats: $lengthOfAcceptableGroupsInBeats")
+        pm_log("Total length of acceptable groups pairs in beats: $lengthOfAcceptableGroupsInBeats")
 
 
-        //console.log(flattened)
+        //pm_log(flattened)
 
         curNoteNumber = -1
         var curLengthInSamples = 0
@@ -175,17 +177,17 @@ class IncrementalBufferManager {
 
 
         //print out the notes that we had before filtering the bogus ones, for comparison
-//        console.log("Turned samples into these notes (before purging): ")
+//        pm_log("Turned samples into these notes (before purging): ")
 //        notes.forEach {
-//            println("Note: " + it.noteNumber + " for " + it.duration)
+//            pm_log("Note: " + it.noteNumber + " for " + it.duration)
 //        }
 
         val lengthOfNotesInBeats = notes.map { it.duration }.reduce { acc, d -> acc + d }
-        println("Length of notes in beats: $lengthOfNotesInBeats")
+        pm_log("Length of notes in beats: $lengthOfNotesInBeats")
 
         val functionEndTimestamp = window.performance.now()
 
-        println("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
+        pm_log("Function total time: " + (functionEndTimestamp - functionStartTimestamp))
 
         //return notes
 
