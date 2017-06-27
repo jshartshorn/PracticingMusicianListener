@@ -22,7 +22,7 @@ div#notationBody {
     position: relative;
 }
 
-div#notationBody canvas {
+div#notationBody canvas, div#notationBody svg {
     position: absolute;
 }
 

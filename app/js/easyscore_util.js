@@ -58,12 +58,12 @@ var EasyScoreUtil = {
         var actualWindowWidth = document.getElementById(elementID).offsetWidth
         var availableWidthAfterMargin = actualWindowWidth - (this.scorePositionInitialX * 2)
 
-        console.log("Avail width: " + availableWidthAfterMargin)
+        pm_log("Avail width: " + availableWidthAfterMargin)
 
         //TODO: do it this way, or set the scale factor?
         this.barWidth = availableWidthAfterMargin / this.barsPerLine
 
-        console.log("Bar width: " + this.barWidth)
+        pm_log("Bar width: " + this.barWidth)
 
         //calculate the width
         var totalLines = Math.ceil(this.exercise.bars.length / this.barsPerLine)
@@ -105,9 +105,6 @@ var EasyScoreUtil = {
         this.positionInLine = this.measureCounter % this.barsPerLine
 
         var width = this.barWidth
-
-
-        pm_log("Width: " + width)
 
         if (this.positionInLine == 0) {
             //pm_log("NEW LINE")
@@ -407,4 +404,38 @@ var EasyScoreUtil = {
         document.getElementById("notationBody").appendChild(obj)
     },
 
+}
+
+//Resizing code
+//var resizeTimeoutID;
+//window.onresize = function() {
+//    clearTimeout(resizeTimeoutID);
+//    resizeTimeoutID = setTimeout(doneResizing, 500);
+//}
+
+function doneResizing(){
+  pm_log("Resized window",10)
+
+    this.scorePositionX = 0
+    this.scorePositionY = 0
+    this.positionInLine = 0
+
+    this.scorePositionCurrentLine = 0
+    this.measureCounter = 0
+
+    //counter so that we can get an individual ID for each note
+    this.noteIDNumber= 0
+
+    //array of systems (really measures...) that have been added to the screen
+    //useful for getting placement information later
+    this.systems = Array()
+
+    var oldSVG = document.getElementsByTagName("svg")[0]
+    oldSVG.parentNode.removeChild(oldSVG)
+
+  //setup the score
+    EasyScoreUtil.setupOnElement("notationBody")
+
+    //notate it
+    EasyScoreUtil.notateExercise()
 }
