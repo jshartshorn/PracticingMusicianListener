@@ -12,7 +12,7 @@ var feedbackCanvasName = "feedbackCanvas"
 function moveToPosition(beat) {
     //clear the previous indicator first
     indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
-    EasyScoreUtil.drawIndicatorLine(indicatorCanvas, EasyScoreUtil.getPositionForBeat(beat))
+    EasyScoreUtil.drawIndicatorLine(indicatorCanvas, beat)
 }
 
 //highlight a certain item in the HTML metronome indicators

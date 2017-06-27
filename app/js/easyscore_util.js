@@ -278,12 +278,17 @@ var EasyScoreUtil = {
         var currentItem = EasyScoreUtil.id("note" + ts.currentItemIndex)
         var nextItem = EasyScoreUtil.id("note" + ts.nextItemIndex)
 
+        var staveYPos = currentItem.stave.getYForLine(0)
+
         //find the middles of the items
         var distance = EasyScoreUtil.middlePositionOfItem(nextItem) - EasyScoreUtil.middlePositionOfItem(currentItem)
         var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
 
         //account for the percent distance too
-        return initialPos + distance * ts.percent
+        return {
+            x: (initialPos + distance * ts.percent),
+            y: staveYPos
+        }
 
       },
 
@@ -298,15 +303,25 @@ var EasyScoreUtil = {
         return this.systems[0].parts[0].stave
     },
 
+    getStaveForBeat: function(beat) {
+        var ts = EasyScoreUtil.getElementsForBeat(beat)
+        var currentItem = EasyScoreUtil.id("note" + ts.currentItemIndex)
+        var stave = currentItem.stave
+        return stave
+    },
+
     //draw the indicator line (blue line that shows current position)
-    drawIndicatorLine: function(canvas, indicatorPosition) {
+    drawIndicatorLine: function(canvas, beat) {
+
+            var indicatorPosition = EasyScoreUtil.getPositionForBeat(beat)
 
             var indicatorOverflow = 20
 
             var stave = EasyScoreUtil.getCurrentStave()
+            var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
 
-            var topY = stave.getYForLine(0) - indicatorOverflow
-            var bottomY = stave.getYForLine(4) + indicatorOverflow
+            var topY = indicatorPosition.y - indicatorOverflow
+            var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
 
             if (canvas.getContext) {
 
@@ -318,8 +333,8 @@ var EasyScoreUtil = {
 
             	   // Stroked path
             	   ctx.beginPath();
-            	   ctx.moveTo(indicatorPosition,bottomY);
-            	   ctx.lineTo(indicatorPosition,topY);
+            	   ctx.moveTo(indicatorPosition.x,bottomY);
+            	   ctx.lineTo(indicatorPosition.x,topY);
             	   ctx.closePath();
             	   ctx.stroke();
 
