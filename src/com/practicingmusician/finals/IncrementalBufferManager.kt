@@ -157,13 +157,13 @@ class IncrementalBufferManager {
             curNoteNumber = it.second
         }
         //add the last remaining one
-        var lastNote = Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
+        val lastNote = Note(curNoteNumber,curLengthInSamples.toDouble() / (secondsPerBeat * sampleRate))
         avgFreq = avgFreq / curLengthInSamples
         lastNote.avgFreq = avgFreq
         noteList.add(lastNote)
 
-        //get rid of the notes that are listed as -1
-        notes.addAll(noteList.filter { it.noteNumber != -1 })
+        //get rid of the notes that have no duration
+        notes.addAll(noteList.filter { it.duration != 0.0 })
 
         //take the notes, and make NotePlacements out of them, which record the beat placement of each note
         var pos = 0.0

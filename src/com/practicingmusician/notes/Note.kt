@@ -31,6 +31,8 @@ class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem 
     companion object {
         //get the note number of a certain frequency
         fun getNoteNumber(frequency : Double) : Int {
+            if (frequency == -1.0)
+                return -1
             return closestNoteToFrequency(frequency)
         }
 
