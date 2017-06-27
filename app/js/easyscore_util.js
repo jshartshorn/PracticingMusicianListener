@@ -15,8 +15,15 @@ function concat(a, b) { return a.concat(b); }
 var EasyScoreUtil = {
 
     //the current position that systems are being placed on the screen
-    scorePositionX : 60,
-    scorePositionY : 20,
+    scorePositionInitialX : 60,
+    scorePositionInitialY : 20,
+
+    scorePositionX : 0,
+    scorePositionY : 0,
+    positionInLine: 0,
+
+    scorePositionCurrentLine: 0,
+    measureCounter : 0,
 
     //gets set later with the current exercise (from notesFromKotlinNotationItems())
     exercise: null,
@@ -32,8 +39,9 @@ var EasyScoreUtil = {
 
     //formatting info for the notation
     canvasWidth: 1024,
-    barWidth : 200,
-    firstBarAddition: 60,
+    barWidth : 200, //TODO: change dynamically based on window size?
+    barHeight: 160,
+    firstBarAddition: 40,
     barsPerLine: 4,
 
     //counter so that we can get an individual ID for each note
@@ -45,14 +53,20 @@ var EasyScoreUtil = {
 
     //setup the basic notation stuff
     setupOnElement: function(elementID) {
-        var totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarAddition
+        var totalLines = Math.ceil(this.exercise.bars.length / this.barsPerLine)
+        var totalWidthWillBe = this.barsPerLine * this.barWidth + this.firstBarAddition
 
-        this.scorePositionX = (this.canvasWidth / 2) - (totalWidthWillBe / 2)
+        if (totalLines <= 1) {
+            totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarAddition
+        }
+
+        this.scorePositionInitialX = (this.canvasWidth / 2) - (totalWidthWillBe / 2)
 
         console.log("Total width will be " + totalWidthWillBe)
+        console.log("Total height will be " + totalLines * this.barHeight)
 
         this.vf = new Vex.Flow.Factory({
-                renderer: {selector: elementID, width: this.canvasWidth, height: 400}
+                renderer: {selector: elementID, width: this.canvasWidth, height: totalLines * this.barHeight}
                 });
 
         this.registry = new VF.Registry();
@@ -66,10 +80,37 @@ var EasyScoreUtil = {
     },
 
     //make a new system (measure) of a given width
-    makeSystem: function (width) {
+    makeSystem: function () {
+
+        this.positionInLine = this.measureCounter % this.barsPerLine
+
+        var width = this.barWidth
+
+
+        console.log("Width: " + width)
+
+        if (this.positionInLine == 0) {
+            console.log("NEW LINE")
+            width += this.firstBarAddition
+            this.scorePositionX = this.scorePositionInitialX
+            if (this.scorePositionY == 0) {
+                this.scorePositionY = this.scorePositionInitialY
+            } else {
+                this.scorePositionY += this.barHeight
+            }
+        } else {
+            console.log("SAME LINE")
+
+        }
+
+        console.log("Creating at x " + this.scorePositionX)
+        console.log("Creating at y " + this.scorePositionY)
 
         var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
+
+        this.measureCounter += 1
         this.scorePositionX += width;
+
         return system;
     },
 
@@ -81,13 +122,7 @@ var EasyScoreUtil = {
         for (barIndex in this.exercise.bars) {
             var curBar = this.exercise.bars[barIndex]
 
-            var measureWidth = this.barWidth;
-
-            //if it's the first bar, it'll need extra space, since it has a clef and time/key sigs
-            if (barIndex == 0) {
-                measureWidth += this.firstBarAddition
-            }
-            var system = EasyScoreUtil.makeSystem(measureWidth)
+            var system = EasyScoreUtil.makeSystem()
 
             this.systems.push(system)
 

@@ -49,7 +49,7 @@ function generateExerciseEasyScoreCode() {
                 groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}]
             },
             {
-                            groups:[{notes:['G4/q','A4/q','B4/q','C5/q']}]
+                            groups:[{notes:['G5/q','A4/q','B4/q','C5/q']}]
                         },
             {
                                         groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}]
@@ -58,10 +58,11 @@ function generateExerciseEasyScoreCode() {
                                         groups:[{notes:['G4/q','A4/q','B4/q','C5/q']}]
                                     },
             {
-                                        groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}]
+                extra_attributes:[{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
+                                        groups:[{notes:['C5/q','D5/q','E5/q','F5/q']}]
                                     },
             {
-                                        groups:[{notes:['G4/q','A4/q','B4/q','C5/q']}]
+                                        groups:[{notes:['G5/q','A5/q','B5/q','C6/q']}]
                                     },
             {
                                         groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}]
