@@ -129,6 +129,10 @@ var EasyScoreUtil = {
                 stave.addKeySignature("C")
                 stave.addTimeSignature("4/4")
             }
+
+            if (barIndex == this.exercise.bars.length - 1) {
+                stave.setEndBarType(VF.Barline.type.END)
+            }
         }
 
         //draw it to the screen
