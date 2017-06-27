@@ -342,8 +342,10 @@ var EasyScoreUtil = {
         },
 
     //get the Y coordinate for feedback items
-    getFeedbackYPosition : function() {
-        return EasyScoreUtil.getCurrentStave().getBoundingBox().y + EasyScoreUtil.getCurrentStave().getBoundingBox().h
+    getFeedbackYPosition : function(topStaveY) {
+        var stave = EasyScoreUtil.getCurrentStave()
+        var pos = stave.height + topStaveY
+        return pos
     },
 
     //draw feedback item at a given position
