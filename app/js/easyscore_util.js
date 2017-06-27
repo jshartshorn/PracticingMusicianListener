@@ -39,7 +39,7 @@ var EasyScoreUtil = {
 
     //formatting info for the notation
     contentScaleFactor: 1.0,
-    canvasWidth: 1024,
+    assumedCanvasWidth: 1024, //this will never change, although the scaling factor will change this
     barWidth : 200, //TODO: change dynamically based on window size?
     barHeight: 160,
     firstBarAddition: 40,
@@ -54,6 +54,18 @@ var EasyScoreUtil = {
 
     //setup the basic notation stuff
     setupOnElement: function(elementID) {
+        //calculate the scale
+        var actualWindowWidth = document.getElementById(elementID).offsetWidth
+        var availableWidthAfterMargin = actualWindowWidth - (this.scorePositionInitialX * 2)
+
+        console.log("Avail width: " + availableWidthAfterMargin)
+
+        //TODO: do it this way, or set the scale factor?
+        this.barWidth = availableWidthAfterMargin / this.barsPerLine
+
+        console.log("Bar width: " + this.barWidth)
+
+        //calculate the width
         var totalLines = Math.ceil(this.exercise.bars.length / this.barsPerLine)
         var totalWidthWillBe = this.barsPerLine * this.barWidth + this.firstBarAddition
 
@@ -61,13 +73,18 @@ var EasyScoreUtil = {
             totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarAddition
         }
 
-        this.scorePositionInitialX = (this.canvasWidth / 2) - (totalWidthWillBe / 2)
+        this.scorePositionInitialX = (actualWindowWidth / 2) - (totalWidthWillBe / 2)
 
         pm_log("Total width will be " + totalWidthWillBe)
         pm_log("Total height will be " + totalLines * this.barHeight)
 
+        var indicatorCanvas = document.getElementById(indicatorCanvasName)
+        indicatorCanvas.width = totalWidthWillBe
+        indicatorCanvas.height = totalLines * this.barHeight
+
+
         this.vf = new Vex.Flow.Factory({
-                renderer: {selector: elementID, width: this.canvasWidth, height: totalLines * this.barHeight}
+                renderer: {selector: elementID, width: actualWindowWidth, height: totalLines * this.barHeight}
                 });
 
         this.vf.context.scale(this.contentScaleFactor,this.contentScaleFactor)

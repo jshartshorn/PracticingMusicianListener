@@ -18,6 +18,7 @@ div#notationHeader {
 
 div#notationBody {
     width: 100%;
+    min-width: 700px !important;
     position: relative;
 }
 
