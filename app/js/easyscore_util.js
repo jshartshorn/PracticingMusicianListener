@@ -16,7 +16,7 @@ var EasyScoreUtil = {
 
     //the current position that systems are being placed on the screen
     scorePositionX : 60,
-    scorePositionY : 0,
+    scorePositionY : 20,
 
     //gets set later with the current exercise (from notesFromKotlinNotationItems())
     exercise: null,
@@ -31,8 +31,8 @@ var EasyScoreUtil = {
     beam: null,
 
     canvasWidth: 1024,
-    barWidth : 160,
-    firstBarWidth: 220,
+    barWidth : 200,
+    firstBarAddition: 60,
 
     //counter so that we can get an individual ID for each note
     noteIDNumber: 0,
@@ -43,7 +43,7 @@ var EasyScoreUtil = {
 
     //setup the basic notation stuff
     setupOnElement: function(elementID) {
-        var totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarWidth - this.barWidth
+        var totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarAddition
 
         this.scorePositionX = (this.canvasWidth / 2) - (totalWidthWillBe / 2)
 
@@ -84,11 +84,11 @@ var EasyScoreUtil = {
         for (barIndex in this.exercise.bars) {
             console.log("Making bar...")
 
-            var measureWidth = 160;
+            var measureWidth = this.barWidth;
 
             //if it's the first bar, it'll need extra space, since it has a clef and time/key sigs
             if (barIndex == 0) {
-                measureWidth = 220;
+                measureWidth += this.firstBarAddition
             }
 
             var system = EasyScoreUtil.makeSystem(measureWidth);
