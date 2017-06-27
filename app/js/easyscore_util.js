@@ -304,9 +304,8 @@ var EasyScoreUtil = {
               return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
       },
 
-    //get the current staff
-    //WARNING: currently just returns the first one
-    getCurrentStave : function() {
+    //get a basic representation of the stave, for things like height
+    getBasicStave : function() {
         return this.systems[0].parts[0].stave
     },
 
@@ -324,7 +323,7 @@ var EasyScoreUtil = {
 
             var indicatorOverflow = 20
 
-            var stave = EasyScoreUtil.getCurrentStave()
+            var stave = EasyScoreUtil.getBasicStave()
             var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
 
             var topY = indicatorPosition.y - indicatorOverflow
@@ -350,7 +349,7 @@ var EasyScoreUtil = {
 
     //get the Y coordinate for feedback items
     getFeedbackYPosition : function(topStaveY) {
-        var stave = EasyScoreUtil.getCurrentStave()
+        var stave = EasyScoreUtil.getBasicStave()
         var pos = stave.height + topStaveY
         return pos
     },
