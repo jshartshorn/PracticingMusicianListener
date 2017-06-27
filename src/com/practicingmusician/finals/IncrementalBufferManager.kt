@@ -112,9 +112,9 @@ class IncrementalBufferManager {
         //tkae any groups that aren't of acceptable length, and assign BOGUS_NOTE_NUMBER to them so that they can be identified later
         val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
             val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
-            console.log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
+            //console.log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
             if (lengthOfGroupsInSamples < (secondsPerBeat * minDurationInBeats * sampleRate)) {
-                println("Under threshold")
+                //println("Under threshold")
                 return@map it.map {
                     Pair(it.first,BOGUS_NOTE_NUMBER)
                 }
@@ -123,8 +123,8 @@ class IncrementalBufferManager {
             }
         }
 
-        console.log("Groups:")
-        console.log(groupsOfAcceptableLength)
+        //console.log("Groups:")
+        //console.log(groupsOfAcceptableLength)
 
         println("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count())
 
@@ -175,10 +175,10 @@ class IncrementalBufferManager {
 
 
         //print out the notes that we had before filtering the bogus ones, for comparison
-        console.log("Turned samples into these notes (before purging): ")
-        notes.forEach {
-            println("Note: " + it.noteNumber + " for " + it.duration)
-        }
+//        console.log("Turned samples into these notes (before purging): ")
+//        notes.forEach {
+//            println("Note: " + it.noteNumber + " for " + it.duration)
+//        }
 
         val lengthOfNotesInBeats = notes.map { it.duration }.reduce { acc, d -> acc + d }
         println("Length of notes in beats: $lengthOfNotesInBeats")

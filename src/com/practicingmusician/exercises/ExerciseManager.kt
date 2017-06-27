@@ -106,7 +106,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
                     val beat = it.beat
-                    println("Feedback item at $beat")
+                    //println("Feedback item at $beat")
                     addFeedbackItem(beat,it.feedbackItemType)
                 }
 

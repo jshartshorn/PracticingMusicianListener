@@ -90,7 +90,7 @@ var EasyScoreUtil = {
         console.log("Width: " + width)
 
         if (this.positionInLine == 0) {
-            console.log("NEW LINE")
+            //console.log("NEW LINE")
             width += this.firstBarAddition
             this.scorePositionX = this.scorePositionInitialX
             if (this.scorePositionY == 0) {
@@ -99,12 +99,11 @@ var EasyScoreUtil = {
                 this.scorePositionY += this.barHeight
             }
         } else {
-            console.log("SAME LINE")
-
+            //console.log("SAME LINE")
         }
-
-        console.log("Creating at x " + this.scorePositionX)
-        console.log("Creating at y " + this.scorePositionY)
+//
+//        console.log("Creating at x " + this.scorePositionX)
+//        console.log("Creating at y " + this.scorePositionY)
 
         var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
 

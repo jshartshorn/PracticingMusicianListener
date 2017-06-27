@@ -62,11 +62,11 @@ class PitchTracker : TimeKeeperSteppable {
 
         val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0) - latencyTime
 
-        println("Timestamp that the buffer starts at $timestampOfPitch")
+        //println("Timestamp that the buffer starts at $timestampOfPitch")
 
-        val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
+        //val currentTimestampOfSamplesBuffer = samplesRecorded / sampleRate * 1000.0
 
-        println("Current endpoint of the samples buffer : $currentTimestampOfSamplesBuffer")
+        //println("Current endpoint of the samples buffer : $currentTimestampOfSamplesBuffer")
 
         val timestampAccountingForPreroll = timestampOfPitch - lengthOfPrerollToIgnore
 
