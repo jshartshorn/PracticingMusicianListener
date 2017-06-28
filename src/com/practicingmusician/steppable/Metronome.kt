@@ -1,6 +1,7 @@
 package com.practicingmusician.steppable
 
 import com.practicingmusician.ListenerApp
+import com.practicingmusician.UserSettings
 import com.practicingmusician.pm_log
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
@@ -82,7 +83,10 @@ class Metronome : TimeKeeperSteppable {
         //then play the metronome sound, set the lastBeatOccuredAt, update the metronome UI and increment the current beat counter
         if (timestamp >= nextBeatTime) {
             //TODO: wind to the specific time?
-            audioManager.playAudioNow(audioKey)
+            if (UserSettings.metronomeAudioOn) {
+                audioManager.playAudioNow(audioKey)
+            }
+
             lastBeatOccuredAt = nextBeatTime
 
             updateMetronomeUI(currentBeat)

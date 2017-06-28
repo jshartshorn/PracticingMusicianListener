@@ -7,6 +7,7 @@ import com.practicingmusician.notes.Note
  */
 
 object UserSettings {
+    val metronomeAudioOn = true
     val transposition = 0 //-2 would be Bb transposition
     val tempo = -1.0 //-1 if we don't want to change the value
     val pitch = 440
