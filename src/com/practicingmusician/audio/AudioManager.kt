@@ -1,5 +1,6 @@
 package com.practicingmusician.audio
 
+import com.practicingmusician.AudioObjectInterface
 import com.practicingmusician.exercises.pm_log
 import kotlin.browser.window
 
@@ -11,7 +12,10 @@ import kotlin.browser.window
  *
  */
 
-external class Audio(filename : String)
+external class Audio(filename : String) {
+    var currentTime : Int
+    fun play()
+}
 
 class AudioManager {
 
@@ -28,8 +32,8 @@ class AudioManager {
     fun playAudioNow(key : String) {
         pm_log("**** (( Playing...",6)
         val audio = loadedAudio[key]
-        audio.asDynamic().currentTime = 0
-        audio.asDynamic().play()
+        audio?.currentTime = 0
+        audio?.play()
     }
 
     fun playAudio(key : String, atTime : Int) {
@@ -37,8 +41,8 @@ class AudioManager {
 
         val timeoutKey = window.setTimeout({
             pm_log("(( Playing..." + atTime,6)
-            audio.asDynamic().currentTime = 0
-            audio.asDynamic().play()
+            audio?.currentTime = 0
+            audio?.play()
         }, atTime)
 
         timeoutKeys.add(timeoutKey)

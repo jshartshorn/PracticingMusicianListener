@@ -2,11 +2,8 @@ package com.practicingmusician.exercises
 
 import com.practicingmusician.ListenerApp
 import com.practicingmusician.audio.AudioManager
-import com.practicingmusician.finals.BufferManager
-import com.practicingmusician.finals.CompareEngine
 import com.practicingmusician.finals.IncrementalBufferManager
 import com.practicingmusician.finals.IncrementalComparisonEngine
-import com.practicingmusician.notes.Barline
 import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
@@ -14,7 +11,6 @@ import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 import kotlin.browser.window
 
-external object VexFlowUtil
 external val listenerApp : ListenerApp
 external fun pm_log(message: Any, priority : Int = definedExternally)
 
@@ -144,7 +140,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         val exerciseDefinition = ExerciseDefinition()
         exerciseDefinition.tempo = generatedExercise.tempo
 
-        val jsNotes = generatedExercise.notes as Array<dynamic>
+        val jsNotes = generatedExercise.notes
 
         exerciseDefinition.notes = jsNotes.map {
             Note(it.noteNumber,it.duration)

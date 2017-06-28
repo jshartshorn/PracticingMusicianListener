@@ -1,7 +1,6 @@
 package com.practicingmusician.steppable
 
 import com.practicingmusician.ListenerApp
-import com.practicingmusician.exercises.VexFlowUtil
 import com.practicingmusician.exercises.pm_log
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document

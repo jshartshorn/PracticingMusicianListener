@@ -1,5 +1,4 @@
 import com.practicingmusician.*
-import com.practicingmusician.notes.ALL_NOTES
 import com.practicingmusician.notes.Note
 import kotlin.browser.window
 
@@ -8,17 +7,15 @@ import kotlin.browser.window
  */
 
 external var audioAnalyzer : AudioAnalyzer
+external var listenerApp : ListenerApp
 
 val app = App()
 
 fun main(args: Array<String>) {
     window.onload = {
         Note.createAllNotes()
-        audioAnalyzer.setupMedia()
-        runProgram()
-    }
-}
 
-fun runProgram() {
-    println("Running...")
+        audioAnalyzer.setupMedia()
+        listenerApp.runApp()
+    }
 }
