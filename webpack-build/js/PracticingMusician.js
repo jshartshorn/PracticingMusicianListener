@@ -3,13 +3,14 @@ if (typeof kotlin === 'undefined') {
 }
 var PracticingMusician = function (_, Kotlin) {
   'use strict';
+  var until = Kotlin.kotlin.ranges.until_dqglrj$;
+  var toList = Kotlin.kotlin.collections.toList_us0mfu$;
   var reversed = Kotlin.kotlin.collections.reversed_7wnvza$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
   var DoubleCompanionObject = Kotlin.kotlin.js.internal.DoubleCompanionObject;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var zip = Kotlin.kotlin.collections.zip_45mdf7$;
   var println = Kotlin.kotlin.io.println_s8jyv4$;
-  var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var withIndex = Kotlin.kotlin.collections.withIndex_7wnvza$;
   var get_indices = Kotlin.kotlin.collections.get_indices_gzk92b$;
   var plus = Kotlin.kotlin.collections.plus_qloxvw$;
@@ -54,22 +55,72 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'App',
     interfaces: []
   };
-  function AppSettings() {
-    AppSettings_instance = this;
-    this.pitch = 440;
+  function ListenerApp() {
+    this.scoreUtil = new EasyScoreUtil();
+    this.generatedExercise = this.generatedExercise;
   }
-  AppSettings.$metadata$ = {
-    kind: Kotlin.Kind.OBJECT,
-    simpleName: 'AppSettings',
+  ListenerApp.prototype.runApp = function () {
+    this.generatedExercise = generateExerciseForKotlin();
+    this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);
+    app.exerciseManager.loadExercise();
+    this.makeScore();
+  };
+  ListenerApp.prototype.makeScore = function () {
+    this.scoreUtil = new EasyScoreUtil();
+    var exercise = generateExerciseEasyScoreCode();
+    this.scoreUtil.exercise = exercise;
+    this.scoreUtil.generatedExercise = this.generatedExercise;
+    this.scoreUtil.setupOnElement('notationBody');
+    this.scoreUtil.notateExercise();
+  };
+  ListenerApp.prototype.doResizeActions = function () {
+    var tmp$, tmp$_0;
+    pm_log('Resized window', 10);
+    var oldSVG = Kotlin.isType(tmp$ = document.getElementsByTagName('svg')[0], Element) ? tmp$ : Kotlin.throwCCE();
+    (tmp$_0 = oldSVG.parentNode) != null ? tmp$_0.removeChild(oldSVG) : null;
+    listenerApp.makeScore();
+  };
+  ListenerApp.prototype.moveToPosition_14dthe$ = function (beat) {
+    indicatorCanvas.getContext('2d').clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
+    this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat);
+  };
+  ListenerApp.prototype.highlightMetronomeItem_za3lpa$ = function (itemNumber) {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    tmp$ = until(0, metronomeItems.length);
+    tmp$_0 = tmp$.first;
+    tmp$_1 = tmp$.last;
+    tmp$_2 = tmp$.step;
+    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
+      var item = metronomeItems[index];
+      item.className = 'metronomeItem';
+      if (itemNumber === index)
+        item.className = item.className + ' highlighted';
+    }
+  };
+  ListenerApp.prototype.clearFeedbackItems = function () {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3;
+    pm_log('Clearing');
+    feedbackCanvas.getContext('2d').clearRect(0, 0, feedbackCanvas.width, feedbackCanvas.height);
+    var items = document.getElementsByClassName('feedbackItem');
+    tmp$ = until(0, items.length);
+    tmp$_0 = tmp$.first;
+    tmp$_1 = tmp$.last;
+    tmp$_2 = tmp$.step;
+    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
+      var i = items.item(index);
+      (tmp$_3 = i != null ? i.parentNode : null) != null ? tmp$_3.removeChild(i) : null;
+    }
+  };
+  ListenerApp.prototype.addFeedbackItem_iww005$ = function (beat, items) {
+    var positionForBeat = this.scoreUtil.getPositionForBeat(beat);
+    var positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y);
+    this.scoreUtil.createFeedbackHTMLElement(Kotlin.kotlin.collections.copyToArray(items), positionForBeat.x, positionY);
+  };
+  ListenerApp.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ListenerApp',
     interfaces: []
   };
-  var AppSettings_instance = null;
-  function AppSettings_getInstance() {
-    if (AppSettings_instance === null) {
-      new AppSettings();
-    }
-    return AppSettings_instance;
-  }
   function AudioAnalyzer() {
   }
   AudioAnalyzer.$metadata$ = {
@@ -84,27 +135,117 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'GeneratedExercise',
     interfaces: []
   };
-  function AudioObjectInterface() {
+  function EasyScoreCode() {
   }
-  AudioObjectInterface.$metadata$ = {
+  EasyScoreCode.$metadata$ = {
     kind: Kotlin.Kind.INTERFACE,
-    simpleName: 'AudioObjectInterface',
+    simpleName: 'EasyScoreCode',
     interfaces: []
   };
-  function SimpleJSNoteObject() {
+  function SimpleJSNoteObject(noteNumber, duration) {
+    this.noteNumber = noteNumber;
+    this.duration = duration;
   }
   SimpleJSNoteObject.$metadata$ = {
-    kind: Kotlin.Kind.INTERFACE,
+    kind: Kotlin.Kind.CLASS,
     simpleName: 'SimpleJSNoteObject',
     interfaces: []
   };
-  function ListenerApp() {
+  SimpleJSNoteObject.prototype.component1 = function () {
+    return this.noteNumber;
+  };
+  SimpleJSNoteObject.prototype.component2 = function () {
+    return this.duration;
+  };
+  SimpleJSNoteObject.prototype.copy_5wr77w$ = function (noteNumber, duration) {
+    return new SimpleJSNoteObject(noteNumber === void 0 ? this.noteNumber : noteNumber, duration === void 0 ? this.duration : duration);
+  };
+  SimpleJSNoteObject.prototype.toString = function () {
+    return 'SimpleJSNoteObject(noteNumber=' + Kotlin.toString(this.noteNumber) + (', duration=' + Kotlin.toString(this.duration)) + ')';
+  };
+  SimpleJSNoteObject.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.noteNumber) | 0;
+    result = result * 31 + Kotlin.hashCode(this.duration) | 0;
+    return result;
+  };
+  SimpleJSNoteObject.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.noteNumber, other.noteNumber) && Kotlin.equals(this.duration, other.duration)))));
+  };
+  function BeatPosition(x, y) {
+    this.x = x;
+    this.y = y;
   }
-  ListenerApp.$metadata$ = {
-    kind: Kotlin.Kind.INTERFACE,
-    simpleName: 'ListenerApp',
+  BeatPosition.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'BeatPosition',
     interfaces: []
   };
+  BeatPosition.prototype.component1 = function () {
+    return this.x;
+  };
+  BeatPosition.prototype.component2 = function () {
+    return this.y;
+  };
+  BeatPosition.prototype.copy_lu1900$ = function (x, y) {
+    return new BeatPosition(x === void 0 ? this.x : x, y === void 0 ? this.y : y);
+  };
+  BeatPosition.prototype.toString = function () {
+    return 'BeatPosition(x=' + Kotlin.toString(this.x) + (', y=' + Kotlin.toString(this.y)) + ')';
+  };
+  BeatPosition.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.x) | 0;
+    result = result * 31 + Kotlin.hashCode(this.y) | 0;
+    return result;
+  };
+  BeatPosition.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y)))));
+  };
+  function UserSettings() {
+    UserSettings_instance = this;
+    this.metronomeAudioOn = true;
+    this.transposition = 0;
+    this.tempo = -1.0;
+    this.pitch = 440;
+  }
+  UserSettings.prototype.applyToExercise_k94nyn$ = function (exerciseObject) {
+    var $receiver = toList(exerciseObject.notes);
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_0 = destination.add_11rb$;
+      var transform$result;
+      transform$break: {
+        if (UserSettings_getInstance().transposition !== 0) {
+          var newNote = new SimpleJSNoteObject(item.noteNumber + UserSettings_getInstance().transposition | 0, item.duration);
+          transform$result = newNote;
+          break transform$break;
+        }
+        transform$result = item;
+      }
+      tmp$_0.call(destination, transform$result);
+    }
+    exerciseObject.notes = Kotlin.kotlin.collections.copyToArray(destination);
+    if (this.tempo !== -1.0) {
+      exerciseObject.tempo = this.tempo;
+    }
+    return exerciseObject;
+  };
+  UserSettings.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'UserSettings',
+    interfaces: []
+  };
+  var UserSettings_instance = null;
+  function UserSettings_getInstance() {
+    if (UserSettings_instance === null) {
+      new UserSettings();
+    }
+    return UserSettings_instance;
+  }
   function AudioManager() {
     this.loadedAudio = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$();
     this.timeoutKeys = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
@@ -230,7 +371,7 @@ var PracticingMusician = function (_, Kotlin) {
         while (tmp$_1.hasNext()) {
           var element_0 = tmp$_1.next();
           var beat = element_0.beat;
-          listenerApp.addFeedbackItem(beat, element_0.feedbackItemType);
+          listenerApp.addFeedbackItem_iww005$(beat, element_0.feedbackItemType);
         }
         window.alert('Your results are: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted));
       }
@@ -261,7 +402,6 @@ var PracticingMusician = function (_, Kotlin) {
     var tmp$;
     pm_log('Loading exericse:');
     var generatedExercise = listenerApp.generatedExercise;
-    pm_log(generatedExercise);
     var exerciseDefinition = new ExerciseDefinition();
     exerciseDefinition.tempo = generatedExercise.tempo;
     var jsNotes = generatedExercise.notes;
@@ -302,7 +442,7 @@ var PracticingMusician = function (_, Kotlin) {
       while (tmp$_0.hasNext()) {
         var element = tmp$_0.next();
         var beat = element.beat;
-        listenerApp.addFeedbackItem(beat, element.feedbackItemType);
+        listenerApp.addFeedbackItem_iww005$(beat, element.feedbackItemType);
       }
     }
   };
@@ -1057,6 +1197,36 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'Slice',
     interfaces: []
   };
+  function EasyScoreUtil_Kotlin() {
+    this.scorePositionInitialX = 60;
+    this.scorePositionInitialY = 20;
+    this.scorePositionX = 0;
+    this.scorePositionY = 0;
+    this.positionInLine = 0;
+    this.scorePositionCurrentLine = 0;
+    this.measureCounter = 0;
+    this.exercise = null;
+    this.generatedExercise = this.generatedExercise;
+    this.vf = null;
+    this.registry = null;
+    this.score = null;
+    this.voice = null;
+    this.beam = null;
+    this.contentScaleFactor = 1.0;
+    this.useScaling = true;
+    this.assumedCanvasWidth = 1024;
+    this.barWidth = 200;
+    this.barHeight = 160;
+    this.firstBarAddition = 40;
+    this.barsPerLine = 4;
+    this.noteIDNumber = 0;
+    this.systems = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  }
+  EasyScoreUtil_Kotlin.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'EasyScoreUtil_Kotlin',
+    interfaces: []
+  };
   function NotationItem() {
   }
   NotationItem.$metadata$ = {
@@ -1082,7 +1252,7 @@ var PracticingMusician = function (_, Kotlin) {
   }
   Note.prototype.getFrequency = function () {
     var A440_NoteNumber = 69.0;
-    var equalTemperamentPitch = AppSettings_getInstance().pitch * Math.pow(2.0, (this.noteNumber - A440_NoteNumber) / 12.0);
+    var equalTemperamentPitch = UserSettings_getInstance().pitch * Math.pow(2.0, (this.noteNumber - A440_NoteNumber) / 12.0);
     return equalTemperamentPitch;
   };
   function Note$Companion() {
@@ -1182,7 +1352,9 @@ var PracticingMusician = function (_, Kotlin) {
     var absoluteBeatPosition = timestamp / beatSize;
     this.updateIndicatorUI_14dthe$(absoluteBeatPosition);
     if (timestamp >= nextBeatTime) {
-      this.audioManager.playAudioNow_61zpoe$(this.audioKey);
+      if (UserSettings_getInstance().metronomeAudioOn) {
+        this.audioManager.playAudioNow_61zpoe$(this.audioKey);
+      }
       this.lastBeatOccuredAt = nextBeatTime;
       this.updateMetronomeUI_za3lpa$(this.currentBeat);
       this.currentBeat = this.currentBeat + 1 | 0;
@@ -1202,10 +1374,10 @@ var PracticingMusician = function (_, Kotlin) {
     removeAll(this.timeoutKeys, Metronome$cancelAllUIUpdates$lambda);
   };
   Metronome.prototype.updateIndicatorUI_14dthe$ = function (beat) {
-    listenerApp.moveToPosition(beat - this.prerollBeats);
+    listenerApp.moveToPosition_14dthe$(beat - this.prerollBeats);
   };
   Metronome.prototype.updateMetronomeUI_za3lpa$ = function (beat) {
-    listenerApp.highlightMetronomeItem(beat % this.timeSignature);
+    listenerApp.highlightMetronomeItem_za3lpa$(beat % this.timeSignature);
   };
   Metronome.prototype.getBeatOfTimestamp_14dthe$ = function (timestamp) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
@@ -1829,14 +2001,15 @@ var PracticingMusician = function (_, Kotlin) {
   var package$com = _.com || (_.com = {});
   var package$practicingmusician = package$com.practicingmusician || (package$com.practicingmusician = {});
   package$practicingmusician.App = App;
-  Object.defineProperty(package$practicingmusician, 'AppSettings', {
-    get: AppSettings_getInstance
-  });
+  package$practicingmusician.ListenerApp = ListenerApp;
   package$practicingmusician.AudioAnalyzer = AudioAnalyzer;
   package$practicingmusician.GeneratedExercise = GeneratedExercise;
-  package$practicingmusician.AudioObjectInterface = AudioObjectInterface;
+  package$practicingmusician.EasyScoreCode = EasyScoreCode;
   package$practicingmusician.SimpleJSNoteObject = SimpleJSNoteObject;
-  package$practicingmusician.ListenerApp = ListenerApp;
+  package$practicingmusician.BeatPosition = BeatPosition;
+  Object.defineProperty(package$practicingmusician, 'UserSettings', {
+    get: UserSettings_getInstance
+  });
   var package$audio = package$practicingmusician.audio || (package$practicingmusician.audio = {});
   package$audio.AudioManager = AudioManager;
   var package$exercises = package$practicingmusician.exercises || (package$practicingmusician.exercises = {});
@@ -1864,6 +2037,7 @@ var PracticingMusician = function (_, Kotlin) {
   var package$models = package$practicingmusician.models || (package$practicingmusician.models = {});
   package$models.Slice = Slice;
   var package$notes = package$practicingmusician.notes || (package$practicingmusician.notes = {});
+  package$notes.EasyScoreUtil_Kotlin = EasyScoreUtil_Kotlin;
   package$notes.NotationItem = NotationItem;
   package$notes.Barline = Barline;
   Object.defineProperty(Note, 'Companion', {
