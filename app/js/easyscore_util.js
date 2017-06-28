@@ -89,8 +89,8 @@ var EasyScoreUtil = function() {
         pm_log("Total height will be " + totalLines * this.barHeight)
 
         var indicatorCanvas = document.getElementById(indicatorCanvasName)
-        indicatorCanvas.width = totalWidthWillBe
-        indicatorCanvas.height = totalLines * this.barHeight
+        indicatorCanvas.width = actualWindowWidth * this.contentScaleFactor
+        indicatorCanvas.height = totalLines * this.barHeight * this.contentScaleFactor
 
         this.vf = new Vex.Flow.Factory({
                 renderer: {selector: elementID, width: actualWindowWidth * this.contentScaleFactor, height: totalLines * this.barHeight * this.contentScaleFactor}
