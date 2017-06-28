@@ -1,5 +1,6 @@
 package com.practicingmusician
 
+
 /**
  * Created by jn on 6/27/17.
  *
@@ -7,6 +8,7 @@ package com.practicingmusician
  *
  */
 
+external fun pm_log(msg : Any, level : Int = definedExternally)
 
 interface AudioAnalyzer {
     fun setupMedia()
@@ -15,34 +17,34 @@ interface AudioAnalyzer {
 }
 
 interface GeneratedExercise {
-    val tempo : Double
-    val notes : Array<SimpleJSNoteObject>
+    var tempo : Double
+    var notes : Array<SimpleJSNoteObject>
 }
 
-interface AudioObjectInterface {
-
+external class Audio(filename : String) {
+    var currentTime : Int
+    fun play()
 }
 
-interface SimpleJSNoteObject {
-    val noteNumber : Int
-    val duration : Double
+
+interface EasyScoreCode {
+    val bars : Array<dynamic>
 }
 
-interface ListenerApp {
-    var generatedExercise : GeneratedExercise
+data class SimpleJSNoteObject(val noteNumber : Int, val duration : Double)
 
-    @JsName("runApp")
-    fun runApp()
+external class EasyScoreUtil  {
+    var exercise : EasyScoreCode
+    lateinit var generatedExercise : GeneratedExercise
 
-    @JsName("clearFeedbackItems")
-    fun clearFeedbackItems()
+    fun setupOnElement(elementID : String)
+    fun notateExercise()
+    fun drawIndicatorLine(canvas : dynamic, beat : Double)
 
-    @JsName("moveToPosition")
-    fun moveToPosition(beat:Double)
+    fun getPositionForBeat(beat: Double) : BeatPosition
+    fun getFeedbackYPosition(staveTopY : Double) : Double
 
-    @JsName("highlightMetronomeItem")
-    fun highlightMetronomeItem(itemNumber : Int)
-
-    @JsName("addFeedbackItem")
-    fun addFeedbackItem(beat : Double, items : List<String>)
+    fun createFeedbackHTMLElement(items : Array<String>, x : Double, y : Double)
 }
+
+data class BeatPosition(val x : Double, val y : Double)

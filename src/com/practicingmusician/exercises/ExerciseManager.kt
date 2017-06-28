@@ -8,11 +8,11 @@ import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
+import com.practicingmusician.pm_log
 import com.practicingmusician.steppable.TimeKeeper
 import kotlin.browser.window
 
 external val listenerApp : ListenerApp
-external fun pm_log(message: Any, priority : Int = definedExternally)
 
 /**
  * Created by jn on 6/6/17.
@@ -135,7 +135,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         val generatedExercise = listenerApp.generatedExercise
 
-        pm_log(generatedExercise)
         //pm_log("Tempo: " + exercise.tempo)
         val exerciseDefinition = ExerciseDefinition()
         exerciseDefinition.tempo = generatedExercise.tempo
