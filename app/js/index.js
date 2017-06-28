@@ -13,24 +13,6 @@ var metronomeItems = document.getElementById("metronomeItems").getElementsByClas
 
 /* END GLOBALS */
 
-var UserSettings = {
-    transposition: 0, //-2 would be Bb transposition
-    tempo: -1, //-1 if we don't want to change the value
-    applyToExercise: function(exerciseObject) {
-
-        exerciseObject.notes = exerciseObject.notes.map(function(it) {
-            if (UserSettings.transposition != 0)
-                it.noteNumber += UserSettings.transposition
-
-            return it
-        })
-
-        if (this.tempo != -1)
-            exerciseObject.tempo = this.tempo
-
-        return exerciseObject
-    }
-}
 
 var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
 
@@ -38,5 +20,5 @@ var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
 var resizeTimeoutID;
 window.onresize = function() {
     clearTimeout(resizeTimeoutID);
-    resizeTimeoutID = setTimeout(doResizeActions, 500);
+    resizeTimeoutID = setTimeout(listenerApp.doResizeActions, 500);
 }

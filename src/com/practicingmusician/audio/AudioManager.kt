@@ -1,6 +1,6 @@
 package com.practicingmusician.audio
 
-import com.practicingmusician.AudioObjectInterface
+import com.practicingmusician.Audio
 import com.practicingmusician.pm_log
 import kotlin.browser.window
 
@@ -11,11 +11,6 @@ import kotlin.browser.window
  *
  *
  */
-
-external class Audio(filename : String) {
-    var currentTime : Int
-    fun play()
-}
 
 class AudioManager {
 

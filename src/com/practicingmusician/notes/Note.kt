@@ -1,6 +1,6 @@
 package com.practicingmusician.notes
 
-import com.practicingmusician.AppSettings
+import com.practicingmusician.UserSettings
 import kotlin.js.Math.abs
 import kotlin.js.Math.pow
 
@@ -24,7 +24,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem 
     //get the frequency based on the note number
     fun getFrequency() : Double {
         val A440_NoteNumber: Double = 69.0
-        val equalTemperamentPitch = AppSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
+        val equalTemperamentPitch = UserSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
         return equalTemperamentPitch
     }
 

@@ -1,5 +1,6 @@
 package com.practicingmusician
 
+
 /**
  * Created by jn on 6/27/17.
  *
@@ -16,21 +17,24 @@ interface AudioAnalyzer {
 }
 
 interface GeneratedExercise {
-    val tempo : Double
-    val notes : Array<SimpleJSNoteObject>
+    var tempo : Double
+    var notes : Array<SimpleJSNoteObject>
 }
 
-interface AudioObjectInterface {
-
+external class Audio(filename : String) {
+    var currentTime : Int
+    fun play()
 }
 
-interface SimpleJSNoteObject {
-    val noteNumber : Int
-    val duration : Double
+
+interface EasyScoreCode {
+    val bars : Array<dynamic>
 }
+
+data class SimpleJSNoteObject(val noteNumber : Int, val duration : Double)
 
 external class EasyScoreUtil  {
-    var exercise : dynamic
+    var exercise : EasyScoreCode
     lateinit var generatedExercise : GeneratedExercise
 
     fun setupOnElement(elementID : String)
@@ -43,11 +47,4 @@ external class EasyScoreUtil  {
     fun createFeedbackHTMLElement(items : Array<String>, x : Double, y : Double)
 }
 
-interface BeatPosition {
-    val x : Double
-    val y : Double
-}
-
-external object UserSettings {
-    fun applyToExercise(e : GeneratedExercise) : GeneratedExercise
-}
+data class BeatPosition(val x : Double, val y : Double)
