@@ -57,7 +57,19 @@ function createVex() {
 
 createVex()
 
+var ExampleObject = function() {
+    this.prop1 = "test"
+    this.prop2 = "test"
 
+    this.myPrintFunc = function(msg) {
+        console.log(this.prop1 + " : " + msg)
+    }
+}
+
+var e = new ExampleObject()
+var f = new ExampleObject()
+
+e.myPrintFunc("hi")
 
 </script>
 

@@ -12,7 +12,7 @@ var feedbackCanvasName = "feedbackCanvas"
 function moveToPosition(beat) {
     //clear the previous indicator first
     indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
-    EasyScoreUtil.drawIndicatorLine(indicatorCanvas, beat)
+    scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
 }
 
 //highlight a certain item in the HTML metronome indicators
@@ -39,8 +39,8 @@ function clearFeedbackItems() {
 
 //add a feedback item to a certain beat
 function addFeedbackItem(beat,items) {
-    var positionForBeat = EasyScoreUtil.getPositionForBeat(beat)
-    var positionY = EasyScoreUtil.getFeedbackYPosition(positionForBeat.y)
+    var positionForBeat = scoreUtil.getPositionForBeat(beat)
+    var positionY = scoreUtil.getFeedbackYPosition(positionForBeat.y)
     //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
-    EasyScoreUtil.createFeedbackHTMLElement(items.toArray(),positionForBeat.x,positionY)
+    scoreUtil.createFeedbackHTMLElement(items.toArray(),positionForBeat.x,positionY)
 }
