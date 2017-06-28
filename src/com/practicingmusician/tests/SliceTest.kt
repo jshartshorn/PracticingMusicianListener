@@ -193,11 +193,54 @@ object SliceTest {
 
         val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
 
-        exactCopyGenerated[1].note.avgFreq = exactCopyGenerated[1].note.getFrequency() + incrementalComparison.allowableFreqencyMargin + 1
+        val sharpNoteOriginalFrequency = exactCopyGenerated[1].note.getFrequency()
+        val nextNoteUpFrequency = Note.getFrequencyForNoteNumber(exactCopyGenerated[1].note.noteNumber + 1)
+        val distanceInHz = nextNoteUpFrequency - sharpNoteOriginalFrequency
+        val distanceToMoveInHz = distanceInHz * ((incrementalComparison.allowableCentsMargin + 1) / 100.0)
+
+        println("Original freq: " + sharpNoteOriginalFrequency)
+        println("Next note up $nextNoteUpFrequency distance $distanceInHz to move $distanceToMoveInHz")
+
+        exactCopyGenerated[3].note.avgFreq =  sharpNoteOriginalFrequency + distanceToMoveInHz
 
         val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
 
         println("Comparing sharp copy...")
+
+        val expectedResults = CompareResults()
+        expectedResults.correct = 3
+        expectedResults.attempted = 4
+
+
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+    }
+
+    fun flatTest() {
+        println("****** Beginning flat test")
+        val incrementalComparison = IncrementalComparisonEngine()
+
+
+        //incremental
+        val incrementalBufferManager = IncrementalBufferManager()
+        incrementalBufferManager.tempo = tempo
+
+        val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
+
+        val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
+
+        val flatNoteOriginalFrequency = exactCopyGenerated[1].note.getFrequency()
+        val nextNoteDownFrequency = Note.getFrequencyForNoteNumber(exactCopyGenerated[1].note.noteNumber - 1)
+        val distanceInHz = flatNoteOriginalFrequency - nextNoteDownFrequency
+        val distanceToMoveInHz = distanceInHz * ((incrementalComparison.allowableCentsMargin + 1) / 100.0)
+
+        println("Original freq: " + flatNoteOriginalFrequency)
+        println("Next note up $nextNoteDownFrequency distance $distanceInHz to move $distanceToMoveInHz")
+
+        exactCopyGenerated[3].note.avgFreq =  flatNoteOriginalFrequency - distanceToMoveInHz
+
+        val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
+
+        println("Comparing flat copy...")
 
         val expectedResults = CompareResults()
         expectedResults.correct = 3
@@ -292,7 +335,6 @@ object SliceTest {
 
         rushedTest()
 
-        sharpTest()
 
         shortNotesTest()
 
@@ -301,6 +343,10 @@ object SliceTest {
         pitchTrackerTest()
 
         trueIncrementalComparisonTest()
+
+        sharpTest()
+
+        flatTest()
 
 
         return "Done"

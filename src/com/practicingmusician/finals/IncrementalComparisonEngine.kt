@@ -15,7 +15,7 @@ import kotlin.js.Math
 class IncrementalComparisonEngine {
 
     //the margins in which a note can vary from the ideal and still be considered acceptable
-    val allowableFreqencyMargin = 20.0 //TODO: this should be cents, not hz
+    val allowableCentsMargin = 40.0
     val allowableRhythmMargin = 0.25
     val allowableLengthMargin = 0.25
 
@@ -193,18 +193,31 @@ class IncrementalComparisonEngine {
             val avgFreq = testItem.note.avgFreq
 
             if (avgFreq != null) {
-                if (avgFreq - idealItem.getFrequency() > allowableFreqencyMargin) {
-                    pm_log("Test subject sharp")
+                val idealItemFrequency = idealItem.getFrequency()
+                val noteAboveFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber + 1)
+                val noteBelowFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber - 1)
+                if (avgFreq - idealItemFrequency > 0) {
+                    val distanceInHz = noteAboveFrequency - idealItemFrequency
+                    val distanceInCents = ((avgFreq - idealItemFrequency) / distanceInHz) * 100.0
+                    pm_log("Sharp by $distanceInHz ($distanceInCents cents)")
+                    if (distanceInCents > allowableCentsMargin) {
+                        pm_log("Test subject sharp")
 
-                    feedbackItemTypes.add("^")
+                        feedbackItemTypes.add("^")
 
-                    isCorrect = false
-                } else if (avgFreq - idealItem.getFrequency() < -allowableFreqencyMargin) {
-                    pm_log("Test subject flat")
+                        isCorrect = false
+                    }
+                } else if (avgFreq - idealItem.getFrequency() < 0) {
+                    val distanceInHz = idealItemFrequency - noteBelowFrequency
+                    val distanceInCents = ((idealItemFrequency - avgFreq) / distanceInHz) * 100.0
+                    pm_log("Flat by $distanceInHz ($distanceInCents cents)")
+                    if (distanceInCents > allowableCentsMargin) {
+                        pm_log("Test subject flat")
 
-                    feedbackItemTypes.add("_")
+                        feedbackItemTypes.add("_")
 
-                    isCorrect = false
+                        isCorrect = false
+                    }
                 } else {
                     pm_log("PERFECT")
                 }

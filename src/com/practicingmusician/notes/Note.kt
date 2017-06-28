@@ -23,9 +23,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem 
 
     //get the frequency based on the note number
     fun getFrequency() : Double {
-        val A440_NoteNumber: Double = 69.0
-        val equalTemperamentPitch = UserSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
-        return equalTemperamentPitch
+        return Note.getFrequencyForNoteNumber(this.noteNumber)
     }
 
     companion object {
@@ -34,6 +32,13 @@ class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem 
             if (frequency == -1.0)
                 return -1
             return closestNoteToFrequency(frequency)
+        }
+
+        //TODO: cache this for speed?
+        fun getFrequencyForNoteNumber(noteNumber : Int) : Double {
+            val A440_NoteNumber: Double = 69.0
+            val equalTemperamentPitch = UserSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
+            return equalTemperamentPitch
         }
 
         //create an array of notes (so that we can test for frequencies
