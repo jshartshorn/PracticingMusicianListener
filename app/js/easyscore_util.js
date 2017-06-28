@@ -39,8 +39,9 @@ var EasyScoreUtil = {
 
     //formatting info for the notation
     contentScaleFactor: 1.0,
+    useScaling: true,
     assumedCanvasWidth: 1024, //this will never change, although the scaling factor will change this
-    barWidth : 200, //TODO: change dynamically based on window size?
+    barWidth : 200,
     barHeight: 160,
     firstBarAddition: 40,
     barsPerLine: 4,
@@ -56,11 +57,19 @@ var EasyScoreUtil = {
     setupOnElement: function(elementID) {
         //calculate the scale
         var actualWindowWidth = document.getElementById(elementID).offsetWidth
+
+        if (this.useScaling) {
+            this.contentScaleFactor = actualWindowWidth / this.assumedCanvasWidth
+
+            actualWindowWidth = this.assumedCanvasWidth
+        }
+
         var availableWidthAfterMargin = actualWindowWidth - (this.scorePositionInitialX * 2)
 
         pm_log("Avail width: " + availableWidthAfterMargin)
 
-        //TODO: do it this way, or set the scale factor?
+
+
         this.barWidth = availableWidthAfterMargin / this.barsPerLine
 
         pm_log("Bar width: " + this.barWidth)
@@ -82,9 +91,8 @@ var EasyScoreUtil = {
         indicatorCanvas.width = totalWidthWillBe
         indicatorCanvas.height = totalLines * this.barHeight
 
-
         this.vf = new Vex.Flow.Factory({
-                renderer: {selector: elementID, width: actualWindowWidth, height: totalLines * this.barHeight}
+                renderer: {selector: elementID, width: actualWindowWidth * this.contentScaleFactor, height: totalLines * this.barHeight * this.contentScaleFactor}
                 });
 
         this.vf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
