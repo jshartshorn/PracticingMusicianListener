@@ -415,28 +415,39 @@ var EasyScoreUtil = {
 }
 
 //Resizing code
-//var resizeTimeoutID;
-//window.onresize = function() {
-//    clearTimeout(resizeTimeoutID);
-//    resizeTimeoutID = setTimeout(doneResizing, 500);
-//}
+var resizeTimeoutID;
+window.onresize = function() {
+    clearTimeout(resizeTimeoutID);
+    resizeTimeoutID = setTimeout(doneResizing, 500);
+}
 
 function doneResizing(){
   pm_log("Resized window",10)
 
-    this.scorePositionX = 0
-    this.scorePositionY = 0
-    this.positionInLine = 0
+    EasyScoreUtil.scorePositionInitialX = 60
+    EasyScoreUtil.scorePositionInitialY = 20
 
-    this.scorePositionCurrentLine = 0
-    this.measureCounter = 0
+    EasyScoreUtil.contentScaleFactor = 1.0
+    EasyScoreUtil.useScaling = true
+    EasyScoreUtil.assumedCanvasWidth = 1024 //this will never change, although the scaling factor will change this
+    EasyScoreUtil.barWidth = 200
+    EasyScoreUtil.barHeight = 160
+    EasyScoreUtil.firstBarAddition = 40
+    EasyScoreUtil.barsPerLine = 4
+
+    EasyScoreUtil.scorePositionX = 0
+    EasyScoreUtil.scorePositionY = 0
+    EasyScoreUtil.positionInLine = 0
+
+    EasyScoreUtil.scorePositionCurrentLine = 0
+    EasyScoreUtil.measureCounter = 0
 
     //counter so that we can get an individual ID for each note
-    this.noteIDNumber= 0
+    EasyScoreUtil.noteIDNumber = 0
 
     //array of systems (really measures...) that have been added to the screen
     //useful for getting placement information later
-    this.systems = Array()
+    EasyScoreUtil.systems = Array()
 
     var oldSVG = document.getElementsByTagName("svg")[0]
     oldSVG.parentNode.removeChild(oldSVG)
