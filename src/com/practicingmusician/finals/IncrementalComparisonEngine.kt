@@ -17,7 +17,7 @@ class IncrementalComparisonEngine {
     //the margins in which a note can vary from the ideal and still be considered acceptable
     val allowableFreqencyMargin = 20.0 //TODO: this should be cents, not hz
     val allowableRhythmMargin = 0.25
-    val allowableLengthMargin = 0.25 //TODO: use this
+    val allowableLengthMargin = 0.25
 
     /* State information about what has been compared */
 
@@ -132,10 +132,10 @@ class IncrementalComparisonEngine {
             pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration)
 
             //test the durations of the notes
-            if (idealItem.duration - testItem.note.duration > allowableRhythmMargin) {
+            if (idealItem.duration - testItem.note.duration > allowableLengthMargin) {
                 pm_log("Test subject too short")
                 //isCorrect = false
-            } else if (idealItem.duration - testItem.note.duration < -allowableRhythmMargin) {
+            } else if (idealItem.duration - testItem.note.duration < -allowableLengthMargin) {
                 pm_log("Test subject too long")
                 //isCorrect = false
             } else {

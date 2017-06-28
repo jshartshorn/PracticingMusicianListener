@@ -170,9 +170,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
     //called from timeKeeper.analyzers
     override fun analyze(timestamp: Double) {
-        //TODO: analyze
-        //return
-
         if (timestamp - lastAnalysisTimestamp > 200) {
             lastAnalysisTimestamp = timestamp
         } else {
