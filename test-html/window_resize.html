@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practicing Musician</title>
+
+    <script src="https://unpkg.com/vexflow/releases/vexflow-debug.js"></script>
+
+</head>
+<body>
+
+<div id="notationWindow">
+
+</div>
+
+<div id="boo" style="width: 100%;"></div>
+
+<script type="text/javascript">
+
+
+//Resizing code
+var resizeTimeoutID;
+window.onresize = function() {
+    clearTimeout(resizeTimeoutID);
+    resizeTimeoutID = setTimeout(doneResizing, 500);
+}
+
+function doneResizing() {
+    console.log("Done")
+    var oldSVG = document.getElementsByTagName("svg")[0]
+    oldSVG.parentNode.removeChild(oldSVG)
+    createVex()
+}
+
+function getWindowWidth() {
+    return document.getElementById("boo").offsetWidth
+}
+
+const VF = Vex.Flow;
+
+
+function createVex() {
+    var width = getWindowWidth()
+    // Create an SVG renderer and attach it to the DIV element named "boo".
+    var vf = new VF.Factory({renderer: {selector: 'boo', width: width}});
+    var score = vf.EasyScore();
+    var system = vf.System({width: width});
+
+    system.addStave({
+      voices: [score.voice(score.notes('C#5/q, B4, A4, G#4'))]
+    }).addClef('treble').addTimeSignature('4/4');
+
+    vf.draw();
+
+    console.log("Done drawing")
+}
+
+createVex()
+
+
+
+</script>
+
+</body>
+</html>
