@@ -1,5 +1,6 @@
 package com.practicingmusician.exercises
 
+import com.practicingmusician.ListenerApp
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.finals.CompareEngine
@@ -14,9 +15,7 @@ import com.practicingmusician.steppable.TimeKeeper
 import kotlin.browser.window
 
 external object VexFlowUtil
-external fun addFeedbackItem(beat : Double, items : List<String>)
-external fun clearFeedbackItems()
-external val generatedExercise : dynamic
+external val listenerApp : ListenerApp
 external fun pm_log(message: Any, priority : Int = definedExternally)
 
 /**
@@ -58,7 +57,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         pm_log("Setup")
 
         //clear the existing feedback items on the screen
-        clearFeedbackItems()
+        listenerApp.clearFeedbackItems()
 
         //make sure the metronome has a reference to the audio manager so that it can play audio
         metronome.audioManager = audioManager
@@ -102,13 +101,13 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
 
-                clearFeedbackItems()
+                listenerApp.clearFeedbackItems()
 
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
                     val beat = it.beat
                     //pm_log("Feedback item at $beat")
-                    addFeedbackItem(beat,it.feedbackItemType)
+                    listenerApp.addFeedbackItem(beat,it.feedbackItemType)
                 }
 
                 window.alert("Your results are: " + results.correct + "/" + results.attempted)
@@ -137,6 +136,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     @JsName("loadExercise")
     fun loadExercise() {
         pm_log("Loading exericse:")
+
+        val generatedExercise = listenerApp.generatedExercise
+
         pm_log(generatedExercise)
         //pm_log("Tempo: " + exercise.tempo)
         val exerciseDefinition = ExerciseDefinition()
@@ -194,12 +196,12 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
             //pm_log("Results $results")
 
-            clearFeedbackItems()
+            listenerApp.clearFeedbackItems()
 
             results.feedbackItems.forEach {
                 val beat = it.beat
                 //pm_log("Feedback item at $beat")
-                addFeedbackItem(beat,it.feedbackItemType)
+                listenerApp.addFeedbackItem(beat,it.feedbackItemType)
             }
         }
 

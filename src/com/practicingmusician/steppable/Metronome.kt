@@ -1,13 +1,13 @@
 package com.practicingmusician.steppable
 
+import com.practicingmusician.ListenerApp
 import com.practicingmusician.exercises.VexFlowUtil
 import com.practicingmusician.exercises.pm_log
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.browser.window
 
-external fun moveToPosition(beat : Double)
-external fun highlightMetronomeItem(itemNumber : Int)
+external var listenerApp : ListenerApp
 
 /**
  * Created by jn on 6/5/17.
@@ -103,13 +103,13 @@ class Metronome : TimeKeeperSteppable {
     }
 
     fun updateIndicatorUI(beat : Double) {
-        moveToPosition(beat - prerollBeats)
+        listenerApp.moveToPosition(beat - prerollBeats)
     }
 
     fun updateMetronomeUI(beat : Int) {
         //val el = document.getElementById("metronome") as HTMLElement
         //el.textContent = "$beat"
-        highlightMetronomeItem(beat % timeSignature)
+        listenerApp.highlightMetronomeItem(beat % timeSignature)
     }
 
     /*

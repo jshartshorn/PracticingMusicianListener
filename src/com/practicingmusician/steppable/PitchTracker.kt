@@ -1,13 +1,12 @@
 package com.practicingmusician.steppable
 
+import com.practicingmusician.AudioAnalyzer
+
 /**
  * Created by jn on 6/7/17.
  */
 
-
-external fun setupMedia()
-external fun updatePitch(timestamp: Double) : Double
-external fun getSampleRate() : Int
+external var audioAnalyzer : AudioAnalyzer
 
 external fun pm_log(message: Any, priority : Int = definedExternally)
 
@@ -52,7 +51,7 @@ class PitchTracker : TimeKeeperSteppable {
     override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
 
         //get the pitch at the current timestamp
-        val correlatedFrequency = com.practicingmusician.steppable.updatePitch(timestamp)
+        val correlatedFrequency = audioAnalyzer.updatePitch(timestamp)
         pm_log("Timestamp: " + timestamp)
         pm_log("Pitch: " + correlatedFrequency)
         val lengthOfBuffer = (com.practicingmusician.steppable.buflen / 2.0) //this result is in seconds

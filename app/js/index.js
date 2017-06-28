@@ -1,4 +1,6 @@
-var generatedExercise = null
+var canvasName = "notationCanvas";
+var indicatorCanvasName = "indicatorCanvas";
+var feedbackCanvasName = "feedbackCanvas";
 
 var UserSettings = {
     transposition: 0, //-2 would be Bb transposition
@@ -19,30 +21,86 @@ var UserSettings = {
     }
 }
 
-generatedExercise = generateExerciseForKotlin()
+var ListenerApp = function() {
+    this.scoreUtil = null
 
-generatedExercise = UserSettings.applyToExercise(generatedExercise)
+    this.runApp = function() {
 
-PracticingMusician.app.exerciseManager.loadExercise()
+        this.generatedExercise = generateExerciseForKotlin()
 
-var exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
+        this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
 
-var scoreUtil = null
+        PracticingMusician.app.exerciseManager.loadExercise()
 
-function makeScore() {
-    scoreUtil = new EasyScoreUtil()
+        this.makeScore()
+    }
 
-    //make sure it has a reference to the loaded exercise
-    scoreUtil.exercise = exercise
+    this.makeScore = function() {
+        this.scoreUtil = new EasyScoreUtil()
 
-    //setup the score
-    scoreUtil.setupOnElement("notationBody")
+        var exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
 
-    //notate it
-    scoreUtil.notateExercise()
+        //make sure it has a reference to the loaded exercise
+        this.scoreUtil.exercise = exercise
+        this.scoreUtil.generatedExercise = this.generatedExercise
+
+        //setup the score
+        this.scoreUtil.setupOnElement("notationBody")
+
+        //notate it
+        this.scoreUtil.notateExercise()
+    }
+
+    this.doResizeActions = function() {
+        pm_log("Resized window",10)
+
+        var oldSVG = document.getElementsByTagName("svg")[0]
+        oldSVG.parentNode.removeChild(oldSVG)
+
+        this.makeScore()
+    }
+
+    //move the indicator to a certain beat position
+    this.moveToPosition = function(beat) {
+        //clear the previous indicator first
+        indicatorCanvas.getContext("2d").clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
+        this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
+    }
+
+    //highlight a certain item in the HTML metronome indicators
+    this.highlightMetronomeItem = function(itemNumber) {
+        for (index in metronomeItems) {
+            var item = metronomeItems[index]
+            item.className = "metronomeItem"
+
+            if (itemNumber == index)
+                item.className += " highlighted"
+        }
+    }
+
+    //clear existing feedback items from the screen
+    this.clearFeedbackItems = function() {
+        pm_log("Clearing")
+        feedbackCanvas.getContext("2d").clearRect(0,0,feedbackCanvas.width,feedbackCanvas.height)
+
+        var items = document.getElementsByClassName('feedbackItem');
+        while(items[0]) {
+            items[0].parentNode.removeChild(items[0])
+        }
+    }
+
+    //add a feedback item to a certain beat
+    this.addFeedbackItem = function(beat,items) {
+        var positionForBeat = this.scoreUtil.getPositionForBeat(beat)
+        var positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
+        //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
+        this.scoreUtil.createFeedbackHTMLElement(items.toArray(),positionForBeat.x,positionY)
+    }
 }
 
-makeScore()
+var listenerApp = new ListenerApp()
+listenerApp.runApp()
+
 
 //Resizing code
 var resizeTimeoutID;
@@ -51,14 +109,7 @@ window.onresize = function() {
     resizeTimeoutID = setTimeout(doResizeActions, 500);
 }
 
-function doResizeActions() {
-        pm_log("Resized window",10)
 
-        var oldSVG = document.getElementsByTagName("svg")[0]
-        oldSVG.parentNode.removeChild(oldSVG)
-
-        makeScore()
-}
 
 
 //global variables for the different canvases
