@@ -12,36 +12,91 @@ VF = Vex.Flow;
 function concat(a, b) { return a.concat(b); }
 
 
-var EasyScoreUtil = {
+var EasyScoreUtil = function() {
 
     //the current position that systems are being placed on the screen
-    scorePositionX : 60,
-    scorePositionY : 0,
+    this.scorePositionInitialX = 60
+    this.scorePositionInitialY = 20
+
+    this.scorePositionX = 0
+    this.scorePositionY = 0
+    this.positionInLine = 0
+
+    this.scorePositionCurrentLine = 0
+    this.measureCounter = 0
 
     //gets set later with the current exercise (from notesFromKotlinNotationItems())
-    exercise: null,
+    this.exercise = null
+    this.generatedExercise = null
 
     //VexFlow variables that need to be stored
-    vf : null,
-    registry: null,
+    this.vf = null
+    this.registry = null
 
     //these three are just bind-ed functions
-    score: null,
-    voice: null,
-    beam: null,
+    this.score = null
+    this.voice = null
+    this.beam = null
+
+    //formatting info for the notation
+    this.contentScaleFactor = 1.0
+    this.useScaling = true
+    this.assumedCanvasWidth = 1024 //this will never change, although the scaling factor will change this
+    this.barWidth  = 200
+    this.barHeight = 160
+    this.firstBarAddition = 40
+    this.barsPerLine = 4
 
     //counter so that we can get an individual ID for each note
-    noteIDNumber: 0,
+    this.noteIDNumber = 0
 
     //array of systems (really measures...) that have been added to the screen
     //useful for getting placement information later
-    systems: Array(),
+    this.systems = Array()
 
     //setup the basic notation stuff
-    setupOnElement: function(elementID) {
+    this.setupOnElement = function(elementID) {
+        //calculate the scale
+        var actualWindowWidth = document.getElementById(elementID).offsetWidth
+
+        if (this.useScaling) {
+            this.contentScaleFactor = actualWindowWidth / this.assumedCanvasWidth
+
+            actualWindowWidth = this.assumedCanvasWidth
+        }
+
+        var availableWidthAfterMargin = actualWindowWidth - (this.scorePositionInitialX * 2)
+
+        pm_log("Avail width: " + availableWidthAfterMargin)
+
+
+
+        this.barWidth = availableWidthAfterMargin / this.barsPerLine
+
+        pm_log("Bar width: " + this.barWidth)
+
+        //calculate the width
+        var totalLines = Math.ceil(this.exercise.bars.length / this.barsPerLine)
+        var totalWidthWillBe = this.barsPerLine * this.barWidth + this.firstBarAddition
+
+        if (totalLines <= 1) {
+            totalWidthWillBe = this.exercise.bars.length * this.barWidth + this.firstBarAddition
+        }
+
+        this.scorePositionInitialX = (actualWindowWidth / 2) - (totalWidthWillBe / 2)
+
+        pm_log("Total width will be " + totalWidthWillBe)
+        pm_log("Total height will be " + totalLines * this.barHeight)
+
+        var indicatorCanvas = document.getElementById(indicatorCanvasName)
+        indicatorCanvas.width = totalWidthWillBe
+        indicatorCanvas.height = totalLines * this.barHeight
+
         this.vf = new Vex.Flow.Factory({
-                renderer: {selector: elementID, width: 1100, height: 900}
+                renderer: {selector: elementID, width: actualWindowWidth * this.contentScaleFactor, height: totalLines * this.barHeight * this.contentScaleFactor}
                 });
+
+        this.vf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
 
         this.registry = new VF.Registry();
         VF.Registry.enableDefaultRegistry(this.registry);
@@ -51,86 +106,132 @@ var EasyScoreUtil = {
         this.voice = this.score.voice.bind(this.score);
         this.notes = this.score.notes.bind(this.score);
         this.beam = this.score.beam.bind(this.score);
-    },
+    }
 
     //make a new system (measure) of a given width
-    makeSystem: function (width) {
+    this.makeSystem = function () {
+
+        this.positionInLine = this.measureCounter % this.barsPerLine
+
+        var width = this.barWidth
+
+        if (this.positionInLine == 0) {
+            //pm_log("NEW LINE")
+            width += this.firstBarAddition
+            this.scorePositionX = this.scorePositionInitialX
+            if (this.scorePositionY == 0) {
+                this.scorePositionY = this.scorePositionInitialY
+            } else {
+                this.scorePositionY += this.barHeight
+            }
+        } else {
+            //pm_log("SAME LINE")
+        }
+//
+//        pm_log("Creating at x " + this.scorePositionX)
+//        pm_log("Creating at y " + this.scorePositionY)
 
         var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
+
+        this.measureCounter += 1
         this.scorePositionX += width;
+
         return system;
-    },
+    }
 
     //helper function to get easy access to notes later on
-    id: function (id) { return this.registry.getElementById(id); },
+    this.id = function (id) { return this.registry.getElementById(id); }
 
-    //Take the current exercise (as generated by notesFromKotlinNotationItems) and notate it on the screen,
-    notateExercise: function() {
-
-        //TODO: make this dynamic
-        this.score.set({ time: '4/4' });
-
-        //scan through each bar
+    //Take the current exercise (as generated by generateExerciseEasyScoreCode) and notate it on the screen,
+    this.notateExercise =function() {
         for (barIndex in this.exercise.bars) {
-            console.log("Making bar...")
+            var curBar = this.exercise.bars[barIndex]
 
-            var measureWidth = 160;
-
-            //if it's the first bar, it'll need extra space, since it has a clef and time/key sigs
-            if (barIndex == 0) {
-                measureWidth = 220;
-            }
-
-            var system = EasyScoreUtil.makeSystem(measureWidth);
+            var system = this.makeSystem()
 
             this.systems.push(system)
 
-            var bar = this.exercise.bars[barIndex]
+            var notesArray = Array()
+            //add all the notes
+            for (groupIndex in curBar.groups) {
+                var curGroup = curBar.groups[groupIndex]
 
-            console.log("Content: ")
-            console.log(bar)
+                var notesString = ""
 
+                //take the notes and make a string that EasyScore can read, while giving each note a unique ID
+                for (var noteIndex in curGroup.notes) {
+                    var note = curGroup.notes[noteIndex]
 
-            var notesString = ""
+                    if (noteIndex > 0) {
+                        notesString += ","
+                    }
+                    notesString += note
 
-            //take the notes and make a string that EasyScore can read, while giving each note a unique ID
-            for (var noteIndex in bar) {
-                var note = bar[noteIndex]
+                    notesString += "[id=\"note" + this.noteIDNumber + "\"]"
 
-                if (noteIndex > 0) {
-                    notesString += ","
+                    this.noteIDNumber++
                 }
-                notesString += note
 
-                notesString += "[id=\"note" + this.noteIDNumber + "\"]"
+                var additionalInfo = {}
 
-                this.noteIDNumber++
+                if (curGroup.stem_direction != undefined) {
+                    additionalInfo.stem = curGroup.stem_direction
+                }
+
+                var notes = this.notes(notesString,additionalInfo)
+
+                //check if it's beamed
+                if (curGroup.beam === true) {
+                    notes = this.beam(notes)
+                }
+
+                notesArray.push(
+                    notes
+                )
+
             }
 
-            //var notesString = bar.join(",")
+            //create the measure and connect all the groups with the reduce(concat) function
+            var stave = system.addStave({ voices: [this.voice(
+                            notesArray.reduce(concat)
+                            )] });
 
-            console.log(notesString)
+            //get the extra_attributes if there are any
+            if (curBar.extra_attributes != undefined) {
+                for (attributeIndex in curBar.extra_attributes) {
+                    var attr = curBar.extra_attributes[attributeIndex]
+                    switch(attr.name) {
+                        case "time_signature":
+                            stave.addTimeSignature(attr.value)
+                            break
+                        case "clef":
+                            stave.addClef(attr.value)
+                            break
+                        case "key_signature":
+                            stave.addKeySignature(attr.value)
+                            break
+                        default:
+                            pm_log("Unknown attribute",10)
+                            break
+                    }
+                }
+            }
 
-            var stave = system.addStave({ voices: [this.voice(this.notes(notesString))] });
-
-            //if it's the first bar, add the extra information
-            if (barIndex == 0) {
-                stave.addClef('treble')
-                stave.addKeySignature("C")
-                stave.addTimeSignature("4/4")
+            //if it's the last bar, make the bar line the correct end bar
+            if (barIndex == this.exercise.bars.length - 1) {
+                stave.setEndBarType(VF.Barline.type.END)
             }
         }
 
         //draw it to the screen
         this.vf.draw();
         VF.Registry.disableDefaultRegistry();
-    },
-
+    }
 
     //given a certain beat, return the elements (notes) that surround it.
     //So, in a bar of quarter notes, 1.5 should return the first and second items, with
     //percent at 0.5
-    getElementsForBeat: function(beat) {
+    this.getElementsForBeat = function(beat) {
 
             //current position to scan
             var currentPosition = 0
@@ -146,16 +247,16 @@ var EasyScoreUtil = {
             //percentage between the elements that the beat exists in
             var percent = null
 
-            //console.log("Searching for beat " + beat + " in")
-            //console.log(this.exercise.rawNotes)
+            //pm_log("Searching for beat " + beat + " in")
+            //pm_log(this.exercise.rawNotes)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
-            for (index in generatedExercise.notes) {
-                var item = generatedExercise.notes[index]
+            for (index in this.generatedExercise.notes) {
+                var item = this.generatedExercise.notes[index]
 
                 var duration = item.duration
 
-                if (currentPosition < beat) {
+                if (currentPosition <= beat) {
                     beginningItemIndex = index
                     endingItemIndex = index
 
@@ -186,52 +287,73 @@ var EasyScoreUtil = {
 
             if (percent < 0 || isNaN(percent)) percent = 0
 
-            //console.log("End pos: " + currentPosition)
+            //pm_log("End pos: " + currentPosition)
             return {
                 "currentItemIndex": beginningItemIndex, //item at or before the beat
                 "nextItemIndex": endingItemIndex, //item after the beat
                 "percent" : percent //percent that describes the distance
             }
-     },
+     }
 
     //get the position (coordinates) for a certain beat
-    getPositionForBeat: function(beat) {
+    this.getPositionForBeat = function(beat) {
         //get the elements on either side
-        var ts = EasyScoreUtil.getElementsForBeat(beat)
+        var ts = this.getElementsForBeat(beat)
 
         //use the ids to get the actual elements
-        var currentItem = EasyScoreUtil.id("note" + ts.currentItemIndex)
-        var nextItem = EasyScoreUtil.id("note" + ts.nextItemIndex)
+        var currentItem = this.id("note" + ts.currentItemIndex)
+        var nextItem = this.id("note" + ts.nextItemIndex)
+
+        var staveYPos = currentItem.stave.getYForLine(0)
+        var initialPos = this.middlePositionOfItem(currentItem)
 
         //find the middles of the items
-        var distance = EasyScoreUtil.middlePositionOfItem(nextItem) - EasyScoreUtil.middlePositionOfItem(currentItem)
-        var initialPos = EasyScoreUtil.middlePositionOfItem(currentItem)
+        var distance = this.middlePositionOfItem(nextItem) - this.middlePositionOfItem(currentItem)
 
-        //account for the percent distance too
-        return initialPos + distance * ts.percent
 
-      },
+        if (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y) {
+            //the nextItem appears on the next line
+
+            distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
+        }
+
+        return {
+                x: (initialPos + distance * ts.percent),
+                y: staveYPos
+            }
+
+
+      }
 
     //helper function to find the middle of an item
-     middlePositionOfItem: function(item) {
+     this.middlePositionOfItem = function(item) {
               return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
-      },
+      }
 
-    //get the current staff
-    //WARNING: currently just returns the first one
-    getCurrentStave : function() {
+    //get a basic representation of the stave, for things like height
+    this.getBasicStave = function() {
         return this.systems[0].parts[0].stave
-    },
+    }
+
+    this.getStaveForBeat = function(beat) {
+        var ts = this.getElementsForBeat(beat)
+        var currentItem = this.id("note" + ts.currentItemIndex)
+        var stave = currentItem.stave
+        return stave
+    }
 
     //draw the indicator line (blue line that shows current position)
-    drawIndicatorLine: function(canvas, indicatorPosition) {
+    this.drawIndicatorLine = function(canvas, beat) {
 
-            var indicatorOverflow = 20
+            var indicatorPosition = this.getPositionForBeat(beat)
 
-            var stave = EasyScoreUtil.getCurrentStave()
+            var indicatorOverflow = 20 * this.contentScaleFactor
 
-            var topY = stave.getYForLine(0) - indicatorOverflow
-            var bottomY = stave.getYForLine(4) + indicatorOverflow
+            var stave = this.getBasicStave()
+            var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
+
+            var topY = indicatorPosition.y - indicatorOverflow
+            var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
 
             if (canvas.getContext) {
 
@@ -241,30 +363,54 @@ var EasyScoreUtil = {
                    ctx.strokeStyle = '#4990E2';
                    ctx.lineWidth = 3;
 
-            	   // Stroked triangle
+            	   // Stroked path
             	   ctx.beginPath();
-            	   ctx.moveTo(indicatorPosition,bottomY);
-            	   ctx.lineTo(indicatorPosition,topY);
+            	   ctx.moveTo(indicatorPosition.x * this.contentScaleFactor,bottomY * this.contentScaleFactor);
+            	   ctx.lineTo(indicatorPosition.x * this.contentScaleFactor,topY * this.contentScaleFactor);
             	   ctx.closePath();
             	   ctx.stroke();
 
               }
-        },
+        }
 
     //get the Y coordinate for feedback items
-    getFeedbackYPosition : function() {
-        return EasyScoreUtil.getCurrentStave().getBoundingBox().y + EasyScoreUtil.getCurrentStave().getBoundingBox().h
-    },
+    this.getFeedbackYPosition = function(topStaveY) {
+        var stave = this.getBasicStave()
+        var pos = stave.height + topStaveY
+        return pos
+    }
 
     //draw feedback item at a given position
-    drawFeedbackAtPosition(canvas,feedbackItemType,x,y) {
+    this.drawFeedbackAtPosition = function(canvas,feedbackItemType,x,y) {
 
             var ctx = canvas.getContext('2d');
 
-            ctx.font = "20px Arial"
+            ctx.font = "16px Arial"
+            ctx.textAlign = "center"
             ctx.textBaseline = "top";
-            ctx.fillText(feedbackItemType,x,y)
+            ctx.fillText(feedbackItemType,x * this.contentScaleFactor,y * this.contentScaleFactor)
 
-    },
+            //to test location
+//            ctx.strokeStyle = '#4990E2';
+//                               ctx.lineWidth = 3;
+//
+//                        	   // Stroked triangle
+//                        	   ctx.beginPath();
+//                        	   ctx.moveTo(x,y);
+//                        	   ctx.lineTo(x + 2,y);
+//                        	   ctx.closePath();
+//                        	   ctx.stroke();
+    }
+
+    this.createFeedbackHTMLElement = function(feedbackItemType,x,y) {
+        var feedbackWidth = 16 * this.contentScaleFactor
+        var obj = document.createElement('div');
+        obj.className = "feedbackItem"
+        obj.innerHTML = feedbackItemType.map(function(item){ return '<span class="feedbackItemElement">' + item + '</span>' }).join("")
+        obj.style.position = "absolute"
+        obj.style.top = "" + y  * this.contentScaleFactor + "px"
+        obj.style.left = "" + x * this.contentScaleFactor - (feedbackWidth / 2) + "px"
+        document.getElementById("notationBody").appendChild(obj)
+    }
 
 }

@@ -3,17 +3,17 @@ if (typeof kotlin === 'undefined') {
 }
 var PracticingMusician = function (_, Kotlin) {
   'use strict';
-  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var reversed = Kotlin.kotlin.collections.reversed_7wnvza$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
   var DoubleCompanionObject = Kotlin.kotlin.js.internal.DoubleCompanionObject;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var zip = Kotlin.kotlin.collections.zip_45mdf7$;
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var withIndex = Kotlin.kotlin.collections.withIndex_7wnvza$;
   var get_indices = Kotlin.kotlin.collections.get_indices_gzk92b$;
+  var plus = Kotlin.kotlin.collections.plus_qloxvw$;
   var IntCompanionObject = Kotlin.kotlin.js.internal.IntCompanionObject;
-  var first = Kotlin.kotlin.collections.first_2p1efm$;
   var Pair = Kotlin.kotlin.Pair;
   var last = Kotlin.kotlin.collections.last_2p1efm$;
   var Enum = Kotlin.kotlin.Enum;
@@ -27,14 +27,11 @@ var PracticingMusician = function (_, Kotlin) {
   var app;
   function main$lambda(it) {
     Note$Companion_getInstance().createAllNotes();
-    setupMedia();
-    runProgram();
+    audioAnalyzer.setupMedia();
+    listenerApp.runApp();
   }
   function main(args) {
     window.onload = main$lambda;
-  }
-  function runProgram() {
-    println('Running...');
   }
   function App() {
     this.audioManager = new AudioManager();
@@ -73,6 +70,41 @@ var PracticingMusician = function (_, Kotlin) {
     }
     return AppSettings_instance;
   }
+  function AudioAnalyzer() {
+  }
+  AudioAnalyzer.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'AudioAnalyzer',
+    interfaces: []
+  };
+  function GeneratedExercise() {
+  }
+  GeneratedExercise.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'GeneratedExercise',
+    interfaces: []
+  };
+  function AudioObjectInterface() {
+  }
+  AudioObjectInterface.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'AudioObjectInterface',
+    interfaces: []
+  };
+  function SimpleJSNoteObject() {
+  }
+  SimpleJSNoteObject.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'SimpleJSNoteObject',
+    interfaces: []
+  };
+  function ListenerApp() {
+  }
+  ListenerApp.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'ListenerApp',
+    interfaces: []
+  };
   function AudioManager() {
     this.loadedAudio = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$();
     this.timeoutKeys = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
@@ -83,16 +115,16 @@ var PracticingMusician = function (_, Kotlin) {
     return audio;
   };
   AudioManager.prototype.playAudioNow_61zpoe$ = function (key) {
-    console.log('**** (( Playing...');
+    pm_log('**** (( Playing...', 6);
     var audio = this.loadedAudio.get_11rb$(key);
-    audio.currentTime = 0;
-    audio.play();
+    audio != null ? (audio.currentTime = 0) : null;
+    audio != null ? audio.play() : null;
   };
   function AudioManager$playAudio$lambda(closure$atTime, closure$audio) {
     return function () {
-      console.log('(( Playing...' + Kotlin.toString(closure$atTime));
-      closure$audio.currentTime = 0;
-      return closure$audio.play();
+      pm_log('(( Playing...' + Kotlin.toString(closure$atTime), 6);
+      closure$audio != null ? (closure$audio.currentTime = 0) : null;
+      return closure$audio != null ? closure$audio.play() : null;
     };
   }
   AudioManager.prototype.playAudio_bm4lxs$ = function (key, atTime) {
@@ -108,7 +140,7 @@ var PracticingMusician = function (_, Kotlin) {
     tmp$ = reversed(this.timeoutKeys).iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      println('Cancelling item... ' + element);
+      pm_log('Cancelling item... ' + element);
       window.clearTimeout(element);
     }
     removeAll(this.timeoutKeys, AudioManager$cancelAllAudio$lambda);
@@ -161,7 +193,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.bufferManager = new IncrementalBufferManager();
     this.comparisonEngine = new IncrementalComparisonEngine();
     this.audioManager = am;
-    println('Init');
+    pm_log('Init');
     this.lastAnalysisTimestamp = DoubleCompanionObject.MIN_VALUE;
   }
   ExerciseManager.prototype.createSteppables = function () {
@@ -178,35 +210,35 @@ var PracticingMusician = function (_, Kotlin) {
       this$ExerciseManager.audioManager.cancelAllAudio();
       this$ExerciseManager.metronome.cancelAllUIUpdates();
       var samplesLength = this$ExerciseManager.pitchTracker.samples.size / 44100.0;
-      println('Total samples recorded: ' + Kotlin.toString(this$ExerciseManager.pitchTracker.samples.size) + ' length: ' + Kotlin.toString(samplesLength));
+      pm_log('Total samples recorded: ' + Kotlin.toString(this$ExerciseManager.pitchTracker.samples.size) + ' length: ' + Kotlin.toString(samplesLength));
       this$ExerciseManager.bufferManager.tempo = this$ExerciseManager.metronome.tempo;
       var notesFromSamplesBuffer = this$ExerciseManager.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this$ExerciseManager.pitchTracker.samples);
-      println('Notes: ');
+      pm_log('Notes: ');
       var tmp$_0;
       tmp$_0 = notesFromSamplesBuffer.iterator();
       while (tmp$_0.hasNext()) {
         var element = tmp$_0.next();
-        println('Note: ' + Kotlin.toString(element.note.noteNumber) + ' for ' + Kotlin.toString(element.note.duration) + ' at ' + Kotlin.toString(element.positionInBeats));
+        pm_log('Note: ' + Kotlin.toString(element.note.noteNumber) + ' for ' + Kotlin.toString(element.note.duration) + ' at ' + Kotlin.toString(element.positionInBeats));
       }
       if ((tmp$ = this$ExerciseManager.currentExercise) != null) {
         var this$ExerciseManager_0 = this$ExerciseManager;
-        println('Comparing...');
+        pm_log('Comparing...');
         var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_11i8u3$(tmp$.notes, notesFromSamplesBuffer);
+        listenerApp.clearFeedbackItems();
         var tmp$_1;
         tmp$_1 = results.feedbackItems.iterator();
         while (tmp$_1.hasNext()) {
           var element_0 = tmp$_1.next();
           var beat = element_0.beat;
-          println('Feedback item at ' + beat);
-          addFeedbackItem(beat, element_0.feedbackItemType);
+          listenerApp.addFeedbackItem(beat, element_0.feedbackItemType);
         }
         window.alert('Your results are: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted));
       }
     };
   }
   ExerciseManager.prototype.setup = function () {
-    println('Setup');
-    clearFeedbackItems();
+    pm_log('Setup');
+    listenerApp.clearFeedbackItems();
     this.metronome.audioManager = this.audioManager;
     this.timeKeeper.steppables.add_11rb$(this.metronome);
     this.timeKeeper.steppables.add_11rb$(this.pitchTracker);
@@ -226,28 +258,29 @@ var PracticingMusician = function (_, Kotlin) {
     this.pitchTracker.stop();
   };
   ExerciseManager.prototype.loadExercise = function () {
-    var tmp$, tmp$_0;
-    console.log('Loading exericse:');
-    console.log(generatedExercise);
+    var tmp$;
+    pm_log('Loading exericse:');
+    var generatedExercise = listenerApp.generatedExercise;
+    pm_log(generatedExercise);
     var exerciseDefinition = new ExerciseDefinition();
     exerciseDefinition.tempo = generatedExercise.tempo;
-    var jsNotes = Array.isArray(tmp$ = generatedExercise.notes) ? tmp$ : Kotlin.throwCCE();
+    var jsNotes = generatedExercise.notes;
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(jsNotes.length);
-    var tmp$_1;
-    for (tmp$_1 = 0; tmp$_1 !== jsNotes.length; ++tmp$_1) {
-      var item = jsNotes[tmp$_1];
+    var tmp$_0;
+    for (tmp$_0 = 0; tmp$_0 !== jsNotes.length; ++tmp$_0) {
+      var item = jsNotes[tmp$_0];
       destination.add_11rb$(new Note(item.noteNumber, item.duration));
     }
     exerciseDefinition.notes = toMutableList(destination);
-    console.log('Loaded ' + Kotlin.toString(exerciseDefinition.notes.size) + ' notes');
-    console.log(exerciseDefinition.notes);
+    pm_log('Loaded ' + Kotlin.toString(exerciseDefinition.notes.size) + ' notes');
+    pm_log(exerciseDefinition.notes);
     this.currentExercise = exerciseDefinition;
-    if ((tmp$_0 = this.currentExercise) != null) {
-      this.metronome.tempo = tmp$_0.tempo;
-      this.bufferManager.tempo = tmp$_0.tempo;
-      this.timeKeeper.runForTime = tmp$_0.getLength() + tmp$_0.prerollLength() + this.pitchTracker.latencyTime;
-      this.pitchTracker.lengthOfPrerollToIgnore = tmp$_0.prerollLength();
-      println('Loaded exercise of length ' + Kotlin.toString(this.timeKeeper.runForTime));
+    if ((tmp$ = this.currentExercise) != null) {
+      this.metronome.tempo = tmp$.tempo;
+      this.bufferManager.tempo = tmp$.tempo;
+      this.timeKeeper.runForTime = tmp$.getLength() + tmp$.prerollLength() + this.pitchTracker.latencyTime;
+      this.pitchTracker.lengthOfPrerollToIgnore = tmp$.prerollLength();
+      pm_log('Loaded exercise of length ' + Kotlin.toString(this.timeKeeper.runForTime));
     }
   };
   ExerciseManager.prototype.analyze_14dthe$ = function (timestamp) {
@@ -258,18 +291,18 @@ var PracticingMusician = function (_, Kotlin) {
      else {
       return;
     }
-    println('Analyzing at ' + Kotlin.toString(timestamp));
+    pm_log('Analyzing at ' + Kotlin.toString(timestamp));
     if ((tmp$ = this.currentExercise) != null) {
-      println('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
+      pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
       var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
       var results = this.comparisonEngine.compareNoteArrays_11i8u3$(tmp$.notes, notesFromSamplesBuffer);
-      clearFeedbackItems();
+      listenerApp.clearFeedbackItems();
       var tmp$_0;
       tmp$_0 = results.feedbackItems.iterator();
       while (tmp$_0.hasNext()) {
         var element = tmp$_0.next();
         var beat = element.beat;
-        addFeedbackItem(beat, element.feedbackItemType);
+        listenerApp.addFeedbackItem(beat, element.feedbackItemType);
       }
     }
   };
@@ -440,7 +473,7 @@ var PracticingMusician = function (_, Kotlin) {
         toTestBeatPosition += item.duration;
       }
       println('Going to compare ideal index ' + index + ' to test index ' + indexOnToTest);
-      var feedbackItem = new FeedbackItem(curBeatPosition, '');
+      var feedbackItem = new FeedbackItem(curBeatPosition, Kotlin.kotlin.collections.emptyList_287e2$());
       results.feedbackItems.add_11rb$(feedbackItem);
       if (indexOnToTest === -1) {
         continue;
@@ -464,12 +497,12 @@ var PracticingMusician = function (_, Kotlin) {
       println('Starting points : ' + Kotlin.toString(curBeatPosition) + ' | ' + Kotlin.toString(toTestBeatPositionAtIndexToTest));
       if (curBeatPosition - toTestBeatPositionAtIndexToTest > this.allowableRhythmMargin) {
         println('Test subject rushing');
-        feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '>';
+        feedbackItem.feedbackItemType = plus(feedbackItem.feedbackItemType, '>');
         isCorrect = false;
       }
        else if (curBeatPosition - toTestBeatPositionAtIndexToTest < -this.allowableRhythmMargin) {
         println('Test subject dragging');
-        feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '<';
+        feedbackItem.feedbackItemType = plus(feedbackItem.feedbackItemType, '<');
         isCorrect = false;
       }
        else {
@@ -481,12 +514,12 @@ var PracticingMusician = function (_, Kotlin) {
       if (avgFreq != null) {
         if (avgFreq - idealItem.getFrequency() > this.allowableFreqencyMargin) {
           println('Test subject sharp');
-          feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '^';
+          feedbackItem.feedbackItemType = plus(feedbackItem.feedbackItemType, '^');
           isCorrect = false;
         }
          else if (avgFreq - idealItem.getFrequency() < -this.allowableFreqencyMargin) {
           println('Test subject flat');
-          feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '_';
+          feedbackItem.feedbackItemType = plus(feedbackItem.feedbackItemType, '_');
           isCorrect = false;
         }
          else {
@@ -527,7 +560,7 @@ var PracticingMusician = function (_, Kotlin) {
   FeedbackItem.prototype.component2 = function () {
     return this.feedbackItemType;
   };
-  FeedbackItem.prototype.copy_t0es5s$ = function (beat, feedbackItemType) {
+  FeedbackItem.prototype.copy_iww005$ = function (beat, feedbackItemType) {
     return new FeedbackItem(beat === void 0 ? this.beat : beat, feedbackItemType === void 0 ? this.feedbackItemType : feedbackItemType);
   };
   FeedbackItem.prototype.toString = function () {
@@ -602,7 +635,7 @@ var PracticingMusician = function (_, Kotlin) {
     var functionStartTimestamp = window.performance.now();
     var secondsPerBeat = 60.0 / this.tempo;
     var samplesSublist = samples.subList_vux9f0$(positionInSamples, samples.size);
-    println('Converting how many samples: ' + Kotlin.toString(samplesSublist.size));
+    pm_log('Converting how many samples: ' + Kotlin.toString(samplesSublist.size));
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(samplesSublist, 10));
     var tmp$;
     tmp$ = samplesSublist.iterator();
@@ -619,7 +652,7 @@ var PracticingMusician = function (_, Kotlin) {
       accumulator = accumulator + iterator_3.next() | 0;
     }
     var lengthOfSamplesInBeats = accumulator / this.sampleRate / secondsPerBeat;
-    println('Total length of samples in beats: ' + lengthOfSamplesInBeats);
+    pm_log('Total length of samples in beats: ' + lengthOfSamplesInBeats);
     var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(samplesSublist, 10));
     var tmp$_0;
     tmp$_0 = samplesSublist.iterator();
@@ -629,7 +662,7 @@ var PracticingMusician = function (_, Kotlin) {
     }
     var noteNumbers = destination_0;
     var collectedPairs = zip(samplesSublist, noteNumbers);
-    println('After mapping and zipping: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
+    pm_log('After mapping and zipping: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
     var groups = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     var curList = {v: Kotlin.kotlin.collections.ArrayList_init_ww73n8$()};
     var curNoteNumber = {v: IntCompanionObject.MIN_VALUE};
@@ -645,7 +678,7 @@ var PracticingMusician = function (_, Kotlin) {
       curNoteNumber.v = element.second;
     }
     groups.add_11rb$(curList.v);
-    println('After making pairs: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
+    pm_log('After making pairs: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
     var destination_1 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(collectedPairs, 10));
     var tmp$_2;
     tmp$_2 = collectedPairs.iterator();
@@ -662,7 +695,7 @@ var PracticingMusician = function (_, Kotlin) {
       accumulator_0 = accumulator_0 + iterator_4.next() | 0;
     }
     var lengthOfCollectedPairsInBeats = accumulator_0 / this.sampleRate / secondsPerBeat;
-    println('Total length of collected pairs in beats: ' + lengthOfCollectedPairsInBeats);
+    pm_log('Total length of collected pairs in beats: ' + lengthOfCollectedPairsInBeats);
     var destination_2 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     var tmp$_3;
     tmp$_3 = groups.iterator();
@@ -687,7 +720,7 @@ var PracticingMusician = function (_, Kotlin) {
       accumulator_1 = accumulator_1 + iterator_5.next() | 0;
     }
     var lengthOfGroupsInBeats = accumulator_1 / this.sampleRate / secondsPerBeat;
-    println('Total length of groups: ' + lengthOfGroupsInBeats);
+    pm_log('Total length of groups: ' + lengthOfGroupsInBeats);
     var BOGUS_NOTE_NUMBER = -100;
     var destination_4 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     var tmp$_5;
@@ -721,9 +754,7 @@ var PracticingMusician = function (_, Kotlin) {
         accumulator_2 = accumulator_2 + iterator_6.next() | 0;
       }
       var lengthOfGroupsInSamples = accumulator_2;
-      console.log('Group length ' + Kotlin.toString(lengthOfGroupsInSamples) + ' for ' + Kotlin.toString(first(item_3).second));
       if (lengthOfGroupsInSamples < secondsPerBeat * this.minDurationInBeats * this.sampleRate) {
-        println('Under threshold');
         var destination_7 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(item_3, 10));
         var tmp$_9;
         tmp$_9 = item_3.iterator();
@@ -739,9 +770,7 @@ var PracticingMusician = function (_, Kotlin) {
       tmp$_7.call(destination_5, transform$result_4);
     }
     var groupsOfAcceptableLength = destination_5;
-    console.log('Groups:');
-    console.log(groupsOfAcceptableLength);
-    println('Converted into number groups: ' + Kotlin.toString(groupsOfAcceptableLength.size) + ' from original: ' + Kotlin.toString(groups.size));
+    pm_log('Converted into number groups: ' + Kotlin.toString(groupsOfAcceptableLength.size) + ' from original: ' + Kotlin.toString(groups.size));
     var destination_8 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
     var tmp$_10;
     tmp$_10 = groupsOfAcceptableLength.iterator();
@@ -767,7 +796,7 @@ var PracticingMusician = function (_, Kotlin) {
       accumulator_3 = accumulator_3 + iterator_7.next() | 0;
     }
     var lengthOfAcceptableGroupsInBeats = accumulator_3 / this.sampleRate / secondsPerBeat;
-    println('Total length of acceptable groups pairs in beats: ' + lengthOfAcceptableGroupsInBeats);
+    pm_log('Total length of acceptable groups pairs in beats: ' + lengthOfAcceptableGroupsInBeats);
     curNoteNumber.v = -1;
     var curLengthInSamples = {v: 0};
     var avgFreq = {v: 0.0};
@@ -797,7 +826,7 @@ var PracticingMusician = function (_, Kotlin) {
     tmp$_13 = noteList.v.iterator();
     while (tmp$_13.hasNext()) {
       var element_4 = tmp$_13.next();
-      if (element_4.noteNumber !== -1) {
+      if (element_4.duration !== 0.0) {
         destination_10.add_11rb$(element_4);
       }
     }
@@ -823,18 +852,11 @@ var PracticingMusician = function (_, Kotlin) {
       }
     }
     var notePlacements = destination_12;
-    console.log('Turned samples into these notes (before purging): ');
+    var destination_13 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
     var tmp$_17;
     tmp$_17 = notes.iterator();
     while (tmp$_17.hasNext()) {
-      var element_6 = tmp$_17.next();
-      println('Note: ' + Kotlin.toString(element_6.noteNumber) + ' for ' + Kotlin.toString(element_6.duration));
-    }
-    var destination_13 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
-    var tmp$_18;
-    tmp$_18 = notes.iterator();
-    while (tmp$_18.hasNext()) {
-      var item_8 = tmp$_18.next();
+      var item_8 = tmp$_17.next();
       destination_13.add_11rb$(item_8.duration);
     }
     var iterator_8 = destination_13.iterator();
@@ -846,9 +868,9 @@ var PracticingMusician = function (_, Kotlin) {
       accumulator_4 = accumulator_4 + iterator_8.next();
     }
     var lengthOfNotesInBeats = accumulator_4;
-    println('Length of notes in beats: ' + lengthOfNotesInBeats);
+    pm_log('Length of notes in beats: ' + lengthOfNotesInBeats);
     var functionEndTimestamp = window.performance.now();
-    println('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
+    pm_log('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
     return notePlacements;
   };
   IncrementalBufferManager.$metadata$ = {
@@ -862,7 +884,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.allowableLengthMargin = 0.25;
   }
   IncrementalComparisonEngine.prototype.compareNoteArrays_11i8u3$ = function (ideal, toTest) {
-    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6;
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, tmp$_7, tmp$_8;
     var results = new CompareResults();
     var curBeatPosition = 0.0;
     var lastTestedIndexInTest = -1;
@@ -879,7 +901,7 @@ var PracticingMusician = function (_, Kotlin) {
       var value = ideal.get_za3lpa$(index);
       var indexOnToTest = -1;
       var toTestBeatPositionAtIndexToTest = 0.0;
-      var toTestBeatPosition = 0.0;
+      var toTestBeatPosition;
       var diffFromIdealBeatPosition = DoubleCompanionObject.MAX_VALUE;
       tmp$_3 = until(0, toTest.size);
       tmp$_4 = tmp$_3.first;
@@ -896,15 +918,16 @@ var PracticingMusician = function (_, Kotlin) {
         }
       }
       if (curBeatPosition >= doNotTestBeyond) {
-        println('Too far');
+        pm_log('Too far');
         break;
       }
       if (indexOnToTest <= lastTestedIndexInTest) {
-        println('Already tested here...... ' + indexOnToTest + ' <= ' + lastTestedIndexInTest);
+        pm_log('Already tested here...... ' + indexOnToTest + ' <= ' + lastTestedIndexInTest);
       }
       lastTestedIndexInTest = indexOnToTest;
-      println('Going to compare ideal index ' + index + ' to test index ' + indexOnToTest);
-      var feedbackItem = new FeedbackItem(curBeatPosition, '');
+      pm_log('Going to compare ideal index ' + index + ' to test index ' + indexOnToTest);
+      var feedbackItemTypes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+      var feedbackItem = new FeedbackItem(curBeatPosition, feedbackItemTypes);
       results.feedbackItems.add_11rb$(feedbackItem);
       if (indexOnToTest === -1) {
         continue;
@@ -913,56 +936,71 @@ var PracticingMusician = function (_, Kotlin) {
       var isCorrect = true;
       var idealItem = value;
       var testItem = toTest.get_za3lpa$(indexOnToTest);
-      println('Durations : ' + Kotlin.toString(idealItem.duration) + ' | ' + Kotlin.toString(testItem.note.duration));
+      pm_log('Durations : ' + Kotlin.toString(idealItem.duration) + ' | ' + Kotlin.toString(testItem.note.duration));
       if (idealItem.duration - testItem.note.duration > this.allowableRhythmMargin) {
-        println('Test subject too short');
+        pm_log('Test subject too short');
       }
        else if (idealItem.duration - testItem.note.duration < -this.allowableRhythmMargin) {
-        println('Test subject too long');
+        pm_log('Test subject too long');
       }
        else {
-        println('PERFECT');
+        pm_log('PERFECT');
       }
-      println('Starting points : ' + Kotlin.toString(curBeatPosition) + ' | ' + Kotlin.toString(toTestBeatPositionAtIndexToTest));
+      pm_log('Starting points : ' + Kotlin.toString(curBeatPosition) + ' | ' + Kotlin.toString(toTestBeatPositionAtIndexToTest));
       if (curBeatPosition - toTestBeatPositionAtIndexToTest > this.allowableRhythmMargin) {
-        println('Test subject rushing');
-        feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '>';
+        pm_log('Test subject rushing');
+        feedbackItemTypes.add_11rb$('>');
         isCorrect = false;
       }
        else if (curBeatPosition - toTestBeatPositionAtIndexToTest < -this.allowableRhythmMargin) {
-        println('Test subject dragging');
-        feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '<';
+        pm_log('Test subject dragging');
+        feedbackItemTypes.add_11rb$('<');
         isCorrect = false;
       }
        else {
-        println('PERFECT');
+        pm_log('PERFECT');
       }
-      println('Pitch : ' + Kotlin.toString(idealItem.getFrequency()) + ' | ' + Kotlin.toString(testItem.note.getFrequency()));
-      println('Avg freq of test item: ' + Kotlin.toString(testItem.note.avgFreq));
+      pm_log('Notes : ' + Kotlin.toString(idealItem.noteNumber) + ' | ' + Kotlin.toString(testItem.note.noteNumber));
+      if (testItem.note.noteNumber === (idealItem.noteNumber + 12 | 0) || testItem.note.noteNumber === (idealItem.noteNumber - 2 | 0)) {
+        pm_log('Octave shifted');
+        var n = new Note(idealItem.noteNumber, testItem.note.duration);
+        if (testItem.note.noteNumber < idealItem.noteNumber) {
+          n.avgFreq = (tmp$_7 = testItem.note.avgFreq) != null ? tmp$_7 * 2 : null;
+        }
+         else {
+          n.avgFreq = (tmp$_8 = testItem.note.avgFreq) != null ? tmp$_8 / 2 : null;
+        }
+        testItem = new NotePlacement(n, testItem.positionInBeats);
+      }
+      if (idealItem.noteNumber !== testItem.note.noteNumber) {
+        pm_log('WRONG NOTE *&*&*&*&*&*&*&*');
+      }
+      pm_log('Pitch : ' + Kotlin.toString(idealItem.getFrequency()) + ' | ' + Kotlin.toString(testItem.note.getFrequency()));
+      pm_log('Avg freq of test item: ' + Kotlin.toString(testItem.note.avgFreq));
       var avgFreq = testItem.note.avgFreq;
       if (avgFreq != null) {
         if (avgFreq - idealItem.getFrequency() > this.allowableFreqencyMargin) {
-          println('Test subject sharp');
-          feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '^';
+          pm_log('Test subject sharp');
+          feedbackItemTypes.add_11rb$('^');
           isCorrect = false;
         }
          else if (avgFreq - idealItem.getFrequency() < -this.allowableFreqencyMargin) {
-          println('Test subject flat');
-          feedbackItem.feedbackItemType = feedbackItem.feedbackItemType + '_';
+          pm_log('Test subject flat');
+          feedbackItemTypes.add_11rb$('_');
           isCorrect = false;
         }
          else {
-          println('PERFECT');
+          pm_log('PERFECT');
         }
       }
-      feedbackItem.feedbackItemType = '' + Kotlin.toString(testItem.note.noteNumber);
+      feedbackItemTypes.add_11rb$('' + Kotlin.toString(testItem.note.noteNumber));
       curBeatPosition += value.duration;
       if (isCorrect)
         results.correct = results.correct + 1 | 0;
     }
-    println('---- Results : ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted));
+    pm_log('---- Results : ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted));
     var functionEndTimestamp = window.performance.now();
-    println('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
+    pm_log('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
     return results;
   };
   IncrementalComparisonEngine.$metadata$ = {
@@ -1051,12 +1089,14 @@ var PracticingMusician = function (_, Kotlin) {
     Note$Companion_instance = this;
   }
   Note$Companion.prototype.getNoteNumber_14dthe$ = function (frequency) {
+    if (frequency === -1.0)
+      return -1;
     return this.closestNoteToFrequency_14dthe$(frequency);
   };
   Note$Companion.prototype.createAllNotes = function () {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
     ALL_NOTES = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
-    tmp$ = until(30, 90);
+    tmp$ = until(30, 110);
     tmp$_0 = tmp$.first;
     tmp$_1 = tmp$.last;
     tmp$_2 = tmp$.step;
@@ -1132,7 +1172,7 @@ var PracticingMusician = function (_, Kotlin) {
   Metronome.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
     var beatSize = 1000.0 * 60.0 / this.tempo;
     if (timeKeeper.runForTime - timestamp < beatSize / 2) {
-      console.log('Less than beat size..');
+      pm_log('Less than beat size..');
       return;
     }
     if (this.lastBeatOccuredAt === -1.0) {
@@ -1156,16 +1196,16 @@ var PracticingMusician = function (_, Kotlin) {
     tmp$ = reversed(this.timeoutKeys).iterator();
     while (tmp$.hasNext()) {
       var element = tmp$.next();
-      println('Cancelling item... ' + element);
+      pm_log('Cancelling item... ' + element);
       window.clearTimeout(element);
     }
     removeAll(this.timeoutKeys, Metronome$cancelAllUIUpdates$lambda);
   };
   Metronome.prototype.updateIndicatorUI_14dthe$ = function (beat) {
-    moveToPosition(beat - this.prerollBeats);
+    listenerApp.moveToPosition(beat - this.prerollBeats);
   };
   Metronome.prototype.updateMetronomeUI_za3lpa$ = function (beat) {
-    highlightMetronomeItem(beat % this.timeSignature);
+    listenerApp.highlightMetronomeItem(beat % this.timeSignature);
   };
   Metronome.prototype.getBeatOfTimestamp_14dthe$ = function (timestamp) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
@@ -1258,41 +1298,22 @@ var PracticingMusician = function (_, Kotlin) {
     }
   });
   PitchTracker.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
-    var correlatedFrequency = updatePitch(timestamp);
-    println('Timestamp: ' + Kotlin.toString(timestamp));
-    println('Pitch: ' + Kotlin.toString(correlatedFrequency));
+    var correlatedFrequency = audioAnalyzer.updatePitch(timestamp);
+    pm_log('Timestamp: ' + Kotlin.toString(timestamp));
+    pm_log('Pitch: ' + Kotlin.toString(correlatedFrequency));
     var lengthOfBuffer = buflen / 2.0;
-    this.stepWithFrequency_qtb83r$(timestamp, correlatedFrequency, lengthOfBuffer, this.latencyTime, timeKeeper);
+    this.stepWithFrequency_88ee24$(timestamp, correlatedFrequency, lengthOfBuffer, this.latencyTime);
   };
-  PitchTracker.prototype.stepWithFrequency_qtb83r$ = function (timestamp, correlatedFrequency, lengthOfBufferInSamples, latencyTime, timeKeeper) {
+  PitchTracker.prototype.stepWithFrequency_88ee24$ = function (timestamp, correlatedFrequency, lengthOfBufferInSamples, latencyTime) {
     var timestampOfPitch = timestamp - lengthOfBufferInSamples / 44100.0 * 1000.0 - latencyTime;
-    println('Timestamp that the buffer starts at ' + timestampOfPitch);
-    var currentTimestampOfSamplesBuffer = this.samplesRecorded / this.sampleRate * 1000.0;
-    println('Current endpoint of the samples buffer : ' + currentTimestampOfSamplesBuffer);
     var timestampAccountingForPreroll = timestampOfPitch - this.lengthOfPrerollToIgnore;
-    println('Timestamp accounting for preroll ' + timestampAccountingForPreroll);
+    pm_log('Timestamp accounting for preroll ' + timestampAccountingForPreroll);
     var samplesToFill = lengthOfBufferInSamples - this.samplesRecorded + timestampAccountingForPreroll * 44.1;
     if (samplesToFill < 0) {
-      println('Not filling yet...');
+      pm_log('Not filling yet...');
       return;
     }
-    println('Filling ' + Kotlin.toString(samplesToFill) + (' with ' + correlatedFrequency));
-    this.samples.add_11rb$(new SampleCollection(correlatedFrequency, samplesToFill | 0));
-    this.samplesRecorded = this.samplesRecorded + (samplesToFill | 0) | 0;
-  };
-  PitchTracker.prototype.OLDstepWithFrequency_ly23st$ = function (timestamp, correlatedFrequency, lengthOfBuffer, timeKeeper) {
-    var timestampOfPitch = timestamp - lengthOfBuffer / 44100.0 * 1000.0;
-    println('Buffer started at timestamp: ' + Kotlin.toString(timestampOfPitch));
-    var currentTimestampOfSamplesBuffer = this.samplesRecorded / this.sampleRate * 1000.0;
-    println('Current timestamp of samples buffer : ' + currentTimestampOfSamplesBuffer);
-    var timestampOffsetWithPreroll = timestamp - this.lengthOfPrerollToIgnore;
-    println('Timestamp offset with preroll ' + timestampOffsetWithPreroll);
-    var samplesToFill = lengthOfBuffer - this.samplesRecorded + timestampOfPitch * 44.1;
-    if (samplesToFill < 0) {
-      println('Not filling yet...');
-      return;
-    }
-    println('Filling ' + Kotlin.toString(samplesToFill));
+    pm_log('Filling ' + Kotlin.toString(samplesToFill) + (' with ' + correlatedFrequency));
     this.samples.add_11rb$(new SampleCollection(correlatedFrequency, samplesToFill | 0));
     this.samplesRecorded = this.samplesRecorded + (samplesToFill | 0) | 0;
   };
@@ -1386,7 +1407,7 @@ var PracticingMusician = function (_, Kotlin) {
       this.timeOffSet = nonOffsetTimestamp;
     }
     var timestamp = nonOffsetTimestamp - this.timeOffSet;
-    println('Calling step at : ' + Kotlin.toString(timestamp) + (' (raw: ' + nonOffsetTimestamp + ')'));
+    pm_log('Calling step at : ' + Kotlin.toString(timestamp) + (' (raw: ' + nonOffsetTimestamp + ')'));
     var tmp$;
     tmp$ = this.steppables.iterator();
     while (tmp$.hasNext()) {
@@ -1401,7 +1422,7 @@ var PracticingMusician = function (_, Kotlin) {
       element_0.analyze_14dthe$(timestamp);
     }
     if (timestamp >= this.runForTime) {
-      console.log('STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))');
+      pm_log('STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))', 9);
       this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
     }
     if (this.state !== TimeKeeper$TimeKeeperState$Stopped_getInstance())
@@ -1482,14 +1503,13 @@ var PracticingMusician = function (_, Kotlin) {
   SliceTest.prototype.pitchTrackerTest = function () {
     var tmp$;
     println('***** Pitch tracker test');
-    var timekeeper = new TimeKeeper();
     var pt = new PitchTracker();
     var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
     var latencyTime = 0;
-    var timestamp = 0.0;
+    var timestamp;
     pt.lengthOfPrerollToIgnore = this.secondsPerBeat * 4 * 1000.0;
     println('Sending preroll');
-    pt.stepWithFrequency_qtb83r$(pt.lengthOfPrerollToIgnore, 1.0, pt.lengthOfPrerollToIgnore * 44.1, latencyTime, timekeeper);
+    pt.stepWithFrequency_88ee24$(pt.lengthOfPrerollToIgnore, 1.0, pt.lengthOfPrerollToIgnore * 44.1, latencyTime);
     timestamp = pt.lengthOfPrerollToIgnore;
     println('------');
     tmp$ = exerciseSamplesCollection.iterator();
@@ -1497,7 +1517,7 @@ var PracticingMusician = function (_, Kotlin) {
       var item = tmp$.next();
       timestamp += item.lengthInSamples / 44100.0 * 1000.0;
       println('sending ' + Kotlin.toString(item.lengthInSamples) + (' at ' + timestamp));
-      pt.stepWithFrequency_qtb83r$(timestamp, item.freq, item.lengthInSamples, latencyTime, timekeeper);
+      pt.stepWithFrequency_88ee24$(timestamp, item.freq, item.lengthInSamples, latencyTime);
       println('--------');
     }
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(exerciseSamplesCollection, 10));
@@ -1670,55 +1690,6 @@ var PracticingMusician = function (_, Kotlin) {
     this.trueIncrementalComparisonTest();
     return 'Done';
   };
-  SliceTest.prototype.convertCorrelatedBuffersToSamples = function () {
-    var tmp$, tmp$_0, tmp$_1, tmp$_2;
-    var $receiver = this.notes;
-    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
-    var tmp$_3;
-    tmp$_3 = $receiver.iterator();
-    while (tmp$_3.hasNext()) {
-      var item = tmp$_3.next();
-      destination.add_11rb$(item.duration);
-    }
-    var iterator_3 = destination.iterator();
-    if (!iterator_3.hasNext()) {
-      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
-    }
-    var accumulator = iterator_3.next();
-    while (iterator_3.hasNext()) {
-      accumulator = accumulator + iterator_3.next();
-    }
-    var lengthOfNotesInSeconds = accumulator * this.secondsPerBeat;
-    var numCorrelatedBuffers = lengthOfNotesInSeconds * this.sampleRate / this.bufferLengthInSamples;
-    console.log('Num correlated buffers: ' + Kotlin.toString(numCorrelatedBuffers));
-    var correlatedBuffers = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
-    var samplesPerCorrelatedBuffer = 1024;
-    tmp$ = until(0, numCorrelatedBuffers | 0);
-    tmp$_0 = tmp$.first;
-    tmp$_1 = tmp$.last;
-    tmp$_2 = tmp$.step;
-    for (var i = tmp$_0; i <= tmp$_1; i += tmp$_2) {
-      correlatedBuffers.add_11rb$(440.0);
-    }
-    correlatedBuffers.set_wxm5ur$(1, 880.0);
-    correlatedBuffers.set_wxm5ur$(2, 440.0);
-    correlatedBuffers.set_wxm5ur$(3, 880.0);
-    var samplesFromCorrelatedBuffers = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
-    var tmp$_4;
-    tmp$_4 = correlatedBuffers.iterator();
-    while (tmp$_4.hasNext()) {
-      var element = tmp$_4.next();
-      var tmp$_5, tmp$_6, tmp$_7, tmp$_8;
-      tmp$_5 = until(0, samplesPerCorrelatedBuffer);
-      tmp$_6 = tmp$_5.first;
-      tmp$_7 = tmp$_5.last;
-      tmp$_8 = tmp$_5.step;
-      for (var i_0 = tmp$_6; i_0 <= tmp$_7; i_0 += tmp$_8) {
-        samplesFromCorrelatedBuffers.add_11rb$(element);
-      }
-    }
-    return samplesFromCorrelatedBuffers;
-  };
   SliceTest.$metadata$ = {
     kind: Kotlin.Kind.OBJECT,
     simpleName: 'SliceTest',
@@ -1855,13 +1826,17 @@ var PracticingMusician = function (_, Kotlin) {
     }
   });
   _.main_kand9s$ = main;
-  _.runProgram = runProgram;
   var package$com = _.com || (_.com = {});
   var package$practicingmusician = package$com.practicingmusician || (package$com.practicingmusician = {});
   package$practicingmusician.App = App;
   Object.defineProperty(package$practicingmusician, 'AppSettings', {
     get: AppSettings_getInstance
   });
+  package$practicingmusician.AudioAnalyzer = AudioAnalyzer;
+  package$practicingmusician.GeneratedExercise = GeneratedExercise;
+  package$practicingmusician.AudioObjectInterface = AudioObjectInterface;
+  package$practicingmusician.SimpleJSNoteObject = SimpleJSNoteObject;
+  package$practicingmusician.ListenerApp = ListenerApp;
   var package$audio = package$practicingmusician.audio || (package$practicingmusician.audio = {});
   package$audio.AudioManager = AudioManager;
   var package$exercises = package$practicingmusician.exercises || (package$practicingmusician.exercises = {});

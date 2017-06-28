@@ -17,8 +17,13 @@ function generateExerciseForKotlin() {
 function generateExerciseEasyScoreCode() {
     return {
         bars: [
-            ['F4/q','G4/q','A4/q','Bb4/q'],
-            ['C5/q','D5/q','E5/q','F5/q']
+            {
+                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"F"}],
+                groups:[{notes:['F4/q','G4/q','A4/q','Bb4/q']}]
+            },
+            {
+                            groups:[{notes:['C5/q','D5/q','E5/q','F5/q']}]
+                        },
             ]
         }
 }
