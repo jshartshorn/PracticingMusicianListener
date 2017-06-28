@@ -1,14 +1,13 @@
 package com.practicingmusician.steppable
 
 import com.practicingmusician.AudioAnalyzer
+import com.practicingmusician.pm_log
 
 /**
  * Created by jn on 6/7/17.
  */
 
 external var audioAnalyzer : AudioAnalyzer
-
-external fun pm_log(message: Any, priority : Int = definedExternally)
 
 var buflen : Int = 1024
 

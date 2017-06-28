@@ -1,7 +1,7 @@
 package com.practicingmusician.audio
 
 import com.practicingmusician.AudioObjectInterface
-import com.practicingmusician.exercises.pm_log
+import com.practicingmusician.pm_log
 import kotlin.browser.window
 
 /**

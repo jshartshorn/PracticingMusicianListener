@@ -1,6 +1,6 @@
 package com.practicingmusician.steppable
 
-import com.practicingmusician.exercises.pm_log
+import com.practicingmusician.pm_log
 import kotlin.browser.window
 
 

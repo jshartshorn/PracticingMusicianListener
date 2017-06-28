@@ -1,10 +1,9 @@
 package com.practicingmusician.finals
 
 import com.practicingmusician.notes.Note
+import com.practicingmusician.pm_log
 import com.practicingmusician.steppable.SampleCollection
 import kotlin.browser.window
-
-external fun pm_log(message: Any, priority : Int = definedExternally)
 
 /**
  * Created by jn on 6/23/17.

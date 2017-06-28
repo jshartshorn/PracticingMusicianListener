@@ -7,6 +7,7 @@ package com.practicingmusician
  *
  */
 
+external fun pm_log(msg : Any, level : Int = definedExternally)
 
 interface AudioAnalyzer {
     fun setupMedia()
@@ -28,21 +29,25 @@ interface SimpleJSNoteObject {
     val duration : Double
 }
 
-interface ListenerApp {
-    var generatedExercise : GeneratedExercise
+external class EasyScoreUtil  {
+    var exercise : dynamic
+    lateinit var generatedExercise : GeneratedExercise
 
-    @JsName("runApp")
-    fun runApp()
+    fun setupOnElement(elementID : String)
+    fun notateExercise()
+    fun drawIndicatorLine(canvas : dynamic, beat : Double)
 
-    @JsName("clearFeedbackItems")
-    fun clearFeedbackItems()
+    fun getPositionForBeat(beat: Double) : BeatPosition
+    fun getFeedbackYPosition(staveTopY : Double) : Double
 
-    @JsName("moveToPosition")
-    fun moveToPosition(beat:Double)
+    fun createFeedbackHTMLElement(items : Array<String>, x : Double, y : Double)
+}
 
-    @JsName("highlightMetronomeItem")
-    fun highlightMetronomeItem(itemNumber : Int)
+interface BeatPosition {
+    val x : Double
+    val y : Double
+}
 
-    @JsName("addFeedbackItem")
-    fun addFeedbackItem(beat : Double, items : List<String>)
+external object UserSettings {
+    fun applyToExercise(e : GeneratedExercise) : GeneratedExercise
 }
