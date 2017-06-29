@@ -1,1 +1,0 @@
-function pm_log(o,I){void 0==I&&(I=0),I>=LOG_PRIORITY&&console.log(o)}var LOG_PRIORITY=10;
