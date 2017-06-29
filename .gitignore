@@ -7,3 +7,4 @@ tmp/*
 gulp-build/
 webpack-build/
 .idea/
+node_modules/

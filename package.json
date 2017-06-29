@@ -1,0 +1,28 @@
+{
+  "name": "practicing-musician-listener",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnpdx/PracticingMusicianListener.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jnpdx/PracticingMusicianListener/issues"
+  },
+  "homepage": "https://github.com/jnpdx/PracticingMusicianListener#readme",
+  "dependencies": {
+    "gulp": "3.9.1"
+  },
+  "devDependencies": {
+    "child_process": "1.0.2",
+    "gulp-uglify": "3.0.0",
+    "kotlin": "1.1.0"
+  }
+}
