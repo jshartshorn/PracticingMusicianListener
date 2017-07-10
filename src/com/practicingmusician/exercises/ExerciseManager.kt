@@ -4,6 +4,7 @@ import com.practicingmusician.ListenerApp
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.finals.IncrementalBufferManager
 import com.practicingmusician.finals.IncrementalComparisonEngine
+import com.practicingmusician.network.ListenerNetworkManager
 import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
@@ -107,6 +108,10 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 }
 
                 window.alert("Your results are: " + results.correct + "/" + results.attempted)
+
+                //contact the server with a network request
+                //TODO: only do this if it's complete?
+                ListenerNetworkManager.buildAndSendRequest(results)
             }
         }
 
