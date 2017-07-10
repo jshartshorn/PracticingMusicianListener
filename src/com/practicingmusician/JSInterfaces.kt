@@ -13,6 +13,9 @@ external fun pm_log(msg : Any, level : Int = definedExternally)
 interface AppSetupParameters {
     val notationContainerName : String
     val metronomeContainerName : String
+
+    val userID : Int
+    val exerciseID: Int
 }
 
 interface AudioAnalyzer {
