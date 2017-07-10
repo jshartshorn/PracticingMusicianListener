@@ -169,14 +169,17 @@ class ListenerApp {
     //clear existing feedback items from the screen
     fun clearFeedbackItems() {
         pm_log("Clearing")
-        val feedbackCanvas = document.getElementById("feedbackCanvas") as? HTMLCanvasElement
-        feedbackCanvas?.getContext("2d").asDynamic().clearRect(0,0,feedbackCanvas?.width,feedbackCanvas?.height)
+        //val feedbackCanvas = document.getElementById("feedbackCanvas") as? HTMLCanvasElement
+        //feedbackCanvas?.getContext("2d").asDynamic().clearRect(0,0,feedbackCanvas?.width,feedbackCanvas?.height)
 
         val items = document.getElementsByClassName("feedbackItem")
-        for (index in 0 until items.length) {
-            val i = items.item(index)
-            i?.parentNode?.removeChild(i)
+
+        while(items.length > 0) {
+            (items[0] as HTMLElement).let {
+                it.parentNode?.removeChild(it)
+            }
         }
+
     }
 
     //add a feedback item to a certain beat
