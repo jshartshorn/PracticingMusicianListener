@@ -61,6 +61,16 @@ div.feedbackItem:hover div.feedbackItemContainer {
     min-height: 75px;
 }
 
+span.feedbackKey {
+    display: inline-block;
+    width: 60%;
+}
+
+span.feedbackValue {
+    display: inline-block;
+    width: 40%;
+}
+
 span.feedbackItemElement {
     display: block;
 }

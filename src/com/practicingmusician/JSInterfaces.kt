@@ -1,5 +1,7 @@
 package com.practicingmusician
 
+import com.practicingmusician.finals.FeedbackMetric
+
 
 /**
  * Created by jn on 6/27/17.
@@ -58,7 +60,7 @@ external class EasyScoreUtil  {
     fun getPositionForBeat(beat: Double) : BeatPosition
     fun getFeedbackYPosition(staveTopY : Double) : Double
 
-    fun createFeedbackHTMLElement(items : Array<String>, x : Double, y : Double)
+    fun createFeedbackHTMLElement(items : Array<FeedbackMetric>, x : Double, y : Double)
 }
 
 data class BeatPosition(val x : Double, val y : Double)

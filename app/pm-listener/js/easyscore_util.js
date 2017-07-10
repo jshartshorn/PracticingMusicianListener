@@ -499,7 +499,18 @@ var EasyScoreUtil = function() {
         var feedbackItems = feedbackItemType.map(function(item) {
             var itemObj = document.createElement('span')
             itemObj.className = "feedbackItemElement"
-            itemObj.innerHTML = item
+
+            var keyObj = document.createElement("span")
+            keyObj.className = "feedbackKey"
+            keyObj.innerHTML = item.name
+
+            var valueObj = document.createElement("span")
+            valueObj.className = "feedbackValue"
+            valueObj.innerHTML = item.value
+
+            itemObj.appendChild(keyObj)
+            itemObj.appendChild(valueObj)
+
             return itemObj
         })
 

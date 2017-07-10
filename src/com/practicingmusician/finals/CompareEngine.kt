@@ -41,7 +41,7 @@ object CompareEngine {
 
             println("Going to compare ideal index $index to test index $indexOnToTest")
 
-            var feedbackItem = FeedbackItem(curBeatPosition, listOf<String>())
+            var feedbackItem = FeedbackItem(curBeatPosition, listOf<FeedbackMetric>())
 
             results.feedbackItems.add(feedbackItem)
 
@@ -76,13 +76,13 @@ object CompareEngine {
             if (curBeatPosition - toTestBeatPositionAtIndexToTest > allowableRhythmMargin) {
                 println("Test subject rushing")
 
-                feedbackItem.feedbackItemType += ">"
+                feedbackItem.feedbackItemType += FeedbackMetric("rhythm","rushing")
 
                 isCorrect = false
             } else if (curBeatPosition - toTestBeatPositionAtIndexToTest < -allowableRhythmMargin) {
                 println("Test subject dragging")
 
-                feedbackItem.feedbackItemType += "<"
+                feedbackItem.feedbackItemType += FeedbackMetric("rhythm","dragging")
 
                 isCorrect = false
             } else {
@@ -99,13 +99,13 @@ object CompareEngine {
                 if (avgFreq - idealItem.getFrequency() > allowableFreqencyMargin) {
                     println("Test subject sharp")
 
-                    feedbackItem.feedbackItemType += "^"
+                    feedbackItem.feedbackItemType += FeedbackMetric("pitch","sharp")
 
                     isCorrect = false
                 } else if (avgFreq - idealItem.getFrequency() < -allowableFreqencyMargin) {
                     println("Test subject flat")
 
-                    feedbackItem.feedbackItemType += "_"
+                    feedbackItem.feedbackItemType += FeedbackMetric("pitch","flat")
 
                     isCorrect = false
                 } else {

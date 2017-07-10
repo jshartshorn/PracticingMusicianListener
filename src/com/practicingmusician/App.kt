@@ -3,6 +3,7 @@ package com.practicingmusician
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.FeedbackItem
+import com.practicingmusician.finals.FeedbackMetric
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 import org.w3c.dom.Element
@@ -78,9 +79,9 @@ class ListenerApp {
 
         //for testing
             val feedbackItems = listOf(
-                    FeedbackItem(1.0, listOf("test")),
-                    FeedbackItem(2.0, listOf("test")),
-                    FeedbackItem(3.0, listOf("test"))
+                    FeedbackItem(1.0, listOf(FeedbackMetric("test","val"))),
+                    FeedbackItem(2.0, listOf(FeedbackMetric("test","val"))),
+                    FeedbackItem(3.0, listOf(FeedbackMetric("test","val")))
             )
 
             feedbackItems.forEach {
@@ -179,7 +180,7 @@ class ListenerApp {
     }
 
     //add a feedback item to a certain beat
-    fun addFeedbackItem(beat : Double,items : List<String>) {
+    fun addFeedbackItem(beat : Double,items : List<FeedbackMetric>) {
         val positionForBeat = this.scoreUtil.getPositionForBeat(beat)
         //pm_log("Position for beat: ",10)
         //pm_log(positionForBeat,10)
