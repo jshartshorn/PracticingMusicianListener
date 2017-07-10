@@ -78,6 +78,7 @@ class ListenerApp {
 
     fun makeScore(containerElementName : String) {
         this.scoreUtil = EasyScoreUtil()
+        this.scoreUtil.containerElementName = this.notationContainerElementName
 
         val exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
 

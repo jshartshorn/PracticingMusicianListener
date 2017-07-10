@@ -63,12 +63,6 @@ span#medalIndicator {
     height: 60px;
 }
 
-div#metronomeContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
 
 div#metronomeItems {
     min-width: 160px;

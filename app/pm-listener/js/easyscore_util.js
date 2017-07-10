@@ -18,7 +18,7 @@ var feedbackCanvasName = "feedbackCanvas";
 
 var EasyScoreUtil = function() {
 
-    this.containerElementName = "";
+    this.containerElementName = ""
 
     //the current position that systems are being placed on the screen
     this.scorePositionInitialX = 60
@@ -157,6 +157,12 @@ var EasyScoreUtil = function() {
                 break
         }
 
+        var metronomeContainer = document.getElementById(metronomeContainerName)
+        metronomeContainer.style.display = "flex"
+        metronomeContainer.style.flexDirection = "row"
+        metronomeContainer.style.justifyContent = "space-around"
+        metronomeContainer.style.alignItems = "center"
+
 
         var metronomeItemsObj = document.createElement("div")
         metronomeItemsObj.id = "metronomeItems"
@@ -174,7 +180,7 @@ var EasyScoreUtil = function() {
         var tempoMarkingObj = document.createElement("span")
         tempoMarkingObj.id = "tempoMarking"
         tempoMarkingObj.innerHTML = this.exercise.tempo + "<br/> bpm"
-        document.getElementById(metronomeContainerName).appendChild(tempoMarkingObj)
+        metronomeContainer.appendChild(tempoMarkingObj)
     }
 
     //make a new system (measure) of a given width
