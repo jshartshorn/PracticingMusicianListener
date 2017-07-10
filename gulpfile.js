@@ -10,7 +10,7 @@ gulp.task('compile_kotlin', [], function () {
 })
 
 gulp.task('copy_js_files', function() {
-	gulp.src('./app/js/**/*.js')
+	gulp.src('./app/pm-listener/js/**/*.js')
 	.pipe(uglify())
 	.pipe(gulp.dest('gulp-build/pm-listener/js'))
 })
@@ -33,17 +33,17 @@ gulp.task('copy_html', function() {
 })
 
 gulp.task('copy_css', function() {
-	gulp.src('app/css/*')
+	gulp.src('app/pm-listener/css/*')
 	.pipe(gulp.dest('gulp-build/pm-listener/css'))
 })
 
 gulp.task('copy_images', function() {
-	gulp.src('app/images/*')
+	gulp.src('app/pm-listener/images/*')
 	.pipe(gulp.dest('gulp-build/pm-listener/images'))
 })
 
 gulp.task('copy_audio', function() {
-	gulp.src('app/audio/*')
+	gulp.src('app/pm-listener/audio/*')
 	.pipe(gulp.dest('gulp-build/pm-listener/audio'))
 })
 

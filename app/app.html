@@ -21,30 +21,27 @@
 <div id="notationWindow">
     <div id="notationHeader">
         <span id="settingsButton"></span>
-        <span id="playPauseButton" onclick="javascript:PracticingMusician.app.toggleState()"></span>
+        <span id="playPauseButton" onclick="javascript:listenerApp.toggleState()"></span>
         <span id="repeatButton"></span>
 
         <div id="metronomeContainer">
-            <div id="metronomeItems">
-                <span class="metronomeItem highlighted"></span>
-                <span class="metronomeItem"></span>
-                <span class="metronomeItem"></span>
-                <span class="metronomeItem"></span>
-            </div>
-            <span id="tempoMarking">80<br/>BPM</span>
+            <!-- this gets filled dynamically -->
         </div>
 
         <span id="medalIndicator"></span>
         <span id="exitFullScreenButton"></span>
     </div>
     <div id="notationBody">
-        <canvas id="notationCanvas" width="1024" height="300"></canvas>
-        <canvas id="feedbackCanvas" width="1024" height="300"></canvas>
-        <canvas id="indicatorCanvas" width="1024" height="300"></canvas>
+        <!-- this gets filled dynamically -->
     </div>
 </div>
 <script src="pm-listener/js/exercises/CMajorScale.js"></script>
 <script src="pm-listener/js/index.js"></script>
 
+<script type="text/javascript">
+    window.onload = function() {
+        listenerApp.runApp()
+    }
+</script>
 </body>
 </html>
