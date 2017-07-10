@@ -1,8 +1,8 @@
 package com.practicingmusician
 
-import app
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
+import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLCanvasElement
@@ -14,41 +14,11 @@ import kotlin.browser.document
  * Created by jn on 6/5/17.
  */
 
-class App {
-    val audioManager = AudioManager()
-
-    var exerciseManager = ExerciseManager(audioManager)
-
-
-    /*
-      This should be called by a button on the UI
-
-      If the timeKeeper is currently stopped (including on first run), the exerciseManager is set up, and then run
-
-      If the timeKeeper is running, the manager is stopped (which also triggers the finishedActions
-     */
-
-    @JsName("toggleState")
-    fun toggleState() {
-        when (exerciseManager.timeKeeper.state) {
-            TimeKeeper.TimeKeeperState.Stopped -> {
-                exerciseManager.createSteppables()
-                exerciseManager.setup()
-                exerciseManager.loadExercise()
-
-                exerciseManager.run()
-            }
-            TimeKeeper.TimeKeeperState.Running -> {
-                exerciseManager.stop()
-            }
-        }
-    }
-
-}
-
 external fun generateExerciseForKotlin() : GeneratedExercise
 external fun generateExerciseEasyScoreCode() : EasyScoreCode
 external var listenerApp : ListenerApp
+external var audioAnalyzer : AudioAnalyzer
+
 
 class ListenerApp {
     var scoreUtil = EasyScoreUtil()
@@ -56,14 +26,23 @@ class ListenerApp {
 
     val containerElementName = "notationBody"
 
+
+    val audioManager = AudioManager()
+
+    var exerciseManager = ExerciseManager(audioManager)
+
     @JsName("runApp")
     fun runApp() {
+
+        Note.createAllNotes()
+
+        audioAnalyzer.setupMedia()
 
         this.generatedExercise = generateExerciseForKotlin()
 
         this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
 
-        app.exerciseManager.loadExercise()
+        this.exerciseManager.loadExercise()
 
         this.makeDomElements()
     }
@@ -106,6 +85,30 @@ class ListenerApp {
 
         //notate it
         this.scoreUtil.notateExercise()
+    }
+
+    /*
+      This should be called by a button on the UI
+
+      If the timeKeeper is currently stopped (including on first run), the exerciseManager is set up, and then run
+
+      If the timeKeeper is running, the manager is stopped (which also triggers the finishedActions
+     */
+
+    @JsName("toggleState")
+    fun toggleState() {
+        when (exerciseManager.timeKeeper.state) {
+            TimeKeeper.TimeKeeperState.Stopped -> {
+                exerciseManager.createSteppables()
+                exerciseManager.setup()
+                exerciseManager.loadExercise()
+
+                exerciseManager.run()
+            }
+            TimeKeeper.TimeKeeperState.Running -> {
+                exerciseManager.stop()
+            }
+        }
     }
 
     @JsName("doResizeActions")

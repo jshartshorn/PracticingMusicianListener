@@ -23,7 +23,7 @@
 <div id="notationWindow">
     <div id="notationHeader">
         <span id="settingsButton"></span>
-        <span id="playPauseButton" onclick="javascript:PracticingMusician.app.toggleState()"></span>
+        <span id="playPauseButton" onclick="javascript:listenerApp.toggleState()"></span>
         <span id="repeatButton"></span>
 
         <div id="metronomeContainer">
@@ -39,6 +39,12 @@
 </div>
 <script src="js/exercises/CMajorScale.js"></script>
 <script src="js/index.js"></script>
+
+<script type="text/javascript">
+    window.onload = function() {
+        listenerApp.runApp()
+    }
+</script>
 
 </body>
 </html>
