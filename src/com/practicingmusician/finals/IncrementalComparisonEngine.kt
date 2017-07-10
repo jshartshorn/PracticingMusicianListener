@@ -145,17 +145,22 @@ class IncrementalComparisonEngine {
 
             pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest)
 
+            val distanceAway = - (curBeatPosition - toTestBeatPositionAtIndexToTest)
+
+            val distanceAwayRounded = Math.round(distanceAway * 100.0) / 100.0
+
             //test the start time of the notes (rushing vs. dragging)
-            if (curBeatPosition - toTestBeatPositionAtIndexToTest > allowableRhythmMargin) {
+            if (distanceAway > allowableRhythmMargin) {
                 pm_log("Test subject rushing")
 
-                feedbackItemTypes.add(FeedbackMetric("rhythm","rushing"))
+                feedbackItemTypes.add(FeedbackMetric("speed","+" + distanceAwayRounded))
 
                 isCorrect = false
-            } else if (curBeatPosition - toTestBeatPositionAtIndexToTest < -allowableRhythmMargin) {
+            } else if (distanceAway < -allowableRhythmMargin) {
                 pm_log("Test subject dragging")
 
-                feedbackItemTypes.add(FeedbackMetric("rhythm","dragging"))
+
+                feedbackItemTypes.add(FeedbackMetric("speed","" + distanceAwayRounded))
 
                 isCorrect = false
             } else {
@@ -203,7 +208,7 @@ class IncrementalComparisonEngine {
                     if (distanceInCents > allowableCentsMargin) {
                         pm_log("Test subject sharp")
 
-                        feedbackItemTypes.add(FeedbackMetric("pitch","sharp"))
+                        feedbackItemTypes.add(FeedbackMetric("pitch","+" + distanceInCents.toInt()))
 
                         isCorrect = false
                     }
@@ -214,7 +219,7 @@ class IncrementalComparisonEngine {
                     if (distanceInCents > allowableCentsMargin) {
                         pm_log("Test subject flat")
 
-                        feedbackItemTypes.add(FeedbackMetric("pitch","flat"))
+                        feedbackItemTypes.add(FeedbackMetric("pitch","-" + distanceInCents.toInt()))
 
                         isCorrect = false
                     }
