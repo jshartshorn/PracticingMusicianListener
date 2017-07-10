@@ -48,9 +48,6 @@ class App {
 
 external fun generateExerciseForKotlin() : GeneratedExercise
 external fun generateExerciseEasyScoreCode() : EasyScoreCode
-external var feedbackCanvas : HTMLCanvasElement
-external var indicatorCanvas : HTMLCanvasElement
-external var metronomeItems : Array<HTMLElement>
 external var listenerApp : ListenerApp
 
 class ListenerApp {
@@ -84,6 +81,11 @@ class ListenerApp {
         feedbackCanvasObj.id = feedbackCanvasName
         document.getElementById(containerElementName)?.appendChild(feedbackCanvasObj)
 
+        val metronomeContainerName = "metronomeContainer"
+        val metronomeItemsObj = document.createElement("div")
+        metronomeItemsObj.id = "metronomeItems"
+        document.getElementById(metronomeContainerName)?.appendChild(metronomeItemsObj)
+
         this.makeScore(containerElementName)
     }
 
@@ -98,6 +100,9 @@ class ListenerApp {
 
         //setup the score
         this.scoreUtil.setupOnElement(containerElementName)
+
+        val metronomeContainerName = "metronomeContainer"
+        this.scoreUtil.setupMetronome(metronomeContainerName)
 
         //notate it
         this.scoreUtil.notateExercise()
@@ -116,14 +121,16 @@ class ListenerApp {
     //move the indicator to a certain beat position
     fun moveToPosition(beat : Double) {
         //clear the previous indicator first
-        indicatorCanvas.getContext("2d").asDynamic().clearRect(0, 0, indicatorCanvas.width, indicatorCanvas.height);
+        val indicatorCanvas = document.getElementById("indicatorCanvas") as? HTMLCanvasElement
+        indicatorCanvas?.getContext("2d").asDynamic().clearRect(0, 0, indicatorCanvas?.width, indicatorCanvas?.height);
         this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
     }
 
     //highlight a certain item in the HTML metronome indicators
     fun highlightMetronomeItem(itemNumber : Int) {
-        for (index in 0 until metronomeItems.size) {
-            val item = metronomeItems[index]
+        val metronomeItems = document.getElementsByClassName("metronomeItem")
+        for (index in 0 until metronomeItems.length) {
+            val item = metronomeItems[index] as HTMLElement
             item.className = "metronomeItem"
 
             if (itemNumber == index)
@@ -134,7 +141,8 @@ class ListenerApp {
     //clear existing feedback items from the screen
     fun clearFeedbackItems() {
         pm_log("Clearing")
-        feedbackCanvas.getContext("2d").asDynamic().clearRect(0,0,feedbackCanvas.width,feedbackCanvas.height)
+        val feedbackCanvas = document.getElementById("feedbackCanvas") as? HTMLCanvasElement
+        feedbackCanvas?.getContext("2d").asDynamic().clearRect(0,0,feedbackCanvas?.width,feedbackCanvas?.height)
 
         val items = document.getElementsByClassName("feedbackItem")
         for (index in 0 until items.length) {

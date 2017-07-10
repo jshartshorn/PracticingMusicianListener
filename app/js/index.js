@@ -1,16 +1,3 @@
-/* GLOBALS */
-var indicatorCanvasName = "indicatorCanvas";
-var feedbackCanvasName = "feedbackCanvas";
-
-//global variables for the different canvases
-var indicatorCanvas = document.getElementById(indicatorCanvasName);
-var feedbackCanvas = document.getElementById(feedbackCanvasName);
-
-//references to the HTML metronome indicators
-var metronomeItems = document.getElementById("metronomeItems").getElementsByClassName("metronomeItem");
-
-/* END GLOBALS */
-
 
 var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
 

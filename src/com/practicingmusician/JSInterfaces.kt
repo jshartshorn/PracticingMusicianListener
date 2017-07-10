@@ -38,6 +38,9 @@ external class EasyScoreUtil  {
     lateinit var generatedExercise : GeneratedExercise
 
     fun setupOnElement(elementID : String)
+
+    fun setupMetronome(elementID : String)
+
     fun notateExercise()
     fun drawIndicatorLine(canvas : dynamic, beat : Double)
 

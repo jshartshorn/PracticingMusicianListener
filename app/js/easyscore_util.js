@@ -12,6 +12,10 @@ VF = Vex.Flow;
 function concat(a, b) { return a.concat(b); }
 
 
+var indicatorCanvasName = "indicatorCanvas";
+var feedbackCanvasName = "feedbackCanvas";
+
+
 var EasyScoreUtil = function() {
 
     //the current position that systems are being placed on the screen
@@ -106,6 +110,35 @@ var EasyScoreUtil = function() {
         this.voice = this.score.voice.bind(this.score);
         this.notes = this.score.notes.bind(this.score);
         this.beam = this.score.beam.bind(this.score);
+    }
+
+    this.setupMetronome = function(metronomeContainerName) {
+        console.log("Making metronome for " + this.exercise.time_signature)
+        var metronomeItemsToCreate = 1
+        switch(this.exercise.time_signature) {
+            case "4/4":
+                metronomeItemsToCreate = 4
+                break
+            case "3/4":
+                metronomeItemsToCreate = 3
+                break
+            case "6/8":
+                metronomeItemsToCreate = 6
+                break
+        }
+        for (var i = 0; i < metronomeItemsToCreate; i++) {
+            var metronomeItemObj = document.createElement("span")
+            metronomeItemObj.className = "metronomeItem"
+            if (i == 0)
+                metronomeItemObj.className += " highlighted"
+            document.getElementById("metronomeItems").appendChild(metronomeItemObj)
+        }
+
+        //setup the tempo marking
+        var tempoMarkingObj = document.createElement("span")
+        tempoMarkingObj.id = "tempoMarking"
+        tempoMarkingObj.innerHTML = this.exercise.tempo + "<br/> bpm"
+        document.getElementById("metronomeContainer").appendChild(tempoMarkingObj)
     }
 
     //make a new system (measure) of a given width
