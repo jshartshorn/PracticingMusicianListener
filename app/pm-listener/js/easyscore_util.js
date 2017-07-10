@@ -125,11 +125,13 @@ var EasyScoreUtil = function() {
         titleContainer.id = "titleContainer"
 
         var titleElement = document.createElement("span")
+        titleElement.id = "mainTitle"
         titleElement.innerHTML = this.exercise.title
         titleContainer.appendChild(titleElement)
 
         var authorElement = document.createElement("span")
-        authorElement.innerHTML = this.exercise.author
+        authorElement.id = "exerciseAuthor"
+        authorElement.innerHTML = "By: " + this.exercise.author
         titleContainer.appendChild(authorElement)
 
         var notationBody = document.getElementById(containerName)

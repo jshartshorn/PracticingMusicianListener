@@ -58,9 +58,7 @@ class ListenerApp {
 
         //alter the style of the container element
         val container = document.getElementById(this.notationContainerElementName) as HTMLElement
-        container.style.minWidth = "min-width: 700px !important"
-        container.style.width = "100%"
-        container.style.position = "relative"
+        container.className += "notationBodyContainer"
 
         //make the canvases
         val indicatorCanvasName = "indicatorCanvas"
@@ -78,6 +76,7 @@ class ListenerApp {
         this.makeScore(this.notationContainerElementName)
 
         //for testing
+        //TODO: remove
             val feedbackItems = listOf(
                     FeedbackItem(1.0, listOf(FeedbackMetric("test","val"))),
                     FeedbackItem(2.0, listOf(FeedbackMetric("test","val"))),
