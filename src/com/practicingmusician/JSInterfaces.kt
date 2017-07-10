@@ -10,6 +10,11 @@ package com.practicingmusician
 
 external fun pm_log(msg : Any, level : Int = definedExternally)
 
+interface AppSetupParameters {
+    val notationContainerName : String
+    val metronomeContainerName : String
+}
+
 interface AudioAnalyzer {
     fun setupMedia()
     @JsName("updatePitch")
@@ -40,6 +45,8 @@ external class EasyScoreUtil  {
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)
+
+    fun buildTitleElements(elementID : String)
 
     fun notateExercise()
     fun drawIndicatorLine(canvas : dynamic, beat : Double)

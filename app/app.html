@@ -41,7 +41,10 @@
 
 <script type="text/javascript">
     window.onload = function() {
-        listenerApp.runApp()
+        listenerApp.runApp({
+            notationContainerName : "notationBody",
+            metronomeContainerName : "metronomeContainer"
+        })
     }
 </script>
 </body>

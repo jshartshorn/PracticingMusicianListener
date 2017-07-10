@@ -18,6 +18,8 @@ var feedbackCanvasName = "feedbackCanvas";
 
 var EasyScoreUtil = function() {
 
+    this.containerElementName = "";
+
     //the current position that systems are being placed on the screen
     this.scorePositionInitialX = 60
     this.scorePositionInitialY = 20
@@ -112,7 +114,35 @@ var EasyScoreUtil = function() {
         this.beam = this.score.beam.bind(this.score);
     }
 
+    this.buildTitleElements = function(containerName) {
+        //remove the old one
+        var oldTitleContainer = document.getElementById("titleContainer")
+        if (oldTitleContainer != null) {
+            oldTitleContainer.parentNode.removeChild(oldTitleContainer)
+        }
+
+        var titleContainer = document.createElement("div")
+        titleContainer.id = "titleContainer"
+
+        var titleElement = document.createElement("span")
+        titleElement.innerHTML = this.exercise.title
+        titleContainer.appendChild(titleElement)
+
+        var authorElement = document.createElement("span")
+        authorElement.innerHTML = this.exercise.author
+        titleContainer.appendChild(authorElement)
+
+        var notationBody = document.getElementById(containerName)
+        notationBody.insertBefore(titleContainer,notationBody.childNodes[0])
+    }
+
     this.setupMetronome = function(metronomeContainerName) {
+        //remove the old ones
+        var myNode = document.getElementById(metronomeContainerName)
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+
         console.log("Making metronome for " + this.exercise.time_signature)
         var metronomeItemsToCreate = 1
         switch(this.exercise.time_signature) {
@@ -126,6 +156,12 @@ var EasyScoreUtil = function() {
                 metronomeItemsToCreate = 6
                 break
         }
+
+
+        var metronomeItemsObj = document.createElement("div")
+        metronomeItemsObj.id = "metronomeItems"
+        document.getElementById(metronomeContainerName).appendChild(metronomeItemsObj)
+
         for (var i = 0; i < metronomeItemsToCreate; i++) {
             var metronomeItemObj = document.createElement("span")
             metronomeItemObj.className = "metronomeItem"
@@ -138,7 +174,7 @@ var EasyScoreUtil = function() {
         var tempoMarkingObj = document.createElement("span")
         tempoMarkingObj.id = "tempoMarking"
         tempoMarkingObj.innerHTML = this.exercise.tempo + "<br/> bpm"
-        document.getElementById("metronomeContainer").appendChild(tempoMarkingObj)
+        document.getElementById(metronomeContainerName).appendChild(tempoMarkingObj)
     }
 
     //make a new system (measure) of a given width
@@ -443,7 +479,7 @@ var EasyScoreUtil = function() {
         obj.style.position = "absolute"
         obj.style.top = "" + y  * this.contentScaleFactor + "px"
         obj.style.left = "" + x * this.contentScaleFactor - (feedbackWidth / 2) + "px"
-        document.getElementById("notationBody").appendChild(obj)
+        document.getElementById(this.containerElementName).appendChild(obj)
     }
 
 }

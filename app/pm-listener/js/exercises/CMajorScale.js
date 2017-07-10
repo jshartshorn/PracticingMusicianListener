@@ -16,6 +16,8 @@ function generateExerciseForKotlin() {
 
 function generateExerciseEasyScoreCode() {
     return {
+        title: "C Major Scale",
+        author: "Practicing Musician Example Author",
         time_signature: "4/4",
         tempo: 110,
         bars: [

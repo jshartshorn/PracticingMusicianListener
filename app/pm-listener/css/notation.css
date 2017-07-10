@@ -16,14 +16,12 @@ div#notationHeader {
     align-items: center;
 }
 
-div#notationBody {
-    width: 100%;
-    min-width: 700px !important;
-    position: relative;
+div#titleContainer {
+    text-align: center;
 }
 
-div#notationBody canvas, div#notationBody svg {
-    position: absolute;
+div#titleContainer span {
+    display: block;
 }
 
 div.feedbackItem {

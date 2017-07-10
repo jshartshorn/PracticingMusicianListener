@@ -5,7 +5,11 @@ var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
 var resizeTimeoutID;
 window.onresize = function() {
     clearTimeout(resizeTimeoutID);
-    resizeTimeoutID = setTimeout(listenerApp.doResizeActions, 500);
+    resizeTimeoutID = setTimeout(
+        function() {
+            listenerApp.doResizeActions()
+        }
+    , 500);
 }
 
 
