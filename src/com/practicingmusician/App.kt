@@ -2,6 +2,7 @@ package com.practicingmusician
 
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
+import com.practicingmusician.finals.FeedbackItem
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 import org.w3c.dom.Element
@@ -74,6 +75,19 @@ class ListenerApp {
         document.getElementById(this.notationContainerElementName)?.appendChild(feedbackCanvasObj)
 
         this.makeScore(this.notationContainerElementName)
+
+        //for testing
+            val feedbackItems = listOf(
+                    FeedbackItem(1.0, listOf("test")),
+                    FeedbackItem(2.0, listOf("test")),
+                    FeedbackItem(3.0, listOf("test"))
+            )
+
+            feedbackItems.forEach {
+                    val beat = it.beat
+                    //pm_log("Feedback item at $beat")
+                    listenerApp.addFeedbackItem(beat,it.feedbackItemType)
+            }
     }
 
     fun makeScore(containerElementName : String) {
@@ -128,8 +142,6 @@ class ListenerApp {
         val oldSVG = document.getElementsByTagName("svg").get(0) as Element
         oldSVG.parentNode?.removeChild(oldSVG)
 
-        //TODO: remove metronomeItems and title elements
-
         listenerApp.makeScore(this.notationContainerElementName)
     }
 
@@ -169,6 +181,8 @@ class ListenerApp {
     //add a feedback item to a certain beat
     fun addFeedbackItem(beat : Double,items : List<String>) {
         val positionForBeat = this.scoreUtil.getPositionForBeat(beat)
+        //pm_log("Position for beat: ",10)
+        //pm_log(positionForBeat,10)
         val positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
         //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
         this.scoreUtil.createFeedbackHTMLElement(items.toTypedArray(),positionForBeat.x,positionY)

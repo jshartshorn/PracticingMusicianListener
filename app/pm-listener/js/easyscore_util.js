@@ -336,8 +336,8 @@ var EasyScoreUtil = function() {
             //percentage between the elements that the beat exists in
             var percent = null
 
-            //pm_log("Searching for beat " + beat + " in")
-            //pm_log(this.exercise.rawNotes)
+            //pm_log("Searching for beat " + beat + " in",10)
+            //pm_log(this.generatedExercise.notes,10)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
             for (index in this.generatedExercise.notes) {
@@ -465,7 +465,7 @@ var EasyScoreUtil = function() {
     //get the Y coordinate for feedback items
     this.getFeedbackYPosition = function(topStaveY) {
         var stave = this.getBasicStave()
-        var pos = stave.height + topStaveY
+        var pos = stave.height + topStaveY + 20
         return pos
     }
 
@@ -494,11 +494,28 @@ var EasyScoreUtil = function() {
     this.createFeedbackHTMLElement = function(feedbackItemType,x,y) {
         var feedbackWidth = 16 * this.contentScaleFactor
         var obj = document.createElement('div');
-        obj.className = "feedbackItem"
-        obj.innerHTML = feedbackItemType.map(function(item){ return '<span class="feedbackItemElement">' + item + '</span>' }).join("")
+        obj.className = "feedbackItem off_note"
+
+        var feedbackItems = feedbackItemType.map(function(item) {
+            var itemObj = document.createElement('span')
+            itemObj.className = "feedbackItemElement"
+            itemObj.innerHTML = item
+            return itemObj
+        })
+
+        var feedbackContainerObj = document.createElement("div")
+        feedbackContainerObj.className = "feedbackItemContainer"
+
+        feedbackItems.forEach(function(item) {
+            feedbackContainerObj.appendChild(item)
+        })
+
+        obj.appendChild(feedbackContainerObj)
+
         obj.style.position = "absolute"
         obj.style.top = "" + y  * this.contentScaleFactor + "px"
         obj.style.left = "" + x * this.contentScaleFactor - (feedbackWidth / 2) + "px"
+
         document.getElementById(this.containerElementName).appendChild(obj)
     }
 
