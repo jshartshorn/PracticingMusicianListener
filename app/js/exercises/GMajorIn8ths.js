@@ -25,6 +25,8 @@ function generateExerciseForKotlin() {
 
 function generateExerciseEasyScoreCode() {
     return {
+        time_signature: "4/4",
+        tempo: 110,
         bars: [
             {
                 extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"G"}],
