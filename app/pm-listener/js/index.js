@@ -30,4 +30,4 @@ function networkRequest(url, dataObject) {
     })
 }
 
-networkRequest("https://google.com",{data: "test"})
+//networkRequest("https://google.com",{data: "test"})
