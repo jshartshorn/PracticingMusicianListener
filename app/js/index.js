@@ -1,10 +1,8 @@
 /* GLOBALS */
-var canvasName = "notationCanvas";
 var indicatorCanvasName = "indicatorCanvas";
 var feedbackCanvasName = "feedbackCanvas";
 
 //global variables for the different canvases
-var canvas = document.getElementById(canvasName);
 var indicatorCanvas = document.getElementById(indicatorCanvasName);
 var feedbackCanvas = document.getElementById(feedbackCanvasName);
 

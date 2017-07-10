@@ -57,6 +57,8 @@ class ListenerApp {
     var scoreUtil = EasyScoreUtil()
     lateinit var generatedExercise : GeneratedExercise
 
+    val containerElementName = "notationBody"
+
     @JsName("runApp")
     fun runApp() {
 
@@ -66,10 +68,26 @@ class ListenerApp {
 
         app.exerciseManager.loadExercise()
 
-        this.makeScore()
+        this.makeDomElements()
     }
 
-    fun makeScore() {
+    fun makeDomElements() {
+
+        //make the canvases
+        val indicatorCanvasName = "indicatorCanvas"
+        val indicatorCanvasObj = document.createElement("canvas")
+        indicatorCanvasObj.id = indicatorCanvasName
+        document.getElementById(containerElementName)?.appendChild(indicatorCanvasObj)
+
+        val feedbackCanvasName = "feedbackCanvas"
+        val feedbackCanvasObj = document.createElement("canvas")
+        feedbackCanvasObj.id = feedbackCanvasName
+        document.getElementById(containerElementName)?.appendChild(feedbackCanvasObj)
+
+        this.makeScore(containerElementName)
+    }
+
+    fun makeScore(containerElementName : String) {
         this.scoreUtil = EasyScoreUtil()
 
         val exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
@@ -79,7 +97,7 @@ class ListenerApp {
         this.scoreUtil.generatedExercise = this.generatedExercise
 
         //setup the score
-        this.scoreUtil.setupOnElement("notationBody")
+        this.scoreUtil.setupOnElement(containerElementName)
 
         //notate it
         this.scoreUtil.notateExercise()
@@ -92,7 +110,7 @@ class ListenerApp {
         val oldSVG = document.getElementsByTagName("svg").get(0) as Element
         oldSVG.parentNode?.removeChild(oldSVG)
 
-        listenerApp.makeScore()
+        listenerApp.makeScore(containerElementName)
     }
 
     //move the indicator to a certain beat position
