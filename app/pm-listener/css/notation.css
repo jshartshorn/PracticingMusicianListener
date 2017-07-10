@@ -24,6 +24,10 @@ div#titleContainer span {
     display: block;
 }
 
+div#copyrightContainer {
+    text-align: center;
+}
+
 div.feedbackItem {
     width: 16px;
     background-color: #CCC;

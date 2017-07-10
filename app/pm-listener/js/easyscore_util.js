@@ -134,6 +134,20 @@ var EasyScoreUtil = function() {
 
         var notationBody = document.getElementById(containerName)
         notationBody.insertBefore(titleContainer,notationBody.childNodes[0])
+
+        //the bottom info
+        var copyrightInfoContainer = document.getElementById("copyrightContainer")
+        if (copyrightInfoContainer != null) {
+            copyrightInfoContainer.parentNode.removeChild(copyrightInfoContainer)
+        }
+
+        //build the new one
+        copyrightInfoContainer = document.createElement("div")
+        copyrightInfoContainer.id = "copyrightContainer"
+
+        copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo
+
+        notationBody.appendChild(copyrightInfoContainer)
     }
 
     this.setupMetronome = function(metronomeContainerName) {

@@ -28,6 +28,7 @@ function generateExerciseEasyScoreCode() {
             {
                             groups:[{notes:['G4/q','A4/q','B4/q','C5/q']}]
                         },
-            ]
+            ],
+        copyrightInfo: "This arrangement © Copyright 2006 Something Music Limited.<br/> All Rights Reserved. International Copyright Secured."
         }
 }
