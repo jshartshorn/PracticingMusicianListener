@@ -14,23 +14,29 @@ import kotlin.browser.window
 class TimeKeeper {
 
     //list of closures to complete once the timeKeeper is stopped
-    var finishedActions = mutableListOf<() -> Unit>()
+    var finishedActions = mutableListOf<(completed : Boolean) -> Unit>()
 
     enum class TimeKeeperState {
-        Stopped, Running
+        Stopped, Running, Completed
     }
 
     //current state
     //when this gets set, it calls the finishedActions if it has been set to Stopped
     var state : TimeKeeperState = TimeKeeperState.Stopped
         set(value) {
-            field = value
+            if (value == TimeKeeperState.Completed) {
+                pm_log("Completed",10)
 
-            //when the state is set to stopped, do the finished actions
-            if (value == TimeKeeperState.Stopped) {
+                field = TimeKeeperState.Stopped
+
+                //run the completed actions
+                //when the state is set to completed, do the finished actions
                 finishedActions.forEach {
-                    it()
+                    it(true)
                 }
+
+            } else {
+                field = value
             }
         }
 
@@ -103,7 +109,7 @@ class TimeKeeper {
          */
         if (timestamp >= runForTime) {
             pm_log("STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))",9)
-            this.state = TimeKeeperState.Stopped
+            this.state = TimeKeeperState.Completed
         }
 
         /*

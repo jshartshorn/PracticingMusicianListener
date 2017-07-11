@@ -49,7 +49,7 @@ class IncrementalComparisonEngine {
         //loop throug the ideal items to test against
         //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
         for (index in 0 until ideal.count()) {
-            var value = ideal[index]
+            val idealValue = ideal[index]
 
             //TODO: make sure we have enough data to test against the item
 
@@ -125,7 +125,7 @@ class IncrementalComparisonEngine {
             //start by assuming it is correct
             var isCorrect = true
 
-            val idealItem = value
+            val idealItem = idealValue
 
             var testItem = toTest[indexOnToTest]
 
@@ -232,15 +232,27 @@ class IncrementalComparisonEngine {
             feedbackItemTypes += FeedbackMetric("Note #","" + testItem.note.noteNumber)
 
             //increment the current position based on the duration of the ideal
-            curBeatPosition += value.duration
+            curBeatPosition += idealValue.duration
 
             //if it's correct, increment that counter -- if not, do nothing
             if (isCorrect)
                 results.correct += 1
+
+
+            val notePerformance = IndividualNotePerformanceInfo(
+                    idealBeat = curBeatPosition,
+                    actualBeat = toTestBeatPositionAtIndexToTest,
+                    idealPitch = idealItem.getFrequency(),
+                    actualPitch = testItem.note.avgFreq ?: 0.0,
+                    idealDuration = idealItem.duration,
+                    actualDuration = testItem.note.duration
+            )
+            results.finalResults.add(notePerformance)
         }
 
 
-        pm_log("---- Results : " + results.correct + "/" + results.attempted)
+        pm_log("---- Results : " + results.correct + "/" + results.attempted,10)
+        pm_log(results.finalResults.toTypedArray(),10)
 
         val functionEndTimestamp = window.performance.now()
 

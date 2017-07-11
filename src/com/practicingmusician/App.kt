@@ -132,6 +132,10 @@ class ListenerApp {
             TimeKeeper.TimeKeeperState.Running -> {
                 exerciseManager.stop()
             }
+            TimeKeeper.TimeKeeperState.Completed -> {
+                //should hit this
+                //TODO: new case
+            }
         }
     }
 

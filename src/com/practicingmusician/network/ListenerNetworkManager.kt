@@ -1,6 +1,7 @@
 package com.practicingmusician.network
 
 import com.practicingmusician.finals.CompareResults
+import com.practicingmusician.finals.ResultsForDatabase
 
 
 /**
@@ -9,7 +10,6 @@ import com.practicingmusician.finals.CompareResults
 
 external fun networkRequest(url : String, jsonString: String)
 
-data class NetworkRequestTransportObject(val UserID : Int, val ExerciseID: Int, val attempted : Int, val correct : Int)
 
 object ListenerNetworkManager {
 
@@ -25,9 +25,12 @@ object ListenerNetworkManager {
        val fakeUserID = 1 //TODO: real values
        val fakeExerciseID = 1 //TODO : real values
 
-       val transportObject = NetworkRequestTransportObject(fakeUserID,fakeExerciseID,results.attempted,results.correct)
+       val dbResults = results.generateResultForDatabase()
+       dbResults.userID = fakeUserID
+       dbResults.exerciseID = fakeExerciseID
 
-       ListenerNetworkManager.makePostRequest(endpoint, JSON.stringify(transportObject))
+
+       ListenerNetworkManager.makePostRequest(endpoint, JSON.stringify(dbResults))
    }
 
 }
