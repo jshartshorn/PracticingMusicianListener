@@ -4,7 +4,6 @@ out/*
 .idea/**/tasks.xml
 .idea/dictionaries
 tmp/*
-gulp-build/
 webpack-build/
 .idea/
 node_modules/

@@ -12,39 +12,39 @@ gulp.task('compile_kotlin', [], function () {
 gulp.task('copy_js_files', function() {
 	gulp.src('./app/pm-listener/js/**/*.js')
 	.pipe(uglify())
-	.pipe(gulp.dest('gulp-build/pm-listener/js'))
+	.pipe(gulp.dest('dist/pm-listener/js'))
 })
 
 gulp.task('copy_kotlin_compiled_code',function() {
 	gulp.src('tmp/PracticingMusician.js')
 	.pipe(uglify())
-	.pipe(gulp.dest('gulp-build/pm-listener/js'))
+	.pipe(gulp.dest('dist/pm-listener/js'))
 })
 
 gulp.task('copy_kotlin',function() {
 	gulp.src('./node_modules/kotlin/kotlin.js')
 	.pipe(uglify())
-	.pipe(gulp.dest('gulp-build/pm-listener/js'))
+	.pipe(gulp.dest('dist/pm-listener/js'))
 })
 
 gulp.task('copy_html', function() {
 	gulp.src('app/app.html')
-	.pipe(gulp.dest('gulp-build/'))
+	.pipe(gulp.dest('dist/'))
 })
 
 gulp.task('copy_css', function() {
 	gulp.src('app/pm-listener/css/*')
-	.pipe(gulp.dest('gulp-build/pm-listener/css'))
+	.pipe(gulp.dest('dist/pm-listener/css'))
 })
 
 gulp.task('copy_images', function() {
 	gulp.src('app/pm-listener/images/*')
-	.pipe(gulp.dest('gulp-build/pm-listener/images'))
+	.pipe(gulp.dest('dist/pm-listener/images'))
 })
 
 gulp.task('copy_audio', function() {
 	gulp.src('app/pm-listener/audio/*')
-	.pipe(gulp.dest('gulp-build/pm-listener/audio'))
+	.pipe(gulp.dest('dist/pm-listener/audio'))
 })
 
 gulp.task('cleanup', [], function() {})
