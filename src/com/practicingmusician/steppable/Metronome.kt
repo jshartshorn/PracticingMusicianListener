@@ -146,7 +146,7 @@ class Metronome : TimeKeeperSteppable {
             }
         }
 
-        if (firstItem == null) {
+        if (firstItem == -1.0) {
             return -1.0
         }
 
