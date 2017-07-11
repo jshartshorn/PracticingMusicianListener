@@ -7,10 +7,15 @@ import com.practicingmusician.notes.Note
  */
 
 object UserSettings {
-    val metronomeAudioOn = true
-    val transposition = 0 //-2 would be Bb transposition
-    val tempo = -1.0 //-1 if we don't want to change the value
-    val pitch = 440
+    var metronomeAudioOn = true
+      set(value : Boolean) {
+        pm_log("Metronome audio value changed",10)
+        field = value
+      }
+
+    var transposition = 0 //-2 would be Bb transposition
+    var tempo = -1.0 //-1 if we don't want to change the value
+    var pitch = 440.0
 
 
     fun applyToExercise(exerciseObject : GeneratedExercise) : GeneratedExercise {

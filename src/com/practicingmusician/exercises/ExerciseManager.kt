@@ -143,6 +143,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         val exerciseDefinition = ExerciseDefinition()
         exerciseDefinition.tempo = generatedExercise.tempo
 
+        //TODO: load the UserSettings tempo
+
         val jsNotes = generatedExercise.notes
 
         exerciseDefinition.notes = jsNotes.map {

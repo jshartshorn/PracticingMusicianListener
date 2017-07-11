@@ -43,7 +43,7 @@ class Metronome : TimeKeeperSteppable {
 
     fun setup() {
         //load the audio file
-        audioManager.loadAudioFile("pm-listener/audio/Cowbell.wav",audioKey)
+        audioManager.loadAudioFile(listenerApp.parameters.url + listenerApp.parameters.audioAssetPath + "Cowbell.wav",audioKey)
     }
 
     override fun start() {

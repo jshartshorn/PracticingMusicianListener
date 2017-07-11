@@ -20,6 +20,9 @@ interface AppSetupParameters {
     val exerciseID: Int
 
     val databaseEndpoint : String
+
+    val url : String
+    val audioAssetPath : String
 }
 
 interface AudioAnalyzer {
