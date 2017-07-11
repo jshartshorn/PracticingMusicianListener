@@ -1,172 +1,132 @@
 div#notationWindow {
-    display: flex;
-    flex-direction: column;
-}
+  display: flex;
+  flex-direction: column; }
 
 div#notationWindow span {
-    bor-der: 1px solid black; /* temporary */
-}
+  bor-der: 1px solid black;
+  /* temporary */ }
 
 div#notationHeader {
-    height: 120px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
+  height: 120px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center; }
 
 /* Notation body stuff */
-
 div.notationBodyContainer {
-    color: #4A4A4A;
-    min-width: 700px !important;
-    width: 100%;
-    position: relative;
-    font-family: "Verdana";
-}
-
+  color: #4A4A4A;
+  min-width: 700px !important;
+  width: 100%;
+  position: relative;
+  font-family: "Verdana"; }
 
 /* Title */
-
 div#titleContainer {
-    text-align: center;
-}
+  text-align: center; }
 
 span#mainTitle {
-    font-size: 1.4em;
-}
+  font-size: 1.4em; }
 
 span#exerciseAuthor {
-    font-size: .8em;
-    margin-top: 4px;
-}
+  font-size: .8em;
+  margin-top: 4px; }
 
 div#titleContainer span {
-    display: block;
-}
+  display: block; }
 
 div#copyrightContainer {
-    text-align: center;
-    font-size: .8em;
-    margin-top: 60px;
-}
+  text-align: center;
+  font-size: .8em;
+  margin-top: 60px; }
 
 /* Feedback */
-
 div.feedbackItem {
-    width: 12px;
-    height: 12px;
-    /* background-color: #C45462; */
-}
+  width: 12px;
+  height: 12px;
+  /* background-color: #C45462; */ }
 
 div.feedbackItem.incorrect_note {
-    background-image: url("../images/incorrect-note.png");
-}
+  background-image: url("../images/incorrect-note.png"); }
 
 div.feedbackItem.off_note {
-    background-image: url("../images/off-note-icon.png");
-}
+  background-image: url("../images/off-note-icon.png"); }
 
 div.feedbackItemContainer {
-    display: none;
-}
+  display: none; }
 
 div.feedbackItem:hover div.feedbackItemContainer {
-    display: block !important;
-    position: absolute;
-
-    top: 4px;
-    left: 4px;
-
-    width: 120px;
-    border-radius: 10px;
-
-    padding: 10px;
-
-    background-color: #F8F8F8;
-    box-shadow: 0px 0px 6px #ccc;
-
-    z-index: 100;
-}
+  display: block !important;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 120px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #F8F8F8;
+  box-shadow: 0px 0px 6px #ccc;
+  z-index: 100; }
 
 span.feedbackKey, span.feedbackValue {
-    font-size: .9em;
-    display: inline-block;
-    text-transform: uppercase;
-}
+  font-size: .9em;
+  display: inline-block;
+  text-transform: uppercase; }
 
 span.feedbackKey {
-    color: #9B9B9B;
-    width: 60%;
-}
+  color: #9B9B9B;
+  width: 60%; }
 
 span.feedbackValue {
-    width: 40%;
-}
+  width: 40%; }
 
 span.feedbackItemElement {
-    display: block;
-}
+  display: block; }
 
 /* Metronome Items */
-
 div#metronomeItems {
-    min-width: 160px;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-}
+  min-width: 160px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center; }
 
 span#tempoMarking {
-    display: block;
-    color: #bbb;
-    text-align: center;
-}
+  display: block;
+  color: #bbb;
+  text-align: center; }
 
 span.metronomeItem {
-    width: 12px;
-    height: 12px;
-    border-radius: 6px;
-
-    background-color: #D8D8D8;
-}
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: #D8D8D8; }
 
 span.metronomeItem.highlighted {
-    width: 24px;
-    height: 24px;
-    border-radius: 12px;
-    background-color: #AD6039;
-}
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: #AD6039; }
 
 /* header buttons */
-
 span#settingsButton, span#playPauseButton, span#repeatButton, span#medalIndicator, span#exitFullScreenButton {
-    width: 24px;
-    height: 24px;
-    background-repeat: no-repeat;
-}
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat; }
 
 span#settingsButton {
-    background-image: url("../images/ic_settings_24px.png");
-}
+  background-image: url("../images/ic_settings_24px.png"); }
 
 span#playPauseButton {
-    background-image: url("../images/ic_play_arrow_24px.png");
-}
+  background-image: url("../images/ic_play_arrow_24px.png"); }
 
 span#repeatButton {
-    background-image: url("../images/ic_repeat_24px.png");
-}
+  background-image: url("../images/ic_repeat_24px.png"); }
 
 span#exitFullScreenButton {
-    background-image: url("../images/ic_fullscreen_exit_24px.png");
-}
+  background-image: url("../images/ic_fullscreen_exit_24px.png"); }
 
 span#medalIndicator {
-    background-image: url("../images/medal.png");
-    width: 60px;
-    height: 60px;
-}
+  background-image: url("../images/medal.png");
+  width: 60px;
+  height: 60px; }
