@@ -26,18 +26,17 @@ class ListenerApp {
     var scoreUtil = EasyScoreUtil()
     lateinit var generatedExercise : GeneratedExercise
 
-    lateinit var notationContainerElementName : String
-    lateinit var metronomeContainerElementName : String
+    lateinit var parameters : AppSetupParameters
 
     val audioManager = AudioManager()
 
     var exerciseManager = ExerciseManager(audioManager)
 
+
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
 
-        this.notationContainerElementName = parameters.notationContainerName
-        this.metronomeContainerElementName = parameters.metronomeContainerName
+        this.parameters = parameters
 
         Note.createAllNotes()
 
@@ -54,10 +53,10 @@ class ListenerApp {
 
     fun makeDomElements() {
 
-        pm_log("Making window w/ container: " + this.notationContainerElementName,10)
+        pm_log("Making window w/ container: " + this.parameters.notationContainerName,10)
 
         //alter the style of the container element
-        val container = document.getElementById(this.notationContainerElementName) as HTMLElement
+        val container = document.getElementById(this.parameters.notationContainerName) as HTMLElement
         container.className += "notationBodyContainer"
 
         //make the canvases
@@ -65,18 +64,18 @@ class ListenerApp {
         val indicatorCanvasObj = document.createElement("canvas") as HTMLElement
         indicatorCanvasObj.style.position = "absolute"
         indicatorCanvasObj.id = indicatorCanvasName
-        document.getElementById(this.notationContainerElementName)?.appendChild(indicatorCanvasObj)
+        document.getElementById(this.parameters.notationContainerName)?.appendChild(indicatorCanvasObj)
 
         pm_log("Made indicator canvas on notation body: ",10)
-        pm_log(document.getElementById(this.notationContainerElementName) as HTMLElement)
+        pm_log(document.getElementById(this.parameters.notationContainerName) as HTMLElement)
 
         val feedbackCanvasName = "feedbackCanvas"
         val feedbackCanvasObj = document.createElement("canvas") as HTMLElement
         feedbackCanvasObj.style.position = "absolute"
         feedbackCanvasObj.id = feedbackCanvasName
-        document.getElementById(this.notationContainerElementName)?.appendChild(feedbackCanvasObj)
+        document.getElementById(this.parameters.notationContainerName)?.appendChild(feedbackCanvasObj)
 
-        this.makeScore(this.notationContainerElementName)
+        this.makeScore(this.parameters.notationContainerName)
 
         //for testing
         //TODO: remove
@@ -95,7 +94,7 @@ class ListenerApp {
 
     fun makeScore(containerElementName : String) {
         this.scoreUtil = EasyScoreUtil()
-        this.scoreUtil.containerElementName = this.notationContainerElementName
+        this.scoreUtil.containerElementName = this.parameters.notationContainerName
 
         val exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
 
@@ -107,7 +106,7 @@ class ListenerApp {
         //setup the score
         this.scoreUtil.setupOnElement(containerElementName)
 
-        this.scoreUtil.setupMetronome(this.metronomeContainerElementName)
+        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
 
         this.scoreUtil.buildTitleElements(containerElementName)
 
@@ -145,12 +144,12 @@ class ListenerApp {
 
     @JsName("doResizeActions")
     fun doResizeActions() {
-        pm_log("Resized window w/ container: " + this.notationContainerElementName,10)
+        pm_log("Resized window w/ container: " + this.parameters.notationContainerName,10)
 
         val oldSVG = document.getElementsByTagName("svg").get(0) as Element
         oldSVG.parentNode?.removeChild(oldSVG)
 
-        listenerApp.makeScore(this.notationContainerElementName)
+        listenerApp.makeScore(this.parameters.notationContainerName)
     }
 
     //move the indicator to a certain beat position

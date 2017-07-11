@@ -16,7 +16,7 @@ window.onresize = function() {
 function networkRequest(url, dataObject) {
     var objectData = JSON.stringify(dataObject)
     console.log("Object data:")
-    console.log(objectData)
+    console.log(dataObject)
     $.ajax({
         url:url,
         type: "POST",
@@ -31,7 +31,6 @@ function networkRequest(url, dataObject) {
     })
 }
 
-//TODO: remove network test
 $(document).ready(function(){
-    networkRequest("https://google.com",{data: "test"})
+    //networkRequest("https://google.com",{data: "test"})
 })

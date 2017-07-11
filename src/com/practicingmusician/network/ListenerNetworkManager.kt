@@ -1,5 +1,6 @@
 package com.practicingmusician.network
 
+import com.practicingmusician.ListenerApp
 import com.practicingmusician.finals.CompareResults
 import com.practicingmusician.finals.ResultsForDatabase
 
@@ -9,11 +10,9 @@ import com.practicingmusician.finals.ResultsForDatabase
  */
 
 external fun networkRequest(url : String, jsonString: String)
-
+external val listenerApp : ListenerApp
 
 object ListenerNetworkManager {
-
-    val endpoint = "localhost" //change this to practicingMusician.com
 
     val mapTest = mapOf("test" to 1, "test2" to 4)
 
@@ -22,15 +21,12 @@ object ListenerNetworkManager {
     }
 
    fun buildAndSendRequest(results : CompareResults) {
-       val fakeUserID = 1 //TODO: real values
-       val fakeExerciseID = 1 //TODO : real values
 
        val dbResults = results.generateResultForDatabase()
-       dbResults.userID = fakeUserID
-       dbResults.exerciseID = fakeExerciseID
+       dbResults.userID = listenerApp.parameters.userID
+       dbResults.exerciseID = listenerApp.parameters.exerciseID
 
-
-       ListenerNetworkManager.makePostRequest(endpoint, JSON.stringify(dbResults))
+       ListenerNetworkManager.makePostRequest(listenerApp.parameters.databaseEndpoint, JSON.stringify(dbResults))
    }
 
 }
