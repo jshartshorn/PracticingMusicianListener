@@ -1,3 +1,5 @@
+$pm-image-path: '../images/' !default;
+
 div#notationWindow {
     display: flex;
     flex-direction: column;
@@ -61,11 +63,11 @@ div.feedbackItem {
 }
 
 div.feedbackItem.incorrect_note {
-    background-image: url("../images/incorrect-note.png");
+    background-image: url($pm-image-path + "incorrect-note.png");
 }
 
 div.feedbackItem.off_note {
-    background-image: url("../images/off-note-icon.png");
+    background-image: url($pm-image-path + "off-note-icon.png");
 }
 
 div.feedbackItemContainer {
@@ -150,23 +152,23 @@ span#settingsButton, span#playPauseButton, span#repeatButton, span#medalIndicato
 }
 
 span#settingsButton {
-    background-image: url("../images/ic_settings_24px.png");
+    background-image: url($pm-image-path + "ic_settings_24px.png");
 }
 
 span#playPauseButton {
-    background-image: url("../images/ic_play_arrow_24px.png");
+    background-image: url($pm-image-path + "ic_play_arrow_24px.png");
 }
 
 span#repeatButton {
-    background-image: url("../images/ic_repeat_24px.png");
+    background-image: url($pm-image-path + "ic_repeat_24px.png");
 }
 
 span#exitFullScreenButton {
-    background-image: url("../images/ic_fullscreen_exit_24px.png");
+    background-image: url($pm-image-path + "ic_fullscreen_exit_24px.png");
 }
 
 span#medalIndicator {
-    background-image: url("../images/medal.png");
+    background-image: url($pm-image-path + "medal.png");
     width: 60px;
     height: 60px;
 }
