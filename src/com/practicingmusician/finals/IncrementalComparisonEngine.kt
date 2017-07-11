@@ -243,7 +243,7 @@ class IncrementalComparisonEngine {
                     idealBeat = curBeatPosition,
                     actualBeat = toTestBeatPositionAtIndexToTest,
                     idealPitch = idealItem.getFrequency(),
-                    actualPitch = testItem.note.avgFreq ?: 0.0,
+                    actualPitch = testItem.note.avgFreq ?: -1.0,
                     idealDuration = idealItem.duration,
                     actualDuration = testItem.note.duration
             )
@@ -251,8 +251,8 @@ class IncrementalComparisonEngine {
         }
 
 
-        pm_log("---- Results : " + results.correct + "/" + results.attempted,10)
-        pm_log(results.finalResults.toTypedArray(),10)
+        //pm_log("---- Results : " + results.correct + "/" + results.attempted,10)
+        //pm_log(results.finalResults.toTypedArray(),10)
 
         val functionEndTimestamp = window.performance.now()
 

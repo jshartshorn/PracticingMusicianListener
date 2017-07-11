@@ -110,7 +110,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 window.alert("Your results are: " + results.correct + "/" + results.attempted)
 
                 //contact the server with a network request
-                //TODO: only do this if it's complete?
                 ListenerNetworkManager.buildAndSendRequest(results)
             }
         }
