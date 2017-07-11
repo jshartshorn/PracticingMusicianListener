@@ -67,6 +67,9 @@ class ListenerApp {
         indicatorCanvasObj.id = indicatorCanvasName
         document.getElementById(this.notationContainerElementName)?.appendChild(indicatorCanvasObj)
 
+        pm_log("Made indicator canvas on notation body: ",10)
+        pm_log(document.getElementById(this.notationContainerElementName) as HTMLElement)
+
         val feedbackCanvasName = "feedbackCanvas"
         val feedbackCanvasObj = document.createElement("canvas") as HTMLElement
         feedbackCanvasObj.style.position = "absolute"
@@ -100,6 +103,7 @@ class ListenerApp {
         this.scoreUtil.exercise = exercise
         this.scoreUtil.generatedExercise = this.generatedExercise
 
+        pm_log("Setting up score on " + containerElementName)
         //setup the score
         this.scoreUtil.setupOnElement(containerElementName)
 
