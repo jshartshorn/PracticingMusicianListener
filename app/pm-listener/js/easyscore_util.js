@@ -96,7 +96,8 @@ var EasyScoreUtil = function() {
 
         var indicatorCanvas = document.getElementById(indicatorCanvasName)
 
-        pm_log("Setting up indicator canvas")
+        pm_log("Setting up indicator canvas",10)
+        pm_log(indicatorCanvas,10)
 
         indicatorCanvas.width = actualWindowWidth * this.contentScaleFactor
         indicatorCanvas.height = totalLines * this.barHeight * this.contentScaleFactor
