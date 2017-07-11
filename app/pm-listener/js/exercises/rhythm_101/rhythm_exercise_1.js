@@ -29,10 +29,10 @@ function generateExerciseEasyScoreCode() {
                             groups:[{notes:['B4/w']}]
                         },
             {
-                            groups:[{notes:['B4/h,B4/h']}]
+                            groups:[{notes:['B4/h','B4/h']}]
                         },
             {
-                            groups:[{notes:['B4/q,B4/q,B4/q,B4/q']}]
+                            groups:[{notes:['B4/q','B4/q','B4/q','B4/q']}]
                         },
             ],
         copyrightInfo: "This arrangement © Copyright 2006 Something Music Limited.<br/> All Rights Reserved. International Copyright Secured."

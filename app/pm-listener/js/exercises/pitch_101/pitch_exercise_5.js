@@ -28,10 +28,10 @@ function generateExerciseEasyScoreCode() {
                 groups:[{notes:['C4/h,C5/h']}]
             },
             {
-                            groups:[{notes:['C4/q,C5/q,C5/q,C4/q']}]
+                            groups:[{notes:['C4/q','C5/q','C5/q','C4/q']}]
                         },
             {
-                            groups:[{notes:['C5/h,C4/q,C5/q']}]
+                            groups:[{notes:['C5/h','C4/q','C5/q']}]
                         },
             {
                             groups:[{notes:['C4/w']}]

@@ -23,13 +23,13 @@ function generateExerciseEasyScoreCode() {
         bars: [
             {
                 extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
-                groups:[{notes:['A4/h,G4/q,A4/q']}]
+                groups:[{notes:['A4/h','G4/q','A4/q']}]
             },
             {
                             groups:[{notes:['G4/w']}]
                         },
             {
-                            groups:[{notes:['A4/q,G4/q,A4/h']}]
+                            groups:[{notes:['A4/q','G4/q','A4/h']}]
                         },
             {
                             groups:[{notes:['G4/w']}]
