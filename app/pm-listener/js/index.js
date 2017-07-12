@@ -20,6 +20,7 @@ function networkRequest(url, dataObject) {
     $.ajax({
         url:url,
         type: "POST",
+        contentType: "application/json",
         data: objectData,
         dataType: 'json',
         success: function(result) {

@@ -22,11 +22,15 @@ object ListenerNetworkManager {
 
    fun buildAndSendRequest(results : CompareResults) {
 
-       val dbResults = results.generateResultForDatabase()
-       dbResults.userID = listenerApp.parameters.userID
-       dbResults.exerciseID = listenerApp.parameters.exerciseID
+        val dbResults = results.generateResultForDatabase()
+        dbResults.userID = listenerApp.parameters.userID
+        dbResults.exerciseID = listenerApp.parameters.exerciseID
 
-       ListenerNetworkManager.makePostRequest(listenerApp.parameters.databaseEndpoint, JSON.stringify(dbResults))
+        val performanceWrapper = PerformanceWrapper(performance = dbResults)
+
+        ListenerNetworkManager.makePostRequest(listenerApp.parameters.databaseEndpoint, JSON.stringify(performanceWrapper))
    }
 
 }
+
+data class PerformanceWrapper(val performance : ResultsForDatabase)
