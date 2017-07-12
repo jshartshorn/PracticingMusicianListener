@@ -29,18 +29,11 @@ function generateExerciseEasyScoreCode() {
         tempo: 110,
         bars: [
             {
+                alternate_timeSignature:"1/4",
                 extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
-                groups:[{notes:['B4/q','C5/q','C5/q','B4/q']}]
+                groups:[{notes:['G4/q']}]
             },
-            {
-                            groups:[{notes:['C5/h','B4/h']}]
-                        },
-            {
-                            groups:[{notes:['C5/q','B4/q','B4/q','C5/q']}]
-                        },
-            {
-                            groups:[{notes:['B4/w']}]
-                        },
+            { groups:[{notes:['G4/h','E4/q','A4/q']}] },
             ],
         copyrightInfo: ""
         }
