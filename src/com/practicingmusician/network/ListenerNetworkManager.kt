@@ -9,15 +9,15 @@ import com.practicingmusician.finals.ResultsForDatabase
  * Created by jn on 7/5/17.
  */
 
-external fun networkRequest(url : String, jsonString: String)
+external fun networkRequest(url : String, data: PerformanceWrapper)
 external val listenerApp : ListenerApp
 
 object ListenerNetworkManager {
 
     val mapTest = mapOf("test" to 1, "test2" to 4)
 
-    fun makePostRequest(urlString : String, jsonString : String) {
-        networkRequest(urlString, jsonString) //call the javascript
+    fun makePostRequest(urlString : String, data : PerformanceWrapper) {
+        networkRequest(urlString, data) //call the javascript
     }
 
    fun buildAndSendRequest(results : CompareResults) {
@@ -28,7 +28,7 @@ object ListenerNetworkManager {
 
         val performanceWrapper = PerformanceWrapper(performance = dbResults)
 
-        ListenerNetworkManager.makePostRequest(listenerApp.parameters.databaseEndpoint, JSON.stringify(performanceWrapper))
+        ListenerNetworkManager.makePostRequest(listenerApp.parameters.databaseEndpoint, performanceWrapper)
    }
 
 }

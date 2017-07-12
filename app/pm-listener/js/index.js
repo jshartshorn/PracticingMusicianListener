@@ -14,14 +14,13 @@ window.onresize = function() {
 
 
 function networkRequest(url, dataObject) {
-    var objectData = JSON.stringify(dataObject)
     console.log("Object data:")
     console.log(dataObject)
     $.ajax({
         url:url,
         type: "POST",
         contentType: "application/json",
-        data: objectData,
+        data: JSON.stringify(dataObject),
         dataType: 'json',
         success: function(result) {
             alert(result)
