@@ -13,16 +13,26 @@ import com.practicingmusician.finals.FeedbackMetric
 external fun pm_log(msg : Any, level : Int = definedExternally)
 
 interface AppSetupParameters {
+    //DOM element IDs
     val notationContainerName : String
     val metronomeContainerName : String
 
     val userID : Int
     val exerciseID: Int
 
+    //database endpoint for storing performance data
     val databaseEndpoint : String
 
+    //base URL of the app
     val url : String
+
+    //directory in which audio assets are stored
     val audioAssetPath : String
+
+    //the margins in which a note can vary from the ideal and still be considered acceptable
+    val allowableCentsMargin : Int
+    val allowableRhythmMargin : Double
+    val allowableLengthMargin : Double
 }
 
 interface AudioAnalyzer {

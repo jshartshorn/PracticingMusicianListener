@@ -1,5 +1,11 @@
 package com.practicingmusician.tests
 
+import com.practicingmusician.AppSetupParameters
+import com.practicingmusician.EasyScoreUtil
+import com.practicingmusician.GeneratedExercise
+import com.practicingmusician.ListenerApp
+import com.practicingmusician.audio.AudioManager
+import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.*
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.PitchTracker
@@ -10,6 +16,31 @@ import kotlin.browser.window
 /**
  * Created by jn on 6/7/17.
  */
+
+external var listenerApp : ListenerApp
+
+class MockParameters : AppSetupParameters {
+  override val notationContainerName : String = "notationBody"
+  override val metronomeContainerName : String = "metronomeContainer"
+
+  override val userID : Int = 1
+  override  val exerciseID: Int = 2
+
+    //database endpoint for storing performance data
+  override  val databaseEndpoint : String = ""
+
+    //base URL of the app
+  override  val url : String = ""
+
+    //directory in which audio assets are stored
+  override  val audioAssetPath : String = ""
+
+    //the margins in which a note can vary from the ideal and still be considered acceptable
+  override  val allowableCentsMargin : Int = 40
+  override  val allowableRhythmMargin : Double = 0.25
+  override  val allowableLengthMargin : Double = 0.25
+}
+
 object SliceTest {
 
     val notes = listOf(Note(69,0.5),Note(81,1.0),Note(69,1.0),Note(81,1.0))
@@ -17,7 +48,6 @@ object SliceTest {
     val secondsPerBeat = 60.0 / tempo
     val sampleRate = 44100.0
     val bufferLengthInSamples = 1024
-
 
     fun testShouldBe(ideal : CompareResults, testValue : CompareResults) {
         if (ideal.attempted == testValue.attempted && ideal.correct == testValue.correct) {
@@ -196,7 +226,7 @@ object SliceTest {
         val sharpNoteOriginalFrequency = exactCopyGenerated[1].note.getFrequency()
         val nextNoteUpFrequency = Note.getFrequencyForNoteNumber(exactCopyGenerated[1].note.noteNumber + 1)
         val distanceInHz = nextNoteUpFrequency - sharpNoteOriginalFrequency
-        val distanceToMoveInHz = distanceInHz * ((incrementalComparison.allowableCentsMargin + 1) / 100.0)
+        val distanceToMoveInHz = distanceInHz * ((listenerApp.parameters.allowableCentsMargin + 1) / 100.0)
 
         println("Original freq: " + sharpNoteOriginalFrequency)
         println("Next note up $nextNoteUpFrequency distance $distanceInHz to move $distanceToMoveInHz")
@@ -231,7 +261,7 @@ object SliceTest {
         val flatNoteOriginalFrequency = exactCopyGenerated[1].note.getFrequency()
         val nextNoteDownFrequency = Note.getFrequencyForNoteNumber(exactCopyGenerated[1].note.noteNumber - 1)
         val distanceInHz = flatNoteOriginalFrequency - nextNoteDownFrequency
-        val distanceToMoveInHz = distanceInHz * ((incrementalComparison.allowableCentsMargin + 1) / 100.0)
+        val distanceToMoveInHz = distanceInHz * ((listenerApp.parameters.allowableCentsMargin + 1) / 100.0)
 
         println("Original freq: " + flatNoteOriginalFrequency)
         println("Next note up $nextNoteDownFrequency distance $distanceInHz to move $distanceToMoveInHz")
@@ -259,7 +289,7 @@ object SliceTest {
         val incrementalBufferManager = IncrementalBufferManager()
         incrementalBufferManager.tempo = tempo
 
-        val rushedNotes = listOf(Note(69,0.5),Note(81,(1.0 - incrementalComparison.allowableRhythmMargin - .01)),Note(69,1.0),Note(81,1.0))
+        val rushedNotes = listOf(Note(69,0.5),Note(81,(1.0 - listenerApp.parameters.allowableRhythmMargin - .01)),Note(69,1.0),Note(81,1.0))
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(rushedNotes, tempo)
 
@@ -324,6 +354,9 @@ object SliceTest {
 
     @JsName("runTest")
     fun runTest() : String {
+
+        listenerApp = ListenerApp()
+        listenerApp.parameters = MockParameters()
 
         //setup
         Note.createAllNotes()
