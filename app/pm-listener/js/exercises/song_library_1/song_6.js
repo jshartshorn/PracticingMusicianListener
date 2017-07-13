@@ -39,9 +39,9 @@ var durations = {
 function generateExerciseEasyScoreCode() {
     return {
         title: "Good Morning to You",
-        author: "Practicing Musician Example Author",
+        author: "Music: Ernst Richter / Lyrics: Abbie Farwell Brown ",
         time_signature: "4/4",
-        tempo: 110,
+        tempo: 100,
         bars: [
             {
                 extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],

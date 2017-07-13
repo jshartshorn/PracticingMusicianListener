@@ -98,9 +98,9 @@ var durations = {
 function generateExerciseEasyScoreCode() {
     return {
         title: "Lightly Row",
-        author: "Practicing Musician Example Author",
+        author: "Franz Wiedemann (German Folk Song)",
         time_signature: "4/4",
-        tempo: 110,
+        tempo: 100,
         bars: [
             {
                 extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
