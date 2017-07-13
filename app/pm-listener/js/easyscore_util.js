@@ -26,7 +26,7 @@ var EasyScoreUtil = function() {
 
     this.scorePositionX = 0
     this.scorePositionY = 0
-    this.positionInLine = 0
+    this.positionInLine = -1
 
     this.scorePositionCurrentLine = 0
     this.measureCounter = 0
@@ -204,21 +204,27 @@ var EasyScoreUtil = function() {
     }
 
     //make a new system (measure) of a given width
-    this.makeSystem = function () {
+    this.makeSystem = function(options) {
 
-        this.positionInLine = this.measureCounter % this.barsPerLine
+        if (options == undefined) options = {}
 
         var width = this.barWidth
 
-        if (this.positionInLine == 0) {
-            //pm_log("NEW LINE")
+        if (this.positionInLine == -1) {
             width += this.firstBarAddition
+
+            if (options.pickup_bar == true) {
+              //TODO: dimensions for pickup bar
+              width /= 1.5
+            }
+
             this.scorePositionX = this.scorePositionInitialX
             if (this.scorePositionY == 0) {
                 this.scorePositionY = this.scorePositionInitialY
             } else {
                 this.scorePositionY += this.barHeight
             }
+            this.positionInLine = 0
         } else {
             //pm_log("SAME LINE")
         }
@@ -230,6 +236,14 @@ var EasyScoreUtil = function() {
 
         this.measureCounter += 1
         this.scorePositionX += width;
+
+        if (options.pickup_bar != true)
+          this.positionInLine += 1
+
+        if (this.positionInLine == this.barsPerLine) {
+          this.positionInLine = -1
+        }
+
 
         return system;
     }
@@ -247,7 +261,24 @@ var EasyScoreUtil = function() {
             //pm_log("Notating bar " + barIndex,10)
             var curBar = this.exercise.bars[barIndex]
 
-            var system = this.makeSystem()
+            var barTime = this.exercise.time_signature
+
+            if (curBar.extra_attributes != undefined && curBar.extra_attributes.alternate_timeSignature != undefined) {
+              barTime = curBar.extra_attributes.alternate_timeSignature
+            }
+
+            var barOptions = {}
+
+            if (curBar.extra_attributes != undefined && curBar.extra_attributes.pickup_bar != undefined) {
+              if (curBar.extra_attributes.pickup_bar == true) {
+                barOptions["pickup_bar"] = true
+              }
+            }
+
+            console.log("Bar options:")
+            console.log(barOptions)
+
+            var system = this.makeSystem(barOptions)
 
             this.systems.push(system)
 
@@ -296,11 +327,6 @@ var EasyScoreUtil = function() {
 
             }
 
-            var barTime = this.exercise.time_signature
-
-            if (curBar.alternate_timeSignature != undefined) {
-              barTime = curBar.alternate_timeSignature
-            }
 
             //create the measure and connect all the groups with the reduce(concat) function
             var stave = system.addStave(
@@ -310,20 +336,20 @@ var EasyScoreUtil = function() {
 
             //get the extra_attributes if there are any
             if (curBar.extra_attributes != undefined) {
-                for (attributeIndex in curBar.extra_attributes) {
-                    var attr = curBar.extra_attributes[attributeIndex]
-                    switch(attr.name) {
+                for (attr in curBar.extra_attributes) {
+                    var value = curBar.extra_attributes[attr]
+                    switch(attr) {
                         case "time_signature":
-                            stave.addTimeSignature(attr.value)
+                            stave.addTimeSignature(value)
                             break
                         case "clef":
-                            stave.addClef(attr.value)
+                            stave.addClef(value)
                             break
                         case "key_signature":
-                            stave.addKeySignature(attr.value)
+                            stave.addKeySignature(value)
                             break
                         default:
-                            pm_log("Unknown attribute",10)
+                            pm_log("Unknown attribute:" + attr,10)
                             break
                     }
                 }

@@ -44,9 +44,17 @@ function generateExerciseEasyScoreCode() {
         tempo: 110,
         bars: [
             {
-                extra_attributes:[{name:'time_signature',value:'3/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
+                extra_attributes:{
+
+                  pickup_bar: true,
+                  time_signature: "3/4",
+                  clef: "treble",
+                  key_signature: "C",
+                  alternate_timeSignature:"1/4"
+
+                  },
                 groups:[{notes:['C4/q']}],
-                alternate_timeSignature:"1/4"
+
             },
             { groups:[{notes:['C4/q','E4/q','G4/q']}] },
             { groups:[{notes:['C5/h','C4/q']}] },
@@ -66,7 +74,9 @@ function generateExerciseEasyScoreCode() {
             { groups:[{notes:['G4/q','F4/q','D4/q']}] },
             {
               groups:[{notes:['C4/h']}],
-              alternate_timeSignature:"2/4"
+              extra_attributes: {
+                            alternate_timeSignature:"2/4"
+              }
               },
             ],
         copyrightInfo: ""
