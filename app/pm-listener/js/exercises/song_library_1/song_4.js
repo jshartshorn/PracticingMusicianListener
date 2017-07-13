@@ -24,9 +24,9 @@ function generateExerciseEasyScoreCode() {
     return {
         //TODO - pickup note
         title: "A Tisket, a Tasket",
-        author: "Practicing Musician Example Author",
+        author: "American Nursery Rhyme Arr: Van Alexander",
         time_signature: "4/4",
-        tempo: 110,
+        tempo: 112,
         bars: [
             {
                 alternate_timeSignature:"1/4",

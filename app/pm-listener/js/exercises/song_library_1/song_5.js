@@ -79,7 +79,7 @@ var durations = {
 function generateExerciseEasyScoreCode() {
     return {
         title: "Twinkle, Twinkle, Little Star",
-        author: "Practicing Musician Example Author",
+        author: "English Lullaby Lyrics: Jane Taylor",
         time_signature: "4/4",
         tempo: 110,
         bars: [

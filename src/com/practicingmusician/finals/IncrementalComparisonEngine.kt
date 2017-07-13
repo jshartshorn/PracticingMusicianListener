@@ -1,5 +1,6 @@
 package com.practicingmusician.finals
 
+import com.practicingmusician.ListenerApp
 import com.practicingmusician.notes.Note
 import com.practicingmusician.pm_log
 import kotlin.browser.window
@@ -12,12 +13,15 @@ import kotlin.js.Math
  * (generated from the exercise)
  *
  */
+
+external val listenerApp : ListenerApp
+
 class IncrementalComparisonEngine {
 
-    //the margins in which a note can vary from the ideal and still be considered acceptable
-    val allowableCentsMargin = 40.0
-    val allowableRhythmMargin = 0.25
-    val allowableLengthMargin = 0.25
+    //TODO: use these
+    val testPitch = true
+    val testRhythm = true
+    val testDuration = false
 
     /* State information about what has been compared */
 
@@ -132,10 +136,10 @@ class IncrementalComparisonEngine {
             pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration)
 
             //test the durations of the notes
-            if (idealItem.duration - testItem.note.duration > allowableLengthMargin) {
+            if (idealItem.duration - testItem.note.duration > listenerApp.parameters.allowableLengthMargin) {
                 pm_log("Test subject too short")
                 //isCorrect = false
-            } else if (idealItem.duration - testItem.note.duration < -allowableLengthMargin) {
+            } else if (idealItem.duration - testItem.note.duration < -listenerApp.parameters.allowableLengthMargin) {
                 pm_log("Test subject too long")
                 //isCorrect = false
             } else {
@@ -150,13 +154,13 @@ class IncrementalComparisonEngine {
             val distanceAwayRounded = Math.round(distanceAway * 100.0) / 100.0
 
             //test the start time of the notes (rushing vs. dragging)
-            if (distanceAway > allowableRhythmMargin) {
+            if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
                 pm_log("Test subject rushing")
 
                 feedbackItemTypes.add(FeedbackMetric("speed","+" + distanceAwayRounded))
 
                 isCorrect = false
-            } else if (distanceAway < -allowableRhythmMargin) {
+            } else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
                 pm_log("Test subject dragging")
 
 
@@ -205,7 +209,7 @@ class IncrementalComparisonEngine {
                     val distanceInHz = noteAboveFrequency - idealItemFrequency
                     val distanceInCents = ((avgFreq - idealItemFrequency) / distanceInHz) * 100.0
                     pm_log("Sharp by $distanceInHz ($distanceInCents cents)")
-                    if (distanceInCents > allowableCentsMargin) {
+                    if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
                         pm_log("Test subject sharp")
 
                         feedbackItemTypes.add(FeedbackMetric("pitch","+" + distanceInCents.toInt()))
@@ -216,7 +220,7 @@ class IncrementalComparisonEngine {
                     val distanceInHz = idealItemFrequency - noteBelowFrequency
                     val distanceInCents = ((idealItemFrequency - avgFreq) / distanceInHz) * 100.0
                     pm_log("Flat by $distanceInHz ($distanceInCents cents)")
-                    if (distanceInCents > allowableCentsMargin) {
+                    if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
                         pm_log("Test subject flat")
 
                         feedbackItemTypes.add(FeedbackMetric("pitch","-" + distanceInCents.toInt()))

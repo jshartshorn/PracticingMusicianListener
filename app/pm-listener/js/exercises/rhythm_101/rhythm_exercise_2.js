@@ -18,7 +18,7 @@ function generateExerciseForKotlin() {
 function generateExerciseEasyScoreCode() {
     return {
         title: "Rhythm Exercise 2",
-        author: "Practicing Musician Example Author",
+        author: "Jake Douglass",
         time_signature: "4/4",
         tempo: 110,
         bars: [
@@ -37,6 +37,6 @@ function generateExerciseEasyScoreCode() {
                         },
 
             ],
-        copyrightInfo: "This arrangement © Copyright 2006 Something Music Limited.<br/> All Rights Reserved. International Copyright Secured."
+        copyrightInfo: "© Copyright 2017"
         }
 }

@@ -22,19 +22,26 @@ external var listenerApp : ListenerApp
 external var audioAnalyzer : AudioAnalyzer
 
 
-class ListenerApp {
-    var scoreUtil = EasyScoreUtil()
+public class ListenerApp {
+    lateinit var scoreUtil : EasyScoreUtil
     lateinit var generatedExercise : GeneratedExercise
 
     lateinit var parameters : AppSetupParameters
 
-    val audioManager = AudioManager()
+    lateinit var audioManager : AudioManager
 
-    var exerciseManager = ExerciseManager(audioManager)
+    lateinit var exerciseManager : ExerciseManager
 
 
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
+
+        this.audioManager = AudioManager()
+
+
+        this.exerciseManager = ExerciseManager(audioManager)
+
+        this.scoreUtil = EasyScoreUtil()
 
         this.parameters = parameters
 
