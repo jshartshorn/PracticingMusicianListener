@@ -53,9 +53,13 @@ function generateExerciseEasyScoreCode() {
         author: "English Nursery Rhyme",
         time_signature: "4/4",
         tempo: 120,
-        bars: [
-            {
-                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
+        systems: [
+          {
+            bars: [
+              {
+                extra_attributes:{
+                  time_signature:'4/4',clef:'treble',key_signature:"C"
+                  },
                             groups:[{notes:['E4/h','D4/h']}]
             },
             {
@@ -67,7 +71,11 @@ function generateExerciseEasyScoreCode() {
             {
                             groups:[{notes:['C4/w']}]
                         },
-            {
+            ]
+          },
+          {
+            bars: [
+              {
                             groups:[{notes:['C4/q','C4/q','C4/q','C4/q']}]
                         },
             {
@@ -79,7 +87,10 @@ function generateExerciseEasyScoreCode() {
             {
                             groups:[{notes:['C4/w']}]
                         },
-            ],
+            ]
+          },
+        ],
+
         copyrightInfo: ""
         }
 }
