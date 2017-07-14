@@ -27,7 +27,7 @@ function generateExerciseEasyScoreCode() {
 
             bars: [
             {
-                extra_attributes:{time_signature:'4/4',clef:'treble',key_signature:"C"},
+                extra_attributes:{time_signature:'4/4',clef:'percussion',key_signature:"C"},
                 groups:[{notes:['B4/h','B4/h']}]
             },
             {
