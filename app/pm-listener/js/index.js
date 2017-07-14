@@ -34,3 +34,11 @@ function networkRequest(url, dataObject) {
 $(document).ready(function(){
     //networkRequest("https://google.com",{data: "test"})
 })
+
+if (window.displayFlashMessages == undefined) {
+  window.displayFlashMessages = function(msg) {
+    msg.forEach(function(it) {
+          alert(it.message)
+    })
+  }
+}

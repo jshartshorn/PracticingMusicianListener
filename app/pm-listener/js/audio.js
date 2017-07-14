@@ -2,6 +2,11 @@
 
 var AudioAnalyzer = function() {
 
+    //used after init
+    this.isFunctional = true
+    this.hasMicrophoneAccess = false
+    this.errorMessages = []
+
     this.sourceNode = null;
     this. analyzer = null;
     this.audioContext = null;
@@ -11,15 +16,38 @@ var AudioAnalyzer = function() {
 
     //setup the Web Audio API streaming stuff
     this.setupMedia = function() {
+            if (window.AudioContext == undefined) {
+              this.errorMessages += "Could not find audio context"
+              this.isFunctional = false
+
+              displayFlashMessages(
+                [{type:"danger",
+                  message:"Couldn't setup microphone access.  Please make sure you are using either Chrome or Firefox."
+                }]
+              )
+
+              return
+            }
+
             this.audioContext = new AudioContext();
             var constraints = { audio: {latency: 0.002}, video: false }
             var analyzerObj = this
             navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
                 /* use the stream */
                 pm_log("Using the stream")
+                analyzerObj.isFunctional = true
+                analyzerObj.hasMicrophoneAccess = true
                 analyzerObj.gotStream(stream)
             }).catch(function(err) {
                 /* handle the error */
+                analyzerObj.errorMessages += err
+                analyzerObj.isFunctional = false
+                displayFlashMessages(
+                [{type:"danger",
+                  message:"Couldn't get access to microphone stream"
+                }]
+              )
+
                 pm_log("Error: " + err,10)
             });
     }

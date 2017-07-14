@@ -11,6 +11,9 @@ import com.practicingmusician.finals.FeedbackMetric
  */
 
 external fun pm_log(msg : Any, level : Int = definedExternally)
+external fun displayFlashMessages(messages : Array<FlashMessage>)
+
+data class FlashMessage(val type : String, val message : String)
 
 interface AppSetupParameters {
     //DOM element IDs
@@ -36,6 +39,8 @@ interface AppSetupParameters {
 }
 
 interface AudioAnalyzer {
+    var isFunctional : Boolean
+    var hasMicrophoneAccess : Boolean
     fun setupMedia()
     @JsName("updatePitch")
     fun updatePitch(timestamp : Double) : Double
