@@ -211,7 +211,7 @@ var EasyScoreUtil = function() {
 
             if (options.pickup_bar == true) {
               //TODO: dimensions for pickup bar
-              width /= 1.5
+              //width /= 1.5
             }
 
             this.scorePositionX = this.scorePositionInitialX
