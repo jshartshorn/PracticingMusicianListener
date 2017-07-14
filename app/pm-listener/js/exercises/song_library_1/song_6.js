@@ -42,7 +42,12 @@ function generateExerciseEasyScoreCode() {
         author: "Music: Ernst Richter / Lyrics: Abbie Farwell Brown ",
         time_signature: "3/4",
         tempo: 100,
-        bars: [
+
+        systems: [
+
+          {
+            bars:
+            [
             {
                 extra_attributes:{
 
@@ -61,13 +66,20 @@ function generateExerciseEasyScoreCode() {
 
             { groups:[{notes:['C4/q','E4/q','G4/q']}] },
             { groups:[{notes:['C5/h','G4/q']}] },
+            ]
+          },
 
+          {
+          bars:[
             { groups:[{notes:['G4/q','F4/q','D4/q']}] },
             { groups:[{notes:['E4/q','C4/q','G4/q']}] },
 
             { groups:[{notes:['G4/q','F4/q','D4/q']}] },
             { groups:[{notes:['E4/q','C4/q','C4/q']}] },
-
+          ]
+          },
+          {
+          bars:[
             { groups:[{notes:['C4/q','E4/q','G4/q']}] },
             { groups:[{notes:['C5/h','A4/q']}] },
 
@@ -78,7 +90,10 @@ function generateExerciseEasyScoreCode() {
                             alternate_timeSignature:"2/4"
               }
               },
-            ],
+          ]
+          }
+
+        ],
         copyrightInfo: ""
         }
 }
