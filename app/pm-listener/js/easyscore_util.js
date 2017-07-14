@@ -26,7 +26,6 @@ var EasyScoreUtil = function() {
 
     this.scorePositionX = 0
     this.scorePositionY = 0
-    this.positionInLine = -1
 
     this.scorePositionCurrentLine = 0
     this.measureCounter = 0
@@ -48,10 +47,9 @@ var EasyScoreUtil = function() {
     this.contentScaleFactor = 1.0
     this.useScaling = true
     this.assumedCanvasWidth = 1024 //this will never change, although the scaling factor will change this
-    this.barWidth  = 200
     this.barHeight = 160
     this.firstBarAddition = 40
-    this.barsPerLine = 4
+    this.scoreWidth = 0
 
     //counter so that we can get an individual ID for each note
     this.noteIDNumber = 0
@@ -76,22 +74,20 @@ var EasyScoreUtil = function() {
         pm_log("Avail width: " + availableWidthAfterMargin)
 
 
-
-        this.barWidth = availableWidthAfterMargin / this.barsPerLine
-
-        pm_log("Bar width: " + this.barWidth)
-
         //calculate the width
         var totalLines = this.exercise.systems.length
-        var totalWidthWillBe = this.barsPerLine * this.barWidth + this.firstBarAddition
+        var totalWidthWillBe = availableWidthAfterMargin
 
         if (totalLines <= 1) {
+            //TODO: Fix this
             totalWidthWillBe = this.exercise.systems[0].bars.length * this.barWidth + this.firstBarAddition
         }
 
+        this.scoreWidth = totalWidthWillBe
+
         this.scorePositionInitialX = (actualWindowWidth / 2) - (totalWidthWillBe / 2)
 
-        pm_log("Total width will be " + totalWidthWillBe)
+        pm_log("Total width will be " + totalWidthWillBe,10)
         pm_log("Total height will be " + totalLines * this.barHeight)
 
         var indicatorCanvas = document.getElementById(indicatorCanvasName)
@@ -208,9 +204,9 @@ var EasyScoreUtil = function() {
 
         if (options == undefined) options = {}
 
-        var width = this.barWidth
+        var width = this.scoreWidth / options.barsInSystem
 
-        if (this.positionInLine == -1) {
+        if (options.positionInLine == 0) {
             width += this.firstBarAddition
 
             if (options.pickup_bar == true) {
@@ -224,7 +220,6 @@ var EasyScoreUtil = function() {
             } else {
                 this.scorePositionY += this.barHeight
             }
-            this.positionInLine = 0
         } else {
             //pm_log("SAME LINE")
         }
@@ -236,14 +231,6 @@ var EasyScoreUtil = function() {
 
         this.measureCounter += 1
         this.scorePositionX += width;
-
-        if (options.pickup_bar != true)
-          this.positionInLine += 1
-
-        if (this.positionInLine == this.barsPerLine) {
-          this.positionInLine = -1
-        }
-
 
         return system;
     }
@@ -275,7 +262,7 @@ var EasyScoreUtil = function() {
                 barTime = curBar.extra_attributes.alternate_timeSignature
               }
 
-              var barOptions = {}
+              var barOptions = { barsInSystem: curLine.bars.length, positionInLine: barIndex }
 
               if (curBar.extra_attributes != undefined && curBar.extra_attributes.pickup_bar != undefined) {
                 if (curBar.extra_attributes.pickup_bar == true) {
