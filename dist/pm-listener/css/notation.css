@@ -19,8 +19,7 @@ div.notationBodyContainer {
   color: #4A4A4A;
   min-width: 700px !important;
   width: 100%;
-  position: relative;
-  font-family: "Verdana"; }
+  position: relative; }
 
 /* Title */
 div#titleContainer {
