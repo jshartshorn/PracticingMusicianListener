@@ -21,7 +21,6 @@ external fun generateExerciseEasyScoreCode() : EasyScoreCode
 external var listenerApp : ListenerApp
 external var audioAnalyzer : AudioAnalyzer
 
-
 public class ListenerApp {
     lateinit var scoreUtil : EasyScoreUtil
     lateinit var generatedExercise : GeneratedExercise
@@ -133,6 +132,15 @@ public class ListenerApp {
     fun toggleState() {
         when (exerciseManager.timeKeeper.state) {
             TimeKeeper.TimeKeeperState.Stopped -> {
+
+                //check to make sure the audio analyzer is functional
+                if (!audioAnalyzer.isFunctional || !audioAnalyzer.hasMicrophoneAccess) {
+                  displayFlashMessages(
+                    arrayOf(FlashMessage(type="danger",message="Audio not working.  Please make sure you are using either Chrome or Firefox and have enabled microphone access."))
+                  )
+                  return
+                }
+
                 exerciseManager.createSteppables()
                 exerciseManager.setup()
                 exerciseManager.loadExercise()
