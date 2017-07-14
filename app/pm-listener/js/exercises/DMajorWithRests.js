@@ -24,9 +24,9 @@ function generateExerciseEasyScoreCode() {
         title: "C Major Scale",
         author: "Practicing Musician Example Author",
         time_signature: "4/4",
-        bars: [
+        systems:[{bars: [
             {
-                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"D"}],
+                extra_attributes:{time_signature:'4/4',clef:'treble',key_signature:"D"},
                 groups:[
                         {
                             beam:true,
@@ -51,6 +51,6 @@ function generateExerciseEasyScoreCode() {
                                         },
                                     ]
             }
-        ]
+        ]}],
     }
 }

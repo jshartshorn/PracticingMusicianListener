@@ -20,9 +20,9 @@ function generateExerciseEasyScoreCode() {
         author: "Jake Douglass",
         time_signature: "4/4",
         tempo: 110,
-        bars: [
+        systems:[{bars: [
             {
-                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
+                extra_attributes:{time_signature:'4/4',clef:'treble',key_signature:"C"},
                 groups:[{notes:['A4/h','G4/q','A4/q']}]
             },
             {
@@ -34,7 +34,7 @@ function generateExerciseEasyScoreCode() {
             {
                             groups:[{notes:['G4/w']}]
                         },
-            ],
+            ],}],
         copyrightInfo: "© Copyright 2017"
         }
 }

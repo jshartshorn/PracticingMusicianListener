@@ -40,23 +40,60 @@ function generateExerciseEasyScoreCode() {
     return {
         title: "Good Morning to You",
         author: "Music: Ernst Richter / Lyrics: Abbie Farwell Brown ",
-        time_signature: "4/4",
+        time_signature: "3/4",
         tempo: 100,
-        bars: [
+
+        systems: [
+
+          {
+            bars:
+            [
             {
-                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
-                groups:[{notes:['C4/h,C5/h']}]
+                extra_attributes:{
+
+                  pickup_bar: true,
+                  time_signature: "3/4",
+                  clef: "treble",
+                  key_signature: "C",
+                  alternate_timeSignature:"1/4"
+
+                  },
+                groups:[{notes:['C4/q']}],
+
             },
+            { groups:[{notes:['C4/q','E4/q','G4/q']}] },
+            { groups:[{notes:['C5/h','C4/q']}] },
+
+            { groups:[{notes:['C4/q','E4/q','G4/q']}] },
+            { groups:[{notes:['C5/h','G4/q']}] },
+            ]
+          },
+
+          {
+          bars:[
+            { groups:[{notes:['G4/q','F4/q','D4/q']}] },
+            { groups:[{notes:['E4/q','C4/q','G4/q']}] },
+
+            { groups:[{notes:['G4/q','F4/q','D4/q']}] },
+            { groups:[{notes:['E4/q','C4/q','C4/q']}] },
+          ]
+          },
+          {
+          bars:[
+            { groups:[{notes:['C4/q','E4/q','G4/q']}] },
+            { groups:[{notes:['C5/h','A4/q']}] },
+
+            { groups:[{notes:['G4/q','F4/q','D4/q']}] },
             {
-                            groups:[{notes:['C4/q','C5/q','C5/q','C4/q']}]
-                        },
-            {
-                            groups:[{notes:['C5/h','C4/q','C5/q']}]
-                        },
-            {
-                            groups:[{notes:['C4/w']}]
-                        },
-            ],
+              groups:[{notes:['C4/h']}],
+              extra_attributes: {
+                            alternate_timeSignature:"2/4"
+              }
+              },
+          ]
+          }
+
+        ],
         copyrightInfo: ""
         }
 }

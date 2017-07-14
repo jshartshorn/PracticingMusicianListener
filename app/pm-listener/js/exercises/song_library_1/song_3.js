@@ -101,29 +101,36 @@ function generateExerciseEasyScoreCode() {
         author: "Franz Wiedemann (German Folk Song)",
         time_signature: "4/4",
         tempo: 100,
-        bars: [
-            {
-                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
+        systems: [
+          {bars:
+            [{
+                extra_attributes:{
+                  time_signature: '4/4',
+                  clef: 'treble',
+                  key_signature: 'C'
+                },
                 groups:[{notes:['G4/q','E4/q','E4/h']}]
             },
             { groups:[{notes:['F4/q','D4/q','D4/h']}] },
             { groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}] },
             { groups:[{notes:['G4/q','G4/q','G4/h']}] },
+            ]},
 
-            { groups:[{notes:['G4/q','E4/q','E4/q','E4/q']}] },
+          {bars: [{ groups:[{notes:['G4/q','E4/q','E4/q','E4/q']}] },
             { groups:[{notes:['F4/q','D4/q','D4/q','D4/q']}] },
             { groups:[{notes:['C4/q','E4/q','G4/q','G4/q']}] },
-            { groups:[{notes:['E4/q','E4/q','E4/h']}] },
+            { groups:[{notes:['E4/q','E4/q','E4/h']}] },]},
 
-            { groups:[{notes:['D4/q','D4/q','D4/q','D4/q']}] },
+          {bars: [{ groups:[{notes:['D4/q','D4/q','D4/q','D4/q']}] },
             { groups:[{notes:['D4/q','E4/q','F4/h']}] },
             { groups:[{notes:['E4/q','E4/q','E4/q','E4/q']}] },
-            { groups:[{notes:['E4/q','F4/q','G4/h']}] },
-            { groups:[{notes:['G4/q','E4/q','E4/q','E4/q']}] },
+            { groups:[{notes:['E4/q','F4/q','G4/h']}] },]},
+
+          {bars: [{ groups:[{notes:['G4/q','E4/q','E4/q','E4/q']}] },
             { groups:[{notes:['F4/q','D4/q','D4/q','D4/q']}] },
             { groups:[{notes:['C4/q','E4/q','G4/q','G4/q']}] },
-            { groups:[{notes:['E4/q','E4/q','E4/h']}] },
-            ],
+            { groups:[{notes:['E4/q','E4/q','E4/h']}] },]},
+        ],
         copyrightInfo: ""
         }
 }
