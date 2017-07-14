@@ -20,15 +20,15 @@ function generateExerciseEasyScoreCode() {
         author: "Practicing Musician Example Author",
         time_signature: "4/4",
         tempo: 110,
-        bars: [
+        systems:[{bars: [
             {
-                extra_attributes:[{name:'time_signature',value:'4/4'},{name:'clef',value:'treble'},{name:'key_signature',value:"C"}],
+                extra_attributes:{time_signature:'4/4',clef:'treble',key_signature:"C"},
                 groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}]
             },
             {
                             groups:[{notes:['G4/q','A4/q','B4/q','C5/q']}]
                         },
-            ],
+            ],}],
         copyrightInfo: "This arrangement © Copyright 2006 Something Music Limited.<br/> All Rights Reserved. International Copyright Secured."
         }
 }
