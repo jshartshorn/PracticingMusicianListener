@@ -80,7 +80,7 @@ var EasyScoreUtil = function() {
 
         if (totalLines <= 1) {
             //TODO: Fix this
-            totalWidthWillBe = this.exercise.systems[0].bars.length * this.barWidth + this.firstBarAddition
+            //totalWidthWillBe = this.exercise.systems[0].bars.length * this.barWidth + this.firstBarAddition
         }
 
         this.scoreWidth = totalWidthWillBe
@@ -224,8 +224,8 @@ var EasyScoreUtil = function() {
             //pm_log("SAME LINE")
         }
 //
-//        pm_log("Creating at x " + this.scorePositionX)
-//        pm_log("Creating at y " + this.scorePositionY)
+        //pm_log("Creating at x " + this.scorePositionX,10)
+        //pm_log("Creating at y " + this.scorePositionY,10)
 
         var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
 
