@@ -243,9 +243,9 @@ var EasyScoreUtil = function() {
 
         this.score.set({time: this.exercise.time_signature})
 
-        var totalBars = this.exercise.systems.reduce(function(total, cur) { pm_log("Bars: " + cur.bars.length,10); return total + cur.bars.length },0)
+        var totalBars = this.exercise.systems.reduce(function(total, cur) { return total + cur.bars.length },0)
 
-        pm_log("Total bars: " + totalBars,10)
+        //pm_log("Total bars: " + totalBars,10)
 
         var barCounter = 0
 
