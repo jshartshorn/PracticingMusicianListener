@@ -25,7 +25,7 @@ class Metronome : TimeKeeperSteppable {
     var timeSignature = 4
 
     //length of the preroll
-    var prerollBeats = timeSignature
+    var prerollBeats = 4.0
 
     var tempo : Double = 120.0
 
@@ -112,6 +112,7 @@ class Metronome : TimeKeeperSteppable {
     fun updateMetronomeUI(beat : Int) {
         //val el = document.getElementById("metronome") as HTMLElement
         //el.textContent = "$beat"
+        //console.log("Updaing metronome UI to beat $beat in $timeSignature")
         listenerApp.highlightMetronomeItem(beat % timeSignature)
     }
 

@@ -142,6 +142,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         //pm_log("Tempo: " + exercise.tempo)
         val exerciseDefinition = ExerciseDefinition()
         exerciseDefinition.tempo = generatedExercise.tempo
+        exerciseDefinition.prerollLengthInBeats = generatedExercise.count_off
 
         //TODO: load the UserSettings tempo
 
@@ -160,6 +161,15 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         currentExercise?.let {
             //sync the tempos from the exercise to the objects that need to know the tempo
             metronome.tempo = it.tempo
+
+            var metronomeItemsToCreate = 1
+
+            console.log("Testing time sig:" )
+            console.log(generatedExercise)
+
+            metronome.timeSignature = generatedExercise.time_signature
+            metronome.prerollBeats = generatedExercise.count_off
+
             bufferManager.tempo = it.tempo
 
             //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
@@ -182,6 +192,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             return
         }
         pm_log("Analyzing at " + timestamp)
+
+      return
 
         currentExercise?.let {
 

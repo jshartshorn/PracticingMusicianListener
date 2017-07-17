@@ -48,6 +48,8 @@ interface AudioAnalyzer {
 
 interface GeneratedExercise {
     var tempo : Double
+    val time_signature : Int
+    val count_off : Double
     var notes : Array<SimpleJSNoteObject>
 }
 
