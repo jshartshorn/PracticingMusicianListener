@@ -191,9 +191,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         } else {
             return
         }
-        pm_log("Analyzing at " + timestamp)
-
-      return
 
         currentExercise?.let {
 
