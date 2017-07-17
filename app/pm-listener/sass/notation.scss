@@ -73,7 +73,8 @@ div.feedbackItemContainer {
     display: none;
 }
 
-div.feedbackItem:hover div.feedbackItemContainer {
+div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
+ div.feedbackItem.off_note:hover div.feedbackItemContainer{
     display: block !important;
     position: absolute;
 

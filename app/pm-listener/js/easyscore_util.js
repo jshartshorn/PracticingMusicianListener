@@ -517,7 +517,7 @@ var EasyScoreUtil = function() {
     //get the Y coordinate for feedback items
     this.getFeedbackYPosition = function(topStaveY) {
         var stave = this.getBasicStave()
-        var pos = stave.height + topStaveY + 20
+        var pos = stave.height + topStaveY + 40
         return pos
     }
 
@@ -548,8 +548,8 @@ var EasyScoreUtil = function() {
         var obj = document.createElement('div');
         obj.className = "feedbackItem"
 
-        console.log("Feedback type:")
-        console.log(feedbackType.name$)
+        //console.log("Feedback type:")
+        //console.log(feedbackType.name$)
 
         switch(feedbackType.name$) {
           case "Missed":
@@ -557,6 +557,9 @@ var EasyScoreUtil = function() {
             break;
           case "Incorrect":
             obj.className += " off_note"
+            break;
+          case "Correct":
+            obj.className += " correct"
             break;
           default:
             pm_log("Error on type: " + feedbackType.name$,10)
