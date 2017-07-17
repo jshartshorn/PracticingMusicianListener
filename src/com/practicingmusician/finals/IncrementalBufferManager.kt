@@ -110,7 +110,7 @@ class IncrementalBufferManager {
 
         val BOGUS_NOTE_NUMBER = -100
 
-        //tkae any groups that aren't of acceptable length, and assign BOGUS_NOTE_NUMBER to them so that they can be identified later
+        //take any groups that aren't of acceptable length, and assign BOGUS_NOTE_NUMBER to them so that they can be identified later
         val groupsOfAcceptableLength = groups.filter { it.count() != 0 }.map {
             val lengthOfGroupsInSamples = it.map { it.first.lengthInSamples }.reduce { acc, d -> acc + d }
             //pm_log("Group length " + lengthOfGroupsInSamples + " for " + it.first().second)
