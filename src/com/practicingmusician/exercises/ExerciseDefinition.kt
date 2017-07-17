@@ -17,6 +17,8 @@ class ExerciseDefinition {
 
     var tempo : Double = 120.0
 
+    var prerollLengthInBeats = 4.0
+
     fun getLength() : Double {
         val beatSize = 1000.0 * 60.0 / tempo
         return notes.map { it.duration }.reduce { acc, d -> d + acc } * beatSize
@@ -25,7 +27,7 @@ class ExerciseDefinition {
     fun prerollLength(): Double {
         //TODO: make it real
         val beatSize = 1000.0 * 60.0 / tempo
-        return beatSize * 4
+        return beatSize * this.prerollLengthInBeats
     }
 
 }

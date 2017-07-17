@@ -1,20 +1,54 @@
-//TODO: complete once pickup measures are done
-
 function generateExerciseForKotlin() {
     return {
     //TODO: make these match
         tempo: 110,
+        count_off: 5,
+        time_signature: 3,
         notes: [
-            {noteNumber: 60, duration: 2.0},
-            {noteNumber: 72, duration: 2.0},
-            {noteNumber: 60, duration: 1.0},
-            {noteNumber: 72, duration: 1.0},
-            {noteNumber: 72, duration: 1.0},
-            {noteNumber: 60, duration: 1.0},
-            {noteNumber: 72, duration: 2.0},
-            {noteNumber: 60, duration: 1.0},
-            {noteNumber: 72, duration: 1.0},
-            {noteNumber: 60, duration: 4.0},
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+            {noteNumber: noteNumbers.E4, duration: durations.q},
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C5, duration: durations.h},
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+            {noteNumber: noteNumbers.E4, duration: durations.q},
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C5, duration: durations.h},
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+            {noteNumber: noteNumbers.F4, duration: durations.q},
+            {noteNumber: noteNumbers.D4, duration: durations.q},
+
+            {noteNumber: noteNumbers.E4, duration: durations.q},
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+            {noteNumber: noteNumbers.F4, duration: durations.q},
+            {noteNumber: noteNumbers.D4, duration: durations.q},
+
+            {noteNumber: noteNumbers.E4, duration: durations.q},
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C4, duration: durations.q},
+            {noteNumber: noteNumbers.E4, duration: durations.q},
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C5, duration: durations.h},
+            {noteNumber: noteNumbers.A4, duration: durations.q},
+
+            {noteNumber: noteNumbers.G4, duration: durations.q},
+            {noteNumber: noteNumbers.F4, duration: durations.q},
+            {noteNumber: noteNumbers.D4, duration: durations.q},
+
+            {noteNumber: noteNumbers.C4, duration: durations.h},
         ]
     }
 }

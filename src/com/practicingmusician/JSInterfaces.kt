@@ -1,6 +1,7 @@
 package com.practicingmusician
 
 import com.practicingmusician.finals.FeedbackMetric
+import com.practicingmusician.finals.FeedbackType
 
 
 /**
@@ -48,6 +49,8 @@ interface AudioAnalyzer {
 
 interface GeneratedExercise {
     var tempo : Double
+    val time_signature : Int
+    val count_off : Double
     var notes : Array<SimpleJSNoteObject>
 }
 
@@ -80,7 +83,7 @@ external class EasyScoreUtil  {
     fun getPositionForBeat(beat: Double) : BeatPosition
     fun getFeedbackYPosition(staveTopY : Double) : Double
 
-    fun createFeedbackHTMLElement(items : Array<FeedbackMetric>, x : Double, y : Double)
+    fun createFeedbackHTMLElement(type: FeedbackType, items : Array<FeedbackMetric>, x : Double, y : Double)
 }
 
 data class BeatPosition(val x : Double, val y : Double)

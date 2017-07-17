@@ -102,9 +102,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
-                    val beat = it.beat
                     //pm_log("Feedback item at $beat")
-                    listenerApp.addFeedbackItem(beat,it.feedbackItemType)
+                    listenerApp.addFeedbackItem(it)
                 }
 
                 window.alert("Your results are: " + results.correct + "/" + results.attempted)
@@ -142,6 +141,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         //pm_log("Tempo: " + exercise.tempo)
         val exerciseDefinition = ExerciseDefinition()
         exerciseDefinition.tempo = generatedExercise.tempo
+        exerciseDefinition.prerollLengthInBeats = generatedExercise.count_off
 
         //TODO: load the UserSettings tempo
 
@@ -160,6 +160,13 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         currentExercise?.let {
             //sync the tempos from the exercise to the objects that need to know the tempo
             metronome.tempo = it.tempo
+
+            console.log("Testing time sig:" )
+            console.log(generatedExercise)
+
+            metronome.timeSignature = generatedExercise.time_signature
+            metronome.prerollBeats = generatedExercise.count_off
+
             bufferManager.tempo = it.tempo
 
             //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
@@ -181,7 +188,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         } else {
             return
         }
-        pm_log("Analyzing at " + timestamp)
 
         currentExercise?.let {
 
@@ -197,9 +203,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             listenerApp.clearFeedbackItems()
 
             results.feedbackItems.forEach {
-                val beat = it.beat
-                //pm_log("Feedback item at $beat")
-                listenerApp.addFeedbackItem(beat,it.feedbackItemType)
+                listenerApp.addFeedbackItem(it)
             }
         }
 
