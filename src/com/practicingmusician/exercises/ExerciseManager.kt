@@ -102,9 +102,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
                 //add the feedback items to the screen so that the user can see them
                 results.feedbackItems.forEach {
-                    val beat = it.beat
                     //pm_log("Feedback item at $beat")
-                    listenerApp.addFeedbackItem(beat,it.feedbackItemType)
+                    listenerApp.addFeedbackItem(it)
                 }
 
                 window.alert("Your results are: " + results.correct + "/" + results.attempted)
@@ -162,8 +161,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             //sync the tempos from the exercise to the objects that need to know the tempo
             metronome.tempo = it.tempo
 
-            var metronomeItemsToCreate = 1
-
             console.log("Testing time sig:" )
             console.log(generatedExercise)
 
@@ -206,9 +203,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             listenerApp.clearFeedbackItems()
 
             results.feedbackItems.forEach {
-                val beat = it.beat
-                //pm_log("Feedback item at $beat")
-                listenerApp.addFeedbackItem(beat,it.feedbackItemType)
+                listenerApp.addFeedbackItem(it)
             }
         }
 

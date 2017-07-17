@@ -6,7 +6,11 @@ package com.practicingmusician.finals
 
 data class FeedbackMetric(var name : String, var value : String)
 
-data class FeedbackItem(var beat : Double, var feedbackItemType : List<FeedbackMetric>)
+enum class FeedbackType {
+  Incorrect, Missed
+}
+
+data class FeedbackItem(var type : FeedbackType, var beat : Double, var feedbackItemType : List<FeedbackMetric>)
 
 class CompareResults(val c : Int = 0, val a : Int = 0) {
     var correct : Int = c

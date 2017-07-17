@@ -543,12 +543,27 @@ var EasyScoreUtil = function() {
 //                        	   ctx.stroke();
     }
 
-    this.createFeedbackHTMLElement = function(feedbackItemType,x,y) {
+    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y) {
         var feedbackWidth = 16 * this.contentScaleFactor
         var obj = document.createElement('div');
-        obj.className = "feedbackItem off_note"
+        obj.className = "feedbackItem"
 
-        var feedbackItems = feedbackItemType.map(function(item) {
+        console.log("Feedback type:")
+        console.log(feedbackType.name$)
+
+        switch(feedbackType.name$) {
+          case "Missed":
+            obj.className += " incorrect_note"
+            break;
+          case "Incorrect":
+            obj.className += " off_note"
+            break;
+          default:
+            pm_log("Error on type: " + feedbackType.name$,10)
+            break;
+        }
+
+        var feedbackItems = feedbackItemsArray.map(function(item) {
             var itemObj = document.createElement('span')
             itemObj.className = "feedbackItemElement"
 

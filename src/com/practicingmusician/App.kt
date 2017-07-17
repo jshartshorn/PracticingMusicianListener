@@ -4,6 +4,7 @@ import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.FeedbackItem
 import com.practicingmusician.finals.FeedbackMetric
+import com.practicingmusician.finals.FeedbackType
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
 import org.w3c.dom.Element
@@ -86,15 +87,13 @@ public class ListenerApp {
         //for testing
         //TODO: remove
             val feedbackItems = listOf(
-                    FeedbackItem(1.0, listOf(FeedbackMetric("test","val"))),
-                    FeedbackItem(2.0, listOf(FeedbackMetric("test","val"))),
-                    FeedbackItem(3.0, listOf(FeedbackMetric("test","val")))
+                    FeedbackItem(FeedbackType.Missed,1.0, listOf(FeedbackMetric("test","val"))),
+                    FeedbackItem(FeedbackType.Incorrect,2.0, listOf(FeedbackMetric("test","val"))),
+                    FeedbackItem(FeedbackType.Missed,3.0, listOf(FeedbackMetric("test","val")))
             )
 
             feedbackItems.forEach {
-                    val beat = it.beat
-                    //pm_log("Feedback item at $beat")
-                    listenerApp.addFeedbackItem(beat,it.feedbackItemType)
+                    listenerApp.addFeedbackItem(it)
             }
     }
 
@@ -204,12 +203,12 @@ public class ListenerApp {
     }
 
     //add a feedback item to a certain beat
-    fun addFeedbackItem(beat : Double,items : List<FeedbackMetric>) {
-        val positionForBeat = this.scoreUtil.getPositionForBeat(beat)
+    fun addFeedbackItem(feedbackItem : FeedbackItem) {
+        val positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat)
         //pm_log("Position for beat: ",10)
         //pm_log(positionForBeat,10)
         val positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
         //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
-        this.scoreUtil.createFeedbackHTMLElement(items.toTypedArray(),positionForBeat.x,positionY)
+        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),positionForBeat.x,positionY)
     }
 }
