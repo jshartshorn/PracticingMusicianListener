@@ -23,6 +23,9 @@ class IncrementalComparisonEngine {
   val testRhythm = true
   val testDuration = false
 
+  //largest differences before notes become "Missed"
+  val largestDurationDifference = 2.0
+  val largestBeatDifference = 1.0
   /* State information about what has been compared */
 
 //    var results = CompareResults() //the results of the comparison
@@ -134,19 +137,36 @@ class IncrementalComparisonEngine {
 
       var testItem = toTest[indexOnToTest]
 
-      pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration)
+      pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration,10)
 
       //TODO: have to account for this somehow
-      //test the durations of the notes
-      if (idealItem.duration - testItem.note.duration > listenerApp.parameters.allowableLengthMargin) {
-        pm_log("Test subject too short")
-        //isCorrect = false
-      } else if (idealItem.duration - testItem.note.duration < -listenerApp.parameters.allowableLengthMargin) {
-        pm_log("Test subject too long")
-        //isCorrect = false
-      } else {
-        pm_log("PERFECT")
+      if (testDuration) {
+        //test the durations of the notes
+
+        val durationDifference = (idealItem.duration - testItem.note.duration)
+        val durationDifferenceRounded = Math.round(durationDifference * 100.0) / 100.0
+
+        if (durationDifference > listenerApp.parameters.allowableLengthMargin) {
+          pm_log("Test subject too short by " + durationDifferenceRounded,10)
+
+          feedbackItemTypes.add(FeedbackMetric("duration", "-" + durationDifferenceRounded))
+
+          feedbackItem.throwSafeIncorrectSwitch()
+        } else if (durationDifference < -listenerApp.parameters.allowableLengthMargin) {
+          pm_log("Test subject too long by " + durationDifferenceRounded,10)
+
+          feedbackItemTypes.add(FeedbackMetric("duration", "+" + Math.abs(durationDifferenceRounded)))
+
+          feedbackItem.throwSafeIncorrectSwitch()
+        } else {
+          pm_log("PERFECT DURATION",10)
+        }
+
+        if (durationDifference > largestDurationDifference) {
+          feedbackItem.type = FeedbackType.Missed
+        }
       }
+
 
 
       pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest)
@@ -155,34 +175,37 @@ class IncrementalComparisonEngine {
 
       val distanceAwayRounded = Math.round(distanceAway * 100.0) / 100.0
 
-      //test the start time of the notes (rushing vs. dragging)
-      if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
-        pm_log("Test subject rushing")
+      if (testRhythm) {
+        //test the start time of the notes (rushing vs. dragging)
+        if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
+          pm_log("Test subject rushing")
 
-        feedbackItemTypes.add(FeedbackMetric("speed", "+" + distanceAwayRounded))
+          feedbackItemTypes.add(FeedbackMetric("speed", "+" + distanceAwayRounded))
 
-        feedbackItem.throwSafeIncorrectSwitch()
-      } else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
-        pm_log("Test subject dragging")
+          feedbackItem.throwSafeIncorrectSwitch()
+        } else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
+          pm_log("Test subject dragging")
 
 
-        feedbackItemTypes.add(FeedbackMetric("speed", "" + distanceAwayRounded))
+          feedbackItemTypes.add(FeedbackMetric("speed", "" + distanceAwayRounded))
 
-        feedbackItem.throwSafeIncorrectSwitch()
-      } else {
-        pm_log("PERFECT")
+          feedbackItem.throwSafeIncorrectSwitch()
+        } else {
+          pm_log("PERFECT")
+        }
+
+        //TODO -- test to see if it's way outside the rhythm bounds
+        if (Math.abs(distanceAway) > largestBeatDifference) {
+          feedbackItem.type = FeedbackType.Missed
+        }
       }
 
-      //TODO -- test to see if it's way outside the rhythm bounds
-      if (Math.abs(distanceAway) > 1.0) {
-        feedbackItem.type = FeedbackType.Missed
-      }
 
       pm_log("Notes : " + idealItem.noteNumber + " | " + testItem.note.noteNumber)
 
       //normalize octaves?
-      if (testItem.note.noteNumber == idealItem.noteNumber + 12 || testItem.note.noteNumber == idealItem.noteNumber - 2) {
-        pm_log("Octave shifted")
+      if (testItem.note.noteNumber == idealItem.noteNumber + 12 || testItem.note.noteNumber == idealItem.noteNumber - 12) {
+        pm_log("Octave shifted",10)
         val n = Note(idealItem.noteNumber, testItem.note.duration)
         if (testItem.note.noteNumber < idealItem.noteNumber) {
           n.avgFreq = testItem.note.avgFreq?.times(2)
@@ -212,7 +235,7 @@ class IncrementalComparisonEngine {
       //test the intonation of the notes
       val avgFreq = testItem.note.avgFreq
 
-      if (avgFreq != null) {
+      if (avgFreq != null && testPitch) {
         val idealItemFrequency = idealItem.getFrequency()
         val noteAboveFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber + 1)
         val noteBelowFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber - 1)
