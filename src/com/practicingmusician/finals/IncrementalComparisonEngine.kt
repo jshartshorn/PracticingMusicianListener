@@ -18,13 +18,12 @@ external val listenerApp: ListenerApp
 
 class IncrementalComparisonEngine {
 
-  //TODO: use these
   val testPitch = true
   val testRhythm = true
-  val testDuration = false
+  val testDuration = true
 
   //largest differences before notes become "Missed"
-  val largestDurationDifference = 2.0
+  val largestDurationDifference = 1.0
   val largestBeatDifference = 1.0
   /* State information about what has been compared */
 
