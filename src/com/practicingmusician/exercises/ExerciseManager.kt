@@ -197,7 +197,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
             //pm_log("Notes from samples buffer length: " + notesFromSamplesBuffer.count())
 
-            val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer)
+            val results = comparisonEngine.compareNoteArrays(it.notes,notesFromSamplesBuffer,isCurrentlyRunning = true)
             //pm_log("Results $results")
 
             listenerApp.clearFeedbackItems()

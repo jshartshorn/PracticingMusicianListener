@@ -38,7 +38,7 @@ class IncrementalComparisonEngine {
 
   //Comapares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
-  fun compareNoteArrays(ideal: List<Note>, toTest: List<NotePlacement>): CompareResults {
+  fun compareNoteArrays(ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
 
     val results = CompareResults()
     var curBeatPosition: Double = 0.0
@@ -47,21 +47,19 @@ class IncrementalComparisonEngine {
 
     var doNotTestBeyond = 0.0
     if (toTest.count() > 0) {
-      doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
+      doNotTestBeyond = toTest.last().positionInBeats
+      if (!isCurrentlyRunning) {
+        doNotTestBeyond += toTest.last().note.duration
+      }
     }
 
     val functionStartTimestamp = window.performance.now()
 
-    //loop throug the ideal items to test against
+    //loop through the ideal items to test against
     //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
     for (index in 0 until ideal.count()) {
       val idealValue = ideal[index]
 
-      //TODO: make sure we have enough data to test against the item
-
-
-      //TODO: okay, we have enough to test, so set the new idealIndexPosition
-      //idealIndexPosition = index
 
       //find the corresponding item in toTest based on our beat position
       var indexOnToTest = -1 //this will store the index on toTest that we will compare
@@ -92,7 +90,7 @@ class IncrementalComparisonEngine {
       }
 
       if (curBeatPosition >= doNotTestBeyond) {
-        pm_log("Too far")
+        //pm_log("Too far",10)
         break
       }
 
@@ -136,9 +134,8 @@ class IncrementalComparisonEngine {
 
       var testItem = toTest[indexOnToTest]
 
-      pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration,10)
+      pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration,0)
 
-      //TODO: have to account for this somehow
       if (testDuration) {
         //test the durations of the notes
 
@@ -146,19 +143,19 @@ class IncrementalComparisonEngine {
         val durationDifferenceRounded = Math.round(durationDifference * 100.0) / 100.0
 
         if (durationDifference > listenerApp.parameters.allowableLengthMargin) {
-          pm_log("Test subject too short by " + durationDifferenceRounded,10)
+          pm_log("Test subject too short by " + durationDifferenceRounded,0)
 
           feedbackItemTypes.add(FeedbackMetric("duration", "-" + durationDifferenceRounded))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else if (durationDifference < -listenerApp.parameters.allowableLengthMargin) {
-          pm_log("Test subject too long by " + durationDifferenceRounded,10)
+          pm_log("Test subject too long by " + durationDifferenceRounded,0)
 
           feedbackItemTypes.add(FeedbackMetric("duration", "+" + Math.abs(durationDifferenceRounded)))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else {
-          pm_log("PERFECT DURATION",10)
+          pm_log("PERFECT DURATION",0)
         }
 
         if (durationDifference > largestDurationDifference) {
@@ -204,7 +201,7 @@ class IncrementalComparisonEngine {
 
       //normalize octaves?
       if (testItem.note.noteNumber == idealItem.noteNumber + 12 || testItem.note.noteNumber == idealItem.noteNumber - 12) {
-        pm_log("Octave shifted",10)
+        //pm_log("Octave shifted",10)
         val n = Note(idealItem.noteNumber, testItem.note.duration)
         if (testItem.note.noteNumber < idealItem.noteNumber) {
           n.avgFreq = testItem.note.avgFreq?.times(2)
@@ -224,7 +221,7 @@ class IncrementalComparisonEngine {
         feedbackItem.type = FeedbackType.Missed
       }
 
-      pm_log("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency())
+      pm_log("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency(),0)
 
       //pm_log(idealItem.noteNumber,10)
       //pm_log(testItem.note.noteNumber,10)
@@ -246,7 +243,7 @@ class IncrementalComparisonEngine {
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject sharp")
 
-            feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInCents.toInt()))
+            feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInHz.toInt()))
 
             feedbackItem.throwSafeIncorrectSwitch()
           }
@@ -257,7 +254,7 @@ class IncrementalComparisonEngine {
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject flat")
 
-            feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInCents.toInt()))
+            feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInHz.toInt()))
 
             feedbackItem.throwSafeIncorrectSwitch()
           }
