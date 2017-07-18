@@ -174,6 +174,19 @@ class IncrementalBufferManager {
           pm_log("Note: " + it.noteNumber + " for " + it.duration,10)
         }
 
+        //go through and attach the BOGUS ones to the ones before
+        val notesToRemove = mutableListOf<Note>()
+        notes.mapIndexed { index, note ->
+          if (note.noteNumber == BOGUS_NOTE_NUMBER) {
+            if (index == 0) return@mapIndexed
+            val previousItem = notes[index -1]
+            previousItem.duration += note.duration
+            notesToRemove += note
+          }
+        }
+        pm_log("Removing " + notesToRemove.count(),10)
+        notes.removeAll(notesToRemove)
+
         //take the notes, and make NotePlacements out of them, which record the beat placement of each note
         var pos = 0.0
         val notePlacements = notes.map {

@@ -13,7 +13,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem 
     val noteNumber = value
 
     //duration in beats
-    val duration = dur
+    var duration = dur
 
     //the textValue -- currently in VexFlow EasyScore format -- eg C4/q
     val textValue = textVal

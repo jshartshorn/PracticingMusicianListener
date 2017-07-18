@@ -11,7 +11,7 @@ external var audioAnalyzer : AudioAnalyzer
 
 var buflen : Int = 1024
 
-data class SampleCollection(val freq : Double, val lengthInSamples : Int)
+data class SampleCollection(val freq : Double, val lengthInSamples : Int, val timestampInSamples : Int)
 
 class PitchTracker : TimeKeeperSteppable {
 
@@ -81,7 +81,9 @@ class PitchTracker : TimeKeeperSteppable {
 
         pm_log("Filling " + samplesToFill + " with $correlatedFrequency")
 
-        samples.add(SampleCollection(correlatedFrequency, samplesToFill.toInt()))
+        samples.add(
+          SampleCollection(correlatedFrequency, samplesToFill.toInt(),samplesRecorded)
+        )
 
         samplesRecorded += samplesToFill.toInt()
     }
