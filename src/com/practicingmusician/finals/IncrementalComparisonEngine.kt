@@ -1,5 +1,6 @@
 package com.practicingmusician.finals
 
+import com.practicingmusician.ComparisonFlags
 import com.practicingmusician.ListenerApp
 import com.practicingmusician.notes.Note
 import com.practicingmusician.pm_log
@@ -18,10 +19,6 @@ external val listenerApp: ListenerApp
 
 class IncrementalComparisonEngine {
 
-  val testPitch = true
-  val testRhythm = true
-  val testDuration = true
-
   //largest differences before notes become "Missed"
   val largestDurationDifference = 1.0
   val largestBeatDifference = 1.0
@@ -38,7 +35,7 @@ class IncrementalComparisonEngine {
 
   //Comapares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
-  fun compareNoteArrays(ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
+  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
 
     val results = CompareResults()
     var curBeatPosition: Double = 0.0
@@ -136,7 +133,7 @@ class IncrementalComparisonEngine {
 
       pm_log("Durations : " + idealItem.duration + " | " + testItem.note.duration,0)
 
-      if (testDuration) {
+      if (comparisonFlags.testDuration) {
         //test the durations of the notes
 
         val durationDifference = (idealItem.duration - testItem.note.duration)
@@ -171,7 +168,7 @@ class IncrementalComparisonEngine {
 
       val distanceAwayRounded = Math.round(distanceAway * 100.0) / 100.0
 
-      if (testRhythm) {
+      if (comparisonFlags.testRhythm) {
         //test the start time of the notes (rushing vs. dragging)
         if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
           pm_log("Test subject rushing")
@@ -231,7 +228,7 @@ class IncrementalComparisonEngine {
       //test the intonation of the notes
       val avgFreq = testItem.note.avgFreq
 
-      if (avgFreq != null && testPitch) {
+      if (avgFreq != null && comparisonFlags.testPitch) {
         val idealItemFrequency = idealItem.getFrequency()
         val noteAboveFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber + 1)
         val noteBelowFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber - 1)

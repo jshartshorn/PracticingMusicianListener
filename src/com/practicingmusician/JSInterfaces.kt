@@ -16,6 +16,12 @@ external fun displayFlashMessages(messages : Array<FlashMessage>)
 
 data class FlashMessage(val type : String, val message : String)
 
+data class ComparisonFlags(
+  val testPitch : Boolean,
+  val testRhythm : Boolean,
+  val testDuration : Boolean
+)
+
 interface AppSetupParameters {
     //DOM element IDs
     val notationContainerName : String
@@ -37,6 +43,9 @@ interface AppSetupParameters {
     val allowableCentsMargin : Int
     val allowableRhythmMargin : Double
     val allowableLengthMargin : Double
+
+    //which metrics to compare
+    val comparisonFlags : ComparisonFlags
 }
 
 interface AudioAnalyzer {
