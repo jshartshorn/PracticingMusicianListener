@@ -36,6 +36,11 @@ gulp.task('copy_html', function () {
     .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('copy_test_site',function() {
+  return gulp.src('app/test-site.php')
+    .pipe(gulp.dest('dist/'));
+})
+
 gulp.task('compile_sass', function () {
   return gulp.src('app/pm-listener/sass/notation.scss')
     .pipe(sass().on('error', sass.logError))
