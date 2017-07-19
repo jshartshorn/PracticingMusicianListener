@@ -106,7 +106,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                     listenerApp.addFeedbackItem(it)
                 }
 
-                window.alert("Your results are: " + results.correct + "/" + results.attempted)
+                window.alert("Overall accuracy: " + results.correct + "/" + results.attempted)
 
                 //contact the server with a network request
                 ListenerNetworkManager.buildAndSendRequest(results)
