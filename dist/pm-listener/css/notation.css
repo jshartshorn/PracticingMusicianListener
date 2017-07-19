@@ -55,11 +55,12 @@ div.feedbackItem.off_note {
 div.feedbackItemContainer {
   display: none; }
 
-div.feedbackItem:hover div.feedbackItemContainer {
+div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
+div.feedbackItem.off_note:hover div.feedbackItemContainer {
   display: block !important;
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 12px;
+  left: -64px;
   width: 120px;
   border-radius: 10px;
   padding: 10px;
@@ -77,7 +78,8 @@ span.feedbackKey {
   width: 60%; }
 
 span.feedbackValue {
-  width: 40%; }
+  width: 40%;
+  text-align: right; }
 
 span.feedbackItemElement {
   display: block; }
