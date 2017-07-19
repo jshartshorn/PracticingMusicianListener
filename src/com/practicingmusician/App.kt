@@ -84,17 +84,16 @@ public class ListenerApp {
 
         this.makeScore(this.parameters.notationContainerName)
 
-        //for testing
-        //TODO: remove
-            val feedbackItems = listOf(
-                    FeedbackItem(FeedbackType.Missed,1.0, listOf(FeedbackMetric("test","val"))),
-                    FeedbackItem(FeedbackType.Incorrect,2.0, listOf(FeedbackMetric("test","val"))),
-                    FeedbackItem(FeedbackType.Missed,3.0, listOf(FeedbackMetric("test","val")))
-            )
-
-            feedbackItems.forEach {
-                    listenerApp.addFeedbackItem(it)
-            }
+//        //for testing
+//            val feedbackItems = listOf(
+//                    FeedbackItem(FeedbackType.Missed,1.0, listOf(FeedbackMetric("test","val"))),
+//                    FeedbackItem(FeedbackType.Incorrect,2.0, listOf(FeedbackMetric("test","val"))),
+//                    FeedbackItem(FeedbackType.Missed,3.0, listOf(FeedbackMetric("test","val")))
+//            )
+//
+//            feedbackItems.forEach {
+//                    listenerApp.addFeedbackItem(it)
+//            }
     }
 
     fun makeScore(containerElementName : String) {
@@ -164,6 +163,9 @@ public class ListenerApp {
         oldSVG.parentNode?.removeChild(oldSVG)
 
         listenerApp.makeScore(this.parameters.notationContainerName)
+        val copyOfFeedbackItems = listenerApp.currentFeedbackItems.toList()
+        listenerApp.clearFeedbackItems()
+        copyOfFeedbackItems.forEach { listenerApp.addFeedbackItem(it) }
     }
 
     //move the indicator to a certain beat position
@@ -186,8 +188,11 @@ public class ListenerApp {
         }
     }
 
+    val currentFeedbackItems = mutableListOf<FeedbackItem>()
+
     //clear existing feedback items from the screen
     fun clearFeedbackItems() {
+        currentFeedbackItems.removeAll { true }
         pm_log("Clearing")
         //val feedbackCanvas = document.getElementById("feedbackCanvas") as? HTMLCanvasElement
         //feedbackCanvas?.getContext("2d").asDynamic().clearRect(0,0,feedbackCanvas?.width,feedbackCanvas?.height)
@@ -204,6 +209,7 @@ public class ListenerApp {
 
     //add a feedback item to a certain beat
     fun addFeedbackItem(feedbackItem : FeedbackItem) {
+        if (currentFeedbackItems.indexOf(feedbackItem) == -1) currentFeedbackItems += feedbackItem
         val positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat)
         //pm_log("Position for beat: ",10)
         //pm_log(positionForBeat,10)

@@ -30,8 +30,10 @@ object TestBufferGenerator {
         }
         console.log("Note change indexes: " + noteChangeIndexes)
 
-        val collections = samples.map {
-            val collection = SampleCollection(freq = it, lengthInSamples = 1)
+
+
+        val collections = samples.mapIndexed { index, d ->
+            val collection = SampleCollection(freq = d, lengthInSamples = 1, timestampInSamples = index)
             collection
         }
 
@@ -44,7 +46,7 @@ object TestBufferGenerator {
 
         var notesMap = notes.map {
 
-            val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * BufferManager.sampleRate).toInt())
+            val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * BufferManager.sampleRate).toInt(),-1)
 
             collection
         }

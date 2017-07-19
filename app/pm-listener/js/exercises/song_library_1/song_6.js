@@ -1,6 +1,5 @@
 function generateExerciseForKotlin() {
     return {
-    //TODO: make these match
         tempo: 110,
         count_off: 5,
         time_signature: 3,

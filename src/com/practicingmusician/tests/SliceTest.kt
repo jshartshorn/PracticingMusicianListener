@@ -1,9 +1,6 @@
 package com.practicingmusician.tests
 
-import com.practicingmusician.AppSetupParameters
-import com.practicingmusician.EasyScoreUtil
-import com.practicingmusician.GeneratedExercise
-import com.practicingmusician.ListenerApp
+import com.practicingmusician.*
 import com.practicingmusician.audio.AudioManager
 import com.practicingmusician.exercises.ExerciseManager
 import com.practicingmusician.finals.*
@@ -39,6 +36,8 @@ class MockParameters : AppSetupParameters {
   override  val allowableCentsMargin : Int = 40
   override  val allowableRhythmMargin : Double = 0.25
   override  val allowableLengthMargin : Double = 0.25
+
+  override val comparisonFlags = ComparisonFlags(testPitch = true, testRhythm = true, testDuration = true)
 }
 
 object SliceTest {
@@ -106,7 +105,7 @@ object SliceTest {
 
         val incrementalComparison = IncrementalComparisonEngine()
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
     }
 
     fun trueIncrementalBufferAndComparisonTest() {
@@ -176,7 +175,7 @@ object SliceTest {
             console.log("Sublist:" + sublist.count())
             console.log(sublist)
 
-            testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(notes,sublist))
+            testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes,sublist))
             //CompareEngine.compareNoteArrays(notes, sublist)
         }
 
@@ -206,7 +205,7 @@ object SliceTest {
 
         testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData.map { it.note }))
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
 
     }
 
@@ -242,7 +241,7 @@ object SliceTest {
         expectedResults.attempted = 4
 
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
     }
 
     fun flatTest() {
@@ -277,7 +276,7 @@ object SliceTest {
         expectedResults.attempted = 4
 
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
     }
 
     fun rushedTest() {
@@ -303,7 +302,7 @@ object SliceTest {
 
 
         println("Comparing rushed...")
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
     }
 
     //TODO: I think that the effect of the short notes on the starting points gets ignored, which should probably not be the case
@@ -349,7 +348,7 @@ object SliceTest {
 
 
         println("Comparing short notes...")
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
     }
 
     @JsName("runTest")

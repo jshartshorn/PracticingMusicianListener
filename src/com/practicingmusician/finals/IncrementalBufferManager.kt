@@ -127,7 +127,7 @@ class IncrementalBufferManager {
         //pm_log("Groups after bogus filter:",10)
         //pm_log(groupsOfAcceptableLength.toTypedArray(),10)
 
-        pm_log("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count(),10)
+        pm_log("Converted into number groups: " + groupsOfAcceptableLength.count() + " from original: " + groups.count(),0)
 
         val flattened = groupsOfAcceptableLength.flatMap { it }
 
@@ -166,13 +166,26 @@ class IncrementalBufferManager {
         //get rid of the notes that have no duration
         notes.addAll(noteList.filter { it.duration != 0.0 })
 
-        pm_log("Notes after combining process: (from original: " + flattened.count(),10)
+        pm_log("Notes after combining process: (from original: " + flattened.count(),0)
         //pm_log(noteList.toTypedArray(),10)
 
-        pm_log("Turned samples into these notes (before purging): ",10)
+        pm_log("Turned samples into these notes (before purging): ",0)
         noteList.forEach {
-          pm_log("Note: " + it.noteNumber + " for " + it.duration,10)
+          pm_log("Note: " + it.noteNumber + " for " + it.duration,0)
         }
+
+        //go through and attach the BOGUS ones to the ones before
+        val notesToRemove = mutableListOf<Note>()
+        notes.mapIndexed { index, note ->
+          if (note.noteNumber == BOGUS_NOTE_NUMBER) {
+            if (index == 0) return@mapIndexed
+            val previousItem = notes[index -1]
+            previousItem.duration += note.duration
+            notesToRemove += note
+          }
+        }
+        pm_log("Removing " + notesToRemove.count(),0)
+        notes.removeAll(notesToRemove)
 
         //take the notes, and make NotePlacements out of them, which record the beat placement of each note
         var pos = 0.0
@@ -184,12 +197,12 @@ class IncrementalBufferManager {
 
 
         //print out the notes that we had before filtering the bogus ones, for comparison
-        pm_log("Turned samples into these notes (after purging): ",10)
+        pm_log("Turned samples into these notes (after purging): ",0)
         notePlacements.forEach {
-            pm_log("Note: " + it.note.noteNumber + " for " + it.note.duration + " at " + ((it.positionInBeats * 100.0 ) / 100.0),10)
+            pm_log("Note: " + it.note.noteNumber + " for " + it.note.duration + " at " + ((it.positionInBeats * 100.0 ) / 100.0),0)
         }
 
-        pm_log("Difference after bogus purge: " + (noteList.count() - notePlacements.count()),10)
+        pm_log("Difference after bogus purge: " + (noteList.count() - notePlacements.count()),0)
 
         val lengthOfNotesInBeats = notes.map { it.duration }.reduce { acc, d -> acc + d }
         pm_log("Length of notes in beats: $lengthOfNotesInBeats")

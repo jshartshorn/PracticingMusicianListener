@@ -1,7 +1,7 @@
 function generateExerciseForKotlin() {
     return {
         tempo: 120,
-        count_off: 4,
+        count_off: 8,
         time_signature: 4,
         notes: [
             {noteNumber: noteNumbers.E4, duration: durations.q},
