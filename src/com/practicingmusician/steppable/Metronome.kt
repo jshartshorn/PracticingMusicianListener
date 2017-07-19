@@ -15,7 +15,8 @@ external var listenerApp : ListenerApp
 class Metronome : TimeKeeperSteppable {
 
     //this is the key that we use to store the sound in the AudioManager
-    final val audioKey = "metronomeSound"
+    final val downbeatAudioKey = "downbeatSound"
+    final val beatAudioKey = "beatSound"
 
     lateinit var audioManager : com.practicingmusician.audio.AudioManager
 
@@ -43,7 +44,8 @@ class Metronome : TimeKeeperSteppable {
 
     fun setup() {
         //load the audio file
-        audioManager.loadAudioFile(listenerApp.parameters.url + listenerApp.parameters.audioAssetPath + "Cowbell.wav",audioKey)
+        audioManager.loadAudioFile(listenerApp.parameters.url + listenerApp.parameters.audioAssetPath + "Cowbell.wav",downbeatAudioKey)
+        audioManager.loadAudioFile(listenerApp.parameters.url + listenerApp.parameters.audioAssetPath + "Woodblock.wav",beatAudioKey)
     }
 
     override fun start() {
@@ -83,9 +85,15 @@ class Metronome : TimeKeeperSteppable {
         //then play the metronome sound, set the lastBeatOccuredAt, update the metronome UI and increment the current beat counter
         if (timestamp >= nextBeatTime) {
             //TODO: wind to the specific time?
-            if (UserSettings.metronomeAudioOn) {
-                audioManager.playAudioNow(audioKey)
+          if (UserSettings.metronomeAudioOn) {
+            if (currentBeat % timeSignature == 0) {
+              audioManager.playAudioNow(downbeatAudioKey)
+
+            } else {
+              audioManager.playAudioNow(beatAudioKey)
+
             }
+          }
 
             lastBeatOccuredAt = nextBeatTime
 
