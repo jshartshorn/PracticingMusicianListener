@@ -42,7 +42,7 @@ interface AppSetupParameters {
     //the margins in which a note can vary from the ideal and still be considered acceptable
     val allowableCentsMargin : Int
     val allowableRhythmMargin : Double
-    val allowableLengthMargin : Double
+    val allowableDurationRatio : Double
 
     //which metrics to compare
     val comparisonFlags : ComparisonFlags
