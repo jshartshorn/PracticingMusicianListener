@@ -23,10 +23,12 @@ function networkRequest(url, dataObject) {
         data: JSON.stringify(dataObject),
         dataType: 'json',
         success: function(result) {
-            alert(result)
+            console.log("Network request success:")
+            console.log(result)
         },
         failure: function(result) {
-            alert(result)
+            console.log("Network request failure:")
+            console.log(result)
         }
     })
 }
