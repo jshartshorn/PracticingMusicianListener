@@ -20,7 +20,7 @@ external val listenerApp: ListenerApp
 class IncrementalComparisonEngine {
 
   //largest differences before notes become "Missed"
-  val largestDurationDifference = 1.0
+  val largestDurationRatioDifference = 0.5
   val largestBeatDifference = 1.0
   /* State information about what has been compared */
 
@@ -136,26 +136,28 @@ class IncrementalComparisonEngine {
       if (comparisonFlags.testDuration) {
         //test the durations of the notes
 
-        val durationDifference = (idealItem.duration - testItem.note.duration)
-        val durationDifferenceRounded = Math.round(durationDifference * 100.0) / 100.0
+        val durationDifferenceRatio = testItem.note.duration / idealItem.duration
+        val durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0
 
-        if (durationDifference > listenerApp.parameters.allowableLengthMargin) {
-          pm_log("Test subject too short by " + durationDifferenceRounded,0)
+        //feedbackItemTypes.add(FeedbackMetric(name = "dur.",value = "" + durationDifferenceRatioRounded + " " + testItem.note.duration))
 
-          feedbackItemTypes.add(FeedbackMetric("duration", "-" + durationDifferenceRounded))
+        if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
+          pm_log("Test subject too short by " + durationDifferenceRatioRounded,0)
+
+          feedbackItemTypes.add(FeedbackMetric("duration", "-" + durationDifferenceRatioRounded))
 
           feedbackItem.throwSafeIncorrectSwitch()
-        } else if (durationDifference < -listenerApp.parameters.allowableLengthMargin) {
-          pm_log("Test subject too long by " + durationDifferenceRounded,0)
+        } else if (durationDifferenceRatio > (1.0 / listenerApp.parameters.allowableDurationRatio)) {
+          pm_log("Test subject too long by " + durationDifferenceRatioRounded,0)
 
-          feedbackItemTypes.add(FeedbackMetric("duration", "+" + Math.abs(durationDifferenceRounded)))
+          feedbackItemTypes.add(FeedbackMetric("duration", "+" + Math.abs(durationDifferenceRatioRounded)))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else {
           pm_log("PERFECT DURATION",0)
         }
 
-        if (durationDifference > largestDurationDifference) {
+        if (durationDifferenceRatio < largestDurationRatioDifference || durationDifferenceRatio > (1.0 / largestDurationRatioDifference)) {
           feedbackItem.type = FeedbackType.Missed
         }
       }

@@ -23,10 +23,12 @@ function networkRequest(url, dataObject) {
         data: JSON.stringify(dataObject),
         dataType: 'json',
         success: function(result) {
-            alert(result)
+            console.log("Network request success:")
+            console.log(result)
         },
         failure: function(result) {
-            alert(result)
+            console.log("Network request failure:")
+            console.log(result)
         }
     })
 }
@@ -40,5 +42,15 @@ if (window.displayFlashMessages == undefined) {
     msg.forEach(function(it) {
           alert(it.message)
     })
+  }
+}
+
+if (window.displaySiteDialog == undefined) {
+  window.displaySiteDialog = function(params) {
+    alert(
+      "Image: " + params.image + "\n" +
+      "Title: " + params.title + "\n" +
+      "Message: " + params.message
+      );
   }
 }

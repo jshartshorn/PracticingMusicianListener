@@ -13,6 +13,9 @@ import com.practicingmusician.finals.FeedbackType
 
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
+external fun displaySiteDialog(params : DialogParams)
+
+data class DialogParams(val imageType : String, val title : String, val message : String)
 
 data class FlashMessage(val type : String, val message : String)
 
@@ -42,7 +45,7 @@ interface AppSetupParameters {
     //the margins in which a note can vary from the ideal and still be considered acceptable
     val allowableCentsMargin : Int
     val allowableRhythmMargin : Double
-    val allowableLengthMargin : Double
+    val allowableDurationRatio : Double
 
     //which metrics to compare
     val comparisonFlags : ComparisonFlags

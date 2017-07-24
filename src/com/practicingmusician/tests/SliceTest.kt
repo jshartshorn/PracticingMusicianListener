@@ -35,7 +35,7 @@ class MockParameters : AppSetupParameters {
     //the margins in which a note can vary from the ideal and still be considered acceptable
   override  val allowableCentsMargin : Int = 40
   override  val allowableRhythmMargin : Double = 0.25
-  override  val allowableLengthMargin : Double = 0.25
+  override val allowableDurationRatio: Double = 0.5
 
   override val comparisonFlags = ComparisonFlags(testPitch = true, testRhythm = true, testDuration = true)
 }
@@ -49,6 +49,7 @@ object SliceTest {
     val bufferLengthInSamples = 1024
 
     fun testShouldBe(ideal : CompareResults, testValue : CompareResults) {
+        println("Results " + testValue.correct + " / " + testValue.attempted)
         if (ideal.attempted == testValue.attempted && ideal.correct == testValue.correct) {
             println("---- PASSED -----")
         } else {
