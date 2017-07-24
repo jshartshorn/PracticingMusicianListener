@@ -1,7 +1,9 @@
 package com.practicingmusician.exercises
 
+import com.practicingmusician.DialogParams
 import com.practicingmusician.ListenerApp
 import com.practicingmusician.audio.AudioManager
+import com.practicingmusician.displaySiteDialog
 import com.practicingmusician.finals.IncrementalBufferManager
 import com.practicingmusician.finals.IncrementalComparisonEngine
 import com.practicingmusician.network.ListenerNetworkManager
@@ -106,7 +108,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                     listenerApp.addFeedbackItem(it)
                 }
 
-                window.alert("Overall accuracy: " + results.correct + "/" + results.attempted)
+                displaySiteDialog(DialogParams("gold","Results","Overall accuracy: " + results.correct + "/" + results.attempted))
+
+                //window.alert("Overall accuracy: " + results.correct + "/" + results.attempted)
 
                 //contact the server with a network request
                 ListenerNetworkManager.buildAndSendRequest(results)

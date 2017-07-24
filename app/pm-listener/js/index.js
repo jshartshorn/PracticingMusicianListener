@@ -44,3 +44,13 @@ if (window.displayFlashMessages == undefined) {
     })
   }
 }
+
+if (window.displaySiteDialog == undefined) {
+  window.displaySiteDialog = function(params) {
+    alert(
+      "Image: " + params.image + "\n" +
+      "Title: " + params.title + "\n" +
+      "Message: " + params.message
+      );
+  }
+}
