@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="125px" height="125px" viewBox="0 0 125 125" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>medal-bronze-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="62.5" cy="62.5" r="62.5"></circle>
+        <circle id="path-3" cx="54" cy="54" r="54"></circle>
+        <circle id="path-5" cx="62.5" cy="62.5" r="62.5"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="medal-bronze-icon">
+            <g id="Rectangle-2">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#BD812C" xlink:href="#path-1"></use>
+                <rect fill="#A7612E" mask="url(#mask-2)" x="63" y="-4" width="62" height="144"></rect>
+            </g>
+            <g id="Rectangle" transform="translate(9.000000, 9.000000)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <use id="Mask" fill="#D7982F" xlink:href="#path-3"></use>
+                <rect fill="#BD812C" style="mix-blend-mode: darken;" mask="url(#mask-4)" x="54" y="-8" width="59" height="126"></rect>
+            </g>
+            <mask id="mask-6" fill="white">
+                <use xlink:href="#path-5"></use>
+            </mask>
+            <g id="Mask"></g>
+            <path d="M107,41 L137,73 L94.7172345,129 L61,129 L19,87 C24.6189511,85.7621593 27.9522844,83.7621593 29,81 C30.0477156,78.2378407 30.3810489,70.5711741 30,58 L18,46 L28,45 L31,47 L42,41 C56.6666667,55.6666667 64,63 64,63 C64,63 62.3333333,69.6666667 59,83 C63.6666667,81.6666667 66,81 66,81 C66,81 64,50 64,50 C64,50 75,42 75,42 C74.3333333,41.3333333 81.6666667,48.6666667 97,64 L98,60 L83,45 L107,41 Z" id="Path-2" fill-opacity="0.5" fill="#A7612E" mask="url(#mask-6)"></path>
+            <text id="III" mask="url(#mask-6)" font-family="ChalkboardSE-Bold, Chalkboard SE" font-size="70" font-weight="bold" fill="#EFBC68">
+                <tspan x="14.1546961" y="87">III</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

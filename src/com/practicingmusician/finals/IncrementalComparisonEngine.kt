@@ -139,7 +139,7 @@ class IncrementalComparisonEngine {
         val durationDifferenceRatio = testItem.note.duration / idealItem.duration
         val durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0
 
-        feedbackItemTypes.add(FeedbackMetric(name = "dur.",value = "" + durationDifferenceRatioRounded))
+        //feedbackItemTypes.add(FeedbackMetric(name = "dur.",value = "" + durationDifferenceRatioRounded + " " + testItem.note.duration))
 
         if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
           pm_log("Test subject too short by " + durationDifferenceRatioRounded,0)

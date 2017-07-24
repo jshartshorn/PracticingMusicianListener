@@ -82,7 +82,7 @@ div.feedbackItem.off_note {
             allowableCentsMargin : 40,
             allowableRhythmMargin : 0.25,
             //allowableLengthMargin : 0.25,
-			allowableDurationRatio : 0.65,
+			      allowableDurationRatio : 0.7,
 
             comparisonFlags: {
               testPitch: <?=$_GET['testPitch']?>,
@@ -149,12 +149,11 @@ div.feedbackItem.off_note {
 	</style>
 	<h2>Instructions</h2>
 	<p>
-		Make sure you are using an accepted browser (Chrome, Firefox) -- Safari will not work.  When asked to enable microphone input, do so.
+		Here are the instructions for using the test exercise page.
 	</p>
 	<p>
-		Choose the exercise you want from the list below.  Click the play button near the upper left to start.  The count-offs are two bars long (minus whatever pickup the exercise has).  Play along with the exercise and then mouse-over the red feedback items to see what was missed.
+		Make sure you are using the correct browser.
 	</p>
-	<p>For best results, use headphones while recording so that you can hear the metronome without it interfering with the recording an analysis of your instrument.</p>
 	<h2>Exercise List</h2>
 	<ul>
 		<li><a href="?exercise_file=CMajorScale.js&testPitch=true&testRhythm=true&testDuration=false">C Major Scale</a></li>
@@ -162,11 +161,11 @@ div.feedbackItem.off_note {
 
 		<li class="sep"></li>
 
-		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_1.js&testPitch=false&testRhythm=true&testDuration=true">Rhythm Exercise 1</a></li>
-		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_2.js&testPitch=false&testRhythm=true&testDuration=true">Rhythm Exercise 2</a></li>
-		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_3.js&testPitch=false&testRhythm=true&testDuration=true">Rhythm Exercise 3</a></li>
-		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_4.js&testPitch=false&testRhythm=true&testDuration=true">Rhythm Exercise 4</a></li>
-		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_5.js&testPitch=false&testRhythm=true&testDuration=true">Rhythm Exercise 5</a></li>
+		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_1.js&testPitch=true&testRhythm=true&testDuration=true">Rhythm Exercise 1</a></li>
+		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_2.js&testPitch=true&testRhythm=true&testDuration=true">Rhythm Exercise 2</a></li>
+		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_3.js&testPitch=true&testRhythm=true&testDuration=true">Rhythm Exercise 3</a></li>
+		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_4.js&testPitch=true&testRhythm=true&testDuration=true">Rhythm Exercise 4</a></li>
+		<li><a href="?exercise_file=rhythm_101/rhythm_exercise_5.js&testPitch=true&testRhythm=true&testDuration=true">Rhythm Exercise 5</a></li>
 
 		<li class="sep"></li>
 

@@ -18,9 +18,10 @@ function generateExerciseForKotlin() {
 
 function generateExerciseEasyScoreCode() {
     return {
-        title: "C Major Scale",
+        title: "F Major Scale",
         author: "Practicing Musician Example Author",
         time_signature: "4/4",
+        tempo: 120,
         systems:[{bars: [
             {
                 extra_attributes:{time_signature:'4/4',clef:'treble',key_signature:"F"},
@@ -30,5 +31,6 @@ function generateExerciseEasyScoreCode() {
                             groups:[{notes:['C5/q','D5/q','E5/q','F5/q']}]
                         },
             ]}],
+        copyrightInfo: "© Copyright 2017"
         }
 }

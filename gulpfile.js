@@ -4,7 +4,12 @@ var exec = require('child_process').exec;
 var sass = require('gulp-sass');
 
 gulp.on('stop', function() {  process.exit(0); });
-gulp.on('err', function() { process.exit(1); });
+gulp.on('err', function() { 
+	console.log("Error:")
+	console.log(err);
+	process.exit(1);
+ });
+
 
 gulp.task('compile_kotlin', [], function () {
   return exec('kotlinc-js src -output tmp/PracticingMusician.js', function (err, stdout, stderr) {
@@ -65,6 +70,7 @@ gulp.task('copy_audio', function () {
 // gulp.task('cleanup', [], function() {})
 
 gulp.task('default', [
+  'copy_test_site',
   'compile_kotlin',
   'copy_kotlin_compiled_code',
   'copy_js_files',
