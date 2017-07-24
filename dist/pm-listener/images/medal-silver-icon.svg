@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="125px" height="125px" viewBox="0 0 125 125" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>medal-silver-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="62.5" cy="62.5" r="62.5"></circle>
+        <circle id="path-3" cx="54" cy="54" r="54"></circle>
+        <circle id="path-5" cx="62.5" cy="62.5" r="62.5"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="medal-silver-icon">
+            <g id="Rectangle-2">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#BCC7CD" xlink:href="#path-1"></use>
+                <rect fill="#899DA0" mask="url(#mask-2)" x="63" y="-4" width="62" height="144"></rect>
+            </g>
+            <g id="Rectangle" transform="translate(9.000000, 9.000000)">
+                <mask id="mask-4" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <use id="Mask" fill="#D4DADE" xlink:href="#path-3"></use>
+                <rect fill="#BCC7CD" style="mix-blend-mode: darken;" mask="url(#mask-4)" x="54" y="-8" width="59" height="126"></rect>
+            </g>
+            <g id="Path-2">
+                <mask id="mask-6" fill="white">
+                    <use xlink:href="#path-5"></use>
+                </mask>
+                <g id="Mask"></g>
+                <polygon fill-opacity="0.3" fill="#165463" mask="url(#mask-6)" points="95 39 135 79 84.7172345 136 71 130 31 90 46 88 41 54 31 44 45 48 57 38 78 59 78 54 68 44"></polygon>
+            </g>
+            <text id="II" font-family="ChalkboardSE-Bold, Chalkboard SE" font-size="80" font-weight="bold" fill="#EDF2F3">
+                <tspan x="25.7845304" y="91">II</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
