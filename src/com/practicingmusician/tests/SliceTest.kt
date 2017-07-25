@@ -39,6 +39,7 @@ class MockParameters : AppSetupParameters {
 
   override val minDurationInBeats: Double = 0.24
   override val largestDurationRatioDifference: Double = 0.5
+  override val largestBeatDifference = 1.0
 
   override val comparisonFlags = ComparisonFlags(testPitch = true, testRhythm = true, testDuration = true)
 }

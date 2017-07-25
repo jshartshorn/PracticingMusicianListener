@@ -21,7 +21,7 @@ class IncrementalComparisonEngine {
 
   //largest differences before notes become "Missed"
   var largestDurationRatioDifference = 0.0
-  val largestBeatDifference = 1.0
+  var largestBeatDifference = 0.0
   /* State information about what has been compared */
 
 //    var results = CompareResults() //the results of the comparison
@@ -38,6 +38,7 @@ class IncrementalComparisonEngine {
   fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
 
     this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference
+    this.largestBeatDifference = listenerApp.parameters.largestBeatDifference
 
     val results = CompareResults()
     var curBeatPosition: Double = 0.0

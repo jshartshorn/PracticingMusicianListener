@@ -53,6 +53,7 @@ interface AppSetupParameters {
     val allowableDurationRatio : Double
 
     val largestDurationRatioDifference : Double
+    val largestBeatDifference : Double
     val minDurationInBeats : Double
 
     //which metrics to compare
