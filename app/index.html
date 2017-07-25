@@ -51,7 +51,7 @@ div.feedbackItem.off_note {
         <!-- this gets filled dynamically -->
     </div>
 </div>
-<script src="pm-listener/js/exercises/rhythm_101/rhythm_exercise_3.js"></script>
+<script src="pm-listener/js/exercises/song_library_1/song_5.js"></script>
 
 <script type="text/javascript">
     window.onload = function() {
@@ -69,7 +69,10 @@ div.feedbackItem.off_note {
 
             allowableCentsMargin : 40,
             allowableRhythmMargin : 0.25,
-            allowableDurationRatio : 0.7,
+            allowableDurationRatio : 0.35,
+
+            largestDurationRatioDifference: 0.2,
+            minDurationInBeats: 0.1,
 
             comparisonFlags: {
               testPitch: true,

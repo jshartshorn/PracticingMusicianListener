@@ -52,6 +52,9 @@ interface AppSetupParameters {
     val allowableRhythmMargin : Double
     val allowableDurationRatio : Double
 
+    val largestDurationRatioDifference : Double
+    val minDurationInBeats : Double
+
     //which metrics to compare
     val comparisonFlags : ComparisonFlags
 }

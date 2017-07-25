@@ -25,7 +25,7 @@ class IncrementalBufferManager {
 
     //the minimum duration a note is assumed to be
     //so, if there's a note that is 0.1 beats long, we assume that it's an anomaly and ignore it
-    val minDurationInBeats = 0.24
+    var minDurationInBeats : Double = 0.0
 
     //this stores the notes that have been converted from samples
 
@@ -40,6 +40,8 @@ class IncrementalBufferManager {
     //It attempts to do some smart analysis, including getting rid of short values
     //and then stitching the remaining like-values together
     fun convertSamplesBufferToNotes(samples : List<SampleCollection>) : List<NotePlacement> {
+
+        this.minDurationInBeats = listenerApp.parameters.minDurationInBeats
 
         val positionInSamples = 0
 

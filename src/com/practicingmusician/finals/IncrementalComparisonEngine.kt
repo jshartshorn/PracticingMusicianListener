@@ -20,7 +20,7 @@ external val listenerApp: ListenerApp
 class IncrementalComparisonEngine {
 
   //largest differences before notes become "Missed"
-  val largestDurationRatioDifference = 0.5
+  var largestDurationRatioDifference = 0.0
   val largestBeatDifference = 1.0
   /* State information about what has been compared */
 
@@ -36,6 +36,8 @@ class IncrementalComparisonEngine {
   //Comapares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
   fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
+
+    this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference
 
     val results = CompareResults()
     var curBeatPosition: Double = 0.0
@@ -145,13 +147,14 @@ class IncrementalComparisonEngine {
         if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
           pm_log("Test subject too short by " + durationDifferenceRatioRounded,0)
 
-          feedbackItemTypes.add(FeedbackMetric("duration", "-" + durationDifferenceRatioRounded))
+
+          feedbackItemTypes.add(FeedbackMetric("duration", "" + durationDifferenceRatioRounded))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else if (durationDifferenceRatio > (1.0 / listenerApp.parameters.allowableDurationRatio)) {
           pm_log("Test subject too long by " + durationDifferenceRatioRounded,0)
 
-          feedbackItemTypes.add(FeedbackMetric("duration", "+" + Math.abs(durationDifferenceRatioRounded)))
+          feedbackItemTypes.add(FeedbackMetric("duration", "" + Math.abs(durationDifferenceRatioRounded)))
 
           feedbackItem.throwSafeIncorrectSwitch()
         } else {
