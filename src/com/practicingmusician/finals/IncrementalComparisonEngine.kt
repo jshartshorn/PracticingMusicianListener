@@ -49,10 +49,10 @@ class IncrementalComparisonEngine {
     if (toTest.count() > 1) {
       doNotTestBeyond = toTest[toTest.count() - 2].positionInBeats
       //doNotTestBeyond = toTest.last().positionInBeats
-      if (!isCurrentlyRunning) {
+    }
+    if (!isCurrentlyRunning && toTest.count() > 0) {
         doNotTestBeyond += toTest.last().note.duration
       }
-    }
 
     val functionStartTimestamp = window.performance.now()
 
@@ -216,14 +216,7 @@ class IncrementalComparisonEngine {
         //testItem.note.noteNumber = idealItem.noteNumber
       }
 
-      //are they the same note?
-      if (idealItem.noteNumber == testItem.note.noteNumber) {
-        //now test the pitch
-      } else {
-        //it's a wrong note
-        pm_log("WRONG NOTE *&*&*&*&*&*&*&*")
-        feedbackItem.type = FeedbackType.Missed
-      }
+
 
       pm_log("Pitch : " + idealItem.getFrequency() + " | " + testItem.note.getFrequency(),0)
 
@@ -235,7 +228,18 @@ class IncrementalComparisonEngine {
       //test the intonation of the notes
       val avgFreq = testItem.note.avgFreq
 
+      if (avgFreq == null) {
+        feedbackItem.type = FeedbackType.Missed
+      }
+
       if (avgFreq != null && comparisonFlags.testPitch) {
+        //are they the same note?
+        if (idealItem.noteNumber != testItem.note.noteNumber) {
+          //it's a wrong note
+          pm_log("WRONG NOTE *&*&*&*&*&*&*&*")
+          feedbackItem.type = FeedbackType.Missed
+        }
+
         val idealItemFrequency = idealItem.getFrequency()
         val noteAboveFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber + 1)
         val noteBelowFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber - 1)

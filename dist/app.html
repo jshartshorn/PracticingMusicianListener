@@ -53,11 +53,15 @@
             userID: 1234,
             exerciseID: 1235,
 
-            databaseEndpoint: "localhost:8080/db",
+            databaseEndpoint: "db",
 
             allowableCentsMargin : 40,
-            allowableRhythmMargin : 0.25,
-            allowableLengthMargin : 0.25,
+            allowableRhythmMargin : 0.33,
+            allowableDurationRatio : 0.35,
+
+            largestBeatDifference: 1.0,
+            largestDurationRatioDifference: 0.2,
+            minDurationInBeats: 0.1,
 
             comparisonFlags: {
               testPitch: true,

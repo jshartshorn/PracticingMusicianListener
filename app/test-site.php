@@ -80,9 +80,12 @@ div.feedbackItem.off_note {
             databaseEndpoint: "/db",
 
             allowableCentsMargin : 40,
-            allowableRhythmMargin : 0.25,
-            //allowableLengthMargin : 0.25,
-			allowableDurationRatio : 0.65,
+            allowableRhythmMargin : 0.33,
+            allowableDurationRatio : 0.35,
+
+            largestBeatDifference: 1.0,
+            largestDurationRatioDifference: 0.2,
+            minDurationInBeats: 0.1,
 
             comparisonFlags: {
               testPitch: <?=$_GET['testPitch']?>,
