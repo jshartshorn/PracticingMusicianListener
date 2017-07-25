@@ -43,8 +43,9 @@ class IncrementalComparisonEngine {
 
 
     var doNotTestBeyond = 0.0
-    if (toTest.count() > 0) {
-      doNotTestBeyond = toTest.last().positionInBeats
+    if (toTest.count() > 1) {
+      doNotTestBeyond = toTest[toTest.count() - 2].positionInBeats
+      //doNotTestBeyond = toTest.last().positionInBeats
       if (!isCurrentlyRunning) {
         doNotTestBeyond += toTest.last().note.duration
       }
