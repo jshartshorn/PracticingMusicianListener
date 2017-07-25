@@ -18,7 +18,7 @@ data class NotePlacement(val note : Note, val positionInBeats : Double)
 class IncrementalBufferManager {
 
     //must be set so that it knows how long a beat should be
-    var tempo = 0.0
+    //var tempo = 0.0
 
     //sample rate should be constant
     val sampleRate = 44100.0
@@ -49,7 +49,7 @@ class IncrementalBufferManager {
 
         val functionStartTimestamp = window.performance.now()
 
-        val secondsPerBeat = 60.0 / tempo
+        val secondsPerBeat = 60.0 / listenerApp.globalTempo
 
         //get only the samples we haven't tested yet
         val samplesSublist = samples.subList(positionInSamples,samples.count())

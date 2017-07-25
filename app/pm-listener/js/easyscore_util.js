@@ -195,7 +195,7 @@ var EasyScoreUtil = function() {
         //setup the tempo marking
         var tempoMarkingObj = document.createElement("span")
         tempoMarkingObj.id = "tempoMarking"
-        tempoMarkingObj.innerHTML = this.exercise.tempo + "<br/> bpm"
+        tempoMarkingObj.innerHTML = listenerApp.globalTempo + "<br/> bpm"
         metronomeContainer.appendChild(tempoMarkingObj)
     }
 

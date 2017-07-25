@@ -23,6 +23,13 @@ external var listenerApp : ListenerApp
 external var audioAnalyzer : AudioAnalyzer
 
 public class ListenerApp {
+    var globalTempo = 120.0 //should be accessed by everyone
+      private set
+
+    fun setTempoForTests(t : Double) {
+      globalTempo = t
+    }
+
     lateinit var scoreUtil : EasyScoreUtil
     lateinit var generatedExercise : GeneratedExercise
 
@@ -38,7 +45,6 @@ public class ListenerApp {
 
         this.audioManager = AudioManager()
 
-
         this.exerciseManager = ExerciseManager(audioManager)
 
         this.scoreUtil = EasyScoreUtil()
@@ -53,9 +59,27 @@ public class ListenerApp {
 
         this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
 
+        //set the global tempo
+        this.globalTempo = this.generatedExercise.tempo
+
         this.exerciseManager.loadExercise()
 
         this.makeDomElements()
+    }
+
+    @JsName("alterPreferences")
+    fun alterPreferences(preferences : AppPreferences) {
+      exerciseManager.stop()
+      preferences.metronomeSound?.let {
+        UserSettings.metronomeAudioOn = it
+      }
+      preferences.bpm?.let {
+        console.log("Setting bpm to $it")
+        //set the tempo
+        globalTempo = it.toDouble()
+        //reset the tempo in the UI
+        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
+      }
     }
 
     fun makeDomElements() {

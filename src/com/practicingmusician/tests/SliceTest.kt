@@ -92,7 +92,6 @@ object SliceTest {
         val exerciseSamplesCollectionFromPitchTracker = pt.samples
 
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollectionFromPitchTracker)
 
@@ -115,7 +114,6 @@ object SliceTest {
 
     fun trueIncrementalBufferTest() {
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionWithSize1FromNotes(notes, tempo)
 
@@ -159,7 +157,6 @@ object SliceTest {
         println("****** Beginning true incremental test")
         //incremental
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
 
@@ -188,7 +185,6 @@ object SliceTest {
         println("****** Beginning incremental bulk test")
         //incremental
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
 
@@ -217,7 +213,6 @@ object SliceTest {
 
         //incremental
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
 
@@ -252,7 +247,6 @@ object SliceTest {
 
         //incremental
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(notes, tempo)
 
@@ -287,7 +281,6 @@ object SliceTest {
 
 
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val rushedNotes = listOf(Note(69,0.5),Note(81,(1.0 - listenerApp.parameters.allowableRhythmMargin - .01)),Note(69,1.0),Note(81,1.0))
 
@@ -314,7 +307,6 @@ object SliceTest {
 
 
         val incrementalBufferManager = IncrementalBufferManager()
-        incrementalBufferManager.tempo = tempo
 
         val notesWithShortNotes = //listOf(Note(69,0.5),Note(32,0.11),Note(34,0.11),Note(81,1.0),Note(69,1.0),Note(32,0.11),Note(34,0.11),Note(36,0.11),Note(81,1.0))
 
@@ -357,6 +349,7 @@ object SliceTest {
 
         listenerApp = ListenerApp()
         listenerApp.parameters = MockParameters()
+        listenerApp.setTempoForTests(this.tempo)
 
         //setup
         Note.createAllNotes()

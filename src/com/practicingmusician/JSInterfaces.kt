@@ -25,6 +25,11 @@ data class ComparisonFlags(
   val testDuration : Boolean
 )
 
+interface AppPreferences {
+  val metronomeSound : Boolean?
+  val bpm : Int?
+}
+
 interface AppSetupParameters {
     //DOM element IDs
     val notationContainerName : String

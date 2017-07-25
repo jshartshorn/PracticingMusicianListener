@@ -28,7 +28,7 @@ class Metronome : TimeKeeperSteppable {
     //length of the preroll
     var prerollBeats = 4.0
 
-    var tempo : Double = 120.0
+    //var tempo : Double = 120.0
 
     //the current beat the metronome is on
     var currentBeat : Int = 0
@@ -58,7 +58,7 @@ class Metronome : TimeKeeperSteppable {
 
     override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
         //calculate the size of a beat in ms, based on the tempo
-        val beatSize = 1000.0 * 60.0 / tempo
+        val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
 
         //this keeps it from playing an extra beat at the end that actually doesn't exist during the exercise
         if (timeKeeper.runForTime - timestamp < beatSize / 2) {

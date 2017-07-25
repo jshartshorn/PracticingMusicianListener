@@ -1,9 +1,7 @@
 package com.practicingmusician.exercises
 
-import com.practicingmusician.DialogParams
-import com.practicingmusician.ListenerApp
+import com.practicingmusician.*
 import com.practicingmusician.audio.AudioManager
-import com.practicingmusician.displaySiteDialog
 import com.practicingmusician.finals.IncrementalBufferManager
 import com.practicingmusician.finals.IncrementalComparisonEngine
 import com.practicingmusician.network.ListenerNetworkManager
@@ -11,7 +9,6 @@ import com.practicingmusician.steppable.Metronome
 import com.practicingmusician.steppable.PitchTracker
 import com.practicingmusician.steppable.TimeKeeperAnalyzer
 import com.practicingmusician.notes.Note
-import com.practicingmusician.pm_log
 import com.practicingmusician.steppable.TimeKeeper
 import kotlin.browser.window
 
@@ -83,9 +80,6 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
             val samplesLength = (pitchTracker.samples.count() / 44100.0)
             pm_log("Total samples recorded: " + pitchTracker.samples.count() + " length: " + samplesLength)
 
-            //set the bufferManager tempo so that it can do informed analysis
-            bufferManager.tempo = metronome.tempo
-
             //convert the buffer of samples into Note objects
             val notesFromSamplesBuffer = bufferManager.convertSamplesBufferToNotes(pitchTracker.samples)
             pm_log("Notes: ")
@@ -156,12 +150,13 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         val generatedExercise = listenerApp.generatedExercise
 
+        //apply any outside settings?
+        //TODO: load the UserSettings tempo
+
         //pm_log("Tempo: " + exercise.tempo)
         val exerciseDefinition = ExerciseDefinition()
-        exerciseDefinition.tempo = generatedExercise.tempo
         exerciseDefinition.prerollLengthInBeats = generatedExercise.count_off
 
-        //TODO: load the UserSettings tempo
 
         val jsNotes = generatedExercise.notes
 
@@ -177,15 +172,11 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
         currentExercise?.let {
             //sync the tempos from the exercise to the objects that need to know the tempo
-            metronome.tempo = it.tempo
-
             console.log("Testing time sig:" )
             console.log(generatedExercise)
 
             metronome.timeSignature = generatedExercise.time_signature
             metronome.prerollBeats = generatedExercise.count_off
-
-            bufferManager.tempo = it.tempo
 
             //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
             timeKeeper.runForTime = it.getLength() + it.prerollLength() + pitchTracker.latencyTime
