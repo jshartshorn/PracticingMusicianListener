@@ -108,7 +108,21 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                     listenerApp.addFeedbackItem(it)
                 }
 
-                displaySiteDialog(DialogParams("gold","Results","Overall accuracy: " + results.correct + "/" + results.attempted))
+                val iconType = fun () : String {
+                  val percentage = results.correct.toDouble() / results.attempted.toDouble()
+                  if (percentage > 0.85) {
+                    return "medal-gold-icon"
+                  }
+                  if (percentage > .70) {
+                    return "medal-silver-icon"
+                  }
+                  if (percentage > 0.55) {
+                    return "medal-bronze-icon"
+                  }
+                  return ""
+                }()
+
+                displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
 
                 //window.alert("Overall accuracy: " + results.correct + "/" + results.attempted)
 
