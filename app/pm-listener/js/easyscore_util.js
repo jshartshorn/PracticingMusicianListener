@@ -150,6 +150,18 @@ var EasyScoreUtil = function() {
         copyrightInfoContainer.innerHTML = this.exercise.copyrightInfo
 
         notationBody.appendChild(copyrightInfoContainer)
+
+        //remove the old logo, if it exists
+        var logoContainer = document.getElementById("notationPmLogo")
+        if (logoContainer != null) {
+          logoContainer.parentNode.removeChild(logoContainer)
+        }
+
+        //new one
+        logoContainer = document.createElement("div")
+        logoContainer.id = "notationPmLogo"
+
+        notationBody.appendChild(logoContainer)
     }
 
     this.setupMetronome = function(metronomeContainerName) {

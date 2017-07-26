@@ -53,6 +53,15 @@ div#copyrightContainer {
     margin-top: 60px;
 }
 
+div#notationPmLogo {
+  background-image: url($pm-image-path + "logo.png");
+  width: 32px;
+  height: 23px;
+  bottom: 0px;
+  left: 0px;
+  position: absolute;
+}
+
 /* Feedback */
 
 div.feedbackItem {

@@ -40,6 +40,14 @@ div#copyrightContainer {
   font-size: .8em;
   margin-top: 60px; }
 
+div#notationPmLogo {
+  background-image: url("../images/logo.png");
+  width: 32px;
+  height: 23px;
+  bottom: 0px;
+  left: 0px;
+  position: absolute; }
+
 /* Feedback */
 div.feedbackItem {
   width: 12px;
