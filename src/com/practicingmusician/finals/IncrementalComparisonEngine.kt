@@ -51,7 +51,7 @@ class IncrementalComparisonEngine {
       //doNotTestBeyond = toTest.last().positionInBeats
     }
     if (!isCurrentlyRunning && toTest.count() > 0) {
-        doNotTestBeyond += toTest.last().note.duration
+        doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
       }
 
     val functionStartTimestamp = window.performance.now()
@@ -91,7 +91,7 @@ class IncrementalComparisonEngine {
       }
 
       if (curBeatPosition >= doNotTestBeyond) {
-        //pm_log("Too far",10)
+        pm_log("Too far ($curBeatPosition vs $doNotTestBeyond)",0)
         break
       }
 
