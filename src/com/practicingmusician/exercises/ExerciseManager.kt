@@ -94,6 +94,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
                 val results = comparisonEngine.compareNoteArrays(listenerApp.parameters.comparisonFlags,it.notes,notesFromSamplesBuffer)
 
+                //get rid of the old feedback items on the screen
                 listenerApp.clearFeedbackItems()
 
                 //add the feedback items to the screen so that the user can see them
@@ -102,6 +103,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                     listenerApp.addFeedbackItem(it)
                 }
 
+                //determine which medal icon to show the user
                 val iconType = fun () : String {
                   val percentage = results.correct.toDouble() / results.attempted.toDouble()
                   if (percentage > 0.85) {
@@ -116,9 +118,8 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                   return ""
                 }()
 
+                //show the user the results
                 displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
-
-                //window.alert("Overall accuracy: " + results.correct + "/" + results.attempted)
 
                 //contact the server with a network request
                 ListenerNetworkManager.buildAndSendRequest(results)
@@ -191,7 +192,10 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     var lastAnalysisTimestamp = Double.MIN_VALUE
 
     //called from timeKeeper.analyzers
+    //this is where the incremental analysis goes on
     override fun analyze(timestamp: Double) {
+
+        //I think this is the offset that makes the latency works
         if (timestamp - lastAnalysisTimestamp > 200) {
             lastAnalysisTimestamp = timestamp
         } else {

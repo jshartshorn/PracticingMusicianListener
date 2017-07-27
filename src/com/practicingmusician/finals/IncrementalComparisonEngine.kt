@@ -162,6 +162,7 @@ class IncrementalComparisonEngine {
           pm_log("PERFECT DURATION",0)
         }
 
+        //see if the duration is too far outside of the bounds
         if (durationDifferenceRatio < largestDurationRatioDifference || durationDifferenceRatio > (1.0 / largestDurationRatioDifference)) {
           feedbackItem.type = FeedbackType.Missed
         }
@@ -194,7 +195,7 @@ class IncrementalComparisonEngine {
           pm_log("PERFECT")
         }
 
-        //TODO -- test to see if it's way outside the rhythm bounds
+        //test to see if it's too far outside the rhythm bounds
         if (Math.abs(distanceAway) > largestBeatDifference) {
           feedbackItem.type = FeedbackType.Missed
         }
@@ -284,6 +285,7 @@ class IncrementalComparisonEngine {
       curBeatPosition += idealValue.duration
 
 
+      //store the individual peroformance data on each note
       val notePerformance = IndividualNotePerformanceInfo(
         idealBeat = curBeatPosition,
         actualBeat = toTestBeatPositionAtIndexToTest,

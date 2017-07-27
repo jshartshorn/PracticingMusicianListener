@@ -60,7 +60,7 @@ class PitchTracker : TimeKeeperSteppable {
 
     fun stepWithFrequency(timestamp: Double, correlatedFrequency: Double, lengthOfBufferInSamples : Double, latencyTime : Int) {
 
-        val timestampOfPitch = timestamp - (lengthOfBufferInSamples / 44100.0 * 1000.0) - latencyTime
+        val timestampOfPitch = timestamp - (lengthOfBufferInSamples / this.sampleRate * 1000.0) - latencyTime
 
         //pm_log("Timestamp that the buffer starts at $timestampOfPitch")
 
