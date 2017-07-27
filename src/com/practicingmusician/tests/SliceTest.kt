@@ -178,7 +178,6 @@ object SliceTest {
             console.log(sublist)
 
             testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes,sublist))
-            //CompareEngine.compareNoteArrays(notes, sublist)
         }
 
         //testShouldBe(expectedResults,incrementalComparison.results)
@@ -203,8 +202,6 @@ object SliceTest {
         expectedResults.attempted = 4
 
         val incrementalComparison = IncrementalComparisonEngine()
-
-        testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData.map { it.note }))
 
         testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
 

@@ -1,6 +1,5 @@
 package com.practicingmusician.tests
 
-import com.practicingmusician.finals.BufferManager
 import com.practicingmusician.finals.NotePlacement
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.SampleCollection
@@ -11,10 +10,6 @@ import kotlin.js.Math
  */
 object TestBufferGenerator {
 
-    fun generateExactBufferFromNotes(notes : List<Note>, tempo : Double) : List<Double> {
-        return BufferManager.convertNotesToSamples(notes, tempo)
-    }
-
     fun generateExactBufferCollectionWithSize1FromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
         val secondsPerBeat = 60.0 / tempo
 
@@ -22,7 +17,7 @@ object TestBufferGenerator {
         val noteChangeIndexes = mutableListOf<Int>()
         notes.forEach {
             noteChangeIndexes.add(samples.count())
-            val numSamplesToCreate = it.duration * secondsPerBeat * BufferManager.sampleRate
+            val numSamplesToCreate = it.duration * secondsPerBeat * 44100.0
             val freq = it.getFrequency()
             for (i in 0 until numSamplesToCreate.toInt()) {
                 samples.add(freq)
@@ -46,7 +41,7 @@ object TestBufferGenerator {
 
         var notesMap = notes.map {
 
-            val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * BufferManager.sampleRate).toInt(),-1)
+            val collection = SampleCollection(it.getFrequency(),(it.duration * secondsPerBeat * 44100.0).toInt(),-1)
 
             collection
         }
