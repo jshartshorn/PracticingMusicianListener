@@ -25,10 +25,12 @@ data class ComparisonFlags(
   val testDuration : Boolean
 )
 
-interface AppPreferences {
-  val metronomeSound : Boolean?
-  val bpm : Int?
-}
+data class AppPreferences (
+    val metronomeSound : Boolean?,
+    val bpm : Int?,
+    val transposition : Int?,
+    val pitch : Double?
+)
 
 interface AppSetupParameters {
     //DOM element IDs
@@ -58,6 +60,12 @@ interface AppSetupParameters {
 
     //which metrics to compare
     val comparisonFlags : ComparisonFlags
+
+    //normally would get set in alterPreferences, but can get set here too
+    val metronomeSound : Boolean?
+    val bpm : Int?
+    val transposition : Int?
+    val pitch : Double?
 }
 
 interface AudioAnalyzer {

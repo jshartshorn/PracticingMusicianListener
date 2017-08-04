@@ -42,6 +42,11 @@ class MockParameters : AppSetupParameters {
   override val largestBeatDifference = 1.0
 
   override val comparisonFlags = ComparisonFlags(testPitch = true, testRhythm = true, testDuration = true)
+
+  override val bpm: Int = 120
+  override val metronomeSound = true
+  override val pitch = 440.0
+  override val transposition: Int = 0
 }
 
 object SliceTest {

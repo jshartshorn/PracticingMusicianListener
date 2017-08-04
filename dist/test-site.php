@@ -25,7 +25,7 @@ if (!isset($_GET['exercise_file'])) {
 
     <script src="pm-listener/js/audio.js"></script>
 
-    <script src="https://unpkg.com/vexflow/releases/vexflow-min.js"></script>
+    <script src="https://unpkg.com/vexflow@1.2.83/releases/vexflow-debug.js"></script>
     <script src="pm-listener/js/easyscore_util.js"></script>
 
     <script src="pm-listener/js/index.js"></script>

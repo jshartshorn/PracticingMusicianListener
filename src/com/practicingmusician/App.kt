@@ -42,7 +42,6 @@ public class ListenerApp {
 
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
-
         this.audioManager = AudioManager()
 
         this.exerciseManager = ExerciseManager(audioManager)
@@ -54,6 +53,10 @@ public class ListenerApp {
         Note.createAllNotes()
 
         audioAnalyzer.setupMedia()
+
+        //check the ones from alterPreferences first
+        val prefs = AppPreferences(parameters.metronomeSound,parameters.bpm,parameters.transposition,parameters.pitch)
+        this.alterPreferences(prefs)
 
         this.generatedExercise = generateExerciseForKotlin()
 
@@ -79,6 +82,14 @@ public class ListenerApp {
         globalTempo = it.toDouble()
         //reset the tempo in the UI
         this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
+      }
+      preferences.pitch?.let {
+        UserSettings.pitch = it
+      }
+      preferences.transposition?.let {
+        UserSettings.transposition = it
+
+        this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
       }
     }
 
