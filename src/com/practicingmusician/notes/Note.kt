@@ -7,7 +7,7 @@ import kotlin.js.Math.pow
 /**
  * Created by jn on 6/6/17.
  */
-class Note(value : Int, dur : Double, textVal : String = "none") : NotationItem {
+class Note(value : Int, dur : Double, textVal : String = "none") {
 
     //The MIDI note number
     val noteNumber = value

@@ -2,7 +2,6 @@ package com.practicingmusician.exercises
 
 import com.practicingmusician.ListenerApp
 import com.practicingmusician.UserSettings
-import com.practicingmusician.notes.NotationItem
 import com.practicingmusician.notes.Note
 
 /**
@@ -17,19 +16,16 @@ class ExerciseDefinition {
 
     var notes = mutableListOf<Note>()
 
-    var notationItems = mutableListOf<NotationItem>()
-
-    //var tempo : Double = 120.0
-
     var prerollLengthInBeats = 4.0
 
+    //the length of the exercise, in ms
     fun getLength() : Double {
         val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
         return notes.map { it.duration }.reduce { acc, d -> d + acc } * beatSize
     }
 
+    //the length of the preroll, in ms
     fun prerollLength(): Double {
-        //TODO: make it real
         val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
         return beatSize * this.prerollLengthInBeats
     }

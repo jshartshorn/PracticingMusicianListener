@@ -15,8 +15,8 @@ external var listenerApp : ListenerApp
 class Metronome : TimeKeeperSteppable {
 
     //this is the key that we use to store the sound in the AudioManager
-    final val downbeatAudioKey = "downbeatSound"
-    final val beatAudioKey = "beatSound"
+    val downbeatAudioKey = "downbeatSound"
+    val beatAudioKey = "beatSound"
 
     lateinit var audioManager : com.practicingmusician.audio.AudioManager
 
@@ -27,8 +27,6 @@ class Metronome : TimeKeeperSteppable {
 
     //length of the preroll
     var prerollBeats = 4.0
-
-    //var tempo : Double = 120.0
 
     //the current beat the metronome is on
     var currentBeat : Int = 0
@@ -105,6 +103,7 @@ class Metronome : TimeKeeperSteppable {
 
     }
 
+    //make sure the metronome doesn't move once it is turned off
     fun cancelAllUIUpdates() {
         timeoutKeys.reversed().forEach {
             pm_log("Cancelling item... $it")

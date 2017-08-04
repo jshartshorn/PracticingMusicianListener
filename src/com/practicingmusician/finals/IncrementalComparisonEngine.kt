@@ -51,7 +51,7 @@ class IncrementalComparisonEngine {
       //doNotTestBeyond = toTest.last().positionInBeats
     }
     if (!isCurrentlyRunning && toTest.count() > 0) {
-        doNotTestBeyond += toTest.last().note.duration
+        doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
       }
 
     val functionStartTimestamp = window.performance.now()
@@ -91,7 +91,7 @@ class IncrementalComparisonEngine {
       }
 
       if (curBeatPosition >= doNotTestBeyond) {
-        //pm_log("Too far",10)
+        pm_log("Too far ($curBeatPosition vs $doNotTestBeyond)",0)
         break
       }
 
@@ -162,6 +162,7 @@ class IncrementalComparisonEngine {
           pm_log("PERFECT DURATION",0)
         }
 
+        //see if the duration is too far outside of the bounds
         if (durationDifferenceRatio < largestDurationRatioDifference || durationDifferenceRatio > (1.0 / largestDurationRatioDifference)) {
           feedbackItem.type = FeedbackType.Missed
         }
@@ -194,7 +195,7 @@ class IncrementalComparisonEngine {
           pm_log("PERFECT")
         }
 
-        //TODO -- test to see if it's way outside the rhythm bounds
+        //test to see if it's too far outside the rhythm bounds
         if (Math.abs(distanceAway) > largestBeatDifference) {
           feedbackItem.type = FeedbackType.Missed
         }
@@ -284,6 +285,7 @@ class IncrementalComparisonEngine {
       curBeatPosition += idealValue.duration
 
 
+      //store the individual peroformance data on each note
       val notePerformance = IndividualNotePerformanceInfo(
         idealBeat = curBeatPosition,
         actualBeat = toTestBeatPositionAtIndexToTest,

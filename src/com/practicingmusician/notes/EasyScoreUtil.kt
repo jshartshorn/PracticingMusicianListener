@@ -4,9 +4,12 @@ import com.practicingmusician.GeneratedExercise
 
 /**
  * Created by jn on 6/27/17.
+ *
+ * This isn't getting used right now -- it turned out easier to just deal with the pure JS
+ *
  */
 class EasyScoreUtil_Kotlin  {
-    
+
     var scorePositionInitialX = 60
     var scorePositionInitialY = 20
 
@@ -45,8 +48,8 @@ class EasyScoreUtil_Kotlin  {
     //array of systems (really measures...) that have been added to the screen
     //useful for getting placement information later
     var systems = mutableListOf<dynamic>()
-    
-    
+
+
 //    fun setupOnElement(elementID : String) {
 //
 //    }
@@ -95,5 +98,5 @@ class EasyScoreUtil_Kotlin  {
 //    fun createFeedbackHTMLElement(items : Array<String>, x : Double, y : Double) {
 //
 //    }
-    
+
 }

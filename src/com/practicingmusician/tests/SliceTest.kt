@@ -42,6 +42,11 @@ class MockParameters : AppSetupParameters {
   override val largestBeatDifference = 1.0
 
   override val comparisonFlags = ComparisonFlags(testPitch = true, testRhythm = true, testDuration = true)
+
+  override val bpm: Int = 120
+  override val metronomeSound = true
+  override val pitch = 440.0
+  override val transposition: Int = 0
 }
 
 object SliceTest {
@@ -178,7 +183,6 @@ object SliceTest {
             console.log(sublist)
 
             testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes,sublist))
-            //CompareEngine.compareNoteArrays(notes, sublist)
         }
 
         //testShouldBe(expectedResults,incrementalComparison.results)
@@ -203,8 +207,6 @@ object SliceTest {
         expectedResults.attempted = 4
 
         val incrementalComparison = IncrementalComparisonEngine()
-
-        testShouldBe(expectedResults,CompareEngine.compareNoteArrays(notes, copyWithAvgData.map { it.note }))
 
         testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
 
