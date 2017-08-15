@@ -34,7 +34,14 @@
     window.jsonVersion = jsonConverter.xml_str2json(noDashes)
 
     var jsConverter = new jsMusicXMLConverter()
-    var converted = jsConverter.convertJSON(jsonVersion)
+    var converted = jsConverter.convertJSON(jsonVersion,
+      {
+        tempo: Number(document.getElementById('tempo').value),
+        time_signature: document.getElementById('time_signature').value,
+        countoff: Number(document.getElementById('countoff').value),
+        copyright: document.getElementById('copyright').value,
+      }
+    )
 
     //var converter = new PracticingMusician.com.practicingmusician.converter.MusicXMLConverter()
     //var converted = converter.convertJSON(jsonVersion)
@@ -44,16 +51,23 @@
 
 </script>
 
+Song info:<br/>
+Tempo: <input type="text" id="tempo"/><br/>
+Time signature: <input type="text" id="time_signature"/><br/>
+Count off: <input type="text" id="countoff"/><br/>
+Copyright: <input type="text" id="copyright"/><br/>
+<br/>
+
 Input XML:<br/>
-<textarea id="input_xml" width=30 value=''>
+<textarea id="input_xml" rows="20" cols="100" value=''>
 </textarea>
 
-<br/>
+<br/><br/>
 <input type="button" onclick='convert(document.getElementById("input_xml").value)' value="convert"/>
-<br/>
+<br/><br/>
 
 Output JavaScript:<br/>
-<textarea id="output_js"></textarea>
+<textarea id="output_js" rows="20" cols="100" ></textarea>
 
 </body>
 </html>
