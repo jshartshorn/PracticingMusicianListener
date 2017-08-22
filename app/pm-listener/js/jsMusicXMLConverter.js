@@ -234,6 +234,10 @@ var jsMusicXMLConverter = function() {
           var key = function() {
 
             if (note.rest != undefined) {
+              if (note.duration / divisions == 4.0) {
+                return "D5"
+              }
+              //console.warn("Rest duration: " + note.duration)
               return "B4"
             }
 
