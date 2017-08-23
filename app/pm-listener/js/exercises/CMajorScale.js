@@ -28,7 +28,18 @@ function generateExerciseEasyScoreCode() {
                 groups:[{notes:['C4/q','D4/q','E4/q','F4/q']}]
             },
             {
-                            groups:[{notes:['G4/q','A4/q','B4/q','C5/q']}]
+                            groups:[
+                                {
+                                  notes:[
+                                      {note:'G4/q',id:'bowedNote1',attributes:
+                                      [
+                                        {key: "bowing",
+                                        value: "down"}
+                                      ]
+                                    }
+                                    ,'A4/q','B4/q','C5/q'],
+                                }
+                              ]
                         },
             ],}],
         copyrightInfo: "© Copyright 2017"

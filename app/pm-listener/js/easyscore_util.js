@@ -300,14 +300,23 @@ var EasyScoreUtil = function() {
                   for (var noteIndex in brokenUpNotes) {
                       var note = brokenUpNotes[noteIndex]
 
+                      if (note.note == undefined) {
+                        note = {
+                          note: note,
+                          id: "note" + this.noteIDNumber,
+                          attributes: []
+                        }
+                        brokenUpNotes[noteIndex] = note
+                      }
+
                       if (noteIndex > 0) {
                           notesString += ","
                       }
-                      notesString += note
+                      notesString += note.note
 
                       //pm_log("Creating note id " + this.noteIDNumber,10)
 
-                      notesString += "[id=\"note" + this.noteIDNumber + "\"]"
+                      notesString += "[id=\"" + note.id + "\"]"
 
                       this.noteIDNumber++
                   }
@@ -319,6 +328,39 @@ var EasyScoreUtil = function() {
                   }
 
                   var notes = this.notes(notesString,additionalInfo)
+
+                  console.log("Notes:")
+                  console.log(notes)
+
+                  brokenUpNotes.forEach(function(noteInfo) {
+                    console.log("Searching for note: " + noteInfo.id)
+                    var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
+                    console.log("Found note:")
+                    console.log(note)
+                    noteInfo.attributes.forEach(function(attr) {
+                      switch(attr.key) {
+                        case "bowing":
+                          var symbol = function(bowDirection) {
+                            return bowDirection == 'up' ? 'a|' : 'am'
+                          }(attr.value)
+                          note.addArticulation(0, new VF.Articulation(symbol).setPosition(3));
+                        default:
+                          console.warn("Unknown note attribute: " + attr)
+                      }
+                    })
+                  })
+
+
+//                  notes[2].addArticulation(0, new VF.Articulation('a|').setPosition(3));
+//
+//                  var articulationPosition = function(stemDirection) {
+//                    if (stemDirection == -1) {
+//                      return 4
+//                    } else {
+//                      return 3
+//                    }
+//                  }(notes[3].stem_direction)
+//                  notes[3].addArticulation(0, new VF.Articulation('am').setPosition(articulationPosition));
 
                   //check if it's beamed
                   if (curGroup.beam === true) {
@@ -553,6 +595,23 @@ var EasyScoreUtil = function() {
 //                        	   ctx.lineTo(x + 2,y);
 //                        	   ctx.closePath();
 //                        	   ctx.stroke();
+    }
+
+    this.createArticulationElement = function() {
+      var obj = document.createElement('div')
+      obj.className = 'articulationItem'
+      obj.innerHTML = "V"
+
+      var x = 100
+      var y = 100
+
+      var articulationWidth = 10
+
+      obj.style.position = "absolute"
+      obj.style.top = "" + y  * this.contentScaleFactor + "px"
+      obj.style.left = "" + x * this.contentScaleFactor - (articulationWidth / 2) + "px"
+
+      document.getElementById(this.containerElementName).appendChild(obj)
     }
 
     this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y) {
