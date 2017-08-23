@@ -64,6 +64,10 @@ div#notationPmLogo {
 
     window.jsonVersion = jsonConverter.xml_str2json(noDashes)
 
+    convertJSON(jsonVersion)
+  }
+
+  function convertJSON(jsonVersion) {
     var jsConverter = new jsMusicXMLConverter()
     var converted = jsConverter.convertJSON(jsonVersion,
       {
@@ -82,7 +86,17 @@ div#notationPmLogo {
     eval(converted)
     //eval('window.durations = {q: 1.0,h: 2.0,w: 4.0 }')
 
+    document.getElementById('notationBody').innerHTML = ''
+
     window.renderNotation()
+  }
+
+  function convertTest() {
+    var testName = document.getElementById("testSelector").value
+    var testJSON = JSON.parse(testOptions[testName])
+
+    convertJSON(testJSON)
+
   }
 
 </script>
@@ -99,7 +113,18 @@ Input XML:<br/>
 </textarea>
 
 <br/><br/>
-<input type="button" onclick='convert(document.getElementById("input_xml").value)' value="convert"/>
+<input type="button" onclick='convert(document.getElementById("input_xml").value)' value="Convert input"/>
+<br/><br/>
+<input type="button" onclick='convertTest()' value="Convert test item">
+<select id="testSelector">
+  <option>Mary Had a Little Lamb</option>
+  <option>Tisket, Tasket</option>
+  <option>3/4</option>
+  <option>Percussion Clef</option>
+  <option>8th notes</option>
+  <option>bowing</option>
+  <option>lyric/drumming</option>
+</select>
 <br/><br/>
 
 Output JavaScript:<br/>

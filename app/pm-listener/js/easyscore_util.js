@@ -329,14 +329,14 @@ var EasyScoreUtil = function() {
 
                   var notes = this.notes(notesString,additionalInfo)
 
-                  console.log("Notes:")
-                  console.log(notes)
+                  //console.log("Notes:")
+                  //console.log(notes)
 
                   brokenUpNotes.forEach(function(noteInfo) {
-                    console.log("Searching for note: " + noteInfo.id)
+                    //console.log("Searching for note: " + noteInfo.id)
                     var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
-                    console.log("Found note:")
-                    console.log(note)
+                    //console.log("Found note:")
+                    //console.log(note)
                     noteInfo.attributes.forEach(function(attr) {
                       switch(attr.key) {
                         case "bowing":
@@ -344,12 +344,19 @@ var EasyScoreUtil = function() {
                             return bowDirection == 'up' ? 'a|' : 'am'
                           }(attr.value)
                           note.addArticulation(0, new VF.Articulation(symbol).setPosition(3));
+                          break
+                        case "textAnnotation":
+                          note.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3));
+                          break
                         default:
-                          console.warn("Unknown note attribute: " + attr)
+                          console.warn("Unknown note attribute: ")
+                          console.log(attr)
                       }
                     })
                   })
 
+
+                  //notes[2].addAnnotation(0, new VF.Annotation('L').setPosition(3));
 
 //                  notes[2].addArticulation(0, new VF.Articulation('a|').setPosition(3));
 //
