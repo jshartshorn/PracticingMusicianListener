@@ -39,9 +39,13 @@ class PMTuner : TimeKeeperSteppable {
 
       if (correlatedFrequency == undefined) return
 
-      val noteNum = Note.closestNoteToFrequency(correlatedFrequency)
+      val noteWithDiff = Note.closestNoteWithDiff(correlatedFrequency)
 
-      textElement.innerText = "$noteNum : $correlatedFrequency"
+      val noteName = noteWithDiff.note.noteName()
+
+      val diff = noteWithDiff.difference
+
+      textElement.innerHTML = "$noteName : $correlatedFrequency<br/>Diff: $diff"
 
     }
 

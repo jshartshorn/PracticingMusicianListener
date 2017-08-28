@@ -26,7 +26,25 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
         return Note.getFrequencyForNoteNumber(this.noteNumber)
     }
 
+    fun noteName() : String {
+      val baseNote = fun(value : Int) : Int {
+        if (value < 0) {
+            return (value + 12) % 12
+        } else {
+            return value % 12
+        }
+      }(this.noteNumber)
+
+      if (baseNote >= Note.noteNames.size) {
+          console.warn("Invalid note")
+          return "NaN"
+      }
+      return Note.noteNames[baseNote]
+    }
+
     companion object {
+        val noteNames = arrayOf("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+
         //get the note number of a certain frequency
         fun getNoteNumber(frequency : Double) : Int {
             if (frequency == -1.0)
@@ -49,13 +67,14 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             }
         }
 
+        //TODO: replace this with closetNoteWithDiff
         //given a frequency, find the closest available MIDI note number
         fun closestNoteToFrequency(frequency : Double) : Int {
             var closestFrequency = Double.MAX_VALUE
             var closestNoteValue = -1
 
             for (note in ALL_NOTES) {
-                var diff = abs(note.getFrequency() - frequency)
+                val diff = abs(note.getFrequency() - frequency)
                 if (diff < closestFrequency) {
                     closestFrequency = diff
                     closestNoteValue = note.noteNumber
@@ -67,6 +86,23 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             return closestNoteValue
         }
 
+        data class NoteWithDiff(val note : Note, val difference : Double)
+
+        fun closestNoteWithDiff(frequency: Double) : NoteWithDiff {
+            var closestFrequency = Double.MAX_VALUE
+            var closestNote : Note? = null
+
+            for (note in ALL_NOTES) {
+                val diff = abs(note.getFrequency() - frequency)
+                if (diff < closestFrequency) {
+                    closestFrequency = diff
+                    closestNote = note
+                } else if (diff > closestFrequency) {
+                    break
+                }
+            }
+            return NoteWithDiff(closestNote!!, closestFrequency)
+        }
 
 
 
