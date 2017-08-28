@@ -41,6 +41,11 @@ gulp.task('copy_html', function () {
     .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('copy_xml_converter',function() {
+  return gulp.src('app/xml_converter.html')
+    .pipe(gulp.dest('dist/'));
+})
+
 gulp.task('copy_test_site',function() {
   return gulp.src('app/test-site.php')
     .pipe(gulp.dest('dist/'));
@@ -71,6 +76,7 @@ gulp.task('copy_audio', function () {
 
 gulp.task('default', [
   'copy_test_site',
+	'copy_xml_converter',
   'compile_kotlin',
   'copy_kotlin_compiled_code',
   'copy_js_files',
