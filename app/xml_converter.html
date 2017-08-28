@@ -71,10 +71,8 @@ div#notationPmLogo {
     var jsConverter = new jsMusicXMLConverter()
     var converted = jsConverter.convertJSON(jsonVersion,
       {
-        tempo: Number(document.getElementById('tempo').value),
         time_signature: document.getElementById('time_signature').value,
         countoff: Number(document.getElementById('countoff').value),
-        copyright: document.getElementById('copyright').value,
       }
     )
 
@@ -102,10 +100,8 @@ div#notationPmLogo {
 </script>
 
 Song info:<br/>
-Tempo: <input type="text" id="tempo"/><br/>
 Time signature: <input type="text" id="time_signature"/><br/>
 Count off: <input type="text" id="countoff"/><br/>
-Copyright: <input type="text" id="copyright"/><br/>
 <br/>
 
 Input XML:<br/>

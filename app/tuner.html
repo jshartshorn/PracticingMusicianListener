@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practicing Musician Tuner</title>
+
+    <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="pm-listener/js/logger.js"></script>
+
+    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
+    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
+
+    <script src="pm-listener/js/audio.js"></script>
+
+
+</head>
+<body>
+
+<div id="tunerWindow">
+
+</div>
+<script src="pm-listener/js/exercises/CMajorScale.js"></script>
+
+<script type="text/javascript">
+    var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
+
+    window.onload = function() {
+        listenerApp.runTuner({})
+    }
+</script>
+
+</body>
+</html>
