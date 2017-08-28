@@ -24,10 +24,23 @@ var jsMusicXMLConverter = function() {
       //get the part out
       var part = input.scorepartwise.part
 
+      var tempo = //infoAttributes.tempo
+        function() {
+          var firstBar = part.measure[0]
+          if (firstBar.direction != undefined) {
+            console.log("First bar:")
+            var metronomeInfo = firstBar.direction.directiontype.metronome
+            if (metronomeInfo != undefined) {
+              return Number(metronomeInfo.perminute)
+            }
+          }
+          return 120
+        }()
+
       var notes = this.getNotesFromPart(part)
 
       var generatedKotlinInfo = {
-        tempo: infoAttributes.tempo,
+        tempo: tempo,
         count_off: infoAttributes.countoff,
         time_signature: function(fullTs) {
           return fullTs.split('/')[0]
@@ -46,8 +59,19 @@ var jsMusicXMLConverter = function() {
         return ""
       }()
       var time_signature = infoAttributes.time_signature
-      var tempo = infoAttributes.tempo
-      var copyrightInfo = infoAttributes.copyright
+
+      var copyrightInfo = function() {
+      //infoAttributes.copyright
+        if (input.scorepartwise.identification.rights != undefined) {
+          return input.scorepartwise.identification.rights
+        }
+        return ""
+      }()
+
+      console.log("Tempo: ")
+      console.log(tempo)
+      console.log("Copyright:")
+      console.log(copyrightInfo)
 
       //alternately, should be able to get copyright from
       //val copyrightInfo = input.scorepartwise.identification.rights

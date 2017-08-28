@@ -39,6 +39,22 @@ public class ListenerApp {
 
     lateinit var exerciseManager : ExerciseManager
 
+    lateinit var tuner : PMTuner
+
+    @JsName("runTuner")
+    fun runTuner(paramenters: dynamic) {
+      Note.createAllNotes()
+
+      audioAnalyzer.setupMedia()
+
+      val container = this.makeTunerDomElements()
+
+      tuner = PMTuner()
+      tuner.textElement = container
+      tuner.audioAnalyzer = audioAnalyzer
+
+      tuner.run()
+    }
 
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
@@ -91,6 +107,11 @@ public class ListenerApp {
 
         this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
       }
+    }
+
+    fun makeTunerDomElements() : HTMLElement {
+      val container = document.getElementById("tunerWindow") as HTMLElement
+      return container
     }
 
     fun makeDomElements() {
