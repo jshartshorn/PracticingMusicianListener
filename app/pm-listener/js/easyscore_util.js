@@ -99,7 +99,12 @@ var EasyScoreUtil = function() {
         indicatorCanvas.height = totalLines * this.barHeight * this.contentScaleFactor
 
         this.vf = new Vex.Flow.Factory({
-                renderer: {selector: elementID, width: actualWindowWidth * this.contentScaleFactor, height: totalLines * this.barHeight * this.contentScaleFactor}
+                renderer: {
+                  selector: elementID,
+                  width: actualWindowWidth * this.contentScaleFactor,
+                  height: totalLines * this.barHeight * this.contentScaleFactor,
+                  backend: VF.Renderer.Backends.SVG
+                  }
                 });
 
         this.vf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
