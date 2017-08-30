@@ -87,7 +87,7 @@ public class ListenerApp {
     }
 
     fun finishRunApp(parameters: AppSetupParameters) {
-      this.parameters = parameters
+        this.parameters = parameters
 
         this.audioManager = AudioManager()
 
@@ -102,6 +102,12 @@ public class ListenerApp {
 
         //check the ones from alterPreferences first
         val prefs = AppPreferences(parameters.metronomeSound,parameters.bpm,parameters.transposition,parameters.pitch)
+
+        val exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
+
+        //make sure it has a reference to the loaded exercise
+        this.scoreUtil.exercise = exercise
+
         this.alterPreferences(prefs)
 
         this.generatedExercise = generateExerciseForKotlin()

@@ -81,6 +81,8 @@ var PracticingMusician = function (_, Kotlin) {
     Note$Companion_getInstance().createAllNotes();
     audioAnalyzer.setupMedia();
     var prefs = new AppPreferences(parameters.metronomeSound, parameters.bpm, parameters.transposition, parameters.pitch);
+    var exercise = generateExerciseEasyScoreCode();
+    this.scoreUtil.exercise = exercise;
     this.alterPreferences(prefs);
     this.generatedExercise = generateExerciseForKotlin();
     this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);

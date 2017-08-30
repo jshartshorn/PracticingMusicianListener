@@ -1,1 +1,73 @@
-function loadXml(e,o){console.log("Loading XML from url: "+e),$.ajax({type:"GET",url:e,dataType:"text",success:function(e){console.log("Success!"),o(e)},failure:function(e){console.log("Failure.."),console.log(e)}})}function networkRequest(e,o){console.log("Object data:"),console.log(o),$.ajax({url:e,type:"POST",contentType:"application/json",data:JSON.stringify(o),dataType:"json",success:function(e){console.log("Network request success:"),console.log(e)},failure:function(e){console.log("Network request failure:"),console.log(e)}})}var listenerApp=new PracticingMusician.com.practicingmusician.ListenerApp,resizeTimeoutID;window.onresize=function(){clearTimeout(resizeTimeoutID),resizeTimeoutID=setTimeout(function(){listenerApp.doResizeActions()},500)},$(document).ready(function(){}),void 0==window.displayFlashMessages&&(window.displayFlashMessages=function(e){e.forEach(function(e){alert(e.message)})}),void 0==window.displaySiteDialog&&(window.displaySiteDialog=function(e){alert("Image: "+e.imageType+"\nTitle: "+e.title+"\nMessage: "+e.message)});
+
+var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
+
+//Resizing code
+var resizeTimeoutID;
+window.onresize = function() {
+    clearTimeout(resizeTimeoutID);
+    resizeTimeoutID = setTimeout(
+        function() {
+            listenerApp.doResizeActions()
+        }
+    , 500);
+}
+
+function loadXml(url,callback) {
+  console.log("Loading XML from url: " + url)
+  $.ajax({
+    type: "GET",
+    url: url,
+    dataType: "text",
+    success: function(result) {
+      console.log("Success!")
+      //console.log(result)
+      callback(result)
+    },
+    failure: function(result) {
+      console.log("Failure..")
+      console.log(result)
+    }
+   });
+}
+
+function networkRequest(url, dataObject) {
+    console.log("Object data:")
+    console.log(dataObject)
+    $.ajax({
+        url:url,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(dataObject),
+        dataType: 'json',
+        success: function(result) {
+            console.log("Network request success:")
+            console.log(result)
+        },
+        failure: function(result) {
+            console.log("Network request failure:")
+            console.log(result)
+        }
+    })
+}
+
+$(document).ready(function(){
+    //networkRequest("https://google.com",{data: "test"})
+})
+
+if (window.displayFlashMessages == undefined) {
+  window.displayFlashMessages = function(msg) {
+    msg.forEach(function(it) {
+          alert(it.message)
+    })
+  }
+}
+
+if (window.displaySiteDialog == undefined) {
+  window.displaySiteDialog = function(params) {
+    alert(
+      "Image: " + params.imageType + "\n" +
+      "Title: " + params.title + "\n" +
+      "Message: " + params.message
+      );
+  }
+}

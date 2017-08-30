@@ -20,7 +20,7 @@ gulp.task('compile_kotlin', [], function () {
 
 gulp.task('copy_js_files', function () {
   return gulp.src('./app/pm-listener/js/**/*.js')
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('dist/pm-listener/js/'));
 });
 
