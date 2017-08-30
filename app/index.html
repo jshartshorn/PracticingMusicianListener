@@ -20,6 +20,8 @@
 
     <script src="pm-listener/js/index.js"></script>
 
+    <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
+
     <style>
       /* override CSS for the SASS code */
 div.feedbackItem.incorrect_note {
@@ -63,6 +65,7 @@ div#notationPmLogo {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
+            xmlUrl: "pm-listener/xml/WithTempo2.xml",
             audioAssetPath: "pm-listener/audio/",
 
             notationContainerName : "notationBody",

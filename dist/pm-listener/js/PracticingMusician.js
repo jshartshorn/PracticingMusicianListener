@@ -1,1 +1,2751 @@
-if("undefined"==typeof kotlin)throw new Error("Error loading module 'PracticingMusician'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'PracticingMusician'.");var PracticingMusician=function(t,e){"use strict";function o(){this.globalTempo_qfs5dx$_0=120,this.scoreUtil=this.scoreUtil,this.generatedExercise=this.generatedExercise,this.parameters=this.parameters,this.audioManager=this.audioManager,this.exerciseManager=this.exerciseManager,this.tuner=this.tuner,this.currentFeedbackItems=e.kotlin.collections.ArrayList_init_ww73n8$()}function n(t){return!0}function i(t,e,o){this.imageType=t,this.title=e,this.message=o}function r(t,e){this.type=t,this.message=e}function a(t,e,o){this.testPitch=t,this.testRhythm=e,this.testDuration=o}function s(t,e,o,n){this.metronomeSound=t,this.bpm=e,this.transposition=o,this.pitch=n}function l(){}function c(){}function p(){}function u(){}function h(t,e){this.noteNumber=t,this.duration=e}function m(t,e){this.x=t,this.y=e}function d(){this.state_pxjm2z$_0=tt(),this.textElement=this.textElement,this.audioAnalyzer=this.audioAnalyzer,this.timekeeper=new Y,this.timekeeper.steppables.add_11rb$(this)}function f(){Ot=this,this.metronomeAudioOn_fgazsk$_0=!0,this.transposition=0,this.tempo=-1,this.pitch=440}function g(){return null===Ot&&new f,Ot}function y(){this.loadedAudio=e.kotlin.collections.LinkedHashMap_init_q3lmfv$(),this.timeoutKeys=e.kotlin.collections.ArrayList_init_ww73n8$()}function _(t,o){return function(){return pm_log("(( Playing..."+e.toString(t),6),null!=o&&(o.currentTime=0),null!=o?o.play():null}}function v(t){return!0}function $(){this.tempo=120,this.time_signature=4,this.count_off=8;var t=e.kotlin.collections.ArrayList_init_ww73n8$();this.notes=e.kotlin.collections.copyToArray(t)}function b(){this.documentInfo=e.kotlin.collections.LinkedHashMap_init_q3lmfv$(),this.output=""}function w(){this.notes=e.kotlin.collections.ArrayList_init_ww73n8$(),this.prerollLengthInBeats=4}function S(t){this.currentExercise=null,this.timeKeeper=new Y,this.metronome=new J,this.pitchTracker=new X,this.bufferManager=new L,this.comparisonEngine=new q,this.audioManager=t,pm_log("Init"),this.lastAnalysisTimestamp=gt.MIN_VALUE}function x(t){return function(){var e=t.correct/t.attempted;return e>.85?"medal-gold-icon":e>.7?"medal-silver-icon":e>.55?"medal-bronze-icon":""}}function A(t){return function(o){var n;t.audioManager.cancelAllAudio(),t.metronome.cancelAllUIUpdates();var r=t.pitchTracker.samples.size/44100;pm_log("Total samples recorded: "+e.toString(t.pitchTracker.samples.size)+" length: "+e.toString(r));var a=t.bufferManager.convertSamplesBufferToNotes_mtnj1d$(t.pitchTracker.samples);pm_log("Notes: ");var s;for(s=a.iterator();s.hasNext();){var l=s.next();pm_log("Note: "+e.toString(l.note.noteNumber)+" for "+e.toString(l.note.duration)+" at "+e.toString(l.positionInBeats))}if(null!=(n=t.currentExercise)){var c=t;pm_log("Comparing...");var p=c.comparisonEngine.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,n.notes,a);listenerApp.clearFeedbackItems();var u;for(u=p.feedbackItems.iterator();u.hasNext();){var h=u.next();listenerApp.addFeedbackItem_775p9r$(h)}var m=x(p)();displaySiteDialog(new i(m,"Results","Overall accuracy: "+e.toString(p.correct)+"/"+e.toString(p.attempted))),M().buildAndSendRequest_fhpv3e$(p)}}}function k(t,e){this.name=t,this.value=e}function N(t,e){$t.call(this),this.name$=t,this.ordinal$=e}function T(){T=function(){},Et=new N("Correct",0),zt=new N("Incorrect",1),Dt=new N("Missed",2)}function C(){return T(),Et}function P(){return T(),zt}function j(){return T(),Dt}function I(t,e,o){this.type=t,this.beat=e,this.feedbackItemType=o}function O(t){t.type!==j()&&(t.type=P())}function E(t,o){void 0===t&&(t=0),void 0===o&&(o=0),this.c=t,this.a=o,this.correct=this.c,this.attempted=this.a,this.feedbackItems=e.kotlin.collections.ArrayList_init_ww73n8$(),this.finalResults=e.kotlin.collections.ArrayList_init_ww73n8$()}function z(t,e,o,n,i,r,a,s){void 0===t&&(t=-1),void 0===e&&(e=-1),this.userID=t,this.exerciseID=e,this.correct=o,this.attempted=n,this.exerciseAveragePitch=i,this.exerciseAverageRhythm=r,this.exerciseAverageDuration=a,this.notePerformances=s}function D(t,e,o,n,i,r){this.idealBeat=t,this.actualBeat=e,this.idealPitch=o,this.actualPitch=n,this.idealDuration=i,this.actualDuration=r}function F(t,e){this.note=t,this.positionInBeats=e}function L(){this.sampleRate=44100,this.minDurationInBeats=0}function q(){this.largestDurationRatioDifference=0,this.largestBeatDifference=0}function B(){Ft=this,this.mapTest=Nt([kt("test",1),kt("test2",4)])}function M(){return null===Ft&&new B,Ft}function R(t){this.performance=t}function K(){this.scorePositionInitialX=60,this.scorePositionInitialY=20,this.scorePositionX=0,this.scorePositionY=0,this.positionInLine=0,this.scorePositionCurrentLine=0,this.measureCounter=0,this.exercise=null,this.generatedExercise=this.generatedExercise,this.vf=null,this.registry=null,this.score=null,this.voice=null,this.beam=null,this.contentScaleFactor=1,this.useScaling=!0,this.assumedCanvasWidth=1024,this.barWidth=200,this.barHeight=160,this.firstBarAddition=40,this.barsPerLine=4,this.noteIDNumber=0,this.systems=e.kotlin.collections.ArrayList_init_ww73n8$()}function U(t,e,o){H(),void 0===o&&(o="none"),this.noteNumber=t,this.duration=e,this.textValue=o,this.avgFreq=null}function W(){Lt=this}function H(){return null===Lt&&new W,Lt}function J(){this.downbeatAudioKey="downbeatSound",this.beatAudioKey="beatSound",this.audioManager=this.audioManager,this.state_t08vao$_0=tt(),this.timeSignature=4,this.prerollBeats=4,this.currentBeat=0,this.beatTimes=e.kotlin.collections.ArrayList_init_ww73n8$(),this.lastBeatOccuredAt=-1,this.timeoutKeys=e.kotlin.collections.ArrayList_init_ww73n8$()}function G(t){return!0}function V(t,e,o){this.freq=t,this.lengthInSamples=e,this.timestampInSamples=o}function X(){this.sampleRate=44100,this.lengthOfPrerollToIgnore=0,this.latencyTime=180,this.samples=e.kotlin.collections.ArrayList_init_ww73n8$(),this.samplesRecorded=0,this.state_j0gsl6$_0=tt()}function Y(){this.finishedActions=e.kotlin.collections.ArrayList_init_ww73n8$(),this.state_k2u27h$_0=tt(),this.steppables=e.kotlin.collections.ArrayList_init_ww73n8$(),this.analyzers=e.kotlin.collections.ArrayList_init_ww73n8$(),this.timeOffSet=-1,this.runForTime=4100}function Q(t,e){$t.call(this),this.name$=t,this.ordinal$=e}function Z(){Z=function(){},Mt=new Q("Stopped",0),Rt=new Q("Running",1),Kt=new Q("Completed",2)}function tt(){return Z(),Mt}function et(){return Z(),Rt}function ot(){return Z(),Kt}function nt(t){return function(e){t.step_14dthe$(e)}}function it(){}function rt(){}function at(){Ut=this}function st(){this.tracker=new X}function lt(){this.notationContainerName_7mvjxd$_0="notationBody",this.metronomeContainerName_7mvjxd$_0="metronomeContainer",this.userID_7mvjxd$_0=1,this.exerciseID_7mvjxd$_0=2,this.databaseEndpoint_7mvjxd$_0="",this.url_7mvjxd$_0="",this.audioAssetPath_7mvjxd$_0="",this.allowableCentsMargin_7mvjxd$_0=40,this.allowableRhythmMargin_7mvjxd$_0=.25,this.allowableDurationRatio_7mvjxd$_0=.5,this.minDurationInBeats_7mvjxd$_0=.24,this.largestDurationRatioDifference_7mvjxd$_0=.5,this.largestBeatDifference_7mvjxd$_0=1,this.comparisonFlags_7mvjxd$_0=new a(!0,!0,!0),this.bpm_7mvjxd$_0=120,this.metronomeSound_7mvjxd$_0=!0,this.pitch_7mvjxd$_0=440,this.transposition_7mvjxd$_0=0}function ct(){Wt=this,this.notes=It([new U(69,.5),new U(81,1),new U(69,1),new U(81,1)]),this.tempo=120,this.secondsPerBeat=60/this.tempo,this.sampleRate=44100,this.bufferLengthInSamples=1024}function pt(){Ht=this}function ut(){return null===Ht&&new pt,Ht}function ht(t){}var mt=e.kotlin.collections.toList_7wnvza$,dt=e.kotlin.ranges.until_dqglrj$,ft=e.kotlin.collections.removeAll_qafx1e$,gt=e.kotlin.js.internal.DoubleCompanionObject,yt=e.kotlin.collections.toList_us0mfu$,_t=e.kotlin.collections.reversed_7wnvza$,vt=e.kotlin.collections.toMutableList_4c7yge$,$t=e.kotlin.Enum,bt=e.kotlin.collections.average_l63kqw$,wt=e.kotlin.collections.zip_45mdf7$,St=e.kotlin.js.internal.IntCompanionObject,xt=e.kotlin.Pair,At=e.kotlin.collections.last_2p1efm$,kt=e.kotlin.to_ujzrz7$,Nt=e.kotlin.collections.mapOf_qfcya0$,Tt=e.kotlin.collections.get_indices_gzk92b$,Ct=e.kotlin.ranges.IntRange,Pt=e.kotlin.ranges.step_xsgg7u$,jt=e.kotlin.io.println_s8jyv4$,It=e.kotlin.collections.listOf_i5x0yv$;N.prototype=Object.create($t.prototype),N.prototype.constructor=N,Q.prototype=Object.create($t.prototype),Q.prototype.constructor=Q,Object.defineProperty(o.prototype,"globalTempo",{get:function(){return this.globalTempo_qfs5dx$_0},set:function(t){this.globalTempo_qfs5dx$_0=t}}),o.prototype.setTempoForTests_14dthe$=function(t){this.globalTempo=t},o.prototype.runTuner=function(t){H().createAllNotes(),audioAnalyzer.setupMedia();var e=this.makeTunerDomElements();this.tuner=new d,this.tuner.textElement=e,this.tuner.audioAnalyzer=audioAnalyzer,this.tuner.run()},o.prototype.runApp=function(t){this.audioManager=new y,this.exerciseManager=new S(this.audioManager),this.scoreUtil=new EasyScoreUtil,this.parameters=t,H().createAllNotes(),audioAnalyzer.setupMedia();var e=new s(t.metronomeSound,t.bpm,t.transposition,t.pitch);this.alterPreferences(e),this.generatedExercise=generateExerciseForKotlin(),this.generatedExercise=g().applyToExercise_k94nyn$(this.generatedExercise),this.globalTempo=this.generatedExercise.tempo,this.exerciseManager.loadExercise(),this.makeDomElements()},o.prototype.alterPreferences=function(t){var e,o,n,i;this.exerciseManager.stop(),null!=(e=t.metronomeSound)&&(g().metronomeAudioOn=e),null!=(o=t.bpm)&&(console.log("Setting bpm to "+o),this.globalTempo=o,this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)),null!=(n=t.pitch)&&(g().pitch=n),null!=(i=t.transposition)&&(g().transposition=i,this.generatedExercise=g().applyToExercise_k94nyn$(this.generatedExercise))},o.prototype.makeTunerDomElements=function(){var t;return e.isType(t=document.getElementById("tunerWindow"),HTMLElement)?t:e.throwCCE()},o.prototype.makeDomElements=function(){var t,o,n,i,r,a;pm_log("Making window w/ container: "+this.parameters.notationContainerName,10);var s=e.isType(t=document.getElementById(this.parameters.notationContainerName),HTMLElement)?t:e.throwCCE();s.className=s.className+"notationBodyContainer";var l=e.isType(o=document.createElement("canvas"),HTMLElement)?o:e.throwCCE();l.style.position="absolute",l.id="indicatorCanvas",null!=(n=document.getElementById(this.parameters.notationContainerName))&&n.appendChild(l),pm_log("Made indicator canvas on notation body: ",10),pm_log(e.isType(i=document.getElementById(this.parameters.notationContainerName),HTMLElement)?i:e.throwCCE());var c=e.isType(r=document.createElement("canvas"),HTMLElement)?r:e.throwCCE();c.style.position="absolute",c.id="feedbackCanvas",null!=(a=document.getElementById(this.parameters.notationContainerName))&&a.appendChild(c),this.makeScore_61zpoe$(this.parameters.notationContainerName)},o.prototype.makeScore_61zpoe$=function(t){this.scoreUtil=new EasyScoreUtil,this.scoreUtil.containerElementName=this.parameters.notationContainerName;var e=generateExerciseEasyScoreCode();this.scoreUtil.exercise=e,this.scoreUtil.generatedExercise=this.generatedExercise,pm_log("Setting up score on "+t),this.scoreUtil.setupOnElement(t),this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName),this.scoreUtil.buildTitleElements(t),this.scoreUtil.notateExercise()},o.prototype.toggleState=function(){var t;if(t=this.exerciseManager.timeKeeper.state,e.equals(t,tt())){if(!audioAnalyzer.isFunctional||!audioAnalyzer.hasMicrophoneAccess)return void displayFlashMessages([new r("danger","Audio not working.  Please make sure you are using either Chrome or Firefox and have enabled microphone access.")]);this.exerciseManager.createSteppables(),this.exerciseManager.setup(),this.exerciseManager.loadExercise(),this.exerciseManager.run()}else e.equals(t,et())?this.exerciseManager.stop():e.equals(t,ot())},o.prototype.doResizeActions=function(){var t,o;pm_log("Resized window w/ container: "+this.parameters.notationContainerName,10);var n=e.isType(t=document.getElementsByTagName("svg")[0],Element)?t:e.throwCCE();null!=(o=n.parentNode)&&o.removeChild(n),listenerApp.makeScore_61zpoe$(this.parameters.notationContainerName);var i=mt(listenerApp.currentFeedbackItems);listenerApp.clearFeedbackItems();var r;for(r=i.iterator();r.hasNext();){var a=r.next();listenerApp.addFeedbackItem_775p9r$(a)}},o.prototype.moveToPosition_14dthe$=function(t){var o,n=e.isType(o=document.getElementById("indicatorCanvas"),HTMLCanvasElement)?o:null;(null!=n?n.getContext("2d"):null).clearRect(0,0,null!=n?n.width:null,null!=n?n.height:null),this.scoreUtil.drawIndicatorLine(n,t)},o.prototype.highlightMetronomeItem_za3lpa$=function(t){var o,n,i,r,a,s=document.getElementsByClassName("metronomeItem");n=(o=dt(0,s.length)).first,i=o.last,r=o.step;for(var l=n;l<=i;l+=r){var c=e.isType(a=s[l],HTMLElement)?a:e.throwCCE();c.className="metronomeItem",t===l&&(c.className=c.className+" highlighted")}},o.prototype.clearFeedbackItems=function(){var t;ft(this.currentFeedbackItems,n),pm_log("Clearing");for(var o=document.getElementsByClassName("feedbackItem");o.length>0;){var i,r=e.isType(t=o[0],HTMLElement)?t:e.throwCCE();null!=(i=r.parentNode)&&i.removeChild(r)}},o.prototype.addFeedbackItem_775p9r$=function(t){-1===this.currentFeedbackItems.indexOf_11rb$(t)&&this.currentFeedbackItems.add_11rb$(t);var o=this.scoreUtil.getPositionForBeat(t.beat),n=this.scoreUtil.getFeedbackYPosition(o.y),i=this.scoreUtil,r=t.type,a=t.feedbackItemType;i.createFeedbackHTMLElement(r,e.kotlin.collections.copyToArray(a),o.x,n)},o.$metadata$={kind:e.Kind.CLASS,simpleName:"ListenerApp",interfaces:[]},i.$metadata$={kind:e.Kind.CLASS,simpleName:"DialogParams",interfaces:[]},i.prototype.component1=function(){return this.imageType},i.prototype.component2=function(){return this.title},i.prototype.component3=function(){return this.message},i.prototype.copy_6hosri$=function(t,e,o){return new i(void 0===t?this.imageType:t,void 0===e?this.title:e,void 0===o?this.message:o)},i.prototype.toString=function(){return"DialogParams(imageType="+e.toString(this.imageType)+", title="+e.toString(this.title)+", message="+e.toString(this.message)+")"},i.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.imageType)|0,t=31*t+e.hashCode(this.title)|0,t=31*t+e.hashCode(this.message)|0},i.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.imageType,t.imageType)&&e.equals(this.title,t.title)&&e.equals(this.message,t.message)},r.$metadata$={kind:e.Kind.CLASS,simpleName:"FlashMessage",interfaces:[]},r.prototype.component1=function(){return this.type},r.prototype.component2=function(){return this.message},r.prototype.copy_puj7f4$=function(t,e){return new r(void 0===t?this.type:t,void 0===e?this.message:e)},r.prototype.toString=function(){return"FlashMessage(type="+e.toString(this.type)+", message="+e.toString(this.message)+")"},r.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.type)|0,t=31*t+e.hashCode(this.message)|0},r.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.type,t.type)&&e.equals(this.message,t.message)},a.$metadata$={kind:e.Kind.CLASS,simpleName:"ComparisonFlags",interfaces:[]},a.prototype.component1=function(){return this.testPitch},a.prototype.component2=function(){return this.testRhythm},a.prototype.component3=function(){return this.testDuration},a.prototype.copy_ws0pad$=function(t,e,o){return new a(void 0===t?this.testPitch:t,void 0===e?this.testRhythm:e,void 0===o?this.testDuration:o)},a.prototype.toString=function(){return"ComparisonFlags(testPitch="+e.toString(this.testPitch)+", testRhythm="+e.toString(this.testRhythm)+", testDuration="+e.toString(this.testDuration)+")"},a.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.testPitch)|0,t=31*t+e.hashCode(this.testRhythm)|0,t=31*t+e.hashCode(this.testDuration)|0},a.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.testPitch,t.testPitch)&&e.equals(this.testRhythm,t.testRhythm)&&e.equals(this.testDuration,t.testDuration)},s.$metadata$={kind:e.Kind.CLASS,simpleName:"AppPreferences",interfaces:[]},s.prototype.component1=function(){return this.metronomeSound},s.prototype.component2=function(){return this.bpm},s.prototype.component3=function(){return this.transposition},s.prototype.component4=function(){return this.pitch},s.prototype.copy_ho9xxj$=function(t,e,o,n){return new s(void 0===t?this.metronomeSound:t,void 0===e?this.bpm:e,void 0===o?this.transposition:o,void 0===n?this.pitch:n)},s.prototype.toString=function(){return"AppPreferences(metronomeSound="+e.toString(this.metronomeSound)+", bpm="+e.toString(this.bpm)+", transposition="+e.toString(this.transposition)+", pitch="+e.toString(this.pitch)+")"},s.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.metronomeSound)|0,t=31*t+e.hashCode(this.bpm)|0,t=31*t+e.hashCode(this.transposition)|0,t=31*t+e.hashCode(this.pitch)|0},s.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.metronomeSound,t.metronomeSound)&&e.equals(this.bpm,t.bpm)&&e.equals(this.transposition,t.transposition)&&e.equals(this.pitch,t.pitch)},l.$metadata$={kind:e.Kind.INTERFACE,simpleName:"AppSetupParameters",interfaces:[]},c.$metadata$={kind:e.Kind.INTERFACE,simpleName:"AudioAnalyzer",interfaces:[]},p.$metadata$={kind:e.Kind.INTERFACE,simpleName:"GeneratedExercise",interfaces:[]},u.$metadata$={kind:e.Kind.INTERFACE,simpleName:"EasyScoreCode",interfaces:[]},h.$metadata$={kind:e.Kind.CLASS,simpleName:"SimpleJSNoteObject",interfaces:[]},h.prototype.component1=function(){return this.noteNumber},h.prototype.component2=function(){return this.duration},h.prototype.copy_5wr77w$=function(t,e){return new h(void 0===t?this.noteNumber:t,void 0===e?this.duration:e)},h.prototype.toString=function(){return"SimpleJSNoteObject(noteNumber="+e.toString(this.noteNumber)+", duration="+e.toString(this.duration)+")"},h.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.noteNumber)|0,t=31*t+e.hashCode(this.duration)|0},h.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.noteNumber,t.noteNumber)&&e.equals(this.duration,t.duration)},m.$metadata$={kind:e.Kind.CLASS,simpleName:"BeatPosition",interfaces:[]},m.prototype.component1=function(){return this.x},m.prototype.component2=function(){return this.y},m.prototype.copy_lu1900$=function(t,e){return new m(void 0===t?this.x:t,void 0===e?this.y:e)},m.prototype.toString=function(){return"BeatPosition(x="+e.toString(this.x)+", y="+e.toString(this.y)+")"},m.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.x)|0,t=31*t+e.hashCode(this.y)|0},m.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.x,t.x)&&e.equals(this.y,t.y)},Object.defineProperty(d.prototype,"state",{get:function(){return this.state_pxjm2z$_0},set:function(t){this.state_pxjm2z$_0=t}}),d.prototype.setup=function(){},d.prototype.start=function(){this.state=et()},d.prototype.stop=function(){this.state=tt()},d.prototype.step_zgkg49$=function(t,o){var n=this.audioAnalyzer.updatePitch(t);if(!e.equals(n,void 0)){var i=H().closestNoteToFrequency_14dthe$(n);this.textElement.innerText=i.toString()+" : "+n}},d.prototype.run=function(){this.start(),this.timekeeper.runForTime=gt.MAX_VALUE,this.timekeeper.start()},d.$metadata$={kind:e.Kind.CLASS,simpleName:"PMTuner",interfaces:[it]},Object.defineProperty(f.prototype,"metronomeAudioOn",{get:function(){return this.metronomeAudioOn_fgazsk$_0},set:function(t){pm_log("Metronome audio value changed",10),this.metronomeAudioOn_fgazsk$_0=t}}),f.prototype.applyToExercise_k94nyn$=function(t){var o,n=yt(t.notes),i=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(n,10));for(o=n.iterator();o.hasNext();){var r,a=o.next(),s=i.add_11rb$;t:do{if(0!==g().transposition){r=new h(a.noteNumber+g().transposition|0,a.duration);break t}r=a}while(!1);s.call(i,r)}return t.notes=e.kotlin.collections.copyToArray(i),-1!==this.tempo&&(t.tempo=this.tempo),t},f.$metadata$={kind:e.Kind.OBJECT,simpleName:"UserSettings",interfaces:[]};var Ot=null;y.prototype.loadAudioFile_puj7f4$=function(t,e){var o=new Audio(t);return this.loadedAudio.put_xwzc9p$(e,o),o},y.prototype.playAudioNow_61zpoe$=function(t){pm_log("**** (( Playing...",6);var e=this.loadedAudio.get_11rb$(t);null!=e&&(e.currentTime=0),null!=e&&e.play()},y.prototype.playAudio_bm4lxs$=function(t,e){var o=this.loadedAudio.get_11rb$(t),n=window.setTimeout(_(e,o),e);this.timeoutKeys.add_11rb$(n)},y.prototype.cancelAllAudio=function(){var t;for(t=_t(this.timeoutKeys).iterator();t.hasNext();){var e=t.next();pm_log("Cancelling item... "+e),window.clearTimeout(e)}ft(this.timeoutKeys,v)},y.$metadata$={kind:e.Kind.CLASS,simpleName:"AudioManager",interfaces:[]},$.$metadata$={kind:e.Kind.CLASS,simpleName:"GeneratedExerciseInfo",interfaces:[]},b.prototype.convertJSON=function(t){console.log("Going to convert json object:"),console.log(t),this.writeBoilerplate();var o=t.scorepartwise.work.worktitle;console.log("title: "+o);var n=t.scorepartwise.part;this.convertPart_za3rmp$(n);var i=new $,r=this.getNotesFromPart_za3rmp$(n);return i.notes=e.kotlin.collections.copyToArray(r),this.writeKotlinFunction_61zpoe$(JSON.stringify(i)),this.output},b.prototype.getNotesFromPart_za3rmp$=function(t){var o,n,i=e.kotlin.collections.ArrayList_init_ww73n8$(),r=Array.isArray(o=t.measure)?o:e.throwCCE();for(n=0;n!==r.length;++n){var a,s,l=r[n],c=Array.isArray(a=l.note)?a:e.throwCCE();for(s=0;s!==c.length;++s){c[s];var p=new h(60,1);i.add_11rb$(p)}}return i},b.prototype.convertPart_za3rmp$=function(t){},b.prototype.writeKotlinFunction_61zpoe$=function(t){this.output+="function generateExerciseForKotlin() {\n",this.output+="return ",this.output+=t,this.output+="}\n\n"},b.prototype.writeBoilerplate=function(){this.output+="var noteNumbers = { C4: 60, D4: 62, E4: 64, F4: 65, G4: 67, A4: 69, B4: 71, C5: 72 }\n\n var durations = {q: 1.0,h: 2.0,w: 4.0 }\n\n\n"},b.$metadata$={kind:e.Kind.CLASS,simpleName:"MusicXMLConverter",interfaces:[]},w.prototype.getLength=function(){var t,o=6e4/listenerApp.globalTempo,n=this.notes,i=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(n,10));for(t=n.iterator();t.hasNext();){var r=t.next();i.add_11rb$(r.duration)}var a=i.iterator();if(!a.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var s=a.next();a.hasNext();){var l=s;s=a.next()+l}return s*o},w.prototype.prerollLength=function(){return 6e4/listenerApp.globalTempo*this.prerollLengthInBeats},w.$metadata$={kind:e.Kind.CLASS,simpleName:"ExerciseDefinition",interfaces:[]},S.prototype.createSteppables=function(){this.timeKeeper=new Y,this.metronome=new J,this.pitchTracker=new X,this.bufferManager=new L,this.comparisonEngine=new q,this.lastAnalysisTimestamp=gt.MIN_VALUE},S.prototype.setup=function(){pm_log("Setup"),listenerApp.clearFeedbackItems(),this.metronome.audioManager=this.audioManager,this.timeKeeper.steppables.add_11rb$(this.metronome),this.timeKeeper.steppables.add_11rb$(this.pitchTracker),this.timeKeeper.analyzers.add_11rb$(this),this.timeKeeper.finishedActions.add_11rb$(A(this)),this.metronome.setup(),this.pitchTracker.setup()},S.prototype.run=function(){this.metronome.start(),this.pitchTracker.start(),this.timeKeeper.start()},S.prototype.stop=function(){this.timeKeeper.stop(),this.metronome.stop(),this.pitchTracker.stop()},S.prototype.loadExercise=function(){var t;pm_log("Loading exericse:");var o=listenerApp.generatedExercise,n=new w;n.prerollLengthInBeats=o.count_off;var i,r=o.notes,a=e.kotlin.collections.ArrayList_init_ww73n8$(r.length);for(i=0;i!==r.length;++i){var s=r[i];a.add_11rb$(new U(s.noteNumber,s.duration))}n.notes=vt(a),pm_log("Loaded "+e.toString(n.notes.size)+" notes"),pm_log(n.notes),this.currentExercise=n,null!=(t=this.currentExercise)&&(console.log("Testing time sig:"),console.log(o),this.metronome.timeSignature=o.time_signature,this.metronome.prerollBeats=o.count_off,this.timeKeeper.runForTime=t.getLength()+t.prerollLength()+this.pitchTracker.latencyTime,this.pitchTracker.lengthOfPrerollToIgnore=t.prerollLength(),pm_log("Loaded exercise of length "+e.toString(this.timeKeeper.runForTime)))},S.prototype.analyze_14dthe$=function(t){var o;if(t-this.lastAnalysisTimestamp>200&&(this.lastAnalysisTimestamp=t,null!=(o=this.currentExercise))){pm_log("Samples length: "+e.toString(this.pitchTracker.samples.size));var n=this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples),i=this.comparisonEngine.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,o.notes,n,!0);listenerApp.clearFeedbackItems();var r;for(r=i.feedbackItems.iterator();r.hasNext();){var a=r.next();listenerApp.addFeedbackItem_775p9r$(a)}}},S.$metadata$={kind:e.Kind.CLASS,simpleName:"ExerciseManager",interfaces:[rt]},k.$metadata$={kind:e.Kind.CLASS,simpleName:"FeedbackMetric",interfaces:[]},k.prototype.component1=function(){return this.name},k.prototype.component2=function(){return this.value},k.prototype.copy_puj7f4$=function(t,e){return new k(void 0===t?this.name:t,void 0===e?this.value:e)},k.prototype.toString=function(){return"FeedbackMetric(name="+e.toString(this.name)+", value="+e.toString(this.value)+")"},k.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.name)|0,t=31*t+e.hashCode(this.value)|0},k.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.name,t.name)&&e.equals(this.value,t.value)};var Et,zt,Dt;N.$metadata$={kind:e.Kind.CLASS,simpleName:"FeedbackType",interfaces:[$t]},N.values=function(){return[C(),P(),j()]},N.valueOf_61zpoe$=function(t){switch(t){case"Correct":return C();case"Incorrect":return P();case"Missed":return j();default:e.throwISE("No enum constant com.practicingmusician.finals.FeedbackType."+t)}},I.$metadata$={kind:e.Kind.CLASS,simpleName:"FeedbackItem",interfaces:[]},I.prototype.component1=function(){return this.type},I.prototype.component2=function(){return this.beat},I.prototype.component3=function(){return this.feedbackItemType},I.prototype.copy_4nfbc1$=function(t,e,o){return new I(void 0===t?this.type:t,void 0===e?this.beat:e,void 0===o?this.feedbackItemType:o)},I.prototype.toString=function(){return"FeedbackItem(type="+e.toString(this.type)+", beat="+e.toString(this.beat)+", feedbackItemType="+e.toString(this.feedbackItemType)+")"},I.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.type)|0,t=31*t+e.hashCode(this.beat)|0,t=31*t+e.hashCode(this.feedbackItemType)|0},I.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.type,t.type)&&e.equals(this.beat,t.beat)&&e.equals(this.feedbackItemType,t.feedbackItemType)},E.prototype.generateResultForDatabase=function(){var t,o=this.finalResults,n=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(o,10));for(t=o.iterator();t.hasNext();){var i=t.next();n.add_11rb$(i.idealPitch-i.actualPitch)}var r,a=bt(n),s=this.finalResults,l=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(s,10));for(r=s.iterator();r.hasNext();){var c=r.next();l.add_11rb$(c.idealBeat-c.actualBeat)}var p,u=bt(l),h=this.finalResults,m=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(h,10));for(p=h.iterator();p.hasNext();){var d=p.next();m.add_11rb$(d.idealDuration-d.actualDuration)}var f=bt(m),g=this.correct,y=this.attempted,_=this.finalResults;return new z(void 0,void 0,g,y,a,u,f,e.kotlin.collections.copyToArray(_))},E.$metadata$={kind:e.Kind.CLASS,simpleName:"CompareResults",interfaces:[]},z.$metadata$={kind:e.Kind.CLASS,simpleName:"ResultsForDatabase",interfaces:[]},z.prototype.component1=function(){return this.userID},z.prototype.component2=function(){return this.exerciseID},z.prototype.component3=function(){return this.correct},z.prototype.component4=function(){return this.attempted},z.prototype.component5=function(){return this.exerciseAveragePitch},z.prototype.component6=function(){return this.exerciseAverageRhythm},z.prototype.component7=function(){return this.exerciseAverageDuration},z.prototype.component8=function(){return this.notePerformances},z.prototype.copy_sixtfu$=function(t,e,o,n,i,r,a,s){return new z(void 0===t?this.userID:t,void 0===e?this.exerciseID:e,void 0===o?this.correct:o,void 0===n?this.attempted:n,void 0===i?this.exerciseAveragePitch:i,void 0===r?this.exerciseAverageRhythm:r,void 0===a?this.exerciseAverageDuration:a,void 0===s?this.notePerformances:s)},z.prototype.toString=function(){return"ResultsForDatabase(userID="+e.toString(this.userID)+", exerciseID="+e.toString(this.exerciseID)+", correct="+e.toString(this.correct)+", attempted="+e.toString(this.attempted)+", exerciseAveragePitch="+e.toString(this.exerciseAveragePitch)+", exerciseAverageRhythm="+e.toString(this.exerciseAverageRhythm)+", exerciseAverageDuration="+e.toString(this.exerciseAverageDuration)+", notePerformances="+e.toString(this.notePerformances)+")"},z.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.userID)|0,t=31*t+e.hashCode(this.exerciseID)|0,t=31*t+e.hashCode(this.correct)|0,t=31*t+e.hashCode(this.attempted)|0,t=31*t+e.hashCode(this.exerciseAveragePitch)|0,t=31*t+e.hashCode(this.exerciseAverageRhythm)|0,t=31*t+e.hashCode(this.exerciseAverageDuration)|0,t=31*t+e.hashCode(this.notePerformances)|0},z.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.userID,t.userID)&&e.equals(this.exerciseID,t.exerciseID)&&e.equals(this.correct,t.correct)&&e.equals(this.attempted,t.attempted)&&e.equals(this.exerciseAveragePitch,t.exerciseAveragePitch)&&e.equals(this.exerciseAverageRhythm,t.exerciseAverageRhythm)&&e.equals(this.exerciseAverageDuration,t.exerciseAverageDuration)&&e.equals(this.notePerformances,t.notePerformances)},D.$metadata$={kind:e.Kind.CLASS,simpleName:"IndividualNotePerformanceInfo",interfaces:[]},D.prototype.component1=function(){return this.idealBeat},D.prototype.component2=function(){return this.actualBeat},D.prototype.component3=function(){return this.idealPitch},D.prototype.component4=function(){return this.actualPitch},D.prototype.component5=function(){return this.idealDuration},D.prototype.component6=function(){return this.actualDuration},D.prototype.copy_15yvbs$=function(t,e,o,n,i,r){return new D(void 0===t?this.idealBeat:t,void 0===e?this.actualBeat:e,void 0===o?this.idealPitch:o,void 0===n?this.actualPitch:n,void 0===i?this.idealDuration:i,void 0===r?this.actualDuration:r)},D.prototype.toString=function(){return"IndividualNotePerformanceInfo(idealBeat="+e.toString(this.idealBeat)+", actualBeat="+e.toString(this.actualBeat)+", idealPitch="+e.toString(this.idealPitch)+", actualPitch="+e.toString(this.actualPitch)+", idealDuration="+e.toString(this.idealDuration)+", actualDuration="+e.toString(this.actualDuration)+")"},D.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.idealBeat)|0,t=31*t+e.hashCode(this.actualBeat)|0,t=31*t+e.hashCode(this.idealPitch)|0,t=31*t+e.hashCode(this.actualPitch)|0,t=31*t+e.hashCode(this.idealDuration)|0,t=31*t+e.hashCode(this.actualDuration)|0},D.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.idealBeat,t.idealBeat)&&e.equals(this.actualBeat,t.actualBeat)&&e.equals(this.idealPitch,t.idealPitch)&&e.equals(this.actualPitch,t.actualPitch)&&e.equals(this.idealDuration,t.idealDuration)&&e.equals(this.actualDuration,t.actualDuration)},F.$metadata$={kind:e.Kind.CLASS,simpleName:"NotePlacement",interfaces:[]},F.prototype.component1=function(){return this.note},F.prototype.component2=function(){return this.positionInBeats},F.prototype.copy_uilc1j$=function(t,e){return new F(void 0===t?this.note:t,void 0===e?this.positionInBeats:e)},F.prototype.toString=function(){return"NotePlacement(note="+e.toString(this.note)+", positionInBeats="+e.toString(this.positionInBeats)+")"},F.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.note)|0,t=31*t+e.hashCode(this.positionInBeats)|0},F.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.note,t.note)&&e.equals(this.positionInBeats,t.positionInBeats)},L.prototype.convertSamplesBufferToNotes_mtnj1d$=function(t){this.minDurationInBeats=listenerApp.parameters.minDurationInBeats;var o=e.kotlin.collections.ArrayList_init_ww73n8$();if(0===t.size)return e.kotlin.collections.emptyList_287e2$();var n=window.performance.now(),i=60/listenerApp.globalTempo,r=t.subList_vux9f0$(0,t.size);pm_log("Converting how many samples: "+e.toString(r.size));var a,s=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(r,10));for(a=r.iterator();a.hasNext();){var l=a.next();s.add_11rb$(l.lengthInSamples)}var c=s.iterator();if(!c.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var p=c.next();c.hasNext();)p=p+c.next()|0;var u=p/this.sampleRate/i;pm_log("Total length of samples in beats: "+u);var h,m=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(r,10));for(h=r.iterator();h.hasNext();){var d=h.next();m.add_11rb$(H().getNoteNumber_14dthe$(d.freq))}var f=wt(r,m);pm_log("After mapping and zipping: "+e.toString(window.performance.now()-n));var g,y=e.kotlin.collections.ArrayList_init_ww73n8$(),_={v:e.kotlin.collections.ArrayList_init_ww73n8$()},v={v:St.MIN_VALUE};for(g=f.iterator();g.hasNext();){var $=g.next();v.v!==$.second&&(y.add_11rb$(_.v),_.v=e.kotlin.collections.ArrayList_init_ww73n8$()),_.v.add_11rb$($),v.v=$.second}y.add_11rb$(_.v),pm_log("After making pairs: "+e.toString(window.performance.now()-n));var b,w=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(f,10));for(b=f.iterator();b.hasNext();){var S=b.next();w.add_11rb$(S.first.lengthInSamples)}var x=w.iterator();if(!x.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var A=x.next();x.hasNext();)A=A+x.next()|0;var k=A/this.sampleRate/i;pm_log("Total length of collected pairs in beats: "+k);var N,T=e.kotlin.collections.ArrayList_init_ww73n8$();for(N=y.iterator();N.hasNext();){var C=N.next();e.kotlin.collections.addAll_ipc267$(T,C)}var P,j=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(T,10));for(P=T.iterator();P.hasNext();){var I=P.next();j.add_11rb$(I.first.lengthInSamples)}var O=j.iterator();if(!O.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var E=O.next();O.hasNext();)E=E+O.next()|0;var z=E/this.sampleRate/i;pm_log("Total length of groups: "+z);var D,L=e.kotlin.collections.ArrayList_init_ww73n8$();for(D=y.iterator();D.hasNext();){var q=D.next();0!==q.size&&L.add_11rb$(q)}var B,M=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(L,10));for(B=L.iterator();B.hasNext();){var R,K,W=B.next(),J=M.add_11rb$,G=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(W,10));for(K=W.iterator();K.hasNext();){var V=K.next();G.add_11rb$(V.first.lengthInSamples)}var X=G.iterator();if(!X.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var Y=X.next();X.hasNext();)Y=Y+X.next()|0;if(Y<i*this.minDurationInBeats*this.sampleRate){var Q,Z=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(W,10));for(Q=W.iterator();Q.hasNext();){var tt=Q.next();Z.add_11rb$(new xt(tt.first,-100))}R=Z}else R=W;J.call(M,R)}var et=M;pm_log("Converted into number groups: "+e.toString(et.size)+" from original: "+e.toString(y.size),0);var ot,nt=e.kotlin.collections.ArrayList_init_ww73n8$();for(ot=et.iterator();ot.hasNext();){var it=ot.next();e.kotlin.collections.addAll_ipc267$(nt,it)}var rt,at=nt,st=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(at,10));for(rt=at.iterator();rt.hasNext();){var lt=rt.next();st.add_11rb$(lt.first.lengthInSamples)}var ct=st.iterator();if(!ct.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var pt=ct.next();ct.hasNext();)pt=pt+ct.next()|0;var ut=pt/this.sampleRate/i;pm_log("Total length of acceptable groups pairs in beats: "+ut),v.v=-1;var ht,mt={v:0},dt={v:0},ft=e.kotlin.collections.ArrayList_init_ww73n8$();for(ht=at.iterator();ht.hasNext();){var gt=ht.next();if(v.v!==gt.second){var yt=new U(v.v,mt.v/(i*this.sampleRate));dt.v=dt.v/mt.v,yt.avgFreq=dt.v,ft.add_11rb$(yt),mt.v=0,dt.v=0}mt.v=mt.v+gt.first.lengthInSamples|0,dt.v+=gt.first.freq*gt.first.lengthInSamples,v.v=gt.second}var _t=new U(v.v,mt.v/(i*this.sampleRate));dt.v=dt.v/mt.v,_t.avgFreq=dt.v,ft.add_11rb$(_t);var vt,$t=e.kotlin.collections.ArrayList_init_ww73n8$();for(vt=ft.iterator();vt.hasNext();){var bt=vt.next();0!==bt.duration&&$t.add_11rb$(bt)}o.addAll_brywnq$($t),pm_log("Notes after combining process: (from original: "+e.toString(at.size),0),pm_log("Turned samples into these notes (before purging): ",0);var At;for(At=ft.iterator();At.hasNext();){var kt=At.next();pm_log("Note: "+e.toString(kt.noteNumber)+" for "+e.toString(kt.duration),0)}var Nt,Tt,Ct=e.kotlin.collections.ArrayList_init_ww73n8$(),Pt=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(o,10)),jt=0;for(Nt=o.iterator();Nt.hasNext();){var It=Nt.next(),Ot=Pt.add_11rb$,Et=(Tt=jt,jt=Tt+1|0,Tt);t:do{if(-100===It.noteNumber){if(0===Et)break t;var zt=o.get_za3lpa$(Et-1|0);zt.duration=zt.duration+It.duration,Ct.add_11rb$(It)}}while(!1);Ot.call(Pt,void 0)}pm_log("Removing "+e.toString(Ct.size),0),o.removeAll_brywnq$(Ct);var Dt,Ft={v:0},Lt=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(o,10));for(Dt=o.iterator();Dt.hasNext();){var qt=Dt.next(),Bt=Lt.add_11rb$,Mt=new F(qt,Ft.v);Ft.v+=qt.duration,Bt.call(Lt,Mt)}var Rt,Kt=e.kotlin.collections.ArrayList_init_ww73n8$();for(Rt=Lt.iterator();Rt.hasNext();){var Ut=Rt.next();-100!==Ut.note.noteNumber&&Kt.add_11rb$(Ut)}var Wt=Kt;pm_log("Turned samples into these notes (after purging): ",0);var Ht;for(Ht=Wt.iterator();Ht.hasNext();){var Jt=Ht.next();pm_log("Note: "+e.toString(Jt.note.noteNumber)+" for "+e.toString(Jt.note.duration)+" at "+e.toString(100*Jt.positionInBeats/100),0)}pm_log("Difference after bogus purge: "+e.toString(ft.size-Wt.size|0),0);var Gt,Vt=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(o,10));for(Gt=o.iterator();Gt.hasNext();){var Xt=Gt.next();Vt.add_11rb$(Xt.duration)}var Yt=Vt.iterator();if(!Yt.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var Qt=Yt.next();Yt.hasNext();)Qt+=Yt.next();var Zt=Qt;pm_log("Length of notes in beats: "+Zt);var te=window.performance.now();return pm_log("Function total time: "+e.toString(te-n)),Wt},L.$metadata$={kind:e.Kind.CLASS,simpleName:"IncrementalBufferManager",interfaces:[]},q.prototype.compareNoteArrays_puujnc$=function(t,o,n,i){void 0===i&&(i=!1);var r,a,s,l,c,p,u,h,m,d,f;this.largestDurationRatioDifference=listenerApp.parameters.largestDurationRatioDifference,this.largestBeatDifference=listenerApp.parameters.largestBeatDifference;var g=new E,y=0,_=-1,v=0;n.size>1&&(v=n.get_za3lpa$(n.size-2|0).positionInBeats);var $=!i;$&&($=n.size>0),$&&(v=At(n).positionInBeats+At(n).note.duration);var b=window.performance.now();a=(r=dt(0,o.size)).first,s=r.last,l=r.step;for(var w=a;w<=s;w+=l){var S,x=o.get_za3lpa$(w),A=-1,N=0,T=gt.MAX_VALUE;p=(c=dt(0,n.size)).first,u=c.last,h=c.step;for(var P=p;P<=u;P+=h){S=n.get_za3lpa$(P).positionInBeats;var z=Math.abs(y-S);z<T&&(A=P,N=S,T=z)}if(y>=v){pm_log("Too far ("+y+" vs "+v+")",0);break}A<=_&&pm_log("Already tested here...... "+A+" <= "+_),_=A,pm_log("Going to compare ideal index "+w+" to test index "+A);var L=e.kotlin.collections.ArrayList_init_ww73n8$(),q=new I(C(),y,L);if(g.feedbackItems.add_11rb$(q),-1!==A){g.attempted=g.attempted+1|0;var B=x,M=n.get_za3lpa$(A);if(pm_log("Durations : "+e.toString(B.duration)+" | "+e.toString(M.note.duration),0),t.testDuration){var R=M.note.duration/B.duration,K=Math.round(100*R)/100;R<listenerApp.parameters.allowableDurationRatio?(pm_log("Test subject too short by "+e.toString(K),0),L.add_11rb$(new k("duration",""+e.toString(K))),O(q)):R>1/listenerApp.parameters.allowableDurationRatio?(pm_log("Test subject too long by "+e.toString(K),0),L.add_11rb$(new k("duration",""+e.toString(Math.abs(K)))),O(q)):pm_log("PERFECT DURATION",0),(R<this.largestDurationRatioDifference||R>1/this.largestDurationRatioDifference)&&(q.type=j())}pm_log("Starting points : "+e.toString(y)+" | "+e.toString(N));var W=-(y-N),J=Math.round(100*W)/100;if(t.testRhythm&&(W>listenerApp.parameters.allowableRhythmMargin?(pm_log("Test subject rushing"),L.add_11rb$(new k("speed","+"+e.toString(J))),O(q)):W<-listenerApp.parameters.allowableRhythmMargin?(pm_log("Test subject dragging"),L.add_11rb$(new k("speed",""+e.toString(J))),O(q)):pm_log("PERFECT"),Math.abs(W)>this.largestBeatDifference&&(q.type=j())),pm_log("Notes : "+e.toString(B.noteNumber)+" | "+e.toString(M.note.noteNumber)),M.note.noteNumber===(B.noteNumber+12|0)||M.note.noteNumber===(B.noteNumber-12|0)){var G=new U(B.noteNumber,M.note.duration);M.note.noteNumber<B.noteNumber?G.avgFreq=null!=(m=M.note.avgFreq)?2*m:null:G.avgFreq=null!=(d=M.note.avgFreq)?d/2:null,M=new F(G,M.positionInBeats)}pm_log("Pitch : "+e.toString(B.getFrequency())+" | "+e.toString(M.note.getFrequency()),0),pm_log("Avg freq of test item: "+e.toString(M.note.avgFreq));var V=M.note.avgFreq;if(null==V&&(q.type=j()),null!=V&&t.testPitch){B.noteNumber!==M.note.noteNumber&&(pm_log("WRONG NOTE *&*&*&*&*&*&*&*"),q.type=j());var X=B.getFrequency(),Y=H().getFrequencyForNoteNumber_za3lpa$(B.noteNumber+1|0),Q=H().getFrequencyForNoteNumber_za3lpa$(B.noteNumber-1|0);if(V-X>0){var Z=Y-X,tt=(V-X)/Z*100;pm_log("Sharp by "+Z+" ("+tt+" cents)"),tt>listenerApp.parameters.allowableCentsMargin&&(pm_log("Test subject sharp"),L.add_11rb$(new k("pitch","+"+e.toString(0|Z))),O(q))}else if(V-B.getFrequency()<0){var et=X-Q,ot=(X-V)/et*100;pm_log("Flat by "+et+" ("+ot+" cents)"),ot>listenerApp.parameters.allowableCentsMargin&&(pm_log("Test subject flat"),L.add_11rb$(new k("pitch","-"+e.toString(0|et))),O(q))}else pm_log("PERFECT")}q.type===C()&&(g.correct=g.correct+1|0);var nt=new D(y+=x.duration,N,B.getFrequency(),null!=(f=M.note.avgFreq)?f:-1,B.duration,M.note.duration);g.finalResults.add_11rb$(nt)}else pm_log("No index found to test",10)}var it=window.performance.now();return pm_log("Function total time: "+e.toString(it-b)),g},q.$metadata$={kind:e.Kind.CLASS,simpleName:"IncrementalComparisonEngine",interfaces:[]},B.prototype.makePostRequest_l6nar7$=function(t,e){networkRequest(t,e)},B.prototype.buildAndSendRequest_fhpv3e$=function(t){var e=t.generateResultForDatabase();e.userID=listenerApp.parameters.userID,e.exerciseID=listenerApp.parameters.exerciseID;var o=new R(e);M().makePostRequest_l6nar7$(listenerApp.parameters.databaseEndpoint,o)},B.$metadata$={kind:e.Kind.OBJECT,simpleName:"ListenerNetworkManager",interfaces:[]};var Ft=null;R.$metadata$={kind:e.Kind.CLASS,simpleName:"PerformanceWrapper",interfaces:[]},R.prototype.component1=function(){return this.performance},R.prototype.copy_w32kyh$=function(t){return new R(void 0===t?this.performance:t)},R.prototype.toString=function(){return"PerformanceWrapper(performance="+e.toString(this.performance)+")"},R.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.performance)|0},R.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.performance,t.performance)},K.$metadata$={kind:e.Kind.CLASS,simpleName:"EasyScoreUtil_Kotlin",interfaces:[]},U.prototype.getFrequency=function(){return H().getFrequencyForNoteNumber_za3lpa$(this.noteNumber)},W.prototype.getNoteNumber_14dthe$=function(t){return-1===t?-1:this.closestNoteToFrequency_14dthe$(t)},W.prototype.getFrequencyForNoteNumber_za3lpa$=function(t){return g().pitch*Math.pow(2,(t-69)/12)},W.prototype.createAllNotes=function(){var t,o,n,i;qt=e.kotlin.collections.ArrayList_init_ww73n8$(),o=(t=dt(30,110)).first,n=t.last,i=t.step;for(var r=o;r<=n;r+=i)qt.add_11rb$(new U(r,1))},W.prototype.closestNoteToFrequency_14dthe$=function(t){var e,o=gt.MAX_VALUE,n=-1;for(e=qt.iterator();e.hasNext();){var i=e.next(),r=Math.abs(i.getFrequency()-t);if(r<o)o=r,n=i.noteNumber;else if(r>o)break}return n},W.$metadata$={kind:e.Kind.OBJECT,simpleName:"Companion",interfaces:[]};var Lt=null;U.$metadata$={kind:e.Kind.CLASS,simpleName:"Note",interfaces:[]};var qt;Object.defineProperty(J.prototype,"state",{get:function(){return this.state_t08vao$_0},set:function(t){this.state_t08vao$_0=t}}),J.prototype.setup=function(){this.audioManager.loadAudioFile_puj7f4$(listenerApp.parameters.url+listenerApp.parameters.audioAssetPath+"Cowbell.wav",this.downbeatAudioKey),this.audioManager.loadAudioFile_puj7f4$(listenerApp.parameters.url+listenerApp.parameters.audioAssetPath+"Woodblock.wav",this.beatAudioKey)},J.prototype.start=function(){this.state=et()},J.prototype.stop=function(){this.state=tt()},J.prototype.step_zgkg49$=function(t,e){var o=6e4/listenerApp.globalTempo;if(e.runForTime-t<o/2)pm_log("Less than beat size..");else{-1===this.lastBeatOccuredAt&&(this.lastBeatOccuredAt=t-o);var n=this.lastBeatOccuredAt+o,i=t/o;this.updateIndicatorUI_14dthe$(i),t>=n&&(g().metronomeAudioOn&&(this.currentBeat%this.timeSignature==0?this.audioManager.playAudioNow_61zpoe$(this.downbeatAudioKey):this.audioManager.playAudioNow_61zpoe$(this.beatAudioKey)),this.lastBeatOccuredAt=n,this.updateMetronomeUI_za3lpa$(this.currentBeat),this.currentBeat=this.currentBeat+1|0)}},J.prototype.cancelAllUIUpdates=function(){var t;for(t=_t(this.timeoutKeys).iterator();t.hasNext();){var e=t.next();pm_log("Cancelling item... "+e),window.clearTimeout(e)}ft(this.timeoutKeys,G)},J.prototype.updateIndicatorUI_14dthe$=function(t){listenerApp.moveToPosition_14dthe$(t-this.prerollBeats)},J.prototype.updateMetronomeUI_za3lpa$=function(t){listenerApp.highlightMetronomeItem_za3lpa$(t%this.timeSignature)},J.prototype.getBeatOfTimestamp_14dthe$=function(t){var e,o,n,i,r,a=-1,s=-1;o=(e=Tt(this.beatTimes)).first,n=e.last,i=e.step;for(var l=o;l<=n;l+=i){var c=this.beatTimes.get_za3lpa$(l);if(c>t){if(-1==(r=l-1|0))return-1;a=this.beatTimes.get_za3lpa$(r),s=c;break}}return-1===a?-1:(t-a)/(s-a)},J.$metadata$={kind:e.Kind.CLASS,simpleName:"Metronome",interfaces:[it]};var Bt;V.$metadata$={kind:e.Kind.CLASS,simpleName:"SampleCollection",interfaces:[]},V.prototype.component1=function(){return this.freq},V.prototype.component2=function(){return this.lengthInSamples},V.prototype.component3=function(){return this.timestampInSamples},V.prototype.copy_mqu1mq$=function(t,e,o){return new V(void 0===t?this.freq:t,void 0===e?this.lengthInSamples:e,void 0===o?this.timestampInSamples:o)},V.prototype.toString=function(){return"SampleCollection(freq="+e.toString(this.freq)+", lengthInSamples="+e.toString(this.lengthInSamples)+", timestampInSamples="+e.toString(this.timestampInSamples)+")"},V.prototype.hashCode=function(){var t=0;return t=31*t+e.hashCode(this.freq)|0,t=31*t+e.hashCode(this.lengthInSamples)|0,t=31*t+e.hashCode(this.timestampInSamples)|0},V.prototype.equals=function(t){return this===t||null!==t&&"object"==typeof t&&Object.getPrototypeOf(this)===Object.getPrototypeOf(t)&&e.equals(this.freq,t.freq)&&e.equals(this.lengthInSamples,t.lengthInSamples)&&e.equals(this.timestampInSamples,t.timestampInSamples)},X.prototype.setup=function(){},X.prototype.start=function(){this.samplesRecorded=0,this.state=et()},X.prototype.stop=function(){this.state=tt()},Object.defineProperty(X.prototype,"state",{get:function(){return this.state_j0gsl6$_0},set:function(t){this.state_j0gsl6$_0=t}}),X.prototype.step_zgkg49$=function(t,o){var n=audioAnalyzer.updatePitch(t);pm_log("Timestamp: "+e.toString(t)),pm_log("Pitch: "+e.toString(n));var i=Bt/2;this.stepWithFrequency_88ee24$(t,n,i,this.latencyTime)},X.prototype.stepWithFrequency_88ee24$=function(t,o,n,i){var r=t-n/this.sampleRate*1e3-i-this.lengthOfPrerollToIgnore;pm_log("Timestamp accounting for preroll "+r);var a=n-this.samplesRecorded+44.1*r;a<0?pm_log("Not filling yet..."):(pm_log("Filling "+e.toString(a)+" with "+o),this.samples.add_11rb$(new V(o,0|a,this.samplesRecorded)),this.samplesRecorded=this.samplesRecorded+(0|a)|0)},X.$metadata$={kind:e.Kind.CLASS,simpleName:"PitchTracker",interfaces:[it]};var Mt,Rt,Kt;Q.$metadata$={kind:e.Kind.CLASS,simpleName:"TimeKeeperState",interfaces:[$t]},Q.values=function(){return[tt(),et(),ot()]},Q.valueOf_61zpoe$=function(t){switch(t){case"Stopped":return tt();case"Running":return et();case"Completed":return ot();default:e.throwISE("No enum constant com.practicingmusician.steppable.TimeKeeper.TimeKeeperState."+t)}},Object.defineProperty(Y.prototype,"state",{get:function(){return this.state_k2u27h$_0},set:function(t){if(t===ot()){pm_log("Completed",10),this.state_k2u27h$_0=tt();var e;for(e=this.finishedActions.iterator();e.hasNext();)e.next()(!0)}else this.state_k2u27h$_0=t}}),Y.prototype.start=function(){this.state=et(),this.requestNextStep()},Y.prototype.stop=function(){this.state=tt(),this.timeOffSet=-1},Y.prototype.requestNextStep=function(){window.requestAnimationFrame(nt(this))},Y.prototype.step_14dthe$=function(t){-1===this.timeOffSet&&(this.timeOffSet=t);var o=t-this.timeOffSet;pm_log("Calling step at : "+e.toString(o)+" (raw: "+t+")");var n;for(n=this.steppables.iterator();n.hasNext();){var i=n.next();i.state===et()&&i.step_zgkg49$(o,this)}var r;for(r=this.analyzers.iterator();r.hasNext();)r.next().analyze_14dthe$(o);o>=this.runForTime&&(pm_log("STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))",9),this.state=ot()),this.state!==tt()&&this.requestNextStep()},Y.prototype.currentTime=function(){return window.performance.now()-this.timeOffSet},Y.$metadata$={kind:e.Kind.CLASS,simpleName:"TimeKeeper",interfaces:[]},it.$metadata$={kind:e.Kind.INTERFACE,simpleName:"TimeKeeperSteppable",interfaces:[]},rt.$metadata$={kind:e.Kind.INTERFACE,simpleName:"TimeKeeperAnalyzer",interfaces:[]},at.prototype.runTest=function(){var t,o=new X;for(t=Pt(new Ct(24,1024),17).iterator();t.hasNext();)t.next();jt("Samples: "+e.toString(o.samples.size))},at.prototype.toggleTest=function(){},at.$metadata$={kind:e.Kind.OBJECT,simpleName:"PitchTrackerTest",interfaces:[]};var Ut=null;st.$metadata$={kind:e.Kind.CLASS,simpleName:"PitchTrackerTestClass",interfaces:[]},Object.defineProperty(lt.prototype,"notationContainerName",{get:function(){return this.notationContainerName_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"metronomeContainerName",{get:function(){return this.metronomeContainerName_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"userID",{get:function(){return this.userID_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"exerciseID",{get:function(){return this.exerciseID_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"databaseEndpoint",{get:function(){return this.databaseEndpoint_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"url",{get:function(){return this.url_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"audioAssetPath",{get:function(){return this.audioAssetPath_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"allowableCentsMargin",{get:function(){return this.allowableCentsMargin_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"allowableRhythmMargin",{get:function(){return this.allowableRhythmMargin_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"allowableDurationRatio",{get:function(){return this.allowableDurationRatio_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"minDurationInBeats",{get:function(){return this.minDurationInBeats_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"largestDurationRatioDifference",{get:function(){return this.largestDurationRatioDifference_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"largestBeatDifference",{get:function(){return this.largestBeatDifference_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"comparisonFlags",{get:function(){return this.comparisonFlags_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"bpm",{get:function(){return this.bpm_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"metronomeSound",{get:function(){return this.metronomeSound_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"pitch",{get:function(){return this.pitch_7mvjxd$_0}}),Object.defineProperty(lt.prototype,"transposition",{get:function(){return this.transposition_7mvjxd$_0}}),lt.$metadata$={kind:e.Kind.CLASS,simpleName:"MockParameters",interfaces:[l]},ct.prototype.testShouldBe_3xie8k$=function(t,o){jt("Results "+e.toString(o.correct)+" / "+e.toString(o.attempted)),t.attempted===o.attempted&&t.correct===o.correct?jt("---- PASSED -----"):(window.alert("Failed"),jt("----- ***** FAILED ****** -----"))},ct.prototype.pitchTrackerTest=function(){var t;jt("***** Pitch tracker test");var o,n=new X,i=ut().generateExactBufferCollectionFromNotes_jisecs$(this.notes,this.tempo);for(n.lengthOfPrerollToIgnore=4*this.secondsPerBeat*1e3,jt("Sending preroll"),n.stepWithFrequency_88ee24$(n.lengthOfPrerollToIgnore,1,44.1*n.lengthOfPrerollToIgnore,0),o=n.lengthOfPrerollToIgnore,jt("------"),t=i.iterator();t.hasNext();){var r=t.next();o+=r.lengthInSamples/44100*1e3,jt("sending "+e.toString(r.lengthInSamples)+" at "+o),n.stepWithFrequency_88ee24$(o,r.freq,r.lengthInSamples,0),jt("--------")}var a,s=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(i,10));for(a=i.iterator();a.hasNext();){var l=a.next();s.add_11rb$(l.lengthInSamples)}var c=s.iterator();if(!c.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var p=c.next();c.hasNext();)p=p+c.next()|0;var u,h=p,m=n.samples,d=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(m,10));for(u=m.iterator();u.hasNext();){var f=u.next();d.add_11rb$(f.lengthInSamples)}var g=d.iterator();if(!g.hasNext())throw new e.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");for(var y=g.next();g.hasNext();)y=y+g.next()|0;jt("Sample lengths :  "+h+" | "+y);var _=n.samples,v=(new L).convertSamplesBufferToNotes_mtnj1d$(_),$=ut().addAvgPitchToSamples_j4do5z$(v);jt("Comparing exact copies (incremental)...");var b=new E;b.correct=4,b.attempted=4;var w=new q;this.testShouldBe_3xie8k$(b,w.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,$))},ct.prototype.trueIncrementalBufferAndComparisonTest=function(){},ct.prototype.trueIncrementalBufferTest=function(){var t=new L,o=ut().generateExactBufferCollectionWithSize1FromNotes_jisecs$(this.notes,this.tempo);console.log("Starting with "+e.toString(o.size));for(var n=e.kotlin.collections.ArrayList_init_ww73n8$(),i=0;;){var r=i+700|0;r>=o.size&&(r=o.size);var a=o.subList_vux9f0$(i,r);n.addAll_brywnq$(a);var s=t.convertSamplesBufferToNotes_mtnj1d$(n);if(i=i+700|0,r===o.size)break;console.log("Notes after slicing:"),console.log(s)}},ct.prototype.trueIncrementalComparisonTest=function(){var t;jt("****** Beginning true incremental test");var o=new L,n=ut().generateExactBufferCollectionFromNotes_jisecs$(this.notes,this.tempo),i=o.convertSamplesBufferToNotes_mtnj1d$(n),r=ut().addAvgPitchToSamples_j4do5z$(i);jt("Comparing exact copies (incremental)...");var a=new q;t=r.size;for(var s=0;s<=t;s++){var l=r.subList_vux9f0$(0,s);console.log("Sublist:"+e.toString(l.size)),console.log(l),this.testShouldBe_3xie8k$.call(this,new E(l.size,l.size),a.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,l))}},ct.prototype.exactIncrementalTestInBulk=function(){jt("****** Beginning incremental bulk test");var t=new L,e=ut().generateExactBufferCollectionFromNotes_jisecs$(this.notes,this.tempo),o=t.convertSamplesBufferToNotes_mtnj1d$(e),n=ut().addAvgPitchToSamples_j4do5z$(o);jt("Comparing exact copies (incremental)...");var i=new E;i.correct=4,i.attempted=4;var r=new q;this.testShouldBe_3xie8k$(i,r.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,n))},ct.prototype.sharpTest=function(){jt("****** Beginning sharp test");var t=new q,o=new L,n=ut().generateExactBufferCollectionFromNotes_jisecs$(this.notes,this.tempo),i=o.convertSamplesBufferToNotes_mtnj1d$(n),r=i.get_za3lpa$(1).note.getFrequency(),a=H().getFrequencyForNoteNumber_za3lpa$(i.get_za3lpa$(1).note.noteNumber+1|0),s=a-r,l=s*((listenerApp.parameters.allowableCentsMargin+1|0)/100);jt("Original freq: "+e.toString(r)),jt("Next note up "+a+" distance "+s+" to move "+l),i.get_za3lpa$(3).note.avgFreq=r+l;var c=ut().addAvgPitchToSamples_j4do5z$(i);jt("Comparing sharp copy...");var p=new E;p.correct=3,p.attempted=4,this.testShouldBe_3xie8k$(p,t.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,c))},ct.prototype.flatTest=function(){jt("****** Beginning flat test");var t=new q,o=new L,n=ut().generateExactBufferCollectionFromNotes_jisecs$(this.notes,this.tempo),i=o.convertSamplesBufferToNotes_mtnj1d$(n),r=i.get_za3lpa$(1).note.getFrequency(),a=H().getFrequencyForNoteNumber_za3lpa$(i.get_za3lpa$(1).note.noteNumber-1|0),s=r-a,l=s*((listenerApp.parameters.allowableCentsMargin+1|0)/100);jt("Original freq: "+e.toString(r)),jt("Next note up "+a+" distance "+s+" to move "+l),i.get_za3lpa$(3).note.avgFreq=r-l;var c=ut().addAvgPitchToSamples_j4do5z$(i);jt("Comparing flat copy...");var p=new E;p.correct=3,p.attempted=4,this.testShouldBe_3xie8k$(p,t.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,c))},ct.prototype.rushedTest=function(){jt("****** Beginning rushed test");var t=new q,e=new L,o=It([new U(69,.5),new U(81,1-listenerApp.parameters.allowableRhythmMargin-.01),new U(69,1),new U(81,1)]),n=ut().generateExactBufferCollectionFromNotes_jisecs$(o,this.tempo),i=e.convertSamplesBufferToNotes_mtnj1d$(n),r=ut().addAvgPitchToSamples_j4do5z$(i),a=new E;a.correct=2,a.attempted=4,jt("Comparing rushed..."),this.testShouldBe_3xie8k$(a,t.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,r))},ct.prototype.shortNotesTest=function(){jt("****** Beginning short notes test");var t=new q,e=new L,o=It([new U(69,.31),new U(35,.05),new U(69,.14),new U(81,.78),new U(34,.11),new U(35,.11),new U(69,1),new U(81,1)]),n=ut().generateExactBufferCollectionFromNotes_jisecs$(o,this.tempo),i=e.convertSamplesBufferToNotes_mtnj1d$(n),r=ut().addAvgPitchToSamples_j4do5z$(i),a=new E;a.correct=4,a.attempted=4,jt("Comparing short notes..."),this.testShouldBe_3xie8k$(a,t.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags,this.notes,r))},ct.prototype.runTest=function(){return listenerApp=new o,listenerApp.parameters=new lt,listenerApp.setTempoForTests_14dthe$(this.tempo),H().createAllNotes(),this.exactIncrementalTestInBulk(),this.rushedTest(),this.shortNotesTest(),this.pitchTrackerTest(),this.trueIncrementalComparisonTest(),this.sharpTest(),this.flatTest(),"Done"},ct.$metadata$={kind:e.Kind.OBJECT,simpleName:"SliceTest",interfaces:[]};var Wt=null;pt.prototype.generateExactBufferCollectionWithSize1FromNotes_jisecs$=function(t,o){var n,i=60/o,r=e.kotlin.collections.ArrayList_init_ww73n8$(),a=e.kotlin.collections.ArrayList_init_ww73n8$();for(n=t.iterator();n.hasNext();){var s,l,c,p,u=n.next();a.add_11rb$(r.size);var h=u.duration*i*44100,m=u.getFrequency();l=(s=dt(0,0|h)).first,c=s.last,p=s.step;for(var d=l;d<=c;d+=p)r.add_11rb$(m)}console.log("Note change indexes: "+e.toString(a));var f,g,y=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(r,10)),_=0;for(f=r.iterator();f.hasNext();){var v=f.next(),$=y.add_11rb$,b=new V(v,1,(g=_,_=g+1|0,g));$.call(y,b)}return y},pt.prototype.generateExactBufferCollectionFromNotes_jisecs$=function(t,o){var n,i=60/o,r=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(t,10));for(n=t.iterator();n.hasNext();){var a=n.next(),s=r.add_11rb$,l=new V(a.getFrequency(),a.duration*i*44100|0,-1);s.call(r,l)}return r},pt.prototype.addAvgPitchToSamples_j4do5z$=function(t){var o,n=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(t,10));for(o=t.iterator();o.hasNext();){var i=o.next(),r=n.add_11rb$;null==i.note.avgFreq&&(i.note.avgFreq=i.note.getFrequency()),r.call(n,i)}return n},pt.prototype.addPitchVariationToSamples_d3e2cz$=function(t){var o,n=e.kotlin.collections.ArrayList_init_ww73n8$(e.kotlin.collections.collectionSizeOrDefault_ba2ldo$(t,10));for(o=t.iterator();o.hasNext();){var i=o.next(),r=n.add_11rb$,a=15*Math.random()*2;r.call(n,i+a/2)}return n},pt.prototype.addRhythmVariationToSamples_d3e2cz$=function(t){for(var e=vt(t),o=0;o<=3600;o++)e.removeAt_za3lpa$(0);for(var n=14e3;n<=18e3;n++)e.add_11rb$(e.get_za3lpa$(400));for(var i=13e3;i<=15500;i++)e.removeAt_za3lpa$(0);return e},pt.prototype.addShortItemsThatShouldBeRemoved_d3e2cz$=function(t){for(var e=vt(t),o=0;o<=5;o++)e.add_wxm5ur$(0,2);for(var n=0;n<=15;n++)e.add_wxm5ur$(100,2);for(var i=0;i<=3;i++)e.add_wxm5ur$(1e4,2);return e},pt.$metadata$={kind:e.Kind.OBJECT,simpleName:"TestBufferGenerator",interfaces:[]};var Ht=null,Jt=t.com||(t.com={}),Gt=Jt.practicingmusician||(Jt.practicingmusician={});Gt.ListenerApp=o,Gt.DialogParams=i,Gt.FlashMessage=r,Gt.ComparisonFlags=a,Gt.AppPreferences=s,Gt.AppSetupParameters=l,Gt.AudioAnalyzer=c,Gt.GeneratedExercise=p,Gt.EasyScoreCode=u,Gt.SimpleJSNoteObject=h,Gt.BeatPosition=m,Gt.PMTuner=d,Object.defineProperty(Gt,"UserSettings",{get:g}),(Gt.audio||(Gt.audio={})).AudioManager=y;var Vt=Gt.converter||(Gt.converter={});Vt.GeneratedExerciseInfo=$,Vt.MusicXMLConverter=b;var Xt=Gt.exercises||(Gt.exercises={});Xt.ExerciseDefinition=w,Xt.ExerciseManager=S;var Yt=Gt.finals||(Gt.finals={});Yt.FeedbackMetric=k,Object.defineProperty(N,"Correct",{get:C}),Object.defineProperty(N,"Incorrect",{get:P}),Object.defineProperty(N,"Missed",{get:j}),Yt.FeedbackType=N,Yt.FeedbackItem=I,Yt.throwSafeIncorrectSwitch_a2klfm$=O,Yt.CompareResults=E,Yt.ResultsForDatabase=z,Yt.IndividualNotePerformanceInfo=D,Yt.NotePlacement=F,Yt.IncrementalBufferManager=L,Yt.IncrementalComparisonEngine=q;var Qt=Gt.network||(Gt.network={});Object.defineProperty(Qt,"ListenerNetworkManager",{get:M}),Qt.PerformanceWrapper=R;var Zt=Gt.notes||(Gt.notes={});Zt.EasyScoreUtil_Kotlin=K,Object.defineProperty(U,"Companion",{get:H}),Zt.Note=U,Object.defineProperty(Zt,"ALL_NOTES",{get:function(){return qt},set:function(t){qt=t}});var te=Gt.steppable||(Gt.steppable={});te.Metronome=J,Object.defineProperty(te,"buflen",{get:function(){return Bt},set:function(t){Bt=t}}),te.SampleCollection=V,te.PitchTracker=X,Object.defineProperty(Q,"Stopped",{get:tt}),Object.defineProperty(Q,"Running",{get:et}),Object.defineProperty(Q,"Completed",{get:ot}),Y.TimeKeeperState=Q,te.TimeKeeper=Y,te.TimeKeeperSteppable=it,te.TimeKeeperAnalyzer=rt;var ee=Gt.tests||(Gt.tests={});return Object.defineProperty(ee,"PitchTrackerTest",{get:function(){return null===Ut&&new at,Ut}}),ee.PitchTrackerTestClass=st,ee.MockParameters=lt,Object.defineProperty(ee,"SliceTest",{get:function(){return null===Wt&&new ct,Wt}}),Object.defineProperty(ee,"TestBufferGenerator",{get:ut}),t.main_kand9s$=ht,qt=e.kotlin.collections.ArrayList_init_ww73n8$(),Bt=1024,ht(),e.defineModule("PracticingMusician",t),t}(void 0===PracticingMusician?{}:PracticingMusician,kotlin);
+if (typeof kotlin === 'undefined') {
+  throw new Error("Error loading module 'PracticingMusician'. Its dependency 'kotlin' was not found. Please, check whether 'kotlin' is loaded prior to 'PracticingMusician'.");
+}
+var PracticingMusician = function (_, Kotlin) {
+  'use strict';
+  var toList = Kotlin.kotlin.collections.toList_7wnvza$;
+  var until = Kotlin.kotlin.ranges.until_dqglrj$;
+  var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
+  var DoubleCompanionObject = Kotlin.kotlin.js.internal.DoubleCompanionObject;
+  var toList_0 = Kotlin.kotlin.collections.toList_us0mfu$;
+  var reversed = Kotlin.kotlin.collections.reversed_7wnvza$;
+  var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
+  var Enum = Kotlin.kotlin.Enum;
+  var average = Kotlin.kotlin.collections.average_l63kqw$;
+  var zip = Kotlin.kotlin.collections.zip_45mdf7$;
+  var IntCompanionObject = Kotlin.kotlin.js.internal.IntCompanionObject;
+  var Pair = Kotlin.kotlin.Pair;
+  var last = Kotlin.kotlin.collections.last_2p1efm$;
+  var to = Kotlin.kotlin.to_ujzrz7$;
+  var mapOf = Kotlin.kotlin.collections.mapOf_qfcya0$;
+  var get_indices = Kotlin.kotlin.collections.get_indices_gzk92b$;
+  var IntRange = Kotlin.kotlin.ranges.IntRange;
+  var step = Kotlin.kotlin.ranges.step_xsgg7u$;
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
+  var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
+  FeedbackType.prototype = Object.create(Enum.prototype);
+  FeedbackType.prototype.constructor = FeedbackType;
+  TimeKeeper$TimeKeeperState.prototype = Object.create(Enum.prototype);
+  TimeKeeper$TimeKeeperState.prototype.constructor = TimeKeeper$TimeKeeperState;
+  function ListenerApp() {
+    this.globalTempo_qfs5dx$_0 = 120.0;
+    this.scoreUtil = this.scoreUtil;
+    this.generatedExercise = this.generatedExercise;
+    this.parameters = this.parameters;
+    this.audioManager = this.audioManager;
+    this.exerciseManager = this.exerciseManager;
+    this.tuner = this.tuner;
+    this.currentFeedbackItems = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  }
+  Object.defineProperty(ListenerApp.prototype, 'globalTempo', {
+    get: function () {
+      return this.globalTempo_qfs5dx$_0;
+    },
+    set: function (globalTempo) {
+      this.globalTempo_qfs5dx$_0 = globalTempo;
+    }
+  });
+  ListenerApp.prototype.setTempoForTests_14dthe$ = function (t) {
+    this.globalTempo = t;
+  };
+  ListenerApp.prototype.runTuner = function (parameters) {
+    console.log('Running with parameters:');
+    console.log(parameters);
+    Note$Companion_getInstance().createAllNotes();
+    audioAnalyzer.setupMedia();
+    var container = this.makeTunerDomElements();
+    this.tuner = new PMTuner();
+    this.tuner.textElement = container;
+    this.tuner.audioAnalyzer = audioAnalyzer;
+    this.tuner.run();
+  };
+  function ListenerApp$runApp$lambda(this$ListenerApp, closure$parameters) {
+    return function (callbackData) {
+      console.log('Callback:');
+      var converter = new jsMusicXMLConverter();
+      var json = converter.convertXMLToJSON(callbackData);
+      console.log('JSON:');
+      var jsCode = converter.convertJSON(json, new ConverterInputAttributes('4/4', 4));
+      converter.loadCode(jsCode);
+      this$ListenerApp.finishRunApp_pjzheq$(closure$parameters);
+    };
+  }
+  ListenerApp.prototype.runApp = function (parameters) {
+    loadXml(parameters.xmlUrl, ListenerApp$runApp$lambda(this, parameters));
+  };
+  ListenerApp.prototype.finishRunApp_pjzheq$ = function (parameters) {
+    this.parameters = parameters;
+    this.audioManager = new AudioManager();
+    this.exerciseManager = new ExerciseManager(this.audioManager);
+    this.scoreUtil = new EasyScoreUtil();
+    Note$Companion_getInstance().createAllNotes();
+    audioAnalyzer.setupMedia();
+    var prefs = new AppPreferences(parameters.metronomeSound, parameters.bpm, parameters.transposition, parameters.pitch);
+    this.alterPreferences(prefs);
+    this.generatedExercise = generateExerciseForKotlin();
+    this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);
+    this.globalTempo = this.generatedExercise.tempo;
+    this.exerciseManager.loadExercise();
+    this.makeDomElements();
+  };
+  ListenerApp.prototype.alterPreferences = function (preferences) {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    this.exerciseManager.stop();
+    if ((tmp$ = preferences.metronomeSound) != null) {
+      UserSettings_getInstance().metronomeAudioOn = tmp$;
+    }
+    if ((tmp$_0 = preferences.bpm) != null) {
+      console.log('Setting bpm to ' + tmp$_0);
+      this.globalTempo = tmp$_0;
+      this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
+    }
+    if ((tmp$_1 = preferences.pitch) != null) {
+      UserSettings_getInstance().pitch = tmp$_1;
+    }
+    if ((tmp$_2 = preferences.transposition) != null) {
+      UserSettings_getInstance().transposition = tmp$_2;
+      this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);
+    }
+  };
+  ListenerApp.prototype.makeTunerDomElements = function () {
+    var tmp$;
+    var container = Kotlin.isType(tmp$ = document.getElementById('tunerWindow'), HTMLElement) ? tmp$ : Kotlin.throwCCE();
+    return container;
+  };
+  ListenerApp.prototype.makeDomElements = function () {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4;
+    pm_log('Making window w/ container: ' + this.parameters.notationContainerName, 10);
+    var container = Kotlin.isType(tmp$ = document.getElementById(this.parameters.notationContainerName), HTMLElement) ? tmp$ : Kotlin.throwCCE();
+    container.className = container.className + 'notationBodyContainer';
+    var indicatorCanvasName = 'indicatorCanvas';
+    var indicatorCanvasObj = Kotlin.isType(tmp$_0 = document.createElement('canvas'), HTMLElement) ? tmp$_0 : Kotlin.throwCCE();
+    indicatorCanvasObj.style.position = 'absolute';
+    indicatorCanvasObj.id = indicatorCanvasName;
+    (tmp$_1 = document.getElementById(this.parameters.notationContainerName)) != null ? tmp$_1.appendChild(indicatorCanvasObj) : null;
+    pm_log('Made indicator canvas on notation body: ', 10);
+    pm_log(Kotlin.isType(tmp$_2 = document.getElementById(this.parameters.notationContainerName), HTMLElement) ? tmp$_2 : Kotlin.throwCCE());
+    var feedbackCanvasName = 'feedbackCanvas';
+    var feedbackCanvasObj = Kotlin.isType(tmp$_3 = document.createElement('canvas'), HTMLElement) ? tmp$_3 : Kotlin.throwCCE();
+    feedbackCanvasObj.style.position = 'absolute';
+    feedbackCanvasObj.id = feedbackCanvasName;
+    (tmp$_4 = document.getElementById(this.parameters.notationContainerName)) != null ? tmp$_4.appendChild(feedbackCanvasObj) : null;
+    this.makeScore_61zpoe$(this.parameters.notationContainerName);
+  };
+  ListenerApp.prototype.makeScore_61zpoe$ = function (containerElementName) {
+    this.scoreUtil = new EasyScoreUtil();
+    this.scoreUtil.containerElementName = this.parameters.notationContainerName;
+    var exercise = generateExerciseEasyScoreCode();
+    this.scoreUtil.exercise = exercise;
+    this.scoreUtil.generatedExercise = this.generatedExercise;
+    pm_log('Setting up score on ' + containerElementName);
+    this.scoreUtil.setupOnElement(containerElementName);
+    this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
+    this.scoreUtil.buildTitleElements(containerElementName);
+    this.scoreUtil.notateExercise();
+  };
+  ListenerApp.prototype.toggleState = function () {
+    var tmp$;
+    tmp$ = this.exerciseManager.timeKeeper.state;
+    if (Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Stopped_getInstance())) {
+      if (!audioAnalyzer.isFunctional || !audioAnalyzer.hasMicrophoneAccess) {
+        displayFlashMessages([new FlashMessage('danger', 'Audio not working.  Please make sure you are using either Chrome or Firefox and have enabled microphone access.')]);
+        return;
+      }
+      this.exerciseManager.createSteppables();
+      this.exerciseManager.setup();
+      this.exerciseManager.loadExercise();
+      this.exerciseManager.run();
+    }
+     else if (Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Running_getInstance()))
+      this.exerciseManager.stop();
+    else
+      Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Completed_getInstance());
+  };
+  ListenerApp.prototype.doResizeActions = function () {
+    var tmp$, tmp$_0;
+    pm_log('Resized window w/ container: ' + this.parameters.notationContainerName, 10);
+    var oldSVG = Kotlin.isType(tmp$ = document.getElementsByTagName('svg')[0], Element) ? tmp$ : Kotlin.throwCCE();
+    (tmp$_0 = oldSVG.parentNode) != null ? tmp$_0.removeChild(oldSVG) : null;
+    listenerApp.makeScore_61zpoe$(this.parameters.notationContainerName);
+    var copyOfFeedbackItems = toList(listenerApp.currentFeedbackItems);
+    listenerApp.clearFeedbackItems();
+    var tmp$_1;
+    tmp$_1 = copyOfFeedbackItems.iterator();
+    while (tmp$_1.hasNext()) {
+      var element = tmp$_1.next();
+      listenerApp.addFeedbackItem_775p9r$(element);
+    }
+  };
+  ListenerApp.prototype.moveToPosition_14dthe$ = function (beat) {
+    var tmp$;
+    var indicatorCanvas = Kotlin.isType(tmp$ = document.getElementById('indicatorCanvas'), HTMLCanvasElement) ? tmp$ : null;
+    (indicatorCanvas != null ? indicatorCanvas.getContext('2d') : null).clearRect(0, 0, indicatorCanvas != null ? indicatorCanvas.width : null, indicatorCanvas != null ? indicatorCanvas.height : null);
+    this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat);
+  };
+  ListenerApp.prototype.highlightMetronomeItem_za3lpa$ = function (itemNumber) {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3;
+    var metronomeItems = document.getElementsByClassName('metronomeItem');
+    tmp$ = until(0, metronomeItems.length);
+    tmp$_0 = tmp$.first;
+    tmp$_1 = tmp$.last;
+    tmp$_2 = tmp$.step;
+    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
+      var item = Kotlin.isType(tmp$_3 = metronomeItems[index], HTMLElement) ? tmp$_3 : Kotlin.throwCCE();
+      item.className = 'metronomeItem';
+      if (itemNumber === index)
+        item.className = item.className + ' highlighted';
+    }
+  };
+  function ListenerApp$clearFeedbackItems$lambda(it) {
+    return true;
+  }
+  ListenerApp.prototype.clearFeedbackItems = function () {
+    var tmp$;
+    removeAll(this.currentFeedbackItems, ListenerApp$clearFeedbackItems$lambda);
+    pm_log('Clearing');
+    var items = document.getElementsByClassName('feedbackItem');
+    while (items.length > 0) {
+      var it = Kotlin.isType(tmp$ = items[0], HTMLElement) ? tmp$ : Kotlin.throwCCE();
+      var tmp$_0;
+      (tmp$_0 = it.parentNode) != null ? tmp$_0.removeChild(it) : null;
+    }
+  };
+  ListenerApp.prototype.addFeedbackItem_775p9r$ = function (feedbackItem) {
+    if (this.currentFeedbackItems.indexOf_11rb$(feedbackItem) === -1) {
+      this.currentFeedbackItems.add_11rb$(feedbackItem);
+    }
+    var positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat);
+    var positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y);
+    var tmp$ = this.scoreUtil;
+    var tmp$_0 = feedbackItem.type;
+    var $receiver = feedbackItem.feedbackItemType;
+    tmp$.createFeedbackHTMLElement(tmp$_0, Kotlin.kotlin.collections.copyToArray($receiver), positionForBeat.x, positionY);
+  };
+  ListenerApp.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ListenerApp',
+    interfaces: []
+  };
+  function DialogParams(imageType, title, message) {
+    this.imageType = imageType;
+    this.title = title;
+    this.message = message;
+  }
+  DialogParams.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'DialogParams',
+    interfaces: []
+  };
+  DialogParams.prototype.component1 = function () {
+    return this.imageType;
+  };
+  DialogParams.prototype.component2 = function () {
+    return this.title;
+  };
+  DialogParams.prototype.component3 = function () {
+    return this.message;
+  };
+  DialogParams.prototype.copy_6hosri$ = function (imageType, title, message) {
+    return new DialogParams(imageType === void 0 ? this.imageType : imageType, title === void 0 ? this.title : title, message === void 0 ? this.message : message);
+  };
+  DialogParams.prototype.toString = function () {
+    return 'DialogParams(imageType=' + Kotlin.toString(this.imageType) + (', title=' + Kotlin.toString(this.title)) + (', message=' + Kotlin.toString(this.message)) + ')';
+  };
+  DialogParams.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.imageType) | 0;
+    result = result * 31 + Kotlin.hashCode(this.title) | 0;
+    result = result * 31 + Kotlin.hashCode(this.message) | 0;
+    return result;
+  };
+  DialogParams.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.imageType, other.imageType) && Kotlin.equals(this.title, other.title) && Kotlin.equals(this.message, other.message)))));
+  };
+  function FlashMessage(type, message) {
+    this.type = type;
+    this.message = message;
+  }
+  FlashMessage.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'FlashMessage',
+    interfaces: []
+  };
+  FlashMessage.prototype.component1 = function () {
+    return this.type;
+  };
+  FlashMessage.prototype.component2 = function () {
+    return this.message;
+  };
+  FlashMessage.prototype.copy_puj7f4$ = function (type, message) {
+    return new FlashMessage(type === void 0 ? this.type : type, message === void 0 ? this.message : message);
+  };
+  FlashMessage.prototype.toString = function () {
+    return 'FlashMessage(type=' + Kotlin.toString(this.type) + (', message=' + Kotlin.toString(this.message)) + ')';
+  };
+  FlashMessage.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.type) | 0;
+    result = result * 31 + Kotlin.hashCode(this.message) | 0;
+    return result;
+  };
+  FlashMessage.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.type, other.type) && Kotlin.equals(this.message, other.message)))));
+  };
+  function ConverterInputAttributes(time_signature, countoff) {
+    this.time_signature = time_signature;
+    this.countoff = countoff;
+  }
+  ConverterInputAttributes.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ConverterInputAttributes',
+    interfaces: []
+  };
+  ConverterInputAttributes.prototype.component1 = function () {
+    return this.time_signature;
+  };
+  ConverterInputAttributes.prototype.component2 = function () {
+    return this.countoff;
+  };
+  ConverterInputAttributes.prototype.copy_bm4lxs$ = function (time_signature, countoff) {
+    return new ConverterInputAttributes(time_signature === void 0 ? this.time_signature : time_signature, countoff === void 0 ? this.countoff : countoff);
+  };
+  ConverterInputAttributes.prototype.toString = function () {
+    return 'ConverterInputAttributes(time_signature=' + Kotlin.toString(this.time_signature) + (', countoff=' + Kotlin.toString(this.countoff)) + ')';
+  };
+  ConverterInputAttributes.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.time_signature) | 0;
+    result = result * 31 + Kotlin.hashCode(this.countoff) | 0;
+    return result;
+  };
+  ConverterInputAttributes.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.time_signature, other.time_signature) && Kotlin.equals(this.countoff, other.countoff)))));
+  };
+  function ComparisonFlags(testPitch, testRhythm, testDuration) {
+    this.testPitch = testPitch;
+    this.testRhythm = testRhythm;
+    this.testDuration = testDuration;
+  }
+  ComparisonFlags.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ComparisonFlags',
+    interfaces: []
+  };
+  ComparisonFlags.prototype.component1 = function () {
+    return this.testPitch;
+  };
+  ComparisonFlags.prototype.component2 = function () {
+    return this.testRhythm;
+  };
+  ComparisonFlags.prototype.component3 = function () {
+    return this.testDuration;
+  };
+  ComparisonFlags.prototype.copy_ws0pad$ = function (testPitch, testRhythm, testDuration) {
+    return new ComparisonFlags(testPitch === void 0 ? this.testPitch : testPitch, testRhythm === void 0 ? this.testRhythm : testRhythm, testDuration === void 0 ? this.testDuration : testDuration);
+  };
+  ComparisonFlags.prototype.toString = function () {
+    return 'ComparisonFlags(testPitch=' + Kotlin.toString(this.testPitch) + (', testRhythm=' + Kotlin.toString(this.testRhythm)) + (', testDuration=' + Kotlin.toString(this.testDuration)) + ')';
+  };
+  ComparisonFlags.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.testPitch) | 0;
+    result = result * 31 + Kotlin.hashCode(this.testRhythm) | 0;
+    result = result * 31 + Kotlin.hashCode(this.testDuration) | 0;
+    return result;
+  };
+  ComparisonFlags.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.testPitch, other.testPitch) && Kotlin.equals(this.testRhythm, other.testRhythm) && Kotlin.equals(this.testDuration, other.testDuration)))));
+  };
+  function AppPreferences(metronomeSound, bpm, transposition, pitch) {
+    this.metronomeSound = metronomeSound;
+    this.bpm = bpm;
+    this.transposition = transposition;
+    this.pitch = pitch;
+  }
+  AppPreferences.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'AppPreferences',
+    interfaces: []
+  };
+  AppPreferences.prototype.component1 = function () {
+    return this.metronomeSound;
+  };
+  AppPreferences.prototype.component2 = function () {
+    return this.bpm;
+  };
+  AppPreferences.prototype.component3 = function () {
+    return this.transposition;
+  };
+  AppPreferences.prototype.component4 = function () {
+    return this.pitch;
+  };
+  AppPreferences.prototype.copy_ho9xxj$ = function (metronomeSound, bpm, transposition, pitch) {
+    return new AppPreferences(metronomeSound === void 0 ? this.metronomeSound : metronomeSound, bpm === void 0 ? this.bpm : bpm, transposition === void 0 ? this.transposition : transposition, pitch === void 0 ? this.pitch : pitch);
+  };
+  AppPreferences.prototype.toString = function () {
+    return 'AppPreferences(metronomeSound=' + Kotlin.toString(this.metronomeSound) + (', bpm=' + Kotlin.toString(this.bpm)) + (', transposition=' + Kotlin.toString(this.transposition)) + (', pitch=' + Kotlin.toString(this.pitch)) + ')';
+  };
+  AppPreferences.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.metronomeSound) | 0;
+    result = result * 31 + Kotlin.hashCode(this.bpm) | 0;
+    result = result * 31 + Kotlin.hashCode(this.transposition) | 0;
+    result = result * 31 + Kotlin.hashCode(this.pitch) | 0;
+    return result;
+  };
+  AppPreferences.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.metronomeSound, other.metronomeSound) && Kotlin.equals(this.bpm, other.bpm) && Kotlin.equals(this.transposition, other.transposition) && Kotlin.equals(this.pitch, other.pitch)))));
+  };
+  function AppSetupParameters() {
+  }
+  AppSetupParameters.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'AppSetupParameters',
+    interfaces: []
+  };
+  function AudioAnalyzer() {
+  }
+  AudioAnalyzer.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'AudioAnalyzer',
+    interfaces: []
+  };
+  function GeneratedExercise() {
+  }
+  GeneratedExercise.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'GeneratedExercise',
+    interfaces: []
+  };
+  function EasyScoreCode() {
+  }
+  EasyScoreCode.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'EasyScoreCode',
+    interfaces: []
+  };
+  function SimpleJSNoteObject(noteNumber, duration) {
+    this.noteNumber = noteNumber;
+    this.duration = duration;
+  }
+  SimpleJSNoteObject.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'SimpleJSNoteObject',
+    interfaces: []
+  };
+  SimpleJSNoteObject.prototype.component1 = function () {
+    return this.noteNumber;
+  };
+  SimpleJSNoteObject.prototype.component2 = function () {
+    return this.duration;
+  };
+  SimpleJSNoteObject.prototype.copy_5wr77w$ = function (noteNumber, duration) {
+    return new SimpleJSNoteObject(noteNumber === void 0 ? this.noteNumber : noteNumber, duration === void 0 ? this.duration : duration);
+  };
+  SimpleJSNoteObject.prototype.toString = function () {
+    return 'SimpleJSNoteObject(noteNumber=' + Kotlin.toString(this.noteNumber) + (', duration=' + Kotlin.toString(this.duration)) + ')';
+  };
+  SimpleJSNoteObject.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.noteNumber) | 0;
+    result = result * 31 + Kotlin.hashCode(this.duration) | 0;
+    return result;
+  };
+  SimpleJSNoteObject.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.noteNumber, other.noteNumber) && Kotlin.equals(this.duration, other.duration)))));
+  };
+  function BeatPosition(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  BeatPosition.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'BeatPosition',
+    interfaces: []
+  };
+  BeatPosition.prototype.component1 = function () {
+    return this.x;
+  };
+  BeatPosition.prototype.component2 = function () {
+    return this.y;
+  };
+  BeatPosition.prototype.copy_lu1900$ = function (x, y) {
+    return new BeatPosition(x === void 0 ? this.x : x, y === void 0 ? this.y : y);
+  };
+  BeatPosition.prototype.toString = function () {
+    return 'BeatPosition(x=' + Kotlin.toString(this.x) + (', y=' + Kotlin.toString(this.y)) + ')';
+  };
+  BeatPosition.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.x) | 0;
+    result = result * 31 + Kotlin.hashCode(this.y) | 0;
+    return result;
+  };
+  BeatPosition.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y)))));
+  };
+  function PMTuner() {
+    this.state_pxjm2z$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+    this.textElement = this.textElement;
+    this.audioAnalyzer = this.audioAnalyzer;
+    this.timekeeper = new TimeKeeper();
+    this.timekeeper.steppables.add_11rb$(this);
+  }
+  Object.defineProperty(PMTuner.prototype, 'state', {
+    get: function () {
+      return this.state_pxjm2z$_0;
+    },
+    set: function (state) {
+      this.state_pxjm2z$_0 = state;
+    }
+  });
+  PMTuner.prototype.setup = function () {
+  };
+  PMTuner.prototype.start = function () {
+    this.state = TimeKeeper$TimeKeeperState$Running_getInstance();
+  };
+  PMTuner.prototype.stop = function () {
+    this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+  };
+  PMTuner.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
+    var correlatedFrequency = this.audioAnalyzer.updatePitch(timestamp);
+    if (Kotlin.equals(correlatedFrequency, undefined))
+      return;
+    var noteWithDiff = Note$Companion_getInstance().closestNoteWithDiff_14dthe$(correlatedFrequency);
+    var noteName = noteWithDiff.note.noteName();
+    var diff = noteWithDiff.difference;
+    this.textElement.innerHTML = noteName + ' : ' + correlatedFrequency + '<br/>Diff: ' + diff;
+  };
+  PMTuner.prototype.run = function () {
+    this.start();
+    this.timekeeper.runForTime = DoubleCompanionObject.MAX_VALUE;
+    this.timekeeper.start();
+  };
+  PMTuner.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'PMTuner',
+    interfaces: [TimeKeeperSteppable]
+  };
+  function UserSettings() {
+    UserSettings_instance = this;
+    this.metronomeAudioOn_fgazsk$_0 = true;
+    this.transposition = 0;
+    this.tempo = -1.0;
+    this.pitch = 440.0;
+  }
+  Object.defineProperty(UserSettings.prototype, 'metronomeAudioOn', {
+    get: function () {
+      return this.metronomeAudioOn_fgazsk$_0;
+    },
+    set: function (value) {
+      pm_log('Metronome audio value changed', 10);
+      this.metronomeAudioOn_fgazsk$_0 = value;
+    }
+  });
+  UserSettings.prototype.applyToExercise_k94nyn$ = function (exerciseObject) {
+    var $receiver = toList_0(exerciseObject.notes);
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_0 = destination.add_11rb$;
+      var transform$result;
+      transform$break: do {
+        if (UserSettings_getInstance().transposition !== 0) {
+          var newNote = new SimpleJSNoteObject(item.noteNumber + UserSettings_getInstance().transposition | 0, item.duration);
+          transform$result = newNote;
+          break transform$break;
+        }
+        transform$result = item;
+      }
+       while (false);
+      tmp$_0.call(destination, transform$result);
+    }
+    exerciseObject.notes = Kotlin.kotlin.collections.copyToArray(destination);
+    if (this.tempo !== -1.0) {
+      exerciseObject.tempo = this.tempo;
+    }
+    return exerciseObject;
+  };
+  UserSettings.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'UserSettings',
+    interfaces: []
+  };
+  var UserSettings_instance = null;
+  function UserSettings_getInstance() {
+    if (UserSettings_instance === null) {
+      new UserSettings();
+    }
+    return UserSettings_instance;
+  }
+  function AudioManager() {
+    this.loadedAudio = Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$();
+    this.timeoutKeys = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  }
+  AudioManager.prototype.loadAudioFile_puj7f4$ = function (filename, key) {
+    var audio = new Audio(filename);
+    this.loadedAudio.put_xwzc9p$(key, audio);
+    return audio;
+  };
+  AudioManager.prototype.playAudioNow_61zpoe$ = function (key) {
+    pm_log('**** (( Playing...', 6);
+    var audio = this.loadedAudio.get_11rb$(key);
+    audio != null ? (audio.currentTime = 0) : null;
+    audio != null ? audio.play() : null;
+  };
+  function AudioManager$playAudio$lambda(closure$atTime, closure$audio) {
+    return function () {
+      pm_log('(( Playing...' + Kotlin.toString(closure$atTime), 6);
+      closure$audio != null ? (closure$audio.currentTime = 0) : null;
+      return closure$audio != null ? closure$audio.play() : null;
+    };
+  }
+  AudioManager.prototype.playAudio_bm4lxs$ = function (key, atTime) {
+    var audio = this.loadedAudio.get_11rb$(key);
+    var timeoutKey = window.setTimeout(AudioManager$playAudio$lambda(atTime, audio), atTime);
+    this.timeoutKeys.add_11rb$(timeoutKey);
+  };
+  function AudioManager$cancelAllAudio$lambda(it) {
+    return true;
+  }
+  AudioManager.prototype.cancelAllAudio = function () {
+    var tmp$;
+    tmp$ = reversed(this.timeoutKeys).iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      pm_log('Cancelling item... ' + element);
+      window.clearTimeout(element);
+    }
+    removeAll(this.timeoutKeys, AudioManager$cancelAllAudio$lambda);
+  };
+  AudioManager.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'AudioManager',
+    interfaces: []
+  };
+  function ExerciseDefinition() {
+    this.notes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.prerollLengthInBeats = 4.0;
+  }
+  ExerciseDefinition.prototype.getLength = function () {
+    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    var $receiver = this.notes;
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      destination.add_11rb$(item.duration);
+    }
+    var iterator = destination.iterator();
+    if (!iterator.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator = iterator.next();
+    while (iterator.hasNext()) {
+      var acc = accumulator;
+      accumulator = iterator.next() + acc;
+    }
+    return accumulator * beatSize;
+  };
+  ExerciseDefinition.prototype.prerollLength = function () {
+    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    return beatSize * this.prerollLengthInBeats;
+  };
+  ExerciseDefinition.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ExerciseDefinition',
+    interfaces: []
+  };
+  function ExerciseManager(am) {
+    this.currentExercise = null;
+    this.timeKeeper = new TimeKeeper();
+    this.metronome = new Metronome();
+    this.pitchTracker = new PitchTracker();
+    this.bufferManager = new IncrementalBufferManager();
+    this.comparisonEngine = new IncrementalComparisonEngine();
+    this.audioManager = am;
+    pm_log('Init');
+    this.lastAnalysisTimestamp = DoubleCompanionObject.MIN_VALUE;
+  }
+  ExerciseManager.prototype.createSteppables = function () {
+    this.timeKeeper = new TimeKeeper();
+    this.metronome = new Metronome();
+    this.pitchTracker = new PitchTracker();
+    this.bufferManager = new IncrementalBufferManager();
+    this.comparisonEngine = new IncrementalComparisonEngine();
+    this.lastAnalysisTimestamp = DoubleCompanionObject.MIN_VALUE;
+  };
+  function ExerciseManager$setup$lambda$lambda$lambda(closure$results) {
+    return function () {
+      var percentage = closure$results.correct / closure$results.attempted;
+      if (percentage > 0.85) {
+        return 'medal-gold-icon';
+      }
+      if (percentage > 0.7) {
+        return 'medal-silver-icon';
+      }
+      if (percentage > 0.55) {
+        return 'medal-bronze-icon';
+      }
+      return '';
+    };
+  }
+  function ExerciseManager$setup$lambda(this$ExerciseManager) {
+    return function (it) {
+      var tmp$;
+      this$ExerciseManager.audioManager.cancelAllAudio();
+      this$ExerciseManager.metronome.cancelAllUIUpdates();
+      var samplesLength = this$ExerciseManager.pitchTracker.samples.size / 44100.0;
+      pm_log('Total samples recorded: ' + Kotlin.toString(this$ExerciseManager.pitchTracker.samples.size) + ' length: ' + Kotlin.toString(samplesLength));
+      var notesFromSamplesBuffer = this$ExerciseManager.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this$ExerciseManager.pitchTracker.samples);
+      pm_log('Notes: ');
+      var tmp$_0;
+      tmp$_0 = notesFromSamplesBuffer.iterator();
+      while (tmp$_0.hasNext()) {
+        var element = tmp$_0.next();
+        pm_log('Note: ' + Kotlin.toString(element.note.noteNumber) + ' for ' + Kotlin.toString(element.note.duration) + ' at ' + Kotlin.toString(element.positionInBeats));
+      }
+      if ((tmp$ = this$ExerciseManager.currentExercise) != null) {
+        var this$ExerciseManager_0 = this$ExerciseManager;
+        pm_log('Comparing...');
+        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, tmp$.notes, notesFromSamplesBuffer);
+        listenerApp.clearFeedbackItems();
+        var tmp$_1;
+        tmp$_1 = results.feedbackItems.iterator();
+        while (tmp$_1.hasNext()) {
+          var element_0 = tmp$_1.next();
+          listenerApp.addFeedbackItem_775p9r$(element_0);
+        }
+        var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
+        displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
+        ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
+      }
+    };
+  }
+  ExerciseManager.prototype.setup = function () {
+    pm_log('Setup');
+    listenerApp.clearFeedbackItems();
+    this.metronome.audioManager = this.audioManager;
+    this.timeKeeper.steppables.add_11rb$(this.metronome);
+    this.timeKeeper.steppables.add_11rb$(this.pitchTracker);
+    this.timeKeeper.analyzers.add_11rb$(this);
+    this.timeKeeper.finishedActions.add_11rb$(ExerciseManager$setup$lambda(this));
+    this.metronome.setup();
+    this.pitchTracker.setup();
+  };
+  ExerciseManager.prototype.run = function () {
+    this.metronome.start();
+    this.pitchTracker.start();
+    this.timeKeeper.start();
+  };
+  ExerciseManager.prototype.stop = function () {
+    this.timeKeeper.stop();
+    this.metronome.stop();
+    this.pitchTracker.stop();
+  };
+  ExerciseManager.prototype.loadExercise = function () {
+    var tmp$;
+    pm_log('Loading exericse:');
+    var generatedExercise = listenerApp.generatedExercise;
+    var exerciseDefinition = new ExerciseDefinition();
+    exerciseDefinition.prerollLengthInBeats = generatedExercise.count_off;
+    var jsNotes = generatedExercise.notes;
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(jsNotes.length);
+    var tmp$_0;
+    for (tmp$_0 = 0; tmp$_0 !== jsNotes.length; ++tmp$_0) {
+      var item = jsNotes[tmp$_0];
+      destination.add_11rb$(new Note(item.noteNumber, item.duration));
+    }
+    exerciseDefinition.notes = toMutableList(destination);
+    pm_log('Loaded ' + Kotlin.toString(exerciseDefinition.notes.size) + ' notes');
+    pm_log(exerciseDefinition.notes);
+    this.currentExercise = exerciseDefinition;
+    if ((tmp$ = this.currentExercise) != null) {
+      console.log('Testing time sig:');
+      console.log(generatedExercise);
+      this.metronome.timeSignature = generatedExercise.time_signature;
+      this.metronome.prerollBeats = generatedExercise.count_off;
+      this.timeKeeper.runForTime = tmp$.getLength() + tmp$.prerollLength() + this.pitchTracker.latencyTime;
+      this.pitchTracker.lengthOfPrerollToIgnore = tmp$.prerollLength();
+      pm_log('Loaded exercise of length ' + Kotlin.toString(this.timeKeeper.runForTime));
+    }
+  };
+  ExerciseManager.prototype.analyze_14dthe$ = function (timestamp) {
+    var tmp$;
+    if (timestamp - this.lastAnalysisTimestamp > 200) {
+      this.lastAnalysisTimestamp = timestamp;
+    }
+     else {
+      return;
+    }
+    if ((tmp$ = this.currentExercise) != null) {
+      pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
+      var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
+      var results = this.comparisonEngine.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
+      listenerApp.clearFeedbackItems();
+      var tmp$_0;
+      tmp$_0 = results.feedbackItems.iterator();
+      while (tmp$_0.hasNext()) {
+        var element = tmp$_0.next();
+        listenerApp.addFeedbackItem_775p9r$(element);
+      }
+    }
+  };
+  ExerciseManager.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ExerciseManager',
+    interfaces: [TimeKeeperAnalyzer]
+  };
+  function FeedbackMetric(name, value) {
+    this.name = name;
+    this.value = value;
+  }
+  FeedbackMetric.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'FeedbackMetric',
+    interfaces: []
+  };
+  FeedbackMetric.prototype.component1 = function () {
+    return this.name;
+  };
+  FeedbackMetric.prototype.component2 = function () {
+    return this.value;
+  };
+  FeedbackMetric.prototype.copy_puj7f4$ = function (name, value) {
+    return new FeedbackMetric(name === void 0 ? this.name : name, value === void 0 ? this.value : value);
+  };
+  FeedbackMetric.prototype.toString = function () {
+    return 'FeedbackMetric(name=' + Kotlin.toString(this.name) + (', value=' + Kotlin.toString(this.value)) + ')';
+  };
+  FeedbackMetric.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.name) | 0;
+    result = result * 31 + Kotlin.hashCode(this.value) | 0;
+    return result;
+  };
+  FeedbackMetric.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.value, other.value)))));
+  };
+  function FeedbackType(name, ordinal) {
+    Enum.call(this);
+    this.name$ = name;
+    this.ordinal$ = ordinal;
+  }
+  function FeedbackType_initFields() {
+    FeedbackType_initFields = function () {
+    };
+    FeedbackType$Correct_instance = new FeedbackType('Correct', 0);
+    FeedbackType$Incorrect_instance = new FeedbackType('Incorrect', 1);
+    FeedbackType$Missed_instance = new FeedbackType('Missed', 2);
+  }
+  var FeedbackType$Correct_instance;
+  function FeedbackType$Correct_getInstance() {
+    FeedbackType_initFields();
+    return FeedbackType$Correct_instance;
+  }
+  var FeedbackType$Incorrect_instance;
+  function FeedbackType$Incorrect_getInstance() {
+    FeedbackType_initFields();
+    return FeedbackType$Incorrect_instance;
+  }
+  var FeedbackType$Missed_instance;
+  function FeedbackType$Missed_getInstance() {
+    FeedbackType_initFields();
+    return FeedbackType$Missed_instance;
+  }
+  FeedbackType.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'FeedbackType',
+    interfaces: [Enum]
+  };
+  function FeedbackType$values() {
+    return [FeedbackType$Correct_getInstance(), FeedbackType$Incorrect_getInstance(), FeedbackType$Missed_getInstance()];
+  }
+  FeedbackType.values = FeedbackType$values;
+  function FeedbackType$valueOf(name) {
+    switch (name) {
+      case 'Correct':
+        return FeedbackType$Correct_getInstance();
+      case 'Incorrect':
+        return FeedbackType$Incorrect_getInstance();
+      case 'Missed':
+        return FeedbackType$Missed_getInstance();
+      default:Kotlin.throwISE('No enum constant com.practicingmusician.finals.FeedbackType.' + name);
+    }
+  }
+  FeedbackType.valueOf_61zpoe$ = FeedbackType$valueOf;
+  function FeedbackItem(type, beat, feedbackItemType) {
+    this.type = type;
+    this.beat = beat;
+    this.feedbackItemType = feedbackItemType;
+  }
+  FeedbackItem.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'FeedbackItem',
+    interfaces: []
+  };
+  FeedbackItem.prototype.component1 = function () {
+    return this.type;
+  };
+  FeedbackItem.prototype.component2 = function () {
+    return this.beat;
+  };
+  FeedbackItem.prototype.component3 = function () {
+    return this.feedbackItemType;
+  };
+  FeedbackItem.prototype.copy_4nfbc1$ = function (type, beat, feedbackItemType) {
+    return new FeedbackItem(type === void 0 ? this.type : type, beat === void 0 ? this.beat : beat, feedbackItemType === void 0 ? this.feedbackItemType : feedbackItemType);
+  };
+  FeedbackItem.prototype.toString = function () {
+    return 'FeedbackItem(type=' + Kotlin.toString(this.type) + (', beat=' + Kotlin.toString(this.beat)) + (', feedbackItemType=' + Kotlin.toString(this.feedbackItemType)) + ')';
+  };
+  FeedbackItem.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.type) | 0;
+    result = result * 31 + Kotlin.hashCode(this.beat) | 0;
+    result = result * 31 + Kotlin.hashCode(this.feedbackItemType) | 0;
+    return result;
+  };
+  FeedbackItem.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.type, other.type) && Kotlin.equals(this.beat, other.beat) && Kotlin.equals(this.feedbackItemType, other.feedbackItemType)))));
+  };
+  function throwSafeIncorrectSwitch($receiver) {
+    if ($receiver.type !== FeedbackType$Missed_getInstance()) {
+      $receiver.type = FeedbackType$Incorrect_getInstance();
+    }
+  }
+  function CompareResults(c, a) {
+    if (c === void 0)
+      c = 0;
+    if (a === void 0)
+      a = 0;
+    this.c = c;
+    this.a = a;
+    this.correct = this.c;
+    this.attempted = this.a;
+    this.feedbackItems = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.finalResults = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  }
+  CompareResults.prototype.generateResultForDatabase = function () {
+    var $receiver = this.finalResults;
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
+    var tmp$;
+    tmp$ = $receiver.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      destination.add_11rb$(item.idealPitch - item.actualPitch);
+    }
+    var pitch = average(destination);
+    var $receiver_0 = this.finalResults;
+    var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver_0, 10));
+    var tmp$_0;
+    tmp$_0 = $receiver_0.iterator();
+    while (tmp$_0.hasNext()) {
+      var item_0 = tmp$_0.next();
+      destination_0.add_11rb$(item_0.idealBeat - item_0.actualBeat);
+    }
+    var rhythm = average(destination_0);
+    var $receiver_1 = this.finalResults;
+    var destination_1 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver_1, 10));
+    var tmp$_1;
+    tmp$_1 = $receiver_1.iterator();
+    while (tmp$_1.hasNext()) {
+      var item_1 = tmp$_1.next();
+      destination_1.add_11rb$(item_1.idealDuration - item_1.actualDuration);
+    }
+    var duration = average(destination_1);
+    var tmp$_2 = void 0;
+    var tmp$_3 = void 0;
+    var tmp$_4 = this.correct;
+    var tmp$_5 = this.attempted;
+    var $receiver_2 = this.finalResults;
+    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
+  };
+  CompareResults.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'CompareResults',
+    interfaces: []
+  };
+  function ResultsForDatabase(userID, exerciseID, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    if (userID === void 0)
+      userID = -1;
+    if (exerciseID === void 0)
+      exerciseID = -1;
+    this.userID = userID;
+    this.exerciseID = exerciseID;
+    this.correct = correct;
+    this.attempted = attempted;
+    this.exerciseAveragePitch = exerciseAveragePitch;
+    this.exerciseAverageRhythm = exerciseAverageRhythm;
+    this.exerciseAverageDuration = exerciseAverageDuration;
+    this.notePerformances = notePerformances;
+  }
+  ResultsForDatabase.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ResultsForDatabase',
+    interfaces: []
+  };
+  ResultsForDatabase.prototype.component1 = function () {
+    return this.userID;
+  };
+  ResultsForDatabase.prototype.component2 = function () {
+    return this.exerciseID;
+  };
+  ResultsForDatabase.prototype.component3 = function () {
+    return this.correct;
+  };
+  ResultsForDatabase.prototype.component4 = function () {
+    return this.attempted;
+  };
+  ResultsForDatabase.prototype.component5 = function () {
+    return this.exerciseAveragePitch;
+  };
+  ResultsForDatabase.prototype.component6 = function () {
+    return this.exerciseAverageRhythm;
+  };
+  ResultsForDatabase.prototype.component7 = function () {
+    return this.exerciseAverageDuration;
+  };
+  ResultsForDatabase.prototype.component8 = function () {
+    return this.notePerformances;
+  };
+  ResultsForDatabase.prototype.copy_sixtfu$ = function (userID, exerciseID, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    return new ResultsForDatabase(userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
+  };
+  ResultsForDatabase.prototype.toString = function () {
+    return 'ResultsForDatabase(userID=' + Kotlin.toString(this.userID) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
+  };
+  ResultsForDatabase.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.userID) | 0;
+    result = result * 31 + Kotlin.hashCode(this.exerciseID) | 0;
+    result = result * 31 + Kotlin.hashCode(this.correct) | 0;
+    result = result * 31 + Kotlin.hashCode(this.attempted) | 0;
+    result = result * 31 + Kotlin.hashCode(this.exerciseAveragePitch) | 0;
+    result = result * 31 + Kotlin.hashCode(this.exerciseAverageRhythm) | 0;
+    result = result * 31 + Kotlin.hashCode(this.exerciseAverageDuration) | 0;
+    result = result * 31 + Kotlin.hashCode(this.notePerformances) | 0;
+    return result;
+  };
+  ResultsForDatabase.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
+  };
+  function IndividualNotePerformanceInfo(idealBeat, actualBeat, idealPitch, actualPitch, idealDuration, actualDuration) {
+    this.idealBeat = idealBeat;
+    this.actualBeat = actualBeat;
+    this.idealPitch = idealPitch;
+    this.actualPitch = actualPitch;
+    this.idealDuration = idealDuration;
+    this.actualDuration = actualDuration;
+  }
+  IndividualNotePerformanceInfo.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'IndividualNotePerformanceInfo',
+    interfaces: []
+  };
+  IndividualNotePerformanceInfo.prototype.component1 = function () {
+    return this.idealBeat;
+  };
+  IndividualNotePerformanceInfo.prototype.component2 = function () {
+    return this.actualBeat;
+  };
+  IndividualNotePerformanceInfo.prototype.component3 = function () {
+    return this.idealPitch;
+  };
+  IndividualNotePerformanceInfo.prototype.component4 = function () {
+    return this.actualPitch;
+  };
+  IndividualNotePerformanceInfo.prototype.component5 = function () {
+    return this.idealDuration;
+  };
+  IndividualNotePerformanceInfo.prototype.component6 = function () {
+    return this.actualDuration;
+  };
+  IndividualNotePerformanceInfo.prototype.copy_15yvbs$ = function (idealBeat, actualBeat, idealPitch, actualPitch, idealDuration, actualDuration) {
+    return new IndividualNotePerformanceInfo(idealBeat === void 0 ? this.idealBeat : idealBeat, actualBeat === void 0 ? this.actualBeat : actualBeat, idealPitch === void 0 ? this.idealPitch : idealPitch, actualPitch === void 0 ? this.actualPitch : actualPitch, idealDuration === void 0 ? this.idealDuration : idealDuration, actualDuration === void 0 ? this.actualDuration : actualDuration);
+  };
+  IndividualNotePerformanceInfo.prototype.toString = function () {
+    return 'IndividualNotePerformanceInfo(idealBeat=' + Kotlin.toString(this.idealBeat) + (', actualBeat=' + Kotlin.toString(this.actualBeat)) + (', idealPitch=' + Kotlin.toString(this.idealPitch)) + (', actualPitch=' + Kotlin.toString(this.actualPitch)) + (', idealDuration=' + Kotlin.toString(this.idealDuration)) + (', actualDuration=' + Kotlin.toString(this.actualDuration)) + ')';
+  };
+  IndividualNotePerformanceInfo.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.idealBeat) | 0;
+    result = result * 31 + Kotlin.hashCode(this.actualBeat) | 0;
+    result = result * 31 + Kotlin.hashCode(this.idealPitch) | 0;
+    result = result * 31 + Kotlin.hashCode(this.actualPitch) | 0;
+    result = result * 31 + Kotlin.hashCode(this.idealDuration) | 0;
+    result = result * 31 + Kotlin.hashCode(this.actualDuration) | 0;
+    return result;
+  };
+  IndividualNotePerformanceInfo.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.idealBeat, other.idealBeat) && Kotlin.equals(this.actualBeat, other.actualBeat) && Kotlin.equals(this.idealPitch, other.idealPitch) && Kotlin.equals(this.actualPitch, other.actualPitch) && Kotlin.equals(this.idealDuration, other.idealDuration) && Kotlin.equals(this.actualDuration, other.actualDuration)))));
+  };
+  function NotePlacement(note, positionInBeats) {
+    this.note = note;
+    this.positionInBeats = positionInBeats;
+  }
+  NotePlacement.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'NotePlacement',
+    interfaces: []
+  };
+  NotePlacement.prototype.component1 = function () {
+    return this.note;
+  };
+  NotePlacement.prototype.component2 = function () {
+    return this.positionInBeats;
+  };
+  NotePlacement.prototype.copy_uilc1j$ = function (note, positionInBeats) {
+    return new NotePlacement(note === void 0 ? this.note : note, positionInBeats === void 0 ? this.positionInBeats : positionInBeats);
+  };
+  NotePlacement.prototype.toString = function () {
+    return 'NotePlacement(note=' + Kotlin.toString(this.note) + (', positionInBeats=' + Kotlin.toString(this.positionInBeats)) + ')';
+  };
+  NotePlacement.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.note) | 0;
+    result = result * 31 + Kotlin.hashCode(this.positionInBeats) | 0;
+    return result;
+  };
+  NotePlacement.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.note, other.note) && Kotlin.equals(this.positionInBeats, other.positionInBeats)))));
+  };
+  function IncrementalBufferManager() {
+    this.sampleRate = 44100.0;
+    this.minDurationInBeats = 0.0;
+  }
+  IncrementalBufferManager.prototype.convertSamplesBufferToNotes_mtnj1d$ = function (samples) {
+    this.minDurationInBeats = listenerApp.parameters.minDurationInBeats;
+    var positionInSamples = 0;
+    var notes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    if (samples.size === 0) {
+      return Kotlin.kotlin.collections.emptyList_287e2$();
+    }
+    var functionStartTimestamp = window.performance.now();
+    var secondsPerBeat = 60.0 / listenerApp.globalTempo;
+    var samplesSublist = samples.subList_vux9f0$(positionInSamples, samples.size);
+    pm_log('Converting how many samples: ' + Kotlin.toString(samplesSublist.size));
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(samplesSublist, 10));
+    var tmp$;
+    tmp$ = samplesSublist.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      destination.add_11rb$(item.lengthInSamples);
+    }
+    var iterator = destination.iterator();
+    if (!iterator.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator = iterator.next();
+    while (iterator.hasNext()) {
+      accumulator = accumulator + iterator.next() | 0;
+    }
+    var lengthOfSamplesInBeats = accumulator / this.sampleRate / secondsPerBeat;
+    pm_log('Total length of samples in beats: ' + lengthOfSamplesInBeats);
+    var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(samplesSublist, 10));
+    var tmp$_0;
+    tmp$_0 = samplesSublist.iterator();
+    while (tmp$_0.hasNext()) {
+      var item_0 = tmp$_0.next();
+      destination_0.add_11rb$(Note$Companion_getInstance().getNoteNumber_14dthe$(item_0.freq));
+    }
+    var noteNumbers = destination_0;
+    var collectedPairs = zip(samplesSublist, noteNumbers);
+    pm_log('After mapping and zipping: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
+    var groups = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var curList = {v: Kotlin.kotlin.collections.ArrayList_init_ww73n8$()};
+    var curNoteNumber = {v: IntCompanionObject.MIN_VALUE};
+    var tmp$_1;
+    tmp$_1 = collectedPairs.iterator();
+    while (tmp$_1.hasNext()) {
+      var element = tmp$_1.next();
+      if (curNoteNumber.v !== element.second) {
+        groups.add_11rb$(curList.v);
+        curList.v = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+      }
+      curList.v.add_11rb$(element);
+      curNoteNumber.v = element.second;
+    }
+    groups.add_11rb$(curList.v);
+    pm_log('After making pairs: ' + Kotlin.toString(window.performance.now() - functionStartTimestamp));
+    var destination_1 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(collectedPairs, 10));
+    var tmp$_2;
+    tmp$_2 = collectedPairs.iterator();
+    while (tmp$_2.hasNext()) {
+      var item_1 = tmp$_2.next();
+      destination_1.add_11rb$(item_1.first.lengthInSamples);
+    }
+    var iterator_0 = destination_1.iterator();
+    if (!iterator_0.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator_0 = iterator_0.next();
+    while (iterator_0.hasNext()) {
+      accumulator_0 = accumulator_0 + iterator_0.next() | 0;
+    }
+    var lengthOfCollectedPairsInBeats = accumulator_0 / this.sampleRate / secondsPerBeat;
+    pm_log('Total length of collected pairs in beats: ' + lengthOfCollectedPairsInBeats);
+    var destination_2 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$_3;
+    tmp$_3 = groups.iterator();
+    while (tmp$_3.hasNext()) {
+      var element_0 = tmp$_3.next();
+      var list = element_0;
+      Kotlin.kotlin.collections.addAll_ipc267$(destination_2, list);
+    }
+    var destination_3 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(destination_2, 10));
+    var tmp$_4;
+    tmp$_4 = destination_2.iterator();
+    while (tmp$_4.hasNext()) {
+      var item_2 = tmp$_4.next();
+      destination_3.add_11rb$(item_2.first.lengthInSamples);
+    }
+    var iterator_1 = destination_3.iterator();
+    if (!iterator_1.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator_1 = iterator_1.next();
+    while (iterator_1.hasNext()) {
+      accumulator_1 = accumulator_1 + iterator_1.next() | 0;
+    }
+    var lengthOfGroupsInBeats = accumulator_1 / this.sampleRate / secondsPerBeat;
+    pm_log('Total length of groups: ' + lengthOfGroupsInBeats);
+    var BOGUS_NOTE_NUMBER = -100;
+    var destination_4 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$_5;
+    tmp$_5 = groups.iterator();
+    while (tmp$_5.hasNext()) {
+      var element_1 = tmp$_5.next();
+      if (element_1.size !== 0) {
+        destination_4.add_11rb$(element_1);
+      }
+    }
+    var destination_5 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(destination_4, 10));
+    var tmp$_6;
+    tmp$_6 = destination_4.iterator();
+    while (tmp$_6.hasNext()) {
+      var item_3 = tmp$_6.next();
+      var tmp$_7 = destination_5.add_11rb$;
+      var transform$result;
+      var destination_6 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(item_3, 10));
+      var tmp$_8;
+      tmp$_8 = item_3.iterator();
+      while (tmp$_8.hasNext()) {
+        var item_4 = tmp$_8.next();
+        destination_6.add_11rb$(item_4.first.lengthInSamples);
+      }
+      var iterator_2 = destination_6.iterator();
+      if (!iterator_2.hasNext()) {
+        throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+      }
+      var accumulator_2 = iterator_2.next();
+      while (iterator_2.hasNext()) {
+        accumulator_2 = accumulator_2 + iterator_2.next() | 0;
+      }
+      var lengthOfGroupsInSamples = accumulator_2;
+      if (lengthOfGroupsInSamples < secondsPerBeat * this.minDurationInBeats * this.sampleRate) {
+        var destination_7 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(item_3, 10));
+        var tmp$_9;
+        tmp$_9 = item_3.iterator();
+        while (tmp$_9.hasNext()) {
+          var item_5 = tmp$_9.next();
+          destination_7.add_11rb$(new Pair(item_5.first, BOGUS_NOTE_NUMBER));
+        }
+        transform$result = destination_7;
+      }
+       else {
+        transform$result = item_3;
+      }
+      tmp$_7.call(destination_5, transform$result);
+    }
+    var groupsOfAcceptableLength = destination_5;
+    pm_log('Converted into number groups: ' + Kotlin.toString(groupsOfAcceptableLength.size) + ' from original: ' + Kotlin.toString(groups.size), 0);
+    var destination_8 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$_10;
+    tmp$_10 = groupsOfAcceptableLength.iterator();
+    while (tmp$_10.hasNext()) {
+      var element_2 = tmp$_10.next();
+      var list_0 = element_2;
+      Kotlin.kotlin.collections.addAll_ipc267$(destination_8, list_0);
+    }
+    var flattened = destination_8;
+    var destination_9 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(flattened, 10));
+    var tmp$_11;
+    tmp$_11 = flattened.iterator();
+    while (tmp$_11.hasNext()) {
+      var item_6 = tmp$_11.next();
+      destination_9.add_11rb$(item_6.first.lengthInSamples);
+    }
+    var iterator_3 = destination_9.iterator();
+    if (!iterator_3.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator_3 = iterator_3.next();
+    while (iterator_3.hasNext()) {
+      accumulator_3 = accumulator_3 + iterator_3.next() | 0;
+    }
+    var lengthOfAcceptableGroupsInBeats = accumulator_3 / this.sampleRate / secondsPerBeat;
+    pm_log('Total length of acceptable groups pairs in beats: ' + lengthOfAcceptableGroupsInBeats);
+    curNoteNumber.v = -1;
+    var curLengthInSamples = {v: 0};
+    var avgFreq = {v: 0.0};
+    var noteList = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$_12;
+    tmp$_12 = flattened.iterator();
+    while (tmp$_12.hasNext()) {
+      var element_3 = tmp$_12.next();
+      if (curNoteNumber.v !== element_3.second) {
+        var note = new Note(curNoteNumber.v, curLengthInSamples.v / (secondsPerBeat * this.sampleRate));
+        avgFreq.v = avgFreq.v / curLengthInSamples.v;
+        note.avgFreq = avgFreq.v;
+        noteList.add_11rb$(note);
+        curLengthInSamples.v = 0;
+        avgFreq.v = 0.0;
+      }
+      curLengthInSamples.v = curLengthInSamples.v + element_3.first.lengthInSamples | 0;
+      avgFreq.v += element_3.first.freq * element_3.first.lengthInSamples;
+      curNoteNumber.v = element_3.second;
+    }
+    var lastNote = new Note(curNoteNumber.v, curLengthInSamples.v / (secondsPerBeat * this.sampleRate));
+    avgFreq.v = avgFreq.v / curLengthInSamples.v;
+    lastNote.avgFreq = avgFreq.v;
+    noteList.add_11rb$(lastNote);
+    var destination_10 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$_13;
+    tmp$_13 = noteList.iterator();
+    while (tmp$_13.hasNext()) {
+      var element_4 = tmp$_13.next();
+      if (element_4.duration !== 0.0) {
+        destination_10.add_11rb$(element_4);
+      }
+    }
+    notes.addAll_brywnq$(destination_10);
+    pm_log('Notes after combining process: (from original: ' + Kotlin.toString(flattened.size), 0);
+    pm_log('Turned samples into these notes (before purging): ', 0);
+    var tmp$_14;
+    tmp$_14 = noteList.iterator();
+    while (tmp$_14.hasNext()) {
+      var element_5 = tmp$_14.next();
+      pm_log('Note: ' + Kotlin.toString(element_5.noteNumber) + ' for ' + Kotlin.toString(element_5.duration), 0);
+    }
+    var notesToRemove = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var destination_11 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
+    var tmp$_15, tmp$_0_0;
+    var index = 0;
+    tmp$_15 = notes.iterator();
+    while (tmp$_15.hasNext()) {
+      var item_7 = tmp$_15.next();
+      var tmp$_16 = destination_11.add_11rb$;
+      var index_0 = (tmp$_0_0 = index, index = tmp$_0_0 + 1 | 0, tmp$_0_0);
+      var transform$result_0;
+      transform$break: do {
+        if (item_7.noteNumber === BOGUS_NOTE_NUMBER) {
+          if (index_0 === 0)
+            break transform$break;
+          var previousItem = notes.get_za3lpa$(index_0 - 1 | 0);
+          previousItem.duration = previousItem.duration + item_7.duration;
+          notesToRemove.add_11rb$(item_7);
+        }
+      }
+       while (false);
+      tmp$_16.call(destination_11, transform$result_0);
+    }
+    pm_log('Removing ' + Kotlin.toString(notesToRemove.size), 0);
+    notes.removeAll_brywnq$(notesToRemove);
+    var pos = {v: 0.0};
+    var destination_12 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
+    var tmp$_17;
+    tmp$_17 = notes.iterator();
+    while (tmp$_17.hasNext()) {
+      var item_8 = tmp$_17.next();
+      var tmp$_18 = destination_12.add_11rb$;
+      var np = new NotePlacement(item_8, pos.v);
+      pos.v += item_8.duration;
+      tmp$_18.call(destination_12, np);
+    }
+    var destination_13 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$_19;
+    tmp$_19 = destination_12.iterator();
+    while (tmp$_19.hasNext()) {
+      var element_6 = tmp$_19.next();
+      if (element_6.note.noteNumber !== BOGUS_NOTE_NUMBER) {
+        destination_13.add_11rb$(element_6);
+      }
+    }
+    var notePlacements = destination_13;
+    pm_log('Turned samples into these notes (after purging): ', 0);
+    var tmp$_20;
+    tmp$_20 = notePlacements.iterator();
+    while (tmp$_20.hasNext()) {
+      var element_7 = tmp$_20.next();
+      pm_log('Note: ' + Kotlin.toString(element_7.note.noteNumber) + ' for ' + Kotlin.toString(element_7.note.duration) + ' at ' + Kotlin.toString(element_7.positionInBeats * 100.0 / 100.0), 0);
+    }
+    pm_log('Difference after bogus purge: ' + Kotlin.toString(noteList.size - notePlacements.size | 0), 0);
+    var destination_14 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
+    var tmp$_21;
+    tmp$_21 = notes.iterator();
+    while (tmp$_21.hasNext()) {
+      var item_9 = tmp$_21.next();
+      destination_14.add_11rb$(item_9.duration);
+    }
+    var iterator_4 = destination_14.iterator();
+    if (!iterator_4.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator_4 = iterator_4.next();
+    while (iterator_4.hasNext()) {
+      accumulator_4 = accumulator_4 + iterator_4.next();
+    }
+    var lengthOfNotesInBeats = accumulator_4;
+    pm_log('Length of notes in beats: ' + lengthOfNotesInBeats);
+    var functionEndTimestamp = window.performance.now();
+    pm_log('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
+    return notePlacements;
+  };
+  IncrementalBufferManager.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'IncrementalBufferManager',
+    interfaces: []
+  };
+  function IncrementalComparisonEngine() {
+    this.largestDurationRatioDifference = 0.0;
+    this.largestBeatDifference = 0.0;
+  }
+  IncrementalComparisonEngine.prototype.compareNoteArrays_puujnc$ = function (comparisonFlags, ideal, toTest, isCurrentlyRunning) {
+    if (isCurrentlyRunning === void 0)
+      isCurrentlyRunning = false;
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, tmp$_7, tmp$_8, tmp$_9;
+    this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference;
+    this.largestBeatDifference = listenerApp.parameters.largestBeatDifference;
+    var results = new CompareResults();
+    var curBeatPosition = 0.0;
+    var lastTestedIndexInTest = -1;
+    var doNotTestBeyond = 0.0;
+    if (toTest.size > 1) {
+      doNotTestBeyond = toTest.get_za3lpa$(toTest.size - 2 | 0).positionInBeats;
+    }
+    var tmp$_10 = !isCurrentlyRunning;
+    if (tmp$_10) {
+      tmp$_10 = toTest.size > 0;
+    }
+    if (tmp$_10) {
+      doNotTestBeyond = last(toTest).positionInBeats + last(toTest).note.duration;
+    }
+    var functionStartTimestamp = window.performance.now();
+    tmp$ = until(0, ideal.size);
+    tmp$_0 = tmp$.first;
+    tmp$_1 = tmp$.last;
+    tmp$_2 = tmp$.step;
+    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
+      var idealValue = ideal.get_za3lpa$(index);
+      var indexOnToTest = -1;
+      var toTestBeatPositionAtIndexToTest = 0.0;
+      var toTestBeatPosition;
+      var diffFromIdealBeatPosition = DoubleCompanionObject.MAX_VALUE;
+      tmp$_3 = until(0, toTest.size);
+      tmp$_4 = tmp$_3.first;
+      tmp$_5 = tmp$_3.last;
+      tmp$_6 = tmp$_3.step;
+      for (var i = tmp$_4; i <= tmp$_5; i += tmp$_6) {
+        var item = toTest.get_za3lpa$(i);
+        toTestBeatPosition = item.positionInBeats;
+        var diff = Math.abs(curBeatPosition - toTestBeatPosition);
+        if (diff < diffFromIdealBeatPosition) {
+          indexOnToTest = i;
+          toTestBeatPositionAtIndexToTest = toTestBeatPosition;
+          diffFromIdealBeatPosition = diff;
+        }
+      }
+      if (curBeatPosition >= doNotTestBeyond) {
+        pm_log('Too far (' + curBeatPosition + ' vs ' + doNotTestBeyond + ')', 0);
+        break;
+      }
+      if (indexOnToTest <= lastTestedIndexInTest) {
+        pm_log('Already tested here...... ' + indexOnToTest + ' <= ' + lastTestedIndexInTest);
+      }
+      lastTestedIndexInTest = indexOnToTest;
+      pm_log('Going to compare ideal index ' + index + ' to test index ' + indexOnToTest);
+      var feedbackItemTypes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+      var feedbackItem = new FeedbackItem(FeedbackType$Correct_getInstance(), curBeatPosition, feedbackItemTypes);
+      results.feedbackItems.add_11rb$(feedbackItem);
+      if (indexOnToTest === -1) {
+        pm_log('No index found to test', 10);
+        continue;
+      }
+      results.attempted = results.attempted + 1 | 0;
+      var idealItem = idealValue;
+      var testItem = toTest.get_za3lpa$(indexOnToTest);
+      pm_log('Durations : ' + Kotlin.toString(idealItem.duration) + ' | ' + Kotlin.toString(testItem.note.duration), 0);
+      if (comparisonFlags.testDuration) {
+        var durationDifferenceRatio = testItem.note.duration / idealItem.duration;
+        var durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0;
+        if (durationDifferenceRatio < listenerApp.parameters.allowableDurationRatio) {
+          pm_log('Test subject too short by ' + Kotlin.toString(durationDifferenceRatioRounded), 0);
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', '' + Kotlin.toString(durationDifferenceRatioRounded)));
+          throwSafeIncorrectSwitch(feedbackItem);
+        }
+         else if (durationDifferenceRatio > 1.0 / listenerApp.parameters.allowableDurationRatio) {
+          pm_log('Test subject too long by ' + Kotlin.toString(durationDifferenceRatioRounded), 0);
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', '' + Kotlin.toString(Math.abs(durationDifferenceRatioRounded))));
+          throwSafeIncorrectSwitch(feedbackItem);
+        }
+         else {
+          pm_log('PERFECT DURATION', 0);
+        }
+        if (durationDifferenceRatio < this.largestDurationRatioDifference || durationDifferenceRatio > 1.0 / this.largestDurationRatioDifference) {
+          feedbackItem.type = FeedbackType$Missed_getInstance();
+        }
+      }
+      pm_log('Starting points : ' + Kotlin.toString(curBeatPosition) + ' | ' + Kotlin.toString(toTestBeatPositionAtIndexToTest));
+      var distanceAway = -(curBeatPosition - toTestBeatPositionAtIndexToTest);
+      var distanceAwayRounded = Math.round(distanceAway * 100.0) / 100.0;
+      if (comparisonFlags.testRhythm) {
+        if (distanceAway > listenerApp.parameters.allowableRhythmMargin) {
+          pm_log('Test subject rushing');
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', '+' + Kotlin.toString(distanceAwayRounded)));
+          throwSafeIncorrectSwitch(feedbackItem);
+        }
+         else if (distanceAway < -listenerApp.parameters.allowableRhythmMargin) {
+          pm_log('Test subject dragging');
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('speed', '' + Kotlin.toString(distanceAwayRounded)));
+          throwSafeIncorrectSwitch(feedbackItem);
+        }
+         else {
+          pm_log('PERFECT');
+        }
+        if (Math.abs(distanceAway) > this.largestBeatDifference) {
+          feedbackItem.type = FeedbackType$Missed_getInstance();
+        }
+      }
+      pm_log('Notes : ' + Kotlin.toString(idealItem.noteNumber) + ' | ' + Kotlin.toString(testItem.note.noteNumber));
+      if (testItem.note.noteNumber === (idealItem.noteNumber + 12 | 0) || testItem.note.noteNumber === (idealItem.noteNumber - 12 | 0)) {
+        var n = new Note(idealItem.noteNumber, testItem.note.duration);
+        if (testItem.note.noteNumber < idealItem.noteNumber) {
+          n.avgFreq = (tmp$_7 = testItem.note.avgFreq) != null ? tmp$_7 * 2 : null;
+        }
+         else {
+          n.avgFreq = (tmp$_8 = testItem.note.avgFreq) != null ? tmp$_8 / 2 : null;
+        }
+        testItem = new NotePlacement(n, testItem.positionInBeats);
+      }
+      pm_log('Pitch : ' + Kotlin.toString(idealItem.getFrequency()) + ' | ' + Kotlin.toString(testItem.note.getFrequency()), 0);
+      pm_log('Avg freq of test item: ' + Kotlin.toString(testItem.note.avgFreq));
+      var avgFreq = testItem.note.avgFreq;
+      if (avgFreq == null) {
+        feedbackItem.type = FeedbackType$Missed_getInstance();
+      }
+      if (avgFreq != null && comparisonFlags.testPitch) {
+        if (idealItem.noteNumber !== testItem.note.noteNumber) {
+          pm_log('WRONG NOTE *&*&*&*&*&*&*&*');
+          feedbackItem.type = FeedbackType$Missed_getInstance();
+        }
+        var idealItemFrequency = idealItem.getFrequency();
+        var noteAboveFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(idealItem.noteNumber + 1 | 0);
+        var noteBelowFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(idealItem.noteNumber - 1 | 0);
+        if (avgFreq - idealItemFrequency > 0) {
+          var distanceInHz = noteAboveFrequency - idealItemFrequency;
+          var distanceInCents = (avgFreq - idealItemFrequency) / distanceInHz * 100.0;
+          pm_log('Sharp by ' + distanceInHz + ' (' + distanceInCents + ' cents)');
+          if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
+            pm_log('Test subject sharp');
+            feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', '+' + Kotlin.toString(distanceInHz | 0)));
+            throwSafeIncorrectSwitch(feedbackItem);
+          }
+        }
+         else if (avgFreq - idealItem.getFrequency() < 0) {
+          var distanceInHz_0 = idealItemFrequency - noteBelowFrequency;
+          var distanceInCents_0 = (idealItemFrequency - avgFreq) / distanceInHz_0 * 100.0;
+          pm_log('Flat by ' + distanceInHz_0 + ' (' + distanceInCents_0 + ' cents)');
+          if (distanceInCents_0 > listenerApp.parameters.allowableCentsMargin) {
+            pm_log('Test subject flat');
+            feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', '-' + Kotlin.toString(distanceInHz_0 | 0)));
+            throwSafeIncorrectSwitch(feedbackItem);
+          }
+        }
+         else {
+          pm_log('PERFECT');
+        }
+      }
+      if (feedbackItem.type === FeedbackType$Correct_getInstance()) {
+        results.correct = results.correct + 1 | 0;
+      }
+      curBeatPosition += idealValue.duration;
+      var notePerformance = new IndividualNotePerformanceInfo(curBeatPosition, toTestBeatPositionAtIndexToTest, idealItem.getFrequency(), (tmp$_9 = testItem.note.avgFreq) != null ? tmp$_9 : -1.0, idealItem.duration, testItem.note.duration);
+      results.finalResults.add_11rb$(notePerformance);
+    }
+    var functionEndTimestamp = window.performance.now();
+    pm_log('Function total time: ' + Kotlin.toString(functionEndTimestamp - functionStartTimestamp));
+    return results;
+  };
+  IncrementalComparisonEngine.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'IncrementalComparisonEngine',
+    interfaces: []
+  };
+  function ListenerNetworkManager() {
+    ListenerNetworkManager_instance = this;
+    this.mapTest = mapOf([to('test', 1), to('test2', 4)]);
+  }
+  ListenerNetworkManager.prototype.makePostRequest_l6nar7$ = function (urlString, data) {
+    networkRequest(urlString, data);
+  };
+  ListenerNetworkManager.prototype.buildAndSendRequest_fhpv3e$ = function (results) {
+    var dbResults = results.generateResultForDatabase();
+    dbResults.userID = listenerApp.parameters.userID;
+    dbResults.exerciseID = listenerApp.parameters.exerciseID;
+    var performanceWrapper = new PerformanceWrapper(dbResults);
+    ListenerNetworkManager_getInstance().makePostRequest_l6nar7$(listenerApp.parameters.databaseEndpoint, performanceWrapper);
+  };
+  ListenerNetworkManager.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'ListenerNetworkManager',
+    interfaces: []
+  };
+  var ListenerNetworkManager_instance = null;
+  function ListenerNetworkManager_getInstance() {
+    if (ListenerNetworkManager_instance === null) {
+      new ListenerNetworkManager();
+    }
+    return ListenerNetworkManager_instance;
+  }
+  function PerformanceWrapper(performance) {
+    this.performance = performance;
+  }
+  PerformanceWrapper.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'PerformanceWrapper',
+    interfaces: []
+  };
+  PerformanceWrapper.prototype.component1 = function () {
+    return this.performance;
+  };
+  PerformanceWrapper.prototype.copy_w32kyh$ = function (performance) {
+    return new PerformanceWrapper(performance === void 0 ? this.performance : performance);
+  };
+  PerformanceWrapper.prototype.toString = function () {
+    return 'PerformanceWrapper(performance=' + Kotlin.toString(this.performance) + ')';
+  };
+  PerformanceWrapper.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.performance) | 0;
+    return result;
+  };
+  PerformanceWrapper.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.performance, other.performance))));
+  };
+  function EasyScoreUtil_Kotlin() {
+    this.scorePositionInitialX = 60;
+    this.scorePositionInitialY = 20;
+    this.scorePositionX = 0;
+    this.scorePositionY = 0;
+    this.positionInLine = 0;
+    this.scorePositionCurrentLine = 0;
+    this.measureCounter = 0;
+    this.exercise = null;
+    this.generatedExercise = this.generatedExercise;
+    this.vf = null;
+    this.registry = null;
+    this.score = null;
+    this.voice = null;
+    this.beam = null;
+    this.contentScaleFactor = 1.0;
+    this.useScaling = true;
+    this.assumedCanvasWidth = 1024;
+    this.barWidth = 200;
+    this.barHeight = 160;
+    this.firstBarAddition = 40;
+    this.barsPerLine = 4;
+    this.noteIDNumber = 0;
+    this.systems = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  }
+  EasyScoreUtil_Kotlin.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'EasyScoreUtil_Kotlin',
+    interfaces: []
+  };
+  function Note(value, dur, textVal) {
+    Note$Companion_getInstance();
+    if (textVal === void 0)
+      textVal = 'none';
+    this.noteNumber = value;
+    this.duration = dur;
+    this.textValue = textVal;
+    this.avgFreq = null;
+  }
+  Note.prototype.getFrequency = function () {
+    return Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(this.noteNumber);
+  };
+  function Note$noteName$lambda(value) {
+    if (value < 0) {
+      return (value + 12 | 0) % 12;
+    }
+     else {
+      return value % 12;
+    }
+  }
+  Note.prototype.noteName = function () {
+    var baseNote = Note$noteName$lambda(this.noteNumber);
+    if (baseNote >= Note$Companion_getInstance().noteNames.length) {
+      console.warn('Invalid note');
+      return 'NaN';
+    }
+    return Note$Companion_getInstance().noteNames[baseNote];
+  };
+  function Note$Companion() {
+    Note$Companion_instance = this;
+    this.noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  }
+  Note$Companion.prototype.getNoteNumber_14dthe$ = function (frequency) {
+    if (frequency === -1.0)
+      return -1;
+    return this.closestNoteToFrequency_14dthe$(frequency);
+  };
+  Note$Companion.prototype.getFrequencyForNoteNumber_za3lpa$ = function (noteNumber) {
+    var A440_NoteNumber = 69.0;
+    var equalTemperamentPitch = UserSettings_getInstance().pitch * Math.pow(2.0, (noteNumber - A440_NoteNumber) / 12.0);
+    return equalTemperamentPitch;
+  };
+  Note$Companion.prototype.createAllNotes = function () {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    ALL_NOTES = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    tmp$ = until(30, 110);
+    tmp$_0 = tmp$.first;
+    tmp$_1 = tmp$.last;
+    tmp$_2 = tmp$.step;
+    for (var i = tmp$_0; i <= tmp$_1; i += tmp$_2) {
+      ALL_NOTES.add_11rb$(new Note(i, 1.0));
+    }
+  };
+  Note$Companion.prototype.closestNoteToFrequency_14dthe$ = function (frequency) {
+    var tmp$;
+    var closestFrequency = DoubleCompanionObject.MAX_VALUE;
+    var closestNoteValue = -1;
+    tmp$ = ALL_NOTES.iterator();
+    while (tmp$.hasNext()) {
+      var note = tmp$.next();
+      var diff = Math.abs(note.getFrequency() - frequency);
+      if (diff < closestFrequency) {
+        closestFrequency = diff;
+        closestNoteValue = note.noteNumber;
+      }
+       else if (diff > closestFrequency) {
+        break;
+      }
+    }
+    return closestNoteValue;
+  };
+  function Note$Companion$NoteWithDiff(note, difference) {
+    this.note = note;
+    this.difference = difference;
+  }
+  Note$Companion$NoteWithDiff.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'NoteWithDiff',
+    interfaces: []
+  };
+  Note$Companion$NoteWithDiff.prototype.component1 = function () {
+    return this.note;
+  };
+  Note$Companion$NoteWithDiff.prototype.component2 = function () {
+    return this.difference;
+  };
+  Note$Companion$NoteWithDiff.prototype.copy_uilc1j$ = function (note, difference) {
+    return new Note$Companion$NoteWithDiff(note === void 0 ? this.note : note, difference === void 0 ? this.difference : difference);
+  };
+  Note$Companion$NoteWithDiff.prototype.toString = function () {
+    return 'NoteWithDiff(note=' + Kotlin.toString(this.note) + (', difference=' + Kotlin.toString(this.difference)) + ')';
+  };
+  Note$Companion$NoteWithDiff.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.note) | 0;
+    result = result * 31 + Kotlin.hashCode(this.difference) | 0;
+    return result;
+  };
+  Note$Companion$NoteWithDiff.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.note, other.note) && Kotlin.equals(this.difference, other.difference)))));
+  };
+  Note$Companion.prototype.closestNoteWithDiff_14dthe$ = function (frequency) {
+    var tmp$;
+    var closestFrequency = DoubleCompanionObject.MAX_VALUE;
+    var closestNote = null;
+    tmp$ = ALL_NOTES.iterator();
+    while (tmp$.hasNext()) {
+      var note = tmp$.next();
+      var diff = Math.abs(note.getFrequency() - frequency);
+      if (diff < closestFrequency) {
+        closestFrequency = diff;
+        closestNote = note;
+      }
+       else if (diff > closestFrequency) {
+        break;
+      }
+    }
+    return new Note$Companion$NoteWithDiff(closestNote != null ? closestNote : Kotlin.throwNPE(), closestFrequency);
+  };
+  Note$Companion.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var Note$Companion_instance = null;
+  function Note$Companion_getInstance() {
+    if (Note$Companion_instance === null) {
+      new Note$Companion();
+    }
+    return Note$Companion_instance;
+  }
+  Note.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'Note',
+    interfaces: []
+  };
+  var ALL_NOTES;
+  function Metronome() {
+    this.downbeatAudioKey = 'downbeatSound';
+    this.beatAudioKey = 'beatSound';
+    this.audioManager = this.audioManager;
+    this.state_t08vao$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+    this.timeSignature = 4;
+    this.prerollBeats = 4.0;
+    this.currentBeat = 0;
+    this.beatTimes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.lastBeatOccuredAt = -1.0;
+    this.timeoutKeys = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  }
+  Object.defineProperty(Metronome.prototype, 'state', {
+    get: function () {
+      return this.state_t08vao$_0;
+    },
+    set: function (state) {
+      this.state_t08vao$_0 = state;
+    }
+  });
+  Metronome.prototype.setup = function () {
+    this.audioManager.loadAudioFile_puj7f4$(listenerApp.parameters.url + listenerApp.parameters.audioAssetPath + 'Cowbell.wav', this.downbeatAudioKey);
+    this.audioManager.loadAudioFile_puj7f4$(listenerApp.parameters.url + listenerApp.parameters.audioAssetPath + 'Woodblock.wav', this.beatAudioKey);
+  };
+  Metronome.prototype.start = function () {
+    this.state = TimeKeeper$TimeKeeperState$Running_getInstance();
+  };
+  Metronome.prototype.stop = function () {
+    this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+  };
+  Metronome.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
+    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    if (timeKeeper.runForTime - timestamp < beatSize / 2) {
+      pm_log('Less than beat size..');
+      return;
+    }
+    if (this.lastBeatOccuredAt === -1.0) {
+      this.lastBeatOccuredAt = timestamp - beatSize;
+    }
+    var nextBeatTime = this.lastBeatOccuredAt + beatSize;
+    var absoluteBeatPosition = timestamp / beatSize;
+    this.updateIndicatorUI_14dthe$(absoluteBeatPosition);
+    if (timestamp >= nextBeatTime) {
+      if (UserSettings_getInstance().metronomeAudioOn) {
+        if (this.currentBeat % this.timeSignature === 0) {
+          this.audioManager.playAudioNow_61zpoe$(this.downbeatAudioKey);
+        }
+         else {
+          this.audioManager.playAudioNow_61zpoe$(this.beatAudioKey);
+        }
+      }
+      this.lastBeatOccuredAt = nextBeatTime;
+      this.updateMetronomeUI_za3lpa$(this.currentBeat);
+      this.currentBeat = this.currentBeat + 1 | 0;
+    }
+  };
+  function Metronome$cancelAllUIUpdates$lambda(it) {
+    return true;
+  }
+  Metronome.prototype.cancelAllUIUpdates = function () {
+    var tmp$;
+    tmp$ = reversed(this.timeoutKeys).iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      pm_log('Cancelling item... ' + element);
+      window.clearTimeout(element);
+    }
+    removeAll(this.timeoutKeys, Metronome$cancelAllUIUpdates$lambda);
+  };
+  Metronome.prototype.updateIndicatorUI_14dthe$ = function (beat) {
+    listenerApp.moveToPosition_14dthe$(beat - this.prerollBeats);
+  };
+  Metronome.prototype.updateMetronomeUI_za3lpa$ = function (beat) {
+    listenerApp.highlightMetronomeItem_za3lpa$(beat % this.timeSignature);
+  };
+  Metronome.prototype.getBeatOfTimestamp_14dthe$ = function (timestamp) {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    var firstItem = -1.0;
+    var secondItem = -1.0;
+    var lastItemBefore;
+    tmp$ = get_indices(this.beatTimes);
+    tmp$_0 = tmp$.first;
+    tmp$_1 = tmp$.last;
+    tmp$_2 = tmp$.step;
+    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
+      var beat = this.beatTimes.get_za3lpa$(index);
+      if (beat > timestamp) {
+        lastItemBefore = index - 1 | 0;
+        if (lastItemBefore === -1) {
+          return -1.0;
+        }
+        firstItem = this.beatTimes.get_za3lpa$(lastItemBefore);
+        secondItem = beat;
+        break;
+      }
+    }
+    if (firstItem === -1.0) {
+      return -1.0;
+    }
+    var distanceBetweenBeats = secondItem - firstItem;
+    var distanceFromStampToFirstBeat = timestamp - firstItem;
+    var percentageThroughBeat = distanceFromStampToFirstBeat / distanceBetweenBeats;
+    return percentageThroughBeat;
+  };
+  Metronome.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'Metronome',
+    interfaces: [TimeKeeperSteppable]
+  };
+  var buflen;
+  function SampleCollection(freq, lengthInSamples, timestampInSamples) {
+    this.freq = freq;
+    this.lengthInSamples = lengthInSamples;
+    this.timestampInSamples = timestampInSamples;
+  }
+  SampleCollection.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'SampleCollection',
+    interfaces: []
+  };
+  SampleCollection.prototype.component1 = function () {
+    return this.freq;
+  };
+  SampleCollection.prototype.component2 = function () {
+    return this.lengthInSamples;
+  };
+  SampleCollection.prototype.component3 = function () {
+    return this.timestampInSamples;
+  };
+  SampleCollection.prototype.copy_mqu1mq$ = function (freq, lengthInSamples, timestampInSamples) {
+    return new SampleCollection(freq === void 0 ? this.freq : freq, lengthInSamples === void 0 ? this.lengthInSamples : lengthInSamples, timestampInSamples === void 0 ? this.timestampInSamples : timestampInSamples);
+  };
+  SampleCollection.prototype.toString = function () {
+    return 'SampleCollection(freq=' + Kotlin.toString(this.freq) + (', lengthInSamples=' + Kotlin.toString(this.lengthInSamples)) + (', timestampInSamples=' + Kotlin.toString(this.timestampInSamples)) + ')';
+  };
+  SampleCollection.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.freq) | 0;
+    result = result * 31 + Kotlin.hashCode(this.lengthInSamples) | 0;
+    result = result * 31 + Kotlin.hashCode(this.timestampInSamples) | 0;
+    return result;
+  };
+  SampleCollection.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.freq, other.freq) && Kotlin.equals(this.lengthInSamples, other.lengthInSamples) && Kotlin.equals(this.timestampInSamples, other.timestampInSamples)))));
+  };
+  function PitchTracker() {
+    this.sampleRate = 44100.0;
+    this.lengthOfPrerollToIgnore = 0.0;
+    this.latencyTime = 180;
+    this.samples = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.samplesRecorded = 0;
+    this.state_j0gsl6$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+  }
+  PitchTracker.prototype.setup = function () {
+  };
+  PitchTracker.prototype.start = function () {
+    this.samplesRecorded = 0;
+    this.state = TimeKeeper$TimeKeeperState$Running_getInstance();
+  };
+  PitchTracker.prototype.stop = function () {
+    this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+  };
+  Object.defineProperty(PitchTracker.prototype, 'state', {
+    get: function () {
+      return this.state_j0gsl6$_0;
+    },
+    set: function (state) {
+      this.state_j0gsl6$_0 = state;
+    }
+  });
+  PitchTracker.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
+    var correlatedFrequency = audioAnalyzer.updatePitch(timestamp);
+    pm_log('Timestamp: ' + Kotlin.toString(timestamp));
+    pm_log('Pitch: ' + Kotlin.toString(correlatedFrequency));
+    var lengthOfBuffer = buflen / 2.0;
+    this.stepWithFrequency_88ee24$(timestamp, correlatedFrequency, lengthOfBuffer, this.latencyTime);
+  };
+  PitchTracker.prototype.stepWithFrequency_88ee24$ = function (timestamp, correlatedFrequency, lengthOfBufferInSamples, latencyTime) {
+    var timestampOfPitch = timestamp - lengthOfBufferInSamples / this.sampleRate * 1000.0 - latencyTime;
+    var timestampAccountingForPreroll = timestampOfPitch - this.lengthOfPrerollToIgnore;
+    pm_log('Timestamp accounting for preroll ' + timestampAccountingForPreroll);
+    var samplesToFill = lengthOfBufferInSamples - this.samplesRecorded + timestampAccountingForPreroll * 44.1;
+    if (samplesToFill < 0) {
+      pm_log('Not filling yet...');
+      return;
+    }
+    pm_log('Filling ' + Kotlin.toString(samplesToFill) + (' with ' + correlatedFrequency));
+    this.samples.add_11rb$(new SampleCollection(correlatedFrequency, samplesToFill | 0, this.samplesRecorded));
+    this.samplesRecorded = this.samplesRecorded + (samplesToFill | 0) | 0;
+  };
+  PitchTracker.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'PitchTracker',
+    interfaces: [TimeKeeperSteppable]
+  };
+  function TimeKeeper() {
+    this.finishedActions = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.state_k2u27h$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+    this.steppables = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.analyzers = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    this.timeOffSet = -1.0;
+    this.runForTime = 4100.0;
+  }
+  function TimeKeeper$TimeKeeperState(name, ordinal) {
+    Enum.call(this);
+    this.name$ = name;
+    this.ordinal$ = ordinal;
+  }
+  function TimeKeeper$TimeKeeperState_initFields() {
+    TimeKeeper$TimeKeeperState_initFields = function () {
+    };
+    TimeKeeper$TimeKeeperState$Stopped_instance = new TimeKeeper$TimeKeeperState('Stopped', 0);
+    TimeKeeper$TimeKeeperState$Running_instance = new TimeKeeper$TimeKeeperState('Running', 1);
+    TimeKeeper$TimeKeeperState$Completed_instance = new TimeKeeper$TimeKeeperState('Completed', 2);
+  }
+  var TimeKeeper$TimeKeeperState$Stopped_instance;
+  function TimeKeeper$TimeKeeperState$Stopped_getInstance() {
+    TimeKeeper$TimeKeeperState_initFields();
+    return TimeKeeper$TimeKeeperState$Stopped_instance;
+  }
+  var TimeKeeper$TimeKeeperState$Running_instance;
+  function TimeKeeper$TimeKeeperState$Running_getInstance() {
+    TimeKeeper$TimeKeeperState_initFields();
+    return TimeKeeper$TimeKeeperState$Running_instance;
+  }
+  var TimeKeeper$TimeKeeperState$Completed_instance;
+  function TimeKeeper$TimeKeeperState$Completed_getInstance() {
+    TimeKeeper$TimeKeeperState_initFields();
+    return TimeKeeper$TimeKeeperState$Completed_instance;
+  }
+  TimeKeeper$TimeKeeperState.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'TimeKeeperState',
+    interfaces: [Enum]
+  };
+  function TimeKeeper$TimeKeeperState$values() {
+    return [TimeKeeper$TimeKeeperState$Stopped_getInstance(), TimeKeeper$TimeKeeperState$Running_getInstance(), TimeKeeper$TimeKeeperState$Completed_getInstance()];
+  }
+  TimeKeeper$TimeKeeperState.values = TimeKeeper$TimeKeeperState$values;
+  function TimeKeeper$TimeKeeperState$valueOf(name) {
+    switch (name) {
+      case 'Stopped':
+        return TimeKeeper$TimeKeeperState$Stopped_getInstance();
+      case 'Running':
+        return TimeKeeper$TimeKeeperState$Running_getInstance();
+      case 'Completed':
+        return TimeKeeper$TimeKeeperState$Completed_getInstance();
+      default:Kotlin.throwISE('No enum constant com.practicingmusician.steppable.TimeKeeper.TimeKeeperState.' + name);
+    }
+  }
+  TimeKeeper$TimeKeeperState.valueOf_61zpoe$ = TimeKeeper$TimeKeeperState$valueOf;
+  Object.defineProperty(TimeKeeper.prototype, 'state', {
+    get: function () {
+      return this.state_k2u27h$_0;
+    },
+    set: function (value) {
+      if (value === TimeKeeper$TimeKeeperState$Completed_getInstance()) {
+        pm_log('Completed', 10);
+        this.state_k2u27h$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+        var tmp$;
+        tmp$ = this.finishedActions.iterator();
+        while (tmp$.hasNext()) {
+          var element = tmp$.next();
+          element(true);
+        }
+      }
+       else {
+        this.state_k2u27h$_0 = value;
+      }
+    }
+  });
+  TimeKeeper.prototype.start = function () {
+    this.state = TimeKeeper$TimeKeeperState$Running_getInstance();
+    this.requestNextStep();
+  };
+  TimeKeeper.prototype.stop = function () {
+    this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
+    this.timeOffSet = -1.0;
+  };
+  function TimeKeeper$requestNextStep$lambda(this$TimeKeeper) {
+    return function (it) {
+      this$TimeKeeper.step_14dthe$(it);
+    };
+  }
+  TimeKeeper.prototype.requestNextStep = function () {
+    window.requestAnimationFrame(TimeKeeper$requestNextStep$lambda(this));
+  };
+  TimeKeeper.prototype.step_14dthe$ = function (nonOffsetTimestamp) {
+    if (this.timeOffSet === -1.0) {
+      this.timeOffSet = nonOffsetTimestamp;
+    }
+    var timestamp = nonOffsetTimestamp - this.timeOffSet;
+    pm_log('Calling step at : ' + Kotlin.toString(timestamp) + (' (raw: ' + nonOffsetTimestamp + ')'));
+    var tmp$;
+    tmp$ = this.steppables.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.state === TimeKeeper$TimeKeeperState$Running_getInstance())
+        element.step_zgkg49$(timestamp, this);
+    }
+    var tmp$_0;
+    tmp$_0 = this.analyzers.iterator();
+    while (tmp$_0.hasNext()) {
+      var element_0 = tmp$_0.next();
+      element_0.analyze_14dthe$(timestamp);
+    }
+    if (timestamp >= this.runForTime) {
+      pm_log('STOPPED ((((((((((((((((((((((((((((((())))))))))))))))))', 9);
+      this.state = TimeKeeper$TimeKeeperState$Completed_getInstance();
+    }
+    if (this.state !== TimeKeeper$TimeKeeperState$Stopped_getInstance())
+      this.requestNextStep();
+  };
+  TimeKeeper.prototype.currentTime = function () {
+    return window.performance.now() - this.timeOffSet;
+  };
+  TimeKeeper.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'TimeKeeper',
+    interfaces: []
+  };
+  function TimeKeeperSteppable() {
+  }
+  TimeKeeperSteppable.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'TimeKeeperSteppable',
+    interfaces: []
+  };
+  function TimeKeeperAnalyzer() {
+  }
+  TimeKeeperAnalyzer.$metadata$ = {
+    kind: Kotlin.Kind.INTERFACE,
+    simpleName: 'TimeKeeperAnalyzer',
+    interfaces: []
+  };
+  function PitchTrackerTest() {
+    PitchTrackerTest_instance = this;
+  }
+  PitchTrackerTest.prototype.runTest = function () {
+    var tmp$;
+    var tracker = new PitchTracker();
+    tmp$ = step(new IntRange(24, 1024), 17).iterator();
+    while (tmp$.hasNext())
+      var i = tmp$.next();
+    println('Samples: ' + Kotlin.toString(tracker.samples.size));
+  };
+  PitchTrackerTest.prototype.toggleTest = function () {
+  };
+  PitchTrackerTest.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'PitchTrackerTest',
+    interfaces: []
+  };
+  var PitchTrackerTest_instance = null;
+  function PitchTrackerTest_getInstance() {
+    if (PitchTrackerTest_instance === null) {
+      new PitchTrackerTest();
+    }
+    return PitchTrackerTest_instance;
+  }
+  function PitchTrackerTestClass() {
+    this.tracker = new PitchTracker();
+  }
+  PitchTrackerTestClass.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'PitchTrackerTestClass',
+    interfaces: []
+  };
+  function MockParameters() {
+    this.notationContainerName_7mvjxd$_0 = 'notationBody';
+    this.metronomeContainerName_7mvjxd$_0 = 'metronomeContainer';
+    this.userID_7mvjxd$_0 = 1;
+    this.exerciseID_7mvjxd$_0 = 2;
+    this.databaseEndpoint_7mvjxd$_0 = '';
+    this.url_7mvjxd$_0 = '';
+    this.xmlUrl_7mvjxd$_0 = 'xmlFile.xml';
+    this.audioAssetPath_7mvjxd$_0 = '';
+    this.allowableCentsMargin_7mvjxd$_0 = 40;
+    this.allowableRhythmMargin_7mvjxd$_0 = 0.25;
+    this.allowableDurationRatio_7mvjxd$_0 = 0.5;
+    this.minDurationInBeats_7mvjxd$_0 = 0.24;
+    this.largestDurationRatioDifference_7mvjxd$_0 = 0.5;
+    this.largestBeatDifference_7mvjxd$_0 = 1.0;
+    this.comparisonFlags_7mvjxd$_0 = new ComparisonFlags(true, true, true);
+    this.bpm_7mvjxd$_0 = 120;
+    this.metronomeSound_7mvjxd$_0 = true;
+    this.pitch_7mvjxd$_0 = 440.0;
+    this.transposition_7mvjxd$_0 = 0;
+  }
+  Object.defineProperty(MockParameters.prototype, 'notationContainerName', {
+    get: function () {
+      return this.notationContainerName_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'metronomeContainerName', {
+    get: function () {
+      return this.metronomeContainerName_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'userID', {
+    get: function () {
+      return this.userID_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'exerciseID', {
+    get: function () {
+      return this.exerciseID_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'databaseEndpoint', {
+    get: function () {
+      return this.databaseEndpoint_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'url', {
+    get: function () {
+      return this.url_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'xmlUrl', {
+    get: function () {
+      return this.xmlUrl_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'audioAssetPath', {
+    get: function () {
+      return this.audioAssetPath_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'allowableCentsMargin', {
+    get: function () {
+      return this.allowableCentsMargin_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'allowableRhythmMargin', {
+    get: function () {
+      return this.allowableRhythmMargin_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'allowableDurationRatio', {
+    get: function () {
+      return this.allowableDurationRatio_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'minDurationInBeats', {
+    get: function () {
+      return this.minDurationInBeats_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'largestDurationRatioDifference', {
+    get: function () {
+      return this.largestDurationRatioDifference_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'largestBeatDifference', {
+    get: function () {
+      return this.largestBeatDifference_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'comparisonFlags', {
+    get: function () {
+      return this.comparisonFlags_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'bpm', {
+    get: function () {
+      return this.bpm_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'metronomeSound', {
+    get: function () {
+      return this.metronomeSound_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'pitch', {
+    get: function () {
+      return this.pitch_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'transposition', {
+    get: function () {
+      return this.transposition_7mvjxd$_0;
+    }
+  });
+  MockParameters.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'MockParameters',
+    interfaces: [AppSetupParameters]
+  };
+  function SliceTest() {
+    SliceTest_instance = this;
+    this.notes = listOf([new Note(69, 0.5), new Note(81, 1.0), new Note(69, 1.0), new Note(81, 1.0)]);
+    this.tempo = 120.0;
+    this.secondsPerBeat = 60.0 / this.tempo;
+    this.sampleRate = 44100.0;
+    this.bufferLengthInSamples = 1024;
+  }
+  SliceTest.prototype.testShouldBe_3xie8k$ = function (ideal, testValue) {
+    println('Results ' + Kotlin.toString(testValue.correct) + ' / ' + Kotlin.toString(testValue.attempted));
+    if (ideal.attempted === testValue.attempted && ideal.correct === testValue.correct) {
+      println('---- PASSED -----');
+    }
+     else {
+      window.alert('Failed');
+      println('----- ***** FAILED ****** -----');
+    }
+  };
+  SliceTest.prototype.pitchTrackerTest = function () {
+    var tmp$;
+    println('***** Pitch tracker test');
+    var pt = new PitchTracker();
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
+    var latencyTime = 0;
+    var timestamp;
+    pt.lengthOfPrerollToIgnore = this.secondsPerBeat * 4 * 1000.0;
+    println('Sending preroll');
+    pt.stepWithFrequency_88ee24$(pt.lengthOfPrerollToIgnore, 1.0, pt.lengthOfPrerollToIgnore * 44.1, latencyTime);
+    timestamp = pt.lengthOfPrerollToIgnore;
+    println('------');
+    tmp$ = exerciseSamplesCollection.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      timestamp += item.lengthInSamples / 44100.0 * 1000.0;
+      println('sending ' + Kotlin.toString(item.lengthInSamples) + (' at ' + timestamp));
+      pt.stepWithFrequency_88ee24$(timestamp, item.freq, item.lengthInSamples, latencyTime);
+      println('--------');
+    }
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(exerciseSamplesCollection, 10));
+    var tmp$_0;
+    tmp$_0 = exerciseSamplesCollection.iterator();
+    while (tmp$_0.hasNext()) {
+      var item_0 = tmp$_0.next();
+      destination.add_11rb$(item_0.lengthInSamples);
+    }
+    var iterator = destination.iterator();
+    if (!iterator.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator = iterator.next();
+    while (iterator.hasNext()) {
+      accumulator = accumulator + iterator.next() | 0;
+    }
+    var originalSampleLength = accumulator;
+    var $receiver = pt.samples;
+    var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
+    var tmp$_1;
+    tmp$_1 = $receiver.iterator();
+    while (tmp$_1.hasNext()) {
+      var item_1 = tmp$_1.next();
+      destination_0.add_11rb$(item_1.lengthInSamples);
+    }
+    var iterator_0 = destination_0.iterator();
+    if (!iterator_0.hasNext()) {
+      throw new Kotlin.kotlin.UnsupportedOperationException("Empty collection can't be reduced.");
+    }
+    var accumulator_0 = iterator_0.next();
+    while (iterator_0.hasNext()) {
+      accumulator_0 = accumulator_0 + iterator_0.next() | 0;
+    }
+    var pitchTrackerSamplesLength = accumulator_0;
+    println('Sample lengths :  ' + originalSampleLength + ' | ' + pitchTrackerSamplesLength);
+    var exerciseSamplesCollectionFromPitchTracker = pt.samples;
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollectionFromPitchTracker);
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    println('Comparing exact copies (incremental)...');
+    var expectedResults = new CompareResults();
+    expectedResults.correct = 4;
+    expectedResults.attempted = 4;
+    var incrementalComparison = new IncrementalComparisonEngine();
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+  };
+  SliceTest.prototype.trueIncrementalBufferAndComparisonTest = function () {
+  };
+  SliceTest.prototype.trueIncrementalBufferTest = function () {
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionWithSize1FromNotes_jisecs$(this.notes, this.tempo);
+    console.log('Starting with ' + Kotlin.toString(exerciseSamplesCollection.size));
+    var runningListOfSampleCollections = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var curSampleIndex = 0;
+    var sampleSliceSize = 700;
+    while (true) {
+      var endIndex = curSampleIndex + sampleSliceSize | 0;
+      if (endIndex >= exerciseSamplesCollection.size) {
+        endIndex = exerciseSamplesCollection.size;
+      }
+      var sliceOfSamples = exerciseSamplesCollection.subList_vux9f0$(curSampleIndex, endIndex);
+      runningListOfSampleCollections.addAll_brywnq$(sliceOfSamples);
+      var notes = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(runningListOfSampleCollections);
+      curSampleIndex = curSampleIndex + sampleSliceSize | 0;
+      if (endIndex === exerciseSamplesCollection.size) {
+        break;
+      }
+      console.log('Notes after slicing:');
+      console.log(notes);
+    }
+  };
+  SliceTest.prototype.trueIncrementalComparisonTest = function () {
+    var tmp$;
+    println('****** Beginning true incremental test');
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    println('Comparing exact copies (incremental)...');
+    var incrementalComparison = new IncrementalComparisonEngine();
+    tmp$ = copyWithAvgData.size;
+    for (var index = 0; index <= tmp$; index++) {
+      var sublist = copyWithAvgData.subList_vux9f0$(0, index);
+      console.log('Sublist:' + Kotlin.toString(sublist.size));
+      console.log(sublist);
+      this.testShouldBe_3xie8k$.call(this, new CompareResults(sublist.size, sublist.size), incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, sublist));
+    }
+  };
+  SliceTest.prototype.exactIncrementalTestInBulk = function () {
+    println('****** Beginning incremental bulk test');
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    println('Comparing exact copies (incremental)...');
+    var expectedResults = new CompareResults();
+    expectedResults.correct = 4;
+    expectedResults.attempted = 4;
+    var incrementalComparison = new IncrementalComparisonEngine();
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+  };
+  SliceTest.prototype.sharpTest = function () {
+    println('****** Beginning sharp test');
+    var incrementalComparison = new IncrementalComparisonEngine();
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var sharpNoteOriginalFrequency = exactCopyGenerated.get_za3lpa$(1).note.getFrequency();
+    var nextNoteUpFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(exactCopyGenerated.get_za3lpa$(1).note.noteNumber + 1 | 0);
+    var distanceInHz = nextNoteUpFrequency - sharpNoteOriginalFrequency;
+    var distanceToMoveInHz = distanceInHz * ((listenerApp.parameters.allowableCentsMargin + 1 | 0) / 100.0);
+    println('Original freq: ' + Kotlin.toString(sharpNoteOriginalFrequency));
+    println('Next note up ' + nextNoteUpFrequency + ' distance ' + distanceInHz + ' to move ' + distanceToMoveInHz);
+    exactCopyGenerated.get_za3lpa$(3).note.avgFreq = sharpNoteOriginalFrequency + distanceToMoveInHz;
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    println('Comparing sharp copy...');
+    var expectedResults = new CompareResults();
+    expectedResults.correct = 3;
+    expectedResults.attempted = 4;
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+  };
+  SliceTest.prototype.flatTest = function () {
+    println('****** Beginning flat test');
+    var incrementalComparison = new IncrementalComparisonEngine();
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(this.notes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var flatNoteOriginalFrequency = exactCopyGenerated.get_za3lpa$(1).note.getFrequency();
+    var nextNoteDownFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(exactCopyGenerated.get_za3lpa$(1).note.noteNumber - 1 | 0);
+    var distanceInHz = flatNoteOriginalFrequency - nextNoteDownFrequency;
+    var distanceToMoveInHz = distanceInHz * ((listenerApp.parameters.allowableCentsMargin + 1 | 0) / 100.0);
+    println('Original freq: ' + Kotlin.toString(flatNoteOriginalFrequency));
+    println('Next note up ' + nextNoteDownFrequency + ' distance ' + distanceInHz + ' to move ' + distanceToMoveInHz);
+    exactCopyGenerated.get_za3lpa$(3).note.avgFreq = flatNoteOriginalFrequency - distanceToMoveInHz;
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    println('Comparing flat copy...');
+    var expectedResults = new CompareResults();
+    expectedResults.correct = 3;
+    expectedResults.attempted = 4;
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+  };
+  SliceTest.prototype.rushedTest = function () {
+    println('****** Beginning rushed test');
+    var incrementalComparison = new IncrementalComparisonEngine();
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var rushedNotes = listOf([new Note(69, 0.5), new Note(81, 1.0 - listenerApp.parameters.allowableRhythmMargin - 0.01), new Note(69, 1.0), new Note(81, 1.0)]);
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(rushedNotes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    var expectedResults = new CompareResults();
+    expectedResults.correct = 2;
+    expectedResults.attempted = 4;
+    println('Comparing rushed...');
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+  };
+  SliceTest.prototype.shortNotesTest = function () {
+    println('****** Beginning short notes test');
+    var incrementalComparison = new IncrementalComparisonEngine();
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var notesWithShortNotes = listOf([new Note(69, 0.31), new Note(35, 0.05), new Note(69, 0.14), new Note(81, 0.78), new Note(34, 0.11), new Note(35, 0.11), new Note(69, 1.0), new Note(81, 1.0)]);
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(notesWithShortNotes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    var expectedResults = new CompareResults();
+    expectedResults.correct = 4;
+    expectedResults.attempted = 4;
+    println('Comparing short notes...');
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+  };
+  SliceTest.prototype.runTest = function () {
+    listenerApp = new ListenerApp();
+    listenerApp.parameters = new MockParameters();
+    listenerApp.setTempoForTests_14dthe$(this.tempo);
+    Note$Companion_getInstance().createAllNotes();
+    this.exactIncrementalTestInBulk();
+    this.rushedTest();
+    this.shortNotesTest();
+    this.pitchTrackerTest();
+    this.trueIncrementalComparisonTest();
+    this.sharpTest();
+    this.flatTest();
+    return 'Done';
+  };
+  SliceTest.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'SliceTest',
+    interfaces: []
+  };
+  var SliceTest_instance = null;
+  function SliceTest_getInstance() {
+    if (SliceTest_instance === null) {
+      new SliceTest();
+    }
+    return SliceTest_instance;
+  }
+  function TestBufferGenerator() {
+    TestBufferGenerator_instance = this;
+  }
+  TestBufferGenerator.prototype.generateExactBufferCollectionWithSize1FromNotes_jisecs$ = function (notes, tempo) {
+    var secondsPerBeat = 60.0 / tempo;
+    var samples = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var noteChangeIndexes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$;
+    tmp$ = notes.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      var tmp$_0, tmp$_1, tmp$_2, tmp$_3;
+      noteChangeIndexes.add_11rb$(samples.size);
+      var numSamplesToCreate = element.duration * secondsPerBeat * 44100.0;
+      var freq = element.getFrequency();
+      tmp$_0 = until(0, numSamplesToCreate | 0);
+      tmp$_1 = tmp$_0.first;
+      tmp$_2 = tmp$_0.last;
+      tmp$_3 = tmp$_0.step;
+      for (var i = tmp$_1; i <= tmp$_2; i += tmp$_3) {
+        samples.add_11rb$(freq);
+      }
+    }
+    console.log('Note change indexes: ' + Kotlin.toString(noteChangeIndexes));
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(samples, 10));
+    var tmp$_4, tmp$_0_0;
+    var index = 0;
+    tmp$_4 = samples.iterator();
+    while (tmp$_4.hasNext()) {
+      var item = tmp$_4.next();
+      var tmp$_5 = destination.add_11rb$;
+      var collection = new SampleCollection(item, 1, (tmp$_0_0 = index, index = tmp$_0_0 + 1 | 0, tmp$_0_0));
+      tmp$_5.call(destination, collection);
+    }
+    var collections = destination;
+    return collections;
+  };
+  TestBufferGenerator.prototype.generateExactBufferCollectionFromNotes_jisecs$ = function (notes, tempo) {
+    var secondsPerBeat = 60.0 / tempo;
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
+    var tmp$;
+    tmp$ = notes.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_0 = destination.add_11rb$;
+      var collection = new SampleCollection(item.getFrequency(), item.duration * secondsPerBeat * 44100.0 | 0, -1);
+      tmp$_0.call(destination, collection);
+    }
+    var notesMap = destination;
+    return notesMap;
+  };
+  TestBufferGenerator.prototype.addAvgPitchToSamples_j4do5z$ = function (notes) {
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
+    var tmp$;
+    tmp$ = notes.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_0 = destination.add_11rb$;
+      if (item.note.avgFreq == null) {
+        item.note.avgFreq = item.note.getFrequency();
+      }
+      tmp$_0.call(destination, item);
+    }
+    return destination;
+  };
+  TestBufferGenerator.prototype.addPitchVariationToSamples_d3e2cz$ = function (buffer) {
+    var pitchVariation = 15.0;
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(buffer, 10));
+    var tmp$;
+    tmp$ = buffer.iterator();
+    while (tmp$.hasNext()) {
+      var item = tmp$.next();
+      var tmp$_0 = destination.add_11rb$;
+      var randomAddition = Math.random() * pitchVariation * 2;
+      tmp$_0.call(destination, item + randomAddition / 2.0);
+    }
+    return destination;
+  };
+  TestBufferGenerator.prototype.addRhythmVariationToSamples_d3e2cz$ = function (buffer) {
+    var newBuffer = toMutableList(buffer);
+    for (var i = 0; i <= 3600; i++) {
+      newBuffer.removeAt_za3lpa$(0);
+    }
+    for (var i_0 = 14000; i_0 <= 18000; i_0++) {
+      newBuffer.add_11rb$(newBuffer.get_za3lpa$(400));
+    }
+    for (var i_1 = 13000; i_1 <= 15500; i_1++) {
+      newBuffer.removeAt_za3lpa$(0);
+    }
+    return newBuffer;
+  };
+  TestBufferGenerator.prototype.addShortItemsThatShouldBeRemoved_d3e2cz$ = function (buffer) {
+    var newBuffer = toMutableList(buffer);
+    for (var i = 0; i <= 5; i++) {
+      newBuffer.add_wxm5ur$(0, 2.0);
+    }
+    for (var i_0 = 0; i_0 <= 15; i_0++) {
+      newBuffer.add_wxm5ur$(100, 2.0);
+    }
+    for (var i_1 = 0; i_1 <= 3; i_1++) {
+      newBuffer.add_wxm5ur$(10000, 2.0);
+    }
+    return newBuffer;
+  };
+  TestBufferGenerator.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'TestBufferGenerator',
+    interfaces: []
+  };
+  var TestBufferGenerator_instance = null;
+  function TestBufferGenerator_getInstance() {
+    if (TestBufferGenerator_instance === null) {
+      new TestBufferGenerator();
+    }
+    return TestBufferGenerator_instance;
+  }
+  function main(args) {
+  }
+  var package$com = _.com || (_.com = {});
+  var package$practicingmusician = package$com.practicingmusician || (package$com.practicingmusician = {});
+  package$practicingmusician.ListenerApp = ListenerApp;
+  package$practicingmusician.DialogParams = DialogParams;
+  package$practicingmusician.FlashMessage = FlashMessage;
+  package$practicingmusician.ConverterInputAttributes = ConverterInputAttributes;
+  package$practicingmusician.ComparisonFlags = ComparisonFlags;
+  package$practicingmusician.AppPreferences = AppPreferences;
+  package$practicingmusician.AppSetupParameters = AppSetupParameters;
+  package$practicingmusician.AudioAnalyzer = AudioAnalyzer;
+  package$practicingmusician.GeneratedExercise = GeneratedExercise;
+  package$practicingmusician.EasyScoreCode = EasyScoreCode;
+  package$practicingmusician.SimpleJSNoteObject = SimpleJSNoteObject;
+  package$practicingmusician.BeatPosition = BeatPosition;
+  package$practicingmusician.PMTuner = PMTuner;
+  Object.defineProperty(package$practicingmusician, 'UserSettings', {
+    get: UserSettings_getInstance
+  });
+  var package$audio = package$practicingmusician.audio || (package$practicingmusician.audio = {});
+  package$audio.AudioManager = AudioManager;
+  var package$exercises = package$practicingmusician.exercises || (package$practicingmusician.exercises = {});
+  package$exercises.ExerciseDefinition = ExerciseDefinition;
+  package$exercises.ExerciseManager = ExerciseManager;
+  var package$finals = package$practicingmusician.finals || (package$practicingmusician.finals = {});
+  package$finals.FeedbackMetric = FeedbackMetric;
+  Object.defineProperty(FeedbackType, 'Correct', {
+    get: FeedbackType$Correct_getInstance
+  });
+  Object.defineProperty(FeedbackType, 'Incorrect', {
+    get: FeedbackType$Incorrect_getInstance
+  });
+  Object.defineProperty(FeedbackType, 'Missed', {
+    get: FeedbackType$Missed_getInstance
+  });
+  package$finals.FeedbackType = FeedbackType;
+  package$finals.FeedbackItem = FeedbackItem;
+  package$finals.throwSafeIncorrectSwitch_a2klfm$ = throwSafeIncorrectSwitch;
+  package$finals.CompareResults = CompareResults;
+  package$finals.ResultsForDatabase = ResultsForDatabase;
+  package$finals.IndividualNotePerformanceInfo = IndividualNotePerformanceInfo;
+  package$finals.NotePlacement = NotePlacement;
+  package$finals.IncrementalBufferManager = IncrementalBufferManager;
+  package$finals.IncrementalComparisonEngine = IncrementalComparisonEngine;
+  var package$network = package$practicingmusician.network || (package$practicingmusician.network = {});
+  Object.defineProperty(package$network, 'ListenerNetworkManager', {
+    get: ListenerNetworkManager_getInstance
+  });
+  package$network.PerformanceWrapper = PerformanceWrapper;
+  var package$notes = package$practicingmusician.notes || (package$practicingmusician.notes = {});
+  package$notes.EasyScoreUtil_Kotlin = EasyScoreUtil_Kotlin;
+  Note$Companion.prototype.NoteWithDiff = Note$Companion$NoteWithDiff;
+  Object.defineProperty(Note, 'Companion', {
+    get: Note$Companion_getInstance
+  });
+  package$notes.Note = Note;
+  Object.defineProperty(package$notes, 'ALL_NOTES', {
+    get: function () {
+      return ALL_NOTES;
+    },
+    set: function (value) {
+      ALL_NOTES = value;
+    }
+  });
+  var package$steppable = package$practicingmusician.steppable || (package$practicingmusician.steppable = {});
+  package$steppable.Metronome = Metronome;
+  Object.defineProperty(package$steppable, 'buflen', {
+    get: function () {
+      return buflen;
+    },
+    set: function (value) {
+      buflen = value;
+    }
+  });
+  package$steppable.SampleCollection = SampleCollection;
+  package$steppable.PitchTracker = PitchTracker;
+  Object.defineProperty(TimeKeeper$TimeKeeperState, 'Stopped', {
+    get: TimeKeeper$TimeKeeperState$Stopped_getInstance
+  });
+  Object.defineProperty(TimeKeeper$TimeKeeperState, 'Running', {
+    get: TimeKeeper$TimeKeeperState$Running_getInstance
+  });
+  Object.defineProperty(TimeKeeper$TimeKeeperState, 'Completed', {
+    get: TimeKeeper$TimeKeeperState$Completed_getInstance
+  });
+  TimeKeeper.TimeKeeperState = TimeKeeper$TimeKeeperState;
+  package$steppable.TimeKeeper = TimeKeeper;
+  package$steppable.TimeKeeperSteppable = TimeKeeperSteppable;
+  package$steppable.TimeKeeperAnalyzer = TimeKeeperAnalyzer;
+  var package$tests = package$practicingmusician.tests || (package$practicingmusician.tests = {});
+  Object.defineProperty(package$tests, 'PitchTrackerTest', {
+    get: PitchTrackerTest_getInstance
+  });
+  package$tests.PitchTrackerTestClass = PitchTrackerTestClass;
+  package$tests.MockParameters = MockParameters;
+  Object.defineProperty(package$tests, 'SliceTest', {
+    get: SliceTest_getInstance
+  });
+  Object.defineProperty(package$tests, 'TestBufferGenerator', {
+    get: TestBufferGenerator_getInstance
+  });
+  _.main_kand9s$ = main;
+  ALL_NOTES = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+  buflen = 1024;
+  main([]);
+  Kotlin.defineModule('PracticingMusician', _);
+  return _;
+}(typeof PracticingMusician === 'undefined' ? {} : PracticingMusician, kotlin);

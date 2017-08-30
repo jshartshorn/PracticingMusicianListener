@@ -26,7 +26,7 @@ gulp.task('copy_js_files', function () {
 
 gulp.task('copy_kotlin_compiled_code', function () {
   return gulp.src('tmp/PracticingMusician.js')
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('dist/pm-listener/js/'));
 });
 

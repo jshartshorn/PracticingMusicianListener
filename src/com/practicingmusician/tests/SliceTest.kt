@@ -21,13 +21,15 @@ class MockParameters : AppSetupParameters {
   override val metronomeContainerName : String = "metronomeContainer"
 
   override val userID : Int = 1
-  override  val exerciseID: Int = 2
+  override val exerciseID: Int = 2
 
     //database endpoint for storing performance data
   override  val databaseEndpoint : String = ""
 
     //base URL of the app
   override  val url : String = ""
+
+  override val xmlUrl = "xmlFile.xml"
 
     //directory in which audio assets are stored
   override  val audioAssetPath : String = ""

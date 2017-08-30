@@ -6,12 +6,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="pm-listener/css/notation.css">
+    <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
 
     <script type="text/javascript" src="pm-listener/js/logger.js"></script>
 
     <script type="text/javascript" src="pm-listener/js/kotlin.js"></script>
-    <script type="text/javascript" src="pm-listener/js/practicingmusician.js"></script>
+    <script type="text/javascript" src="pm-listener/js/PracticingMusician.js"></script>
 
     <script src="pm-listener/js/audio.js"></script>
 
@@ -19,6 +19,8 @@
     <script src="pm-listener/js/easyscore_util.js"></script>
 
     <script src="pm-listener/js/index.js"></script>
+
+    <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
 </head>
 <body>
 
@@ -45,6 +47,7 @@
     window.onload = function() {
         listenerApp.runApp({
             url: "",
+            xmlUrl: "pm-listener/xml/WithTempo2.xml",
             audioAssetPath: "pm-listener/audio/",
 
             notationContainerName : "notationBody",

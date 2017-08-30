@@ -19,6 +19,14 @@ data class DialogParams(val imageType : String, val title : String, val message 
 
 data class FlashMessage(val type : String, val message : String)
 
+external class jsMusicXMLConverter {
+  fun convertXMLToJSON(xmlString : String) : dynamic
+  fun convertJSON(input: dynamic, infoAttributes: ConverterInputAttributes) : String
+  fun loadCode(codeToLoad : String)
+}
+
+data class ConverterInputAttributes(val time_signature : String, val countoff : Int)
+
 data class ComparisonFlags(
   val testPitch : Boolean,
   val testRhythm : Boolean,
@@ -48,6 +56,9 @@ interface AppSetupParameters {
 
     //directory in which audio assets are stored
     val audioAssetPath : String
+
+    //path to the XML file to load
+    val xmlUrl : String
 
     //the margins in which a note can vary from the ideal and still be considered acceptable
     val allowableCentsMargin : Int

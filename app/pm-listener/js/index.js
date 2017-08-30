@@ -12,6 +12,23 @@ window.onresize = function() {
     , 500);
 }
 
+function loadXml(url,callback) {
+  console.log("Loading XML from url: " + url)
+  $.ajax({
+    type: "GET",
+    url: url,
+    dataType: "text",
+    success: function(result) {
+      console.log("Success!")
+      //console.log(result)
+      callback(result)
+    },
+    failure: function(result) {
+      console.log("Failure..")
+      console.log(result)
+    }
+   });
+}
 
 function networkRequest(url, dataObject) {
     console.log("Object data:")

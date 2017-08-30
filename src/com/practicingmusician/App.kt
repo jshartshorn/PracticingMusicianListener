@@ -12,6 +12,7 @@ import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.get
 import kotlin.browser.document
+import kotlin.browser.window
 
 /**
  * Created by jn on 6/5/17.
@@ -21,6 +22,8 @@ external fun generateExerciseForKotlin() : GeneratedExercise
 external fun generateExerciseEasyScoreCode() : EasyScoreCode
 external var listenerApp : ListenerApp
 external var audioAnalyzer : AudioAnalyzer
+
+external fun loadXml(url : String, callback: (String) -> Unit)
 
 public class ListenerApp {
     var globalTempo = 120.0 //should be accessed by everyone
@@ -42,7 +45,10 @@ public class ListenerApp {
     lateinit var tuner : PMTuner
 
     @JsName("runTuner")
-    fun runTuner(paramenters: dynamic) {
+    fun runTuner(parameters: dynamic) {
+      console.log("Running with parameters:")
+      console.log(parameters)
+
       Note.createAllNotes()
 
       audioAnalyzer.setupMedia()
@@ -58,13 +64,37 @@ public class ListenerApp {
 
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
+
+        loadXml(parameters.xmlUrl,{ callbackData ->
+
+          console.log("Callback:")
+          //console.log(callbackData)
+
+          val converter = jsMusicXMLConverter()
+          val json = converter.convertXMLToJSON(callbackData)
+
+          console.log("JSON:")
+          //console.log(json)
+
+          val jsCode = converter.convertJSON(json,ConverterInputAttributes("4/4",4))
+
+          converter.loadCode(jsCode)
+
+          this.finishRunApp(parameters)
+        })
+
+
+    }
+
+    fun finishRunApp(parameters: AppSetupParameters) {
+      this.parameters = parameters
+
         this.audioManager = AudioManager()
 
         this.exerciseManager = ExerciseManager(audioManager)
 
         this.scoreUtil = EasyScoreUtil()
 
-        this.parameters = parameters
 
         Note.createAllNotes()
 
