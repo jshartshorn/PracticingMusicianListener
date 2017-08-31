@@ -30,6 +30,7 @@ var PracticingMusician = function (_, Kotlin) {
   function ListenerApp() {
     this.globalTempo_qfs5dx$_0 = 120.0;
     this.scoreUtil = this.scoreUtil;
+    this.exercise = this.exercise;
     this.generatedExercise = this.generatedExercise;
     this.parameters = this.parameters;
     this.audioManager = this.audioManager;
@@ -66,7 +67,8 @@ var PracticingMusician = function (_, Kotlin) {
       var json = converter.convertXMLToJSON(callbackData);
       console.log('JSON:');
       var jsCode = converter.convertJSON(json, new ConverterInputAttributes('4/4', 4));
-      converter.loadCode(jsCode);
+      this$ListenerApp.exercise = jsCode.easyScoreInfo;
+      this$ListenerApp.generatedExercise = jsCode.kotlinInfo;
       this$ListenerApp.finishRunApp_pjzheq$(closure$parameters);
     };
   }
@@ -81,10 +83,7 @@ var PracticingMusician = function (_, Kotlin) {
     Note$Companion_getInstance().createAllNotes();
     audioAnalyzer.setupMedia();
     var prefs = new AppPreferences(parameters.metronomeSound, parameters.bpm, parameters.transposition, parameters.pitch);
-    var exercise = generateExerciseEasyScoreCode();
-    this.scoreUtil.exercise = exercise;
     this.alterPreferences(prefs);
-    this.generatedExercise = generateExerciseForKotlin();
     this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);
     this.globalTempo = this.generatedExercise.tempo;
     this.exerciseManager.loadExercise();
@@ -136,8 +135,7 @@ var PracticingMusician = function (_, Kotlin) {
   ListenerApp.prototype.makeScore_61zpoe$ = function (containerElementName) {
     this.scoreUtil = new EasyScoreUtil();
     this.scoreUtil.containerElementName = this.parameters.notationContainerName;
-    var exercise = generateExerciseEasyScoreCode();
-    this.scoreUtil.exercise = exercise;
+    this.scoreUtil.exercise = this.exercise;
     this.scoreUtil.generatedExercise = this.generatedExercise;
     pm_log('Setting up score on ' + containerElementName);
     this.scoreUtil.setupOnElement(containerElementName);
@@ -292,6 +290,36 @@ var PracticingMusician = function (_, Kotlin) {
   };
   FlashMessage.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.type, other.type) && Kotlin.equals(this.message, other.message)))));
+  };
+  function ConverterOutput(kotlinInfo, easyScoreInfo) {
+    this.kotlinInfo = kotlinInfo;
+    this.easyScoreInfo = easyScoreInfo;
+  }
+  ConverterOutput.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ConverterOutput',
+    interfaces: []
+  };
+  ConverterOutput.prototype.component1 = function () {
+    return this.kotlinInfo;
+  };
+  ConverterOutput.prototype.component2 = function () {
+    return this.easyScoreInfo;
+  };
+  ConverterOutput.prototype.copy_gervpa$ = function (kotlinInfo, easyScoreInfo) {
+    return new ConverterOutput(kotlinInfo === void 0 ? this.kotlinInfo : kotlinInfo, easyScoreInfo === void 0 ? this.easyScoreInfo : easyScoreInfo);
+  };
+  ConverterOutput.prototype.toString = function () {
+    return 'ConverterOutput(kotlinInfo=' + Kotlin.toString(this.kotlinInfo) + (', easyScoreInfo=' + Kotlin.toString(this.easyScoreInfo)) + ')';
+  };
+  ConverterOutput.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.kotlinInfo) | 0;
+    result = result * 31 + Kotlin.hashCode(this.easyScoreInfo) | 0;
+    return result;
+  };
+  ConverterOutput.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.kotlinInfo, other.kotlinInfo) && Kotlin.equals(this.easyScoreInfo, other.easyScoreInfo)))));
   };
   function ConverterInputAttributes(time_signature, countoff) {
     this.time_signature = time_signature;
@@ -2649,6 +2677,7 @@ var PracticingMusician = function (_, Kotlin) {
   package$practicingmusician.ListenerApp = ListenerApp;
   package$practicingmusician.DialogParams = DialogParams;
   package$practicingmusician.FlashMessage = FlashMessage;
+  package$practicingmusician.ConverterOutput = ConverterOutput;
   package$practicingmusician.ConverterInputAttributes = ConverterInputAttributes;
   package$practicingmusician.ComparisonFlags = ComparisonFlags;
   package$practicingmusician.AppPreferences = AppPreferences;

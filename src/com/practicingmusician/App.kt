@@ -18,8 +18,6 @@ import kotlin.browser.window
  * Created by jn on 6/5/17.
  */
 
-external fun generateExerciseForKotlin() : GeneratedExercise
-external fun generateExerciseEasyScoreCode() : EasyScoreCode
 external var listenerApp : ListenerApp
 external var audioAnalyzer : AudioAnalyzer
 
@@ -34,6 +32,8 @@ public class ListenerApp {
     }
 
     lateinit var scoreUtil : EasyScoreUtil
+
+    lateinit var exercise : EasyScoreCode
     lateinit var generatedExercise : GeneratedExercise
 
     lateinit var parameters : AppSetupParameters
@@ -78,7 +78,8 @@ public class ListenerApp {
 
           val jsCode = converter.convertJSON(json,ConverterInputAttributes("4/4",4))
 
-          converter.loadCode(jsCode)
+          this.exercise = jsCode.easyScoreInfo
+          this.generatedExercise = jsCode.kotlinInfo
 
           this.finishRunApp(parameters)
         })
@@ -103,14 +104,7 @@ public class ListenerApp {
         //check the ones from alterPreferences first
         val prefs = AppPreferences(parameters.metronomeSound,parameters.bpm,parameters.transposition,parameters.pitch)
 
-        val exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
-
-        //make sure it has a reference to the loaded exercise
-        this.scoreUtil.exercise = exercise
-
         this.alterPreferences(prefs)
-
-        this.generatedExercise = generateExerciseForKotlin()
 
         this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
 
@@ -192,10 +186,8 @@ public class ListenerApp {
         this.scoreUtil = EasyScoreUtil()
         this.scoreUtil.containerElementName = this.parameters.notationContainerName
 
-        val exercise = generateExerciseEasyScoreCode(); //pulls from the loaded js file
-
         //make sure it has a reference to the loaded exercise
-        this.scoreUtil.exercise = exercise
+        this.scoreUtil.exercise = this.exercise
         this.scoreUtil.generatedExercise = this.generatedExercise
 
         pm_log("Setting up score on " + containerElementName)

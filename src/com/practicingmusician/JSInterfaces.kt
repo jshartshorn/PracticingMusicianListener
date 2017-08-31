@@ -19,10 +19,11 @@ data class DialogParams(val imageType : String, val title : String, val message 
 
 data class FlashMessage(val type : String, val message : String)
 
+data class ConverterOutput(val kotlinInfo: GeneratedExercise, val easyScoreInfo: EasyScoreCode)
+
 external class jsMusicXMLConverter {
   fun convertXMLToJSON(xmlString : String) : dynamic
-  fun convertJSON(input: dynamic, infoAttributes: ConverterInputAttributes) : String
-  fun loadCode(codeToLoad : String)
+  fun convertJSON(input: dynamic, infoAttributes: ConverterInputAttributes) : ConverterOutput
 }
 
 data class ConverterInputAttributes(val time_signature : String, val countoff : Int)

@@ -23,10 +23,6 @@ var jsMusicXMLConverter = function() {
       return jsonVersion
     }
 
-    this.loadCode = function(codeToLoad) {
-      eval(codeToLoad)
-    }
-
     this.convertJSONFromTestInput = function(testName,infoAttributes) {
       var input = testOptions[testName]
       return this.convertJSON(input,infoAttributes)
@@ -114,9 +110,14 @@ var jsMusicXMLConverter = function() {
         systems: systems
       }
 
-      this.writeEasyScoreFunction(JSON.stringify(generatedEasyScoreInfo, null, 4))
+      return {
+        kotlinInfo: generatedKotlinInfo,
+        easyScoreInfo: generatedEasyScoreInfo,
+      }
 
-      return this.output
+      //this.writeEasyScoreFunction(JSON.stringify(generatedEasyScoreInfo, null, 4))
+
+      //return this.output
     }
 
     this.getNotesFromPart = function(part){
