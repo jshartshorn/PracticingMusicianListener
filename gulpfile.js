@@ -15,6 +15,9 @@ gulp.task('compile_kotlin', [], function () {
   return exec('kotlinc-js src -output tmp/PracticingMusician.js', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
+  	return gulp.src('tmp/PracticingMusician.js')
+    //.pipe(uglify())
+    .pipe(gulp.dest('dist/pm-listener/js/'));
   });
 });
 
@@ -78,7 +81,7 @@ gulp.task('default', [
   'copy_test_site',
 	'copy_xml_converter',
   'compile_kotlin',
-  'copy_kotlin_compiled_code',
+  //'copy_kotlin_compiled_code',
   'copy_js_files',
   'copy_kotlin',
   'compile_sass',
