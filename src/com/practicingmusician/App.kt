@@ -127,7 +127,10 @@ public class ListenerApp {
         //set the tempo
         globalTempo = it.toDouble()
         //reset the tempo in the UI
-        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
+
+        if (this.scoreUtil.exercise != null) {
+          this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
+        }
       }
       preferences.pitch?.let {
         UserSettings.pitch = it

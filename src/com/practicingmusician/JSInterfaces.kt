@@ -108,7 +108,7 @@ interface EasyScoreCode {
 data class SimpleJSNoteObject(val noteNumber : Int, val duration : Double)
 
 external class EasyScoreUtil  {
-    var exercise : EasyScoreCode
+    var exercise : EasyScoreCode?
     lateinit var generatedExercise : GeneratedExercise
     lateinit var containerElementName : String
 

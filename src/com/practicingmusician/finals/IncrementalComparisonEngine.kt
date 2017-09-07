@@ -140,6 +140,18 @@ class IncrementalComparisonEngine {
       if (comparisonFlags.testDuration) {
         //test the durations of the notes
 
+        /*
+
+          Duration rules:
+          Shouldn't be X seconds different
+          OR 1 beat difference if note is => 2 beats
+
+         */
+
+        //val idealItemLengthInSec = idealItem.duration * 60.0 / listenerApp.globalTempo
+        //val testItemLengthInSec = testItem.note.duration * 60 / listenerApp.globalTempo
+
+
         val durationDifferenceRatio = testItem.note.duration / idealItem.duration
         val durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0
 
