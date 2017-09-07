@@ -98,7 +98,9 @@ var PracticingMusician = function (_, Kotlin) {
     if ((tmp$_0 = preferences.bpm) != null) {
       console.log('Setting bpm to ' + tmp$_0);
       this.globalTempo = tmp$_0;
-      this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
+      if (this.scoreUtil.exercise != null) {
+        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
+      }
     }
     if ((tmp$_1 = preferences.pitch) != null) {
       UserSettings_getInstance().pitch = tmp$_1;
