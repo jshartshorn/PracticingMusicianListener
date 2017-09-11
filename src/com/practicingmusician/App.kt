@@ -76,7 +76,7 @@ public class ListenerApp {
           console.log("JSON:")
           //console.log(json)
 
-          val jsCode = converter.convertJSON(json,ConverterInputAttributes("4/4",4))
+          val jsCode = converter.convertJSON(json)
 
           this.exercise = jsCode.easyScoreInfo
           this.generatedExercise = jsCode.kotlinInfo

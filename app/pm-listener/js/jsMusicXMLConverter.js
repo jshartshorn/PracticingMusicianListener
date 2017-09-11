@@ -28,7 +28,7 @@ var jsMusicXMLConverter = function() {
       return this.convertJSON(input,infoAttributes)
     }
 
-    this.convertJSON = function(input, infoAttributes) {
+    this.convertJSON = function(input) {
       //temp for testing
 
       if (input == null || input.length == 0) {
@@ -59,14 +59,51 @@ var jsMusicXMLConverter = function() {
           return 120
         }()
 
+      //grab the time signature
+      var time_signature = function() {
+        var firstBar = part.measure[0]
+        var time = firstBar.attributes.time
+        return time.beats + '/' + time.beattype
+        return "4/4"
+      }()
+
+      var beats_in_firstBar = function() {
+        var firstBar = part.measure[0]
+        var divisions = firstBar.attributes.divisions
+        if (firstBar.note instanceof Array != true)
+          firstBar.note = [firstBar.note]
+        var durationReduction = firstBar.note.reduce(function(acc, item) {
+          console.log("item:")
+          console.log(item);
+          return acc + Number(item.duration)
+        },0)
+        console.log("Duration reduction: " + durationReduction)
+        return durationReduction / divisions
+      }()
+      var countoff = function() {
+        switch(time_signature) {
+          case "4/4":
+            return 8 - beats_in_firstBar
+            break;
+          case "3/4":
+            return 6 - beats_in_firstBar
+          default:
+            break;
+        }
+        return 4
+      }()
+      console.log("Countoff: " + countoff)
+
+
+
       var notes = this.getNotesFromPart(part)
 
       var generatedKotlinInfo = {
         tempo: tempo,
-        count_off: infoAttributes.countoff,
+        count_off: countoff,
         time_signature: function(fullTs) {
           return fullTs.split('/')[0]
-        }(infoAttributes.time_signature),
+        }(time_signature),
         notes: notes
       }
 
@@ -80,10 +117,8 @@ var jsMusicXMLConverter = function() {
 
         return ""
       }()
-      var time_signature = infoAttributes.time_signature
 
       var copyrightInfo = function() {
-      //infoAttributes.copyright
         if (input.scorepartwise.identification.rights != undefined) {
           return input.scorepartwise.identification.rights
         }

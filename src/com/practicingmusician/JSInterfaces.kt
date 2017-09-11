@@ -23,10 +23,8 @@ data class ConverterOutput(val kotlinInfo: GeneratedExercise, val easyScoreInfo:
 
 external class jsMusicXMLConverter {
   fun convertXMLToJSON(xmlString : String) : dynamic
-  fun convertJSON(input: dynamic, infoAttributes: ConverterInputAttributes) : ConverterOutput
+  fun convertJSON(input: dynamic) : ConverterOutput
 }
-
-data class ConverterInputAttributes(val time_signature : String, val countoff : Int)
 
 data class ComparisonFlags(
   val testPitch : Boolean,
