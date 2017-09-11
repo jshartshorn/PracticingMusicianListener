@@ -266,6 +266,9 @@ var EasyScoreUtil = function() {
 
         var barCounter = 0
 
+        console.log("Exercise:")
+        console.log(this.exercise)
+
         for (lineIndex in this.exercise.systems) {
           var curLine = this.exercise.systems[lineIndex]
 
@@ -293,6 +296,10 @@ var EasyScoreUtil = function() {
 
               var notesArray = Array()
               //add all the notes
+
+              console.log("Groups:")
+              console.log(curBar.groups)
+
               for (groupIndex in curBar.groups) {
                   var curGroup = curBar.groups[groupIndex]
 
@@ -300,6 +307,8 @@ var EasyScoreUtil = function() {
 
                   //take the notes and make a string that EasyScore can read, while giving each note a unique ID
 
+                  console.log("Cur group:")
+                  console.log(curGroup)
                   var brokenUpNotes = curGroup.notes//[0].split(",")
 
                   for (var noteIndex in brokenUpNotes) {

@@ -429,7 +429,11 @@ var jsMusicXMLConverter = function() {
 
         })
 
-        bar.groups.push(group)
+        console.log("Pushing group:")
+        console.log(group)
+
+        if (group != null)
+          bar.groups.push(group)
 
 
         //get the full duration of the bar and put an alternate time signature in if needed
