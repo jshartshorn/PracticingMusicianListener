@@ -13,7 +13,6 @@ import com.practicingmusician.finals.FeedbackType
 
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
-external fun displaySiteDialog(params : DialogParams)
 
 data class DialogParams(val imageType : String, val title : String, val message : String)
 
@@ -70,6 +69,8 @@ interface AppSetupParameters {
 
     //which metrics to compare
     val comparisonFlags : ComparisonFlags
+
+    val displaySiteDialog : (params : DialogParams) -> Unit
 
     //normally would get set in alterPreferences, but can get set here too
     val metronomeSound : Boolean?

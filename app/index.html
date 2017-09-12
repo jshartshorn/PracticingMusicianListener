@@ -82,6 +82,14 @@ div#notationPmLogo {
             largestDurationRatioDifference: 0.2,
             minDurationInBeats: 0.1,
 
+            displaySiteDialog: function(params) {
+              alert(
+                "Image: " + params.imageType + "\n" +
+                "Title: " + params.title + "\n" +
+                 "Message: " + params.message
+              );
+            },
+
             comparisonFlags: {
               testPitch: true,
               testRhythm: true,
