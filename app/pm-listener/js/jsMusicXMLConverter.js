@@ -8,7 +8,10 @@ var jsMusicXMLConverter = function() {
     this.convertXMLToJSON = function(xml) {
       console.log("Converting XML to JSON")
 
-      var noDashes = xml.replace(/-/g,'')
+      //xml.replace(/-/g,'')
+      var noDashes = xml.replace(/<(.*?)>/g,function(match) {
+        return match.replace(/-/g,'')
+      })
 
       console.log("No dashes:")
       console.log(noDashes)
@@ -41,8 +44,6 @@ var jsMusicXMLConverter = function() {
       console.log(JSON.stringify(input))
 
 
-      this.writeBoilerplate()
-
       //get the part out
       var part = input.scorepartwise.part
 
@@ -59,6 +60,15 @@ var jsMusicXMLConverter = function() {
           return 120
         }()
 
+      var transposition = function() {
+        var firstBar = part.measure[0]
+        var attributes = firstBar.attributes
+        if (attributes == null) return 0
+        var transposition = attributes.transpose
+        if (transposition == null) return 0
+        return 0 - transposition.chromatic
+      }()
+
       //grab the time signature
       var time_signature = function() {
         var firstBar = part.measure[0]
@@ -73,11 +83,11 @@ var jsMusicXMLConverter = function() {
         if (firstBar.note instanceof Array != true)
           firstBar.note = [firstBar.note]
         var durationReduction = firstBar.note.reduce(function(acc, item) {
-          console.log("item:")
-          console.log(item);
+          //console.log("item:")
+          //console.log(item);
           return acc + Number(item.duration)
         },0)
-        console.log("Duration reduction: " + durationReduction)
+        //console.log("Duration reduction: " + durationReduction)
         return durationReduction / divisions
       }()
       var countoff = function() {
@@ -98,6 +108,20 @@ var jsMusicXMLConverter = function() {
 
       var notes = this.getNotesFromPart(part)
 
+      //apply the transposition if needed
+      if (transposition != 0) {
+        console.log("Original notes:")
+        console.log(notes)
+        notes = notes.map(function(item) {
+          return {
+            noteNumber: item.noteNumber + transposition,
+            duration : item.duration
+          }
+        })
+        console.log("Transposed:")
+        console.log(notes)
+      }
+
       var generatedKotlinInfo = {
         tempo: tempo,
         count_off: countoff,
@@ -106,8 +130,6 @@ var jsMusicXMLConverter = function() {
         }(time_signature),
         notes: notes
       }
-
-      this.writeKotlinFunction(JSON.stringify(generatedKotlinInfo, null, 4))
 
       //get the score info
       var title = input.scorepartwise.work.worktitle
@@ -281,8 +303,11 @@ var jsMusicXMLConverter = function() {
           }()
 
           var keysig = function() {
-            if (measure.attributes.key.fifths == "0") {
-              return "C"
+            switch(measure.attributes.key.fifths) {
+              case "0":
+                return "C"
+              case "-2":
+                return "Bb"
             }
           }()
 
@@ -462,26 +487,6 @@ var jsMusicXMLConverter = function() {
       return {
         bars: []
       }
-    }
-
-    this.writeEasyScoreFunction = function(content) {
-      this.output += "function generateExerciseEasyScoreCode() {\n"
-      this.output += "return "
-      this.output += content
-      this.output += "}\n\n"
-      this.output += "window.generateExerciseEasyScoreCode = generateExerciseEasyScoreCode\n"
-    }
-
-    this.writeKotlinFunction = function(content) {
-      this.output += "function generateExerciseForKotlin() {\n"
-      this.output += "return "
-      this.output += content
-      this.output += "}\n\n"
-      this.output += "window.generateExerciseForKotlin = generateExerciseForKotlin\n"
-    }
-
-    this.writeBoilerplate = function() {
-      this.output += "window.durations = {q: 1.0,h: 2.0,w: 4.0 }\n\n\n"
     }
   }
 
