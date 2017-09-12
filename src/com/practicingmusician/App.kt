@@ -65,6 +65,8 @@ public class ListenerApp {
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
 
+      this.parameters = parameters
+
         loadXml(parameters.xmlUrl,{ callbackData ->
 
           console.log("Callback:")
@@ -76,7 +78,7 @@ public class ListenerApp {
           console.log("JSON:")
           //console.log(json)
 
-          val jsCode = converter.convertJSON(json,ConverterInputAttributes("4/4",4))
+          val jsCode = converter.convertJSON(json)
 
           this.exercise = jsCode.easyScoreInfo
           this.generatedExercise = jsCode.kotlinInfo
@@ -88,7 +90,6 @@ public class ListenerApp {
     }
 
     fun finishRunApp(parameters: AppSetupParameters) {
-        this.parameters = parameters
 
         this.audioManager = AudioManager()
 
@@ -137,7 +138,6 @@ public class ListenerApp {
       }
       preferences.transposition?.let {
         UserSettings.transposition = it
-
         this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
       }
     }

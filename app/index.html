@@ -63,7 +63,7 @@ div#notationPmLogo {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
-            xmlUrl: "pm-listener/xml/WithTempo2.xml",
+            xmlUrl: "pm-listener/xml/Transposition.xml",
             audioAssetPath: "pm-listener/audio/",
 
             notationContainerName : "notationBody",
@@ -81,6 +81,14 @@ div#notationPmLogo {
             largestBeatDifference: 1.0,
             largestDurationRatioDifference: 0.2,
             minDurationInBeats: 0.1,
+
+            displaySiteDialog: function(params) {
+              alert(
+                "Image: " + params.imageType + "\n" +
+                "Title: " + params.title + "\n" +
+                 "Message: " + params.message
+              );
+            },
 
             comparisonFlags: {
               testPitch: true,

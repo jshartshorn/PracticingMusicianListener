@@ -49,6 +49,8 @@ class MockParameters : AppSetupParameters {
   override val metronomeSound = true
   override val pitch = 440.0
   override val transposition: Int = 0
+
+  override val displaySiteDialog = { params: DialogParams -> console.log("Dialog"); console.log(params); }//To change initializer of created properties use File | Settings | File Templates.
 }
 
 object SliceTest {

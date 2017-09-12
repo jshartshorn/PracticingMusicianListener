@@ -119,7 +119,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 }()
 
                 //show the user the results
-                displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
+                listenerApp.parameters.displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
 
                 //contact the server with a network request
                 ListenerNetworkManager.buildAndSendRequest(results)

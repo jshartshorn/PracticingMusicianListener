@@ -66,17 +66,17 @@ var PracticingMusician = function (_, Kotlin) {
       var converter = new jsMusicXMLConverter();
       var json = converter.convertXMLToJSON(callbackData);
       console.log('JSON:');
-      var jsCode = converter.convertJSON(json, new ConverterInputAttributes('4/4', 4));
+      var jsCode = converter.convertJSON(json);
       this$ListenerApp.exercise = jsCode.easyScoreInfo;
       this$ListenerApp.generatedExercise = jsCode.kotlinInfo;
       this$ListenerApp.finishRunApp_pjzheq$(closure$parameters);
     };
   }
   ListenerApp.prototype.runApp = function (parameters) {
+    this.parameters = parameters;
     loadXml(parameters.xmlUrl, ListenerApp$runApp$lambda(this, parameters));
   };
   ListenerApp.prototype.finishRunApp_pjzheq$ = function (parameters) {
-    this.parameters = parameters;
     this.audioManager = new AudioManager();
     this.exerciseManager = new ExerciseManager(this.audioManager);
     this.scoreUtil = new EasyScoreUtil();
@@ -322,36 +322,6 @@ var PracticingMusician = function (_, Kotlin) {
   };
   ConverterOutput.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.kotlinInfo, other.kotlinInfo) && Kotlin.equals(this.easyScoreInfo, other.easyScoreInfo)))));
-  };
-  function ConverterInputAttributes(time_signature, countoff) {
-    this.time_signature = time_signature;
-    this.countoff = countoff;
-  }
-  ConverterInputAttributes.$metadata$ = {
-    kind: Kotlin.Kind.CLASS,
-    simpleName: 'ConverterInputAttributes',
-    interfaces: []
-  };
-  ConverterInputAttributes.prototype.component1 = function () {
-    return this.time_signature;
-  };
-  ConverterInputAttributes.prototype.component2 = function () {
-    return this.countoff;
-  };
-  ConverterInputAttributes.prototype.copy_bm4lxs$ = function (time_signature, countoff) {
-    return new ConverterInputAttributes(time_signature === void 0 ? this.time_signature : time_signature, countoff === void 0 ? this.countoff : countoff);
-  };
-  ConverterInputAttributes.prototype.toString = function () {
-    return 'ConverterInputAttributes(time_signature=' + Kotlin.toString(this.time_signature) + (', countoff=' + Kotlin.toString(this.countoff)) + ')';
-  };
-  ConverterInputAttributes.prototype.hashCode = function () {
-    var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.time_signature) | 0;
-    result = result * 31 + Kotlin.hashCode(this.countoff) | 0;
-    return result;
-  };
-  ConverterInputAttributes.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.time_signature, other.time_signature) && Kotlin.equals(this.countoff, other.countoff)))));
   };
   function ComparisonFlags(testPitch, testRhythm, testDuration) {
     this.testPitch = testPitch;
@@ -752,7 +722,7 @@ var PracticingMusician = function (_, Kotlin) {
           listenerApp.addFeedbackItem_775p9r$(element_0);
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
-        displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
+        listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
         ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
       }
     };
@@ -2223,6 +2193,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.metronomeSound_7mvjxd$_0 = true;
     this.pitch_7mvjxd$_0 = 440.0;
     this.transposition_7mvjxd$_0 = 0;
+    this.displaySiteDialog_7mvjxd$_0 = MockParameters$displaySiteDialog$lambda;
   }
   Object.defineProperty(MockParameters.prototype, 'notationContainerName', {
     get: function () {
@@ -2319,6 +2290,15 @@ var PracticingMusician = function (_, Kotlin) {
       return this.transposition_7mvjxd$_0;
     }
   });
+  Object.defineProperty(MockParameters.prototype, 'displaySiteDialog', {
+    get: function () {
+      return this.displaySiteDialog_7mvjxd$_0;
+    }
+  });
+  function MockParameters$displaySiteDialog$lambda(params) {
+    console.log('Dialog');
+    console.log(params);
+  }
   MockParameters.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
     simpleName: 'MockParameters',
@@ -2680,7 +2660,6 @@ var PracticingMusician = function (_, Kotlin) {
   package$practicingmusician.DialogParams = DialogParams;
   package$practicingmusician.FlashMessage = FlashMessage;
   package$practicingmusician.ConverterOutput = ConverterOutput;
-  package$practicingmusician.ConverterInputAttributes = ConverterInputAttributes;
   package$practicingmusician.ComparisonFlags = ComparisonFlags;
   package$practicingmusician.AppPreferences = AppPreferences;
   package$practicingmusician.AppSetupParameters = AppSetupParameters;

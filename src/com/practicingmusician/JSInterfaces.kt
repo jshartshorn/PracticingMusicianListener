@@ -13,7 +13,6 @@ import com.practicingmusician.finals.FeedbackType
 
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
-external fun displaySiteDialog(params : DialogParams)
 
 data class DialogParams(val imageType : String, val title : String, val message : String)
 
@@ -23,10 +22,8 @@ data class ConverterOutput(val kotlinInfo: GeneratedExercise, val easyScoreInfo:
 
 external class jsMusicXMLConverter {
   fun convertXMLToJSON(xmlString : String) : dynamic
-  fun convertJSON(input: dynamic, infoAttributes: ConverterInputAttributes) : ConverterOutput
+  fun convertJSON(input: dynamic) : ConverterOutput
 }
-
-data class ConverterInputAttributes(val time_signature : String, val countoff : Int)
 
 data class ComparisonFlags(
   val testPitch : Boolean,
@@ -72,6 +69,8 @@ interface AppSetupParameters {
 
     //which metrics to compare
     val comparisonFlags : ComparisonFlags
+
+    val displaySiteDialog : (params : DialogParams) -> Unit
 
     //normally would get set in alterPreferences, but can get set here too
     val metronomeSound : Boolean?
