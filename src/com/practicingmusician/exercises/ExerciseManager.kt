@@ -121,8 +121,11 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 //show the user the results
                 listenerApp.parameters.displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
 
+                //only send the network request if the tempo is the default one
                 //contact the server with a network request
-                ListenerNetworkManager.buildAndSendRequest(results)
+                if (listenerApp.tempoIsDefault) {
+                  ListenerNetworkManager.buildAndSendRequest(results)
+                }
             }
         }
 

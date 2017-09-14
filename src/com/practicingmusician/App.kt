@@ -26,6 +26,7 @@ external fun loadXml(url : String, callback: (String) -> Unit)
 public class ListenerApp {
     var globalTempo = 120.0 //should be accessed by everyone
       private set
+    var tempoIsDefault = true
 
     fun setTempoForTests(t : Double) {
       globalTempo = t
@@ -111,6 +112,7 @@ public class ListenerApp {
 
         //set the global tempo
         this.globalTempo = this.generatedExercise.tempo
+        this.tempoIsDefault = true
 
         this.exerciseManager.loadExercise()
 
@@ -125,6 +127,11 @@ public class ListenerApp {
       }
       preferences.bpm?.let {
         console.log("Setting bpm to $it")
+
+        if (this.globalTempo != it.toDouble()) {
+          this.tempoIsDefault = false
+        }
+
         //set the tempo
         globalTempo = it.toDouble()
         //reset the tempo in the UI
