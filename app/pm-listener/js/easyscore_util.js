@@ -32,7 +32,6 @@ var EasyScoreUtil = function() {
 
     //gets set later with the current exercise (from notesFromKotlinNotationItems())
     this.exercise = null
-    this.generatedExercise = null
 
     //VexFlow variables that need to be stored
     this.vf = null
@@ -460,8 +459,8 @@ var EasyScoreUtil = function() {
             //pm_log(this.generatedExercise.notes,10)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
-            for (index in this.generatedExercise.notes) {
-                var item = this.generatedExercise.notes[index]
+            for (index in this.exercise.notes) {
+                var item = this.exercise.notes[index]
 
                 var duration = item.duration
 

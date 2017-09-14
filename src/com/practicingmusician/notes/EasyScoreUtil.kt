@@ -1,6 +1,5 @@
 package com.practicingmusician.notes
 
-import com.practicingmusician.GeneratedExercise
 
 /**
  * Created by jn on 6/27/17.
@@ -22,7 +21,6 @@ class EasyScoreUtil_Kotlin  {
 
     //gets set later with the current exercise (from notesFromKotlinNotationItems())
     var exercise : dynamic = null
-    lateinit var generatedExercise : GeneratedExercise
 
     //VexFlow variables that need to be stored
     var vf : dynamic = null

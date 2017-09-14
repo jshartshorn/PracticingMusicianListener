@@ -35,7 +35,6 @@ public class ListenerApp {
     lateinit var scoreUtil : EasyScoreUtil
 
     lateinit var exercise : EasyScoreCode
-    lateinit var generatedExercise : GeneratedExercise
 
     lateinit var parameters : AppSetupParameters
 
@@ -82,7 +81,6 @@ public class ListenerApp {
           val jsCode = converter.convertJSON(json)
 
           this.exercise = jsCode.easyScoreInfo
-          this.generatedExercise = jsCode.kotlinInfo
 
           this.finishRunApp(parameters)
         })
@@ -108,10 +106,10 @@ public class ListenerApp {
 
         this.alterPreferences(prefs)
 
-        this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
+        this.exercise = UserSettings.applyToExercise(this.exercise)
 
         //set the global tempo
-        this.globalTempo = this.generatedExercise.tempo
+        this.globalTempo = this.exercise.tempo
         this.tempoIsDefault = true
 
         this.exerciseManager.loadExercise()
@@ -145,7 +143,7 @@ public class ListenerApp {
       }
       preferences.transposition?.let {
         UserSettings.transposition = it
-        this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
+        this.exercise = UserSettings.applyToExercise(this.exercise)
       }
     }
 
@@ -198,7 +196,6 @@ public class ListenerApp {
 
         //make sure it has a reference to the loaded exercise
         this.scoreUtil.exercise = this.exercise
-        this.scoreUtil.generatedExercise = this.generatedExercise
 
         pm_log("Setting up score on " + containerElementName)
         //setup the score

@@ -18,10 +18,10 @@ object UserSettings {
     var pitch = 440.0
 
 
-    fun applyToExercise(exerciseObject : GeneratedExercise) : GeneratedExercise {
+    fun applyToExercise(exerciseObject : EasyScoreCode) : EasyScoreCode {
         exerciseObject.notes = exerciseObject.notes.toList().map {
             if (UserSettings.transposition != 0) {
-                val newNote = SimpleJSNoteObject(noteNumber = it.noteNumber + UserSettings.transposition, duration = it.duration)
+                val newNote = SimpleJSNoteObject(noteNumber = it.noteNumber + UserSettings.transposition, duration = it.duration, id= it.id)
                 return@map newNote
             }
 
