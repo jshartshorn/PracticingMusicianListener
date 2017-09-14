@@ -36,6 +36,10 @@ class PitchTracker : TimeKeeperSteppable {
 
     }
 
+  override fun setInitialOffset(offset: Double) {
+    //TODO: fill the initial samples?
+  }
+
     override fun start() {
         samplesRecorded = 0
         state = TimeKeeper.TimeKeeperState.Running
@@ -72,7 +76,7 @@ class PitchTracker : TimeKeeperSteppable {
 
         pm_log("Timestamp accounting for preroll $timestampAccountingForPreroll")
 
-        var samplesToFill = lengthOfBufferInSamples - samplesRecorded + timestampAccountingForPreroll * 44.1
+        val samplesToFill = lengthOfBufferInSamples - samplesRecorded + timestampAccountingForPreroll * 44.1
 
         if (samplesToFill < 0) {
             pm_log("Not filling yet...")

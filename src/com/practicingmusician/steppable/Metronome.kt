@@ -54,6 +54,13 @@ class Metronome : TimeKeeperSteppable {
         state = TimeKeeper.TimeKeeperState.Stopped
     }
 
+    override fun setInitialOffset(offset: Double) {
+      val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
+
+      lastBeatOccuredAt = offset - beatSize
+
+    }
+
     override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
         //calculate the size of a beat in ms, based on the tempo
         val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
@@ -75,7 +82,7 @@ class Metronome : TimeKeeperSteppable {
 
 
         //update the indicator UI based on the current timestamp
-        var absoluteBeatPosition = timestamp / beatSize
+        val absoluteBeatPosition = timestamp / beatSize
         updateIndicatorUI(absoluteBeatPosition)
 
         //if the timestamp is at the time we are supposed to have the next beat

@@ -57,6 +57,8 @@ class PMTuner : TimeKeeperSteppable {
 
   }
 
-
+  override fun setInitialOffset(offset: Double) {
+    //Don't have to do anything, since we're just tuning
+  }
 
 }
