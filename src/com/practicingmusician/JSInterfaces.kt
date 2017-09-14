@@ -42,6 +42,7 @@ interface AppSetupParameters {
     //DOM element IDs
     val notationContainerName : String
     val metronomeContainerName : String
+    val controlsContainerName : String
 
     val userID : Int
     val exerciseID: Int
@@ -113,6 +114,8 @@ external class EasyScoreUtil  {
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)
+
+    fun setupControls(elementID: String)
 
     fun buildTitleElements(elementID : String)
 

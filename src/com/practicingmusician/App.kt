@@ -28,6 +28,9 @@ public class ListenerApp {
       private set
     var tempoIsDefault = true
 
+    var metronomeAudioOn = true
+      private set
+
     fun setTempoForTests(t : Double) {
       globalTempo = t
     }
@@ -119,9 +122,12 @@ public class ListenerApp {
 
     @JsName("alterPreferences")
     fun alterPreferences(preferences : AppPreferences) {
+      console.log("Altering preferences...")
+      console.log(preferences)
+
       exerciseManager.stop()
       preferences.metronomeSound?.let {
-        UserSettings.metronomeAudioOn = it
+        listenerApp.metronomeAudioOn = it
       }
       preferences.bpm?.let {
         console.log("Setting bpm to $it")
@@ -176,7 +182,7 @@ public class ListenerApp {
         feedbackCanvasObj.id = feedbackCanvasName
         document.getElementById(this.parameters.notationContainerName)?.appendChild(feedbackCanvasObj)
 
-        this.makeScore(this.parameters.notationContainerName)
+        this.makeScore(this.parameters.notationContainerName, this.parameters.controlsContainerName)
 
 //        //for testing
 //            val feedbackItems = listOf(
@@ -190,7 +196,7 @@ public class ListenerApp {
 //            }
     }
 
-    fun makeScore(containerElementName : String) {
+    fun makeScore(containerElementName : String, controlsElementName : String) {
         this.scoreUtil = EasyScoreUtil()
         this.scoreUtil.containerElementName = this.parameters.notationContainerName
 
@@ -202,6 +208,8 @@ public class ListenerApp {
         this.scoreUtil.setupOnElement(containerElementName)
 
         this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
+
+        this.scoreUtil.setupControls(controlsElementName)
 
         this.scoreUtil.buildTitleElements(containerElementName)
 
@@ -253,7 +261,7 @@ public class ListenerApp {
         val oldSVG = document.getElementsByTagName("svg").get(0) as Element
         oldSVG.parentNode?.removeChild(oldSVG)
 
-        listenerApp.makeScore(this.parameters.notationContainerName)
+        listenerApp.makeScore(this.parameters.notationContainerName,this.parameters.controlsContainerName)
         val copyOfFeedbackItems = listenerApp.currentFeedbackItems.toList()
         listenerApp.clearFeedbackItems()
         copyOfFeedbackItems.forEach { listenerApp.addFeedbackItem(it) }

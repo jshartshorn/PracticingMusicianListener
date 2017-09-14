@@ -90,7 +90,7 @@ class Metronome : TimeKeeperSteppable {
         //then play the metronome sound, set the lastBeatOccuredAt, update the metronome UI and increment the current beat counter
         if (timestamp >= nextBeatTime) {
             //TODO: wind to the specific time?
-          if (UserSettings.metronomeAudioOn) {
+          if (listenerApp.metronomeAudioOn) {
             if (currentBeat % timeSignature == 0) {
               audioManager.playAudioNow(downbeatAudioKey)
 

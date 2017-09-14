@@ -168,6 +168,60 @@ var EasyScoreUtil = function() {
         notationBody.appendChild(logoContainer)
     }
 
+    this.setupControls = function(controlsContainerName) {
+        //remove the old ones
+        var myNode = document.getElementById(controlsContainerName)
+
+        if (myNode == null) return;
+
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+
+        console.log("Setting on controls")
+
+        var container = document.getElementById(controlsContainerName)
+
+        var metronomeSlider = document.createElement('input')
+        metronomeSlider.type = 'range'
+        metronomeSlider.min = 40
+        metronomeSlider.max = 220
+
+        //TODO: set to initial value
+        metronomeSlider.value = listenerApp.globalTempo
+
+        metronomeSlider.onchange = function(event) {
+          console.log("Change")
+          console.log(event)
+          console.log(event.target.value)
+          listenerApp.alterPreferences({
+            bpm: event.target.value
+          })
+
+          //TODO: store this data with the server
+        }
+
+        container.appendChild(metronomeSlider)
+
+        var metronomeAudioButton = document.createElement('input')
+        metronomeAudioButton.type = 'checkbox'
+
+        //TODO: set to initial value
+
+        metronomeAudioButton.onchange = function(event) {
+          console.log("Change")
+          console.log(event.target.checked)
+          //TODO: set the audio on/off
+          listenerApp.alterPreferences({
+            metronomeSound: event.target.checked
+          })
+
+          //TODO: store this data with the server
+        }
+
+        container.appendChild(metronomeAudioButton)
+    }
+
     this.setupMetronome = function(metronomeContainerName) {
         //remove the old ones
         var myNode = document.getElementById(metronomeContainerName)
