@@ -10,6 +10,9 @@ var PracticingMusician = function (_, Kotlin) {
   var toList_0 = Kotlin.kotlin.collections.toList_us0mfu$;
   var reversed = Kotlin.kotlin.collections.reversed_7wnvza$;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
+  var split = Kotlin.kotlin.text.split_o64adg$;
+  var first = Kotlin.kotlin.collections.first_2p1efm$;
+  var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
   var Enum = Kotlin.kotlin.Enum;
   var average = Kotlin.kotlin.collections.average_l63kqw$;
   var zip = Kotlin.kotlin.collections.zip_45mdf7$;
@@ -29,9 +32,10 @@ var PracticingMusician = function (_, Kotlin) {
   TimeKeeper$TimeKeeperState.prototype.constructor = TimeKeeper$TimeKeeperState;
   function ListenerApp() {
     this.globalTempo_qfs5dx$_0 = 120.0;
+    this.tempoIsDefault = true;
+    this.metronomeAudioOn_qfs5dx$_0 = true;
     this.scoreUtil = this.scoreUtil;
     this.exercise = this.exercise;
-    this.generatedExercise = this.generatedExercise;
     this.parameters = this.parameters;
     this.audioManager = this.audioManager;
     this.exerciseManager = this.exerciseManager;
@@ -44,6 +48,14 @@ var PracticingMusician = function (_, Kotlin) {
     },
     set: function (globalTempo) {
       this.globalTempo_qfs5dx$_0 = globalTempo;
+    }
+  });
+  Object.defineProperty(ListenerApp.prototype, 'metronomeAudioOn', {
+    get: function () {
+      return this.metronomeAudioOn_qfs5dx$_0;
+    },
+    set: function (metronomeAudioOn) {
+      this.metronomeAudioOn_qfs5dx$_0 = metronomeAudioOn;
     }
   });
   ListenerApp.prototype.setTempoForTests_14dthe$ = function (t) {
@@ -68,7 +80,6 @@ var PracticingMusician = function (_, Kotlin) {
       console.log('JSON:');
       var jsCode = converter.convertJSON(json);
       this$ListenerApp.exercise = jsCode.easyScoreInfo;
-      this$ListenerApp.generatedExercise = jsCode.kotlinInfo;
       this$ListenerApp.finishRunApp_pjzheq$(closure$parameters);
     };
   }
@@ -84,19 +95,25 @@ var PracticingMusician = function (_, Kotlin) {
     audioAnalyzer.setupMedia();
     var prefs = new AppPreferences(parameters.metronomeSound, parameters.bpm, parameters.transposition, parameters.pitch);
     this.alterPreferences(prefs);
-    this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);
-    this.globalTempo = this.generatedExercise.tempo;
+    this.exercise = UserSettings_getInstance().applyToExercise_izl8xn$(this.exercise);
+    this.globalTempo = this.exercise.tempo;
+    this.tempoIsDefault = true;
     this.exerciseManager.loadExercise();
     this.makeDomElements();
   };
   ListenerApp.prototype.alterPreferences = function (preferences) {
     var tmp$, tmp$_0, tmp$_1, tmp$_2;
+    console.log('Altering preferences...');
+    console.log(preferences);
     this.exerciseManager.stop();
     if ((tmp$ = preferences.metronomeSound) != null) {
-      UserSettings_getInstance().metronomeAudioOn = tmp$;
+      listenerApp.metronomeAudioOn = tmp$;
     }
     if ((tmp$_0 = preferences.bpm) != null) {
       console.log('Setting bpm to ' + tmp$_0);
+      if (this.globalTempo !== tmp$_0) {
+        this.tempoIsDefault = false;
+      }
       this.globalTempo = tmp$_0;
       if (this.scoreUtil.exercise != null) {
         this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
@@ -107,7 +124,7 @@ var PracticingMusician = function (_, Kotlin) {
     }
     if ((tmp$_2 = preferences.transposition) != null) {
       UserSettings_getInstance().transposition = tmp$_2;
-      this.generatedExercise = UserSettings_getInstance().applyToExercise_k94nyn$(this.generatedExercise);
+      this.exercise = UserSettings_getInstance().applyToExercise_izl8xn$(this.exercise);
     }
   };
   ListenerApp.prototype.makeTunerDomElements = function () {
@@ -132,16 +149,16 @@ var PracticingMusician = function (_, Kotlin) {
     feedbackCanvasObj.style.position = 'absolute';
     feedbackCanvasObj.id = feedbackCanvasName;
     (tmp$_4 = document.getElementById(this.parameters.notationContainerName)) != null ? tmp$_4.appendChild(feedbackCanvasObj) : null;
-    this.makeScore_61zpoe$(this.parameters.notationContainerName);
+    this.makeScore_puj7f4$(this.parameters.notationContainerName, this.parameters.controlsContainerName);
   };
-  ListenerApp.prototype.makeScore_61zpoe$ = function (containerElementName) {
+  ListenerApp.prototype.makeScore_puj7f4$ = function (containerElementName, controlsElementName) {
     this.scoreUtil = new EasyScoreUtil();
     this.scoreUtil.containerElementName = this.parameters.notationContainerName;
     this.scoreUtil.exercise = this.exercise;
-    this.scoreUtil.generatedExercise = this.generatedExercise;
     pm_log('Setting up score on ' + containerElementName);
     this.scoreUtil.setupOnElement(containerElementName);
     this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
+    this.scoreUtil.setupControls(controlsElementName);
     this.scoreUtil.buildTitleElements(containerElementName);
     this.scoreUtil.notateExercise();
   };
@@ -168,7 +185,7 @@ var PracticingMusician = function (_, Kotlin) {
     pm_log('Resized window w/ container: ' + this.parameters.notationContainerName, 10);
     var oldSVG = Kotlin.isType(tmp$ = document.getElementsByTagName('svg')[0], Element) ? tmp$ : Kotlin.throwCCE();
     (tmp$_0 = oldSVG.parentNode) != null ? tmp$_0.removeChild(oldSVG) : null;
-    listenerApp.makeScore_61zpoe$(this.parameters.notationContainerName);
+    listenerApp.makeScore_puj7f4$(this.parameters.notationContainerName, this.parameters.controlsContainerName);
     var copyOfFeedbackItems = toList(listenerApp.currentFeedbackItems);
     listenerApp.clearFeedbackItems();
     var tmp$_1;
@@ -293,8 +310,7 @@ var PracticingMusician = function (_, Kotlin) {
   FlashMessage.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.type, other.type) && Kotlin.equals(this.message, other.message)))));
   };
-  function ConverterOutput(kotlinInfo, easyScoreInfo) {
-    this.kotlinInfo = kotlinInfo;
+  function ConverterOutput(easyScoreInfo) {
     this.easyScoreInfo = easyScoreInfo;
   }
   ConverterOutput.$metadata$ = {
@@ -303,25 +319,21 @@ var PracticingMusician = function (_, Kotlin) {
     interfaces: []
   };
   ConverterOutput.prototype.component1 = function () {
-    return this.kotlinInfo;
-  };
-  ConverterOutput.prototype.component2 = function () {
     return this.easyScoreInfo;
   };
-  ConverterOutput.prototype.copy_gervpa$ = function (kotlinInfo, easyScoreInfo) {
-    return new ConverterOutput(kotlinInfo === void 0 ? this.kotlinInfo : kotlinInfo, easyScoreInfo === void 0 ? this.easyScoreInfo : easyScoreInfo);
+  ConverterOutput.prototype.copy_izl8xn$ = function (easyScoreInfo) {
+    return new ConverterOutput(easyScoreInfo === void 0 ? this.easyScoreInfo : easyScoreInfo);
   };
   ConverterOutput.prototype.toString = function () {
-    return 'ConverterOutput(kotlinInfo=' + Kotlin.toString(this.kotlinInfo) + (', easyScoreInfo=' + Kotlin.toString(this.easyScoreInfo)) + ')';
+    return 'ConverterOutput(easyScoreInfo=' + Kotlin.toString(this.easyScoreInfo) + ')';
   };
   ConverterOutput.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.kotlinInfo) | 0;
     result = result * 31 + Kotlin.hashCode(this.easyScoreInfo) | 0;
     return result;
   };
   ConverterOutput.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.kotlinInfo, other.kotlinInfo) && Kotlin.equals(this.easyScoreInfo, other.easyScoreInfo)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && Kotlin.equals(this.easyScoreInfo, other.easyScoreInfo))));
   };
   function ComparisonFlags(testPitch, testRhythm, testDuration) {
     this.testPitch = testPitch;
@@ -412,13 +424,6 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'AudioAnalyzer',
     interfaces: []
   };
-  function GeneratedExercise() {
-  }
-  GeneratedExercise.$metadata$ = {
-    kind: Kotlin.Kind.INTERFACE,
-    simpleName: 'GeneratedExercise',
-    interfaces: []
-  };
   function EasyScoreCode() {
   }
   EasyScoreCode.$metadata$ = {
@@ -426,9 +431,12 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'EasyScoreCode',
     interfaces: []
   };
-  function SimpleJSNoteObject(noteNumber, duration) {
+  function SimpleJSNoteObject(noteNumber, duration, id) {
+    if (id === void 0)
+      id = '';
     this.noteNumber = noteNumber;
     this.duration = duration;
+    this.id = id;
   }
   SimpleJSNoteObject.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -441,20 +449,24 @@ var PracticingMusician = function (_, Kotlin) {
   SimpleJSNoteObject.prototype.component2 = function () {
     return this.duration;
   };
-  SimpleJSNoteObject.prototype.copy_5wr77w$ = function (noteNumber, duration) {
-    return new SimpleJSNoteObject(noteNumber === void 0 ? this.noteNumber : noteNumber, duration === void 0 ? this.duration : duration);
+  SimpleJSNoteObject.prototype.component3 = function () {
+    return this.id;
+  };
+  SimpleJSNoteObject.prototype.copy_oyjwvu$ = function (noteNumber, duration, id) {
+    return new SimpleJSNoteObject(noteNumber === void 0 ? this.noteNumber : noteNumber, duration === void 0 ? this.duration : duration, id === void 0 ? this.id : id);
   };
   SimpleJSNoteObject.prototype.toString = function () {
-    return 'SimpleJSNoteObject(noteNumber=' + Kotlin.toString(this.noteNumber) + (', duration=' + Kotlin.toString(this.duration)) + ')';
+    return 'SimpleJSNoteObject(noteNumber=' + Kotlin.toString(this.noteNumber) + (', duration=' + Kotlin.toString(this.duration)) + (', id=' + Kotlin.toString(this.id)) + ')';
   };
   SimpleJSNoteObject.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.noteNumber) | 0;
     result = result * 31 + Kotlin.hashCode(this.duration) | 0;
+    result = result * 31 + Kotlin.hashCode(this.id) | 0;
     return result;
   };
   SimpleJSNoteObject.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.noteNumber, other.noteNumber) && Kotlin.equals(this.duration, other.duration)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.noteNumber, other.noteNumber) && Kotlin.equals(this.duration, other.duration) && Kotlin.equals(this.id, other.id)))));
   };
   function BeatPosition(x, y) {
     this.x = x;
@@ -523,6 +535,8 @@ var PracticingMusician = function (_, Kotlin) {
     this.timekeeper.runForTime = DoubleCompanionObject.MAX_VALUE;
     this.timekeeper.start();
   };
+  PMTuner.prototype.setInitialOffset_14dthe$ = function (offset) {
+  };
   PMTuner.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
     simpleName: 'PMTuner',
@@ -530,21 +544,11 @@ var PracticingMusician = function (_, Kotlin) {
   };
   function UserSettings() {
     UserSettings_instance = this;
-    this.metronomeAudioOn_fgazsk$_0 = true;
     this.transposition = 0;
     this.tempo = -1.0;
     this.pitch = 440.0;
   }
-  Object.defineProperty(UserSettings.prototype, 'metronomeAudioOn', {
-    get: function () {
-      return this.metronomeAudioOn_fgazsk$_0;
-    },
-    set: function (value) {
-      pm_log('Metronome audio value changed', 10);
-      this.metronomeAudioOn_fgazsk$_0 = value;
-    }
-  });
-  UserSettings.prototype.applyToExercise_k94nyn$ = function (exerciseObject) {
+  UserSettings.prototype.applyToExercise_izl8xn$ = function (exerciseObject) {
     var $receiver = toList_0(exerciseObject.notes);
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
     var tmp$;
@@ -555,7 +559,7 @@ var PracticingMusician = function (_, Kotlin) {
       var transform$result;
       transform$break: do {
         if (UserSettings_getInstance().transposition !== 0) {
-          var newNote = new SimpleJSNoteObject(item.noteNumber + UserSettings_getInstance().transposition | 0, item.duration);
+          var newNote = new SimpleJSNoteObject(item.noteNumber + UserSettings_getInstance().transposition | 0, item.duration, item.id);
           transform$result = newNote;
           break transform$break;
         }
@@ -713,7 +717,7 @@ var PracticingMusician = function (_, Kotlin) {
       if ((tmp$ = this$ExerciseManager.currentExercise) != null) {
         var this$ExerciseManager_0 = this$ExerciseManager;
         pm_log('Comparing...');
-        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, tmp$.notes, notesFromSamplesBuffer);
+        var results = this$ExerciseManager_0.comparisonEngine.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, tmp$.notes, notesFromSamplesBuffer);
         listenerApp.clearFeedbackItems();
         var tmp$_1;
         tmp$_1 = results.feedbackItems.iterator();
@@ -723,7 +727,9 @@ var PracticingMusician = function (_, Kotlin) {
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
         listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
-        ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
+        if (listenerApp.tempoIsDefault) {
+          ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
+        }
       }
     };
   }
@@ -751,10 +757,10 @@ var PracticingMusician = function (_, Kotlin) {
   ExerciseManager.prototype.loadExercise = function () {
     var tmp$;
     pm_log('Loading exericse:');
-    var generatedExercise = listenerApp.generatedExercise;
+    var exercise = listenerApp.exercise;
     var exerciseDefinition = new ExerciseDefinition();
-    exerciseDefinition.prerollLengthInBeats = generatedExercise.count_off;
-    var jsNotes = generatedExercise.notes;
+    exerciseDefinition.prerollLengthInBeats = exercise.count_off;
+    var jsNotes = exercise.notes;
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(jsNotes.length);
     var tmp$_0;
     for (tmp$_0 = 0; tmp$_0 !== jsNotes.length; ++tmp$_0) {
@@ -767,9 +773,9 @@ var PracticingMusician = function (_, Kotlin) {
     this.currentExercise = exerciseDefinition;
     if ((tmp$ = this.currentExercise) != null) {
       console.log('Testing time sig:');
-      console.log(generatedExercise);
-      this.metronome.timeSignature = generatedExercise.time_signature;
-      this.metronome.prerollBeats = generatedExercise.count_off;
+      console.log(exercise);
+      this.metronome.timeSignature = toInt(first(split(exercise.time_signature, [47])));
+      this.metronome.prerollBeats = exercise.count_off;
       this.timeKeeper.runForTime = tmp$.getLength() + tmp$.prerollLength() + this.pitchTracker.latencyTime;
       this.pitchTracker.lengthOfPrerollToIgnore = tmp$.prerollLength();
       pm_log('Loaded exercise of length ' + Kotlin.toString(this.timeKeeper.runForTime));
@@ -786,7 +792,7 @@ var PracticingMusician = function (_, Kotlin) {
     if ((tmp$ = this.currentExercise) != null) {
       pm_log('Samples length: ' + Kotlin.toString(this.pitchTracker.samples.size));
       var notesFromSamplesBuffer = this.bufferManager.convertSamplesBufferToNotes_mtnj1d$(this.pitchTracker.samples);
-      var results = this.comparisonEngine.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
+      var results = this.comparisonEngine.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, tmp$.notes, notesFromSamplesBuffer, true);
       listenerApp.clearFeedbackItems();
       var tmp$_0;
       tmp$_0 = results.feedbackItems.iterator();
@@ -1416,9 +1422,13 @@ var PracticingMusician = function (_, Kotlin) {
     this.largestDurationRatioDifference = 0.0;
     this.largestBeatDifference = 0.0;
   }
-  IncrementalComparisonEngine.prototype.compareNoteArrays_puujnc$ = function (comparisonFlags, ideal, toTest, isCurrentlyRunning) {
+  IncrementalComparisonEngine.prototype.compareNoteArrays_2k3oz0$ = function (comparisonFlags, ideal, toTest, isCurrentlyRunning, testBeginningBeat, testEndingBeat) {
     if (isCurrentlyRunning === void 0)
       isCurrentlyRunning = false;
+    if (testBeginningBeat === void 0)
+      testBeginningBeat = 0.0;
+    if (testEndingBeat === void 0)
+      testEndingBeat = DoubleCompanionObject.MAX_VALUE;
     var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, tmp$_7, tmp$_8, tmp$_9;
     this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference;
     this.largestBeatDifference = listenerApp.parameters.largestBeatDifference;
@@ -1435,6 +1445,9 @@ var PracticingMusician = function (_, Kotlin) {
     }
     if (tmp$_10) {
       doNotTestBeyond = last(toTest).positionInBeats + last(toTest).note.duration;
+    }
+    if (testEndingBeat < doNotTestBeyond) {
+      doNotTestBeyond = testEndingBeat;
     }
     var functionStartTimestamp = window.performance.now();
     tmp$ = until(0, ideal.size);
@@ -1460,6 +1473,9 @@ var PracticingMusician = function (_, Kotlin) {
           toTestBeatPositionAtIndexToTest = toTestBeatPosition;
           diffFromIdealBeatPosition = diff;
         }
+      }
+      if (curBeatPosition <= testBeginningBeat) {
+        continue;
       }
       if (curBeatPosition >= doNotTestBeyond) {
         pm_log('Too far (' + curBeatPosition + ' vs ' + doNotTestBeyond + ')', 0);
@@ -1647,7 +1663,6 @@ var PracticingMusician = function (_, Kotlin) {
     this.scorePositionCurrentLine = 0;
     this.measureCounter = 0;
     this.exercise = null;
-    this.generatedExercise = this.generatedExercise;
     this.vf = null;
     this.registry = null;
     this.score = null;
@@ -1835,6 +1850,10 @@ var PracticingMusician = function (_, Kotlin) {
   Metronome.prototype.stop = function () {
     this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
   };
+  Metronome.prototype.setInitialOffset_14dthe$ = function (offset) {
+    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    this.lastBeatOccuredAt = offset - beatSize;
+  };
   Metronome.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
     var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
     if (timeKeeper.runForTime - timestamp < beatSize / 2) {
@@ -1848,7 +1867,7 @@ var PracticingMusician = function (_, Kotlin) {
     var absoluteBeatPosition = timestamp / beatSize;
     this.updateIndicatorUI_14dthe$(absoluteBeatPosition);
     if (timestamp >= nextBeatTime) {
-      if (UserSettings_getInstance().metronomeAudioOn) {
+      if (listenerApp.metronomeAudioOn) {
         if (this.currentBeat % this.timeSignature === 0) {
           this.audioManager.playAudioNow_61zpoe$(this.downbeatAudioKey);
         }
@@ -1959,6 +1978,8 @@ var PracticingMusician = function (_, Kotlin) {
     this.state_j0gsl6$_0 = TimeKeeper$TimeKeeperState$Stopped_getInstance();
   }
   PitchTracker.prototype.setup = function () {
+  };
+  PitchTracker.prototype.setInitialOffset_14dthe$ = function (offset) {
   };
   PitchTracker.prototype.start = function () {
     this.samplesRecorded = 0;
@@ -2078,6 +2099,12 @@ var PracticingMusician = function (_, Kotlin) {
   });
   TimeKeeper.prototype.start = function () {
     this.state = TimeKeeper$TimeKeeperState$Running_getInstance();
+    var tmp$;
+    tmp$ = this.steppables.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      element.setInitialOffset_14dthe$(0.0);
+    }
     this.requestNextStep();
   };
   TimeKeeper.prototype.stop = function () {
@@ -2176,6 +2203,7 @@ var PracticingMusician = function (_, Kotlin) {
   function MockParameters() {
     this.notationContainerName_7mvjxd$_0 = 'notationBody';
     this.metronomeContainerName_7mvjxd$_0 = 'metronomeContainer';
+    this.controlsContainerName_7mvjxd$_0 = 'controlsContainer';
     this.userID_7mvjxd$_0 = 1;
     this.exerciseID_7mvjxd$_0 = 2;
     this.databaseEndpoint_7mvjxd$_0 = '';
@@ -2203,6 +2231,11 @@ var PracticingMusician = function (_, Kotlin) {
   Object.defineProperty(MockParameters.prototype, 'metronomeContainerName', {
     get: function () {
       return this.metronomeContainerName_7mvjxd$_0;
+    }
+  });
+  Object.defineProperty(MockParameters.prototype, 'controlsContainerName', {
+    get: function () {
+      return this.controlsContainerName_7mvjxd$_0;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'userID', {
@@ -2385,7 +2418,7 @@ var PracticingMusician = function (_, Kotlin) {
     expectedResults.correct = 4;
     expectedResults.attempted = 4;
     var incrementalComparison = new IncrementalComparisonEngine();
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.trueIncrementalBufferAndComparisonTest = function () {
   };
@@ -2426,7 +2459,7 @@ var PracticingMusician = function (_, Kotlin) {
       var sublist = copyWithAvgData.subList_vux9f0$(0, index);
       console.log('Sublist:' + Kotlin.toString(sublist.size));
       console.log(sublist);
-      this.testShouldBe_3xie8k$.call(this, new CompareResults(sublist.size, sublist.size), incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, sublist));
+      this.testShouldBe_3xie8k$.call(this, new CompareResults(sublist.size, sublist.size), incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, sublist));
     }
   };
   SliceTest.prototype.exactIncrementalTestInBulk = function () {
@@ -2440,7 +2473,7 @@ var PracticingMusician = function (_, Kotlin) {
     expectedResults.correct = 4;
     expectedResults.attempted = 4;
     var incrementalComparison = new IncrementalComparisonEngine();
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.sharpTest = function () {
     println('****** Beginning sharp test');
@@ -2460,7 +2493,7 @@ var PracticingMusician = function (_, Kotlin) {
     var expectedResults = new CompareResults();
     expectedResults.correct = 3;
     expectedResults.attempted = 4;
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.flatTest = function () {
     println('****** Beginning flat test');
@@ -2480,7 +2513,7 @@ var PracticingMusician = function (_, Kotlin) {
     var expectedResults = new CompareResults();
     expectedResults.correct = 3;
     expectedResults.attempted = 4;
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.rushedTest = function () {
     println('****** Beginning rushed test');
@@ -2494,7 +2527,7 @@ var PracticingMusician = function (_, Kotlin) {
     expectedResults.correct = 2;
     expectedResults.attempted = 4;
     println('Comparing rushed...');
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.shortNotesTest = function () {
     println('****** Beginning short notes test');
@@ -2508,7 +2541,7 @@ var PracticingMusician = function (_, Kotlin) {
     expectedResults.correct = 4;
     expectedResults.attempted = 4;
     println('Comparing short notes...');
-    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_puujnc$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
+    this.testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(listenerApp.parameters.comparisonFlags, this.notes, copyWithAvgData));
   };
   SliceTest.prototype.runTest = function () {
     listenerApp = new ListenerApp();
@@ -2664,7 +2697,6 @@ var PracticingMusician = function (_, Kotlin) {
   package$practicingmusician.AppPreferences = AppPreferences;
   package$practicingmusician.AppSetupParameters = AppSetupParameters;
   package$practicingmusician.AudioAnalyzer = AudioAnalyzer;
-  package$practicingmusician.GeneratedExercise = GeneratedExercise;
   package$practicingmusician.EasyScoreCode = EasyScoreCode;
   package$practicingmusician.SimpleJSNoteObject = SimpleJSNoteObject;
   package$practicingmusician.BeatPosition = BeatPosition;
