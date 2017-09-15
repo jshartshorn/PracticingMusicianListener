@@ -51,7 +51,7 @@ class IncrementalBufferManager {
 
         val functionStartTimestamp = window.performance.now()
 
-        val secondsPerBeat = 60.0 / listenerApp.globalTempo
+        val secondsPerBeat = 60.0 / listenerApp.getTempo()
 
         //get only the samples we haven't tested yet
         val samplesSublist = samples.subList(positionInSamples,samples.count())

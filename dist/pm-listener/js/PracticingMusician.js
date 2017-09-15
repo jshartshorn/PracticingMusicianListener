@@ -3,11 +3,11 @@ if (typeof kotlin === 'undefined') {
 }
 var PracticingMusician = function (_, Kotlin) {
   'use strict';
-  var toList = Kotlin.kotlin.collections.toList_7wnvza$;
+  var toList = Kotlin.kotlin.collections.toList_us0mfu$;
+  var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
   var DoubleCompanionObject = Kotlin.kotlin.js.internal.DoubleCompanionObject;
-  var toList_0 = Kotlin.kotlin.collections.toList_us0mfu$;
   var reversed = Kotlin.kotlin.collections.reversed_7wnvza$;
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var split = Kotlin.kotlin.text.split_o64adg$;
@@ -31,9 +31,6 @@ var PracticingMusician = function (_, Kotlin) {
   TimeKeeper$TimeKeeperState.prototype = Object.create(Enum.prototype);
   TimeKeeper$TimeKeeperState.prototype.constructor = TimeKeeper$TimeKeeperState;
   function ListenerApp() {
-    this.globalTempo_qfs5dx$_0 = 120.0;
-    this.tempoIsDefault = true;
-    this.metronomeAudioOn_qfs5dx$_0 = true;
     this.scoreUtil = this.scoreUtil;
     this.exercise = this.exercise;
     this.parameters = this.parameters;
@@ -42,24 +39,11 @@ var PracticingMusician = function (_, Kotlin) {
     this.tuner = this.tuner;
     this.currentFeedbackItems = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
   }
-  Object.defineProperty(ListenerApp.prototype, 'globalTempo', {
-    get: function () {
-      return this.globalTempo_qfs5dx$_0;
-    },
-    set: function (globalTempo) {
-      this.globalTempo_qfs5dx$_0 = globalTempo;
-    }
-  });
-  Object.defineProperty(ListenerApp.prototype, 'metronomeAudioOn', {
-    get: function () {
-      return this.metronomeAudioOn_qfs5dx$_0;
-    },
-    set: function (metronomeAudioOn) {
-      this.metronomeAudioOn_qfs5dx$_0 = metronomeAudioOn;
-    }
-  });
   ListenerApp.prototype.setTempoForTests_14dthe$ = function (t) {
-    this.globalTempo = t;
+    UserSettings_getInstance().setTempo_8555vt$(t, true);
+  };
+  ListenerApp.prototype.getTempo = function () {
+    return UserSettings_getInstance().tempo;
   };
   ListenerApp.prototype.runTuner = function (parameters) {
     console.log('Running with parameters:');
@@ -94,10 +78,8 @@ var PracticingMusician = function (_, Kotlin) {
     Note$Companion_getInstance().createAllNotes();
     audioAnalyzer.setupMedia();
     var prefs = new AppPreferences(parameters.metronomeSound, parameters.bpm, parameters.transposition, parameters.pitch);
+    UserSettings_getInstance().setTempo_8555vt$(this.exercise.tempo, true);
     this.alterPreferences(prefs);
-    this.exercise = UserSettings_getInstance().applyToExercise_izl8xn$(this.exercise);
-    this.globalTempo = this.exercise.tempo;
-    this.tempoIsDefault = true;
     this.exerciseManager.loadExercise();
     this.makeDomElements();
   };
@@ -107,14 +89,11 @@ var PracticingMusician = function (_, Kotlin) {
     console.log(preferences);
     this.exerciseManager.stop();
     if ((tmp$ = preferences.metronomeSound) != null) {
-      listenerApp.metronomeAudioOn = tmp$;
+      UserSettings_getInstance().metronomeAudioOn = tmp$;
     }
     if ((tmp$_0 = preferences.bpm) != null) {
       console.log('Setting bpm to ' + tmp$_0);
-      if (this.globalTempo !== tmp$_0) {
-        this.tempoIsDefault = false;
-      }
-      this.globalTempo = tmp$_0;
+      UserSettings_getInstance().setTempo_8555vt$(tmp$_0, tmp$_0 === listenerApp.exercise.tempo);
       if (this.scoreUtil.exercise != null) {
         this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
       }
@@ -124,7 +103,27 @@ var PracticingMusician = function (_, Kotlin) {
     }
     if ((tmp$_2 = preferences.transposition) != null) {
       UserSettings_getInstance().transposition = tmp$_2;
-      this.exercise = UserSettings_getInstance().applyToExercise_izl8xn$(this.exercise);
+      var tmp$_3 = this.exercise;
+      var $receiver = toList(this.exercise.notes);
+      var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
+      var tmp$_4;
+      tmp$_4 = $receiver.iterator();
+      while (tmp$_4.hasNext()) {
+        var item = tmp$_4.next();
+        var tmp$_5 = destination.add_11rb$;
+        var transform$result;
+        transform$break: do {
+          if (UserSettings_getInstance().transposition !== 0) {
+            var newNote = new SimpleJSNoteObject(item.noteNumber + UserSettings_getInstance().transposition | 0, item.duration, item.id);
+            transform$result = newNote;
+            break transform$break;
+          }
+          transform$result = item;
+        }
+         while (false);
+        tmp$_5.call(destination, transform$result);
+      }
+      tmp$_3.notes = Kotlin.kotlin.collections.copyToArray(destination);
     }
   };
   ListenerApp.prototype.makeTunerDomElements = function () {
@@ -186,7 +185,7 @@ var PracticingMusician = function (_, Kotlin) {
     var oldSVG = Kotlin.isType(tmp$ = document.getElementsByTagName('svg')[0], Element) ? tmp$ : Kotlin.throwCCE();
     (tmp$_0 = oldSVG.parentNode) != null ? tmp$_0.removeChild(oldSVG) : null;
     listenerApp.makeScore_puj7f4$(this.parameters.notationContainerName, this.parameters.controlsContainerName);
-    var copyOfFeedbackItems = toList(listenerApp.currentFeedbackItems);
+    var copyOfFeedbackItems = toList_0(listenerApp.currentFeedbackItems);
     listenerApp.clearFeedbackItems();
     var tmp$_1;
     tmp$_1 = copyOfFeedbackItems.iterator();
@@ -545,34 +544,30 @@ var PracticingMusician = function (_, Kotlin) {
   function UserSettings() {
     UserSettings_instance = this;
     this.transposition = 0;
-    this.tempo = -1.0;
+    this.tempo_fgazsk$_0 = -1.0;
+    this.isDefaultTempo_fgazsk$_0 = true;
+    this.metronomeAudioOn = true;
     this.pitch = 440.0;
   }
-  UserSettings.prototype.applyToExercise_izl8xn$ = function (exerciseObject) {
-    var $receiver = toList_0(exerciseObject.notes);
-    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var item = tmp$.next();
-      var tmp$_0 = destination.add_11rb$;
-      var transform$result;
-      transform$break: do {
-        if (UserSettings_getInstance().transposition !== 0) {
-          var newNote = new SimpleJSNoteObject(item.noteNumber + UserSettings_getInstance().transposition | 0, item.duration, item.id);
-          transform$result = newNote;
-          break transform$break;
-        }
-        transform$result = item;
-      }
-       while (false);
-      tmp$_0.call(destination, transform$result);
+  Object.defineProperty(UserSettings.prototype, 'tempo', {
+    get: function () {
+      return this.tempo_fgazsk$_0;
+    },
+    set: function (tempo) {
+      this.tempo_fgazsk$_0 = tempo;
     }
-    exerciseObject.notes = Kotlin.kotlin.collections.copyToArray(destination);
-    if (this.tempo !== -1.0) {
-      exerciseObject.tempo = this.tempo;
+  });
+  Object.defineProperty(UserSettings.prototype, 'isDefaultTempo', {
+    get: function () {
+      return this.isDefaultTempo_fgazsk$_0;
+    },
+    set: function (isDefaultTempo) {
+      this.isDefaultTempo_fgazsk$_0 = isDefaultTempo;
     }
-    return exerciseObject;
+  });
+  UserSettings.prototype.setTempo_8555vt$ = function (bpm, isDefault) {
+    this.tempo = bpm;
+    this.isDefaultTempo = isDefault;
   };
   UserSettings.$metadata$ = {
     kind: Kotlin.Kind.OBJECT,
@@ -636,7 +631,7 @@ var PracticingMusician = function (_, Kotlin) {
     this.prerollLengthInBeats = 4.0;
   }
   ExerciseDefinition.prototype.getLength = function () {
-    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    var beatSize = 1000.0 * 60.0 / listenerApp.getTempo();
     var $receiver = this.notes;
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$($receiver, 10));
     var tmp$;
@@ -657,7 +652,7 @@ var PracticingMusician = function (_, Kotlin) {
     return accumulator * beatSize;
   };
   ExerciseDefinition.prototype.prerollLength = function () {
-    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    var beatSize = 1000.0 * 60.0 / listenerApp.getTempo();
     return beatSize * this.prerollLengthInBeats;
   };
   ExerciseDefinition.$metadata$ = {
@@ -727,7 +722,7 @@ var PracticingMusician = function (_, Kotlin) {
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
         listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
-        if (listenerApp.tempoIsDefault) {
+        if (UserSettings_getInstance().isDefaultTempo) {
           ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
         }
       }
@@ -1133,7 +1128,7 @@ var PracticingMusician = function (_, Kotlin) {
       return Kotlin.kotlin.collections.emptyList_287e2$();
     }
     var functionStartTimestamp = window.performance.now();
-    var secondsPerBeat = 60.0 / listenerApp.globalTempo;
+    var secondsPerBeat = 60.0 / listenerApp.getTempo();
     var samplesSublist = samples.subList_vux9f0$(positionInSamples, samples.size);
     pm_log('Converting how many samples: ' + Kotlin.toString(samplesSublist.size));
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(samplesSublist, 10));
@@ -1851,11 +1846,11 @@ var PracticingMusician = function (_, Kotlin) {
     this.state = TimeKeeper$TimeKeeperState$Stopped_getInstance();
   };
   Metronome.prototype.setInitialOffset_14dthe$ = function (offset) {
-    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    var beatSize = 1000.0 * 60.0 / listenerApp.getTempo();
     this.lastBeatOccuredAt = offset - beatSize;
   };
   Metronome.prototype.step_zgkg49$ = function (timestamp, timeKeeper) {
-    var beatSize = 1000.0 * 60.0 / listenerApp.globalTempo;
+    var beatSize = 1000.0 * 60.0 / listenerApp.getTempo();
     if (timeKeeper.runForTime - timestamp < beatSize / 2) {
       pm_log('Less than beat size..');
       return;
@@ -1867,7 +1862,7 @@ var PracticingMusician = function (_, Kotlin) {
     var absoluteBeatPosition = timestamp / beatSize;
     this.updateIndicatorUI_14dthe$(absoluteBeatPosition);
     if (timestamp >= nextBeatTime) {
-      if (listenerApp.metronomeAudioOn) {
+      if (UserSettings_getInstance().metronomeAudioOn) {
         if (this.currentBeat % this.timeSignature === 0) {
           this.audioManager.playAudioNow_61zpoe$(this.downbeatAudioKey);
         }

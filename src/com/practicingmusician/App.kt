@@ -24,15 +24,9 @@ external var audioAnalyzer : AudioAnalyzer
 external fun loadXml(url : String, callback: (String) -> Unit)
 
 public class ListenerApp {
-    var globalTempo = 120.0 //should be accessed by everyone
-      private set
-    var tempoIsDefault = true
-
-    var metronomeAudioOn = true
-      private set
 
     fun setTempoForTests(t : Double) {
-      globalTempo = t
+      UserSettings.setTempo(t,true)
     }
 
     lateinit var scoreUtil : EasyScoreUtil
@@ -46,6 +40,11 @@ public class ListenerApp {
     lateinit var exerciseManager : ExerciseManager
 
     lateinit var tuner : PMTuner
+
+    @JsName("getTempo")
+    fun getTempo() : Double {
+      return UserSettings.tempo
+    }
 
     @JsName("runTuner")
     fun runTuner(parameters: dynamic) {
@@ -107,13 +106,10 @@ public class ListenerApp {
         //check the ones from alterPreferences first
         val prefs = AppPreferences(parameters.metronomeSound,parameters.bpm,parameters.transposition,parameters.pitch)
 
-        this.alterPreferences(prefs)
-
-        this.exercise = UserSettings.applyToExercise(this.exercise)
-
         //set the global tempo
-        this.globalTempo = this.exercise.tempo
-        this.tempoIsDefault = true
+        UserSettings.setTempo(this.exercise.tempo, true)
+
+        this.alterPreferences(prefs)
 
         this.exerciseManager.loadExercise()
 
@@ -127,18 +123,12 @@ public class ListenerApp {
 
       exerciseManager.stop()
       preferences.metronomeSound?.let {
-        listenerApp.metronomeAudioOn = it
+        UserSettings.metronomeAudioOn = it
       }
       preferences.bpm?.let {
         console.log("Setting bpm to $it")
 
-        if (this.globalTempo != it.toDouble()) {
-          this.tempoIsDefault = false
-        }
-
-        //set the tempo
-        globalTempo = it.toDouble()
-        //reset the tempo in the UI
+        UserSettings.setTempo(it.toDouble(), it.toDouble() == listenerApp.exercise.tempo)
 
         if (this.scoreUtil.exercise != null) {
           this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
@@ -149,7 +139,16 @@ public class ListenerApp {
       }
       preferences.transposition?.let {
         UserSettings.transposition = it
-        this.exercise = UserSettings.applyToExercise(this.exercise)
+
+        this.exercise.notes = this.exercise.notes.toList().map {
+            if (UserSettings.transposition != 0) {
+                val newNote = SimpleJSNoteObject(noteNumber = it.noteNumber + UserSettings.transposition, duration = it.duration, id= it.id)
+                return@map newNote
+            }
+
+            return@map it
+        }.toTypedArray()
+
       }
     }
 

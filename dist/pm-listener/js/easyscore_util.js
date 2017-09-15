@@ -188,7 +188,7 @@ var EasyScoreUtil = function() {
         metronomeSlider.max = 220
 
         //TODO: set to initial value
-        metronomeSlider.value = listenerApp.globalTempo
+        metronomeSlider.value = listenerApp.getTempo()
 
         metronomeSlider.onchange = function(event) {
           console.log("Change")
@@ -265,7 +265,7 @@ var EasyScoreUtil = function() {
         //setup the tempo marking
         var tempoMarkingObj = document.createElement("span")
         tempoMarkingObj.id = "tempoMarking"
-        tempoMarkingObj.innerHTML = listenerApp.globalTempo + "<br/> bpm"
+        tempoMarkingObj.innerHTML = listenerApp.getTempo() + "<br/> bpm"
         metronomeContainer.appendChild(tempoMarkingObj)
     }
 

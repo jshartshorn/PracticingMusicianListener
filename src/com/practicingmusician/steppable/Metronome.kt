@@ -55,7 +55,7 @@ class Metronome : TimeKeeperSteppable {
     }
 
     override fun setInitialOffset(offset: Double) {
-      val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
+      val beatSize = 1000.0 * 60.0 / listenerApp.getTempo()
 
       lastBeatOccuredAt = offset - beatSize
 
@@ -63,7 +63,7 @@ class Metronome : TimeKeeperSteppable {
 
     override fun step(timestamp: Double, timeKeeper: TimeKeeper) {
         //calculate the size of a beat in ms, based on the tempo
-        val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
+        val beatSize = 1000.0 * 60.0 / listenerApp.getTempo()
 
         //this keeps it from playing an extra beat at the end that actually doesn't exist during the exercise
         if (timeKeeper.runForTime - timestamp < beatSize / 2) {
@@ -90,7 +90,7 @@ class Metronome : TimeKeeperSteppable {
         //then play the metronome sound, set the lastBeatOccuredAt, update the metronome UI and increment the current beat counter
         if (timestamp >= nextBeatTime) {
             //TODO: wind to the specific time?
-          if (listenerApp.metronomeAudioOn) {
+          if (UserSettings.metronomeAudioOn) {
             if (currentBeat % timeSignature == 0) {
               audioManager.playAudioNow(downbeatAudioKey)
 

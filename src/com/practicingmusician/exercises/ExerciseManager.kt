@@ -123,7 +123,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
                 //only send the network request if the tempo is the default one
                 //contact the server with a network request
-                if (listenerApp.tempoIsDefault) {
+                if (UserSettings.isDefaultTempo) {
                   ListenerNetworkManager.buildAndSendRequest(results)
                 }
             }

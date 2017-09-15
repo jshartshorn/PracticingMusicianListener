@@ -9,23 +9,15 @@ import com.practicingmusician.notes.Note
 object UserSettings {
     var transposition = 0 //-2 would be Bb transposition
     var tempo = -1.0 //-1 if we don't want to change the value
+      private set
+    var isDefaultTempo = true
+      private set
+    var metronomeAudioOn = true
+
     var pitch = 440.0
 
-
-    fun applyToExercise(exerciseObject : EasyScoreCode) : EasyScoreCode {
-        exerciseObject.notes = exerciseObject.notes.toList().map {
-            if (UserSettings.transposition != 0) {
-                val newNote = SimpleJSNoteObject(noteNumber = it.noteNumber + UserSettings.transposition, duration = it.duration, id= it.id)
-                return@map newNote
-            }
-
-            return@map it
-        }.toTypedArray()
-
-        if (this.tempo != -1.0) {
-            exerciseObject.tempo = this.tempo
-        }
-
-        return exerciseObject
+    fun setTempo(bpm : Double, isDefault: Boolean) {
+      tempo = bpm
+      isDefaultTempo = isDefault
     }
 }
