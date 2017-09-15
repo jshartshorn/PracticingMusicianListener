@@ -57,6 +57,10 @@ class TimeKeeper {
     fun start() {
         state = TimeKeeperState.Running
 
+        steppables.forEach {
+          it.setInitialOffset(0.0)
+        }
+
         requestNextStep()
     }
 
@@ -131,6 +135,7 @@ class TimeKeeper {
 }
 
 interface TimeKeeperSteppable {
+    fun setInitialOffset(offset : Double)
     fun step(timestamp : Double, timeKeeper : TimeKeeper)
     fun start()
     fun stop()

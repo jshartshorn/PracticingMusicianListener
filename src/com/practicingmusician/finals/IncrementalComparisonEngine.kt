@@ -35,7 +35,7 @@ class IncrementalComparisonEngine {
 
   //Comapares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
-  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
+  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false, testBeginningBeat : Double = 0.0, testEndingBeat : Double = Double.MAX_VALUE): CompareResults {
 
     this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference
     this.largestBeatDifference = listenerApp.parameters.largestBeatDifference
@@ -52,7 +52,11 @@ class IncrementalComparisonEngine {
     }
     if (!isCurrentlyRunning && toTest.count() > 0) {
         doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
-      }
+    }
+
+    if (testEndingBeat < doNotTestBeyond) {
+      doNotTestBeyond = testEndingBeat
+    }
 
     val functionStartTimestamp = window.performance.now()
 
@@ -88,6 +92,10 @@ class IncrementalComparisonEngine {
         }
 
         //increment the current position of toTest
+      }
+
+      if (curBeatPosition <= testBeginningBeat) {
+        continue
       }
 
       if (curBeatPosition >= doNotTestBeyond) {

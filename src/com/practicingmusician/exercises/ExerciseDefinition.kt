@@ -20,13 +20,13 @@ class ExerciseDefinition {
 
     //the length of the exercise, in ms
     fun getLength() : Double {
-        val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
+        val beatSize = 1000.0 * 60.0 / listenerApp.getTempo()
         return notes.map { it.duration }.reduce { acc, d -> d + acc } * beatSize
     }
 
     //the length of the preroll, in ms
     fun prerollLength(): Double {
-        val beatSize = 1000.0 * 60.0 / listenerApp.globalTempo
+        val beatSize = 1000.0 * 60.0 / listenerApp.getTempo()
         return beatSize * this.prerollLengthInBeats
     }
 

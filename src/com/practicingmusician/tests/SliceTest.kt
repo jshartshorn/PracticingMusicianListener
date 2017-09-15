@@ -19,6 +19,7 @@ external var listenerApp : ListenerApp
 class MockParameters : AppSetupParameters {
   override val notationContainerName : String = "notationBody"
   override val metronomeContainerName : String = "metronomeContainer"
+  override val controlsContainerName: String = "controlsContainer" //To change initializer of created properties use File | Settings | File Templates.
 
   override val userID : Int = 1
   override val exerciseID: Int = 2
