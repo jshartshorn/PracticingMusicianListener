@@ -1,6 +1,10 @@
 package com.practicingmusician.notes
 
 import com.practicingmusician.UserSettings
+import com.practicingmusician.finals.FeedbackMetric
+import com.practicingmusician.finals.listenerApp
+import com.practicingmusician.finals.throwSafeIncorrectSwitch
+import com.practicingmusician.pm_log
 import kotlin.js.Math.abs
 import kotlin.js.Math.pow
 
@@ -86,11 +90,12 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             return closestNoteValue
         }
 
-        data class NoteWithDiff(val note : Note, val difference : Double)
+        data class NoteWithDiff(val note : Note, val differenceInFreq : Double, val differenceInCents : Double)
 
         fun closestNoteWithDiff(frequency: Double) : NoteWithDiff {
             var closestFrequency = Double.MAX_VALUE
-            var closestNote : Note? = null
+            var closestNote : Note = Note(-1,0.0)
+            var distanceInCents = 0.0
 
             for (note in ALL_NOTES) {
                 val diff = abs(note.getFrequency() - frequency)
@@ -101,7 +106,21 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
                     break
                 }
             }
-            return NoteWithDiff(closestNote!!, closestFrequency)
+
+            val idealItemFrequency = closestNote.getFrequency()
+            val noteAboveFrequency = Note.getFrequencyForNoteNumber(closestNote.noteNumber + 1)
+            val noteBelowFrequency = Note.getFrequencyForNoteNumber(closestNote.noteNumber - 1)
+
+            if (frequency - idealItemFrequency > 0) {
+              val distanceInHz = noteAboveFrequency - idealItemFrequency
+              distanceInCents = ((frequency - idealItemFrequency) / distanceInHz) * 100.0
+            } else if (frequency - idealItemFrequency < 0) {
+              val distanceInHz = idealItemFrequency - noteBelowFrequency
+              distanceInCents = ((idealItemFrequency - frequency) / distanceInHz) * 100.0
+            }
+
+
+            return NoteWithDiff(closestNote, closestFrequency, distanceInCents)
         }
 
 

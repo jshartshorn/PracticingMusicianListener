@@ -276,7 +276,7 @@ class IncrementalComparisonEngine {
 
             feedbackItem.throwSafeIncorrectSwitch()
           }
-        } else if (avgFreq - idealItem.getFrequency() < 0) {
+        } else if (avgFreq - idealItemFrequency < 0) {
           val distanceInHz = idealItemFrequency - noteBelowFrequency
           val distanceInCents = ((idealItemFrequency - avgFreq) / distanceInHz) * 100.0
           pm_log("Flat by $distanceInHz ($distanceInCents cents)")
