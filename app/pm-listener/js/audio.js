@@ -77,6 +77,11 @@ var AudioAnalyzer = function() {
 
         var cycles = new Array;
         this.analyzer.getFloatTimeDomainData( this.buf );
+
+        //calculate the amplitude
+        //var avg = this.buf.reduce(function(sum, a) { return sum + a },0)/(this.buf.length||1);
+        //console.log("Average: " + avg)
+
         var ac = this.autoCorrelate( this.buf, this.audioContext.sampleRate );
 
         return ac

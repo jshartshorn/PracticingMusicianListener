@@ -31,6 +31,7 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
     }
 
     fun noteName() : String {
+      if (this.noteNumber == -1) { return "NaN" }
       val baseNote = fun(value : Int) : Int {
         if (value < 0) {
             return (value + 12) % 12
@@ -96,6 +97,10 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
             var closestFrequency = Double.MAX_VALUE
             var closestNote : Note = Note(-1,0.0)
             var distanceInCents = 0.0
+
+            if (frequency < ALL_NOTES[0].getFrequency() * 0.67 || frequency > ALL_NOTES.last().getFrequency() * 1.3 ) {
+              return NoteWithDiff(closestNote, closestFrequency, distanceInCents)
+            }
 
             for (note in ALL_NOTES) {
                 val diff = abs(note.getFrequency() - frequency)
