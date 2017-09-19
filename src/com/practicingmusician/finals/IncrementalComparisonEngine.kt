@@ -197,7 +197,7 @@ class IncrementalComparisonEngine {
 
 
 
-      pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest)
+      pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest,10)
 
       val distanceAway = -(curBeatPosition - toTestBeatPositionAtIndexToTest)
 

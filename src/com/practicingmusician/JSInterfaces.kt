@@ -68,9 +68,6 @@ interface AppSetupParameters {
     val largestBeatDifference : Double
     val minDurationInBeats : Double
 
-    //which metrics to compare
-    val comparisonFlags : ComparisonFlags
-
     val displaySiteDialog : (params : DialogParams) -> Unit
 
     //normally would get set in alterPreferences, but can get set here too
@@ -100,6 +97,7 @@ interface EasyScoreCode {
     val time_signature: String
     val count_off: Double
     var tempo: Double
+    val comparisonFlags : ComparisonFlags
     val copyrightInfo: String
     val systems: Array<dynamic>
     var notes: Array<SimpleJSNoteObject>
