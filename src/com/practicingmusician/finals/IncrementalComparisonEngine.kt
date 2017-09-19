@@ -33,7 +33,7 @@ class IncrementalComparisonEngine {
 
   /* End state */
 
-  //Comapares the ideal (which should be generated from the exercise) to the toTest
+  //Compares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
   fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false, testBeginningBeat : Double = 0.0, testEndingBeat : Double = Double.MAX_VALUE): CompareResults {
 
@@ -59,6 +59,11 @@ class IncrementalComparisonEngine {
     }
 
     val functionStartTimestamp = window.performance.now()
+
+    console.log("Comparing: ")
+    console.log(ideal)
+    console.log("To:")
+    console.log(toTest)
 
     //loop through the ideal items to test against
     //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
@@ -95,7 +100,9 @@ class IncrementalComparisonEngine {
       }
 
       if (curBeatPosition <= testBeginningBeat) {
-        continue
+        //TODO: reimplement this for segment
+        //console.log("Returned because curBeatPosition <= testBeginningBeat")
+        //continue
       }
 
       if (curBeatPosition >= doNotTestBeyond) {
@@ -253,7 +260,7 @@ class IncrementalComparisonEngine {
         feedbackItem.type = FeedbackType.Missed
       }
 
-      if (avgFreq != null && comparisonFlags.testPitch) {
+      if (avgFreq != null && avgFreq != -1.0 && comparisonFlags.testPitch) {
         //are they the same note?
         if (idealItem.noteNumber != testItem.note.noteNumber) {
           //it's a wrong note
@@ -274,6 +281,11 @@ class IncrementalComparisonEngine {
 
             feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInHz.toInt()))
 
+//            console.log("Sharp compared to ideal:")
+//            console.log(idealItem)
+//            console.log("test:")
+//            console.log(testItem.note)
+
             feedbackItem.throwSafeIncorrectSwitch()
           }
         } else if (avgFreq - idealItemFrequency < 0) {
@@ -282,6 +294,11 @@ class IncrementalComparisonEngine {
           pm_log("Flat by $distanceInHz ($distanceInCents cents)")
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject flat")
+
+//            console.log("Flat compared to ideal:")
+//            console.log(idealItem)
+//            console.log("test:")
+//            console.log(testItem.note)
 
             feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInHz.toInt()))
 
