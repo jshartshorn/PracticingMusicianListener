@@ -70,7 +70,7 @@ div#notationPmLogo {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
-            xmlUrl: "pm-listener/xml/Transposition.xml",
+            xmlUrl: "pm-listener/xml/Finals/1 - Quarter March.xml",
             audioAssetPath: "pm-listener/audio/",
 
             controlsContainerName : "listenerControls",
@@ -97,16 +97,11 @@ div#notationPmLogo {
                  "Message: " + params.message
               );
             },
-
-
-            comparisonFlags: {
-              testPitch: true,
-              testRhythm: true,
-              testDuration: true,
-            },
         })
     }
 </script>
+
+<a href="javascript:listenerApp.toggleState()">Start</a>
 
 </body>
 </html>

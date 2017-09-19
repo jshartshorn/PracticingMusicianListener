@@ -92,7 +92,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 pm_log("Comparing...")
 
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
-                val results = comparisonEngine.compareNoteArrays(listenerApp.parameters.comparisonFlags,it.notes,notesFromSamplesBuffer)
+                val results = comparisonEngine.compareNoteArrays(listenerApp.exercise.comparisonFlags,it.notes,notesFromSamplesBuffer)
 
                 //get rid of the old feedback items on the screen
                 listenerApp.clearFeedbackItems()
@@ -213,7 +213,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
             //pm_log("Notes from samples buffer length: " + notesFromSamplesBuffer.count())
 
-            val results = comparisonEngine.compareNoteArrays(listenerApp.parameters.comparisonFlags,it.notes,notesFromSamplesBuffer,isCurrentlyRunning = true)
+            val results = comparisonEngine.compareNoteArrays(listenerApp.exercise.comparisonFlags,it.notes,notesFromSamplesBuffer,isCurrentlyRunning = true)
             //pm_log("Results $results")
 
             listenerApp.clearFeedbackItems()

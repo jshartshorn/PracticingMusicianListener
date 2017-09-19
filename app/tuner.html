@@ -20,7 +20,9 @@
 <body>
 
 <div id="tunerWindow">
-
+  <span id="noteName"></span>
+  <span id="diff"></span>
+  <span id="stopwatchTimer"></span>
 </div>
 <script src="pm-listener/js/exercises/CMajorScale.js"></script>
 
@@ -28,7 +30,14 @@
     var listenerApp = new PracticingMusician.com.practicingmusician.ListenerApp()
 
     window.onload = function() {
-        listenerApp.runTuner({})
+        listenerApp.runTuner({
+          mode: "STOPWATCH",
+          msToIgnore: 100,
+          acceptableCentsRange: 30,
+          noteNameItem: "noteName",
+          diffItem: "diff",
+          stopwatchTimerItem: "stopwatchTimer"
+        })
     }
 </script>
 

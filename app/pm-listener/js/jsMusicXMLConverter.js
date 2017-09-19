@@ -77,6 +77,27 @@ var jsMusicXMLConverter = function() {
         return "4/4"
       }()
 
+      //get the comparison flags
+      var isPercussionClef = function() {
+            var firstBar = part.measure[0]
+            switch(firstBar.attributes.clef.sign) {
+              case "percussion":
+                return true
+              default:
+                return false
+            }
+      }()
+      var comparisonFlags = {
+        testPitch: true,
+        testRhythm: true,
+        testDuration: true,
+      }
+      if (isPercussionClef) {
+        comparisonFlags.testPitch = false
+        comparisonFlags.testDuration = false
+      }
+
+
       var beats_in_firstBar = function() {
         var firstBar = part.measure[0]
         var divisions = firstBar.attributes.divisions
@@ -155,6 +176,7 @@ var jsMusicXMLConverter = function() {
         time_signature: time_signature,
         count_off: countoff,
         tempo: tempo,
+        comparisonFlags: comparisonFlags,
         copyrightInfo: copyrightInfo,
         systems: systems,
         notes: notes

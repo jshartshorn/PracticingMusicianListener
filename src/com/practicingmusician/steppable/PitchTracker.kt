@@ -1,6 +1,7 @@
 package com.practicingmusician.steppable
 
 import com.practicingmusician.AudioAnalyzer
+import com.practicingmusician.notes.Note
 import com.practicingmusician.pm_log
 
 /**
@@ -36,9 +37,9 @@ class PitchTracker : TimeKeeperSteppable {
 
     }
 
-  override fun setInitialOffset(offset: Double) {
-    //TODO: fill the initial samples?
-  }
+    override fun setInitialOffset(offset: Double) {
+      //TODO: fill the initial samples?
+    }
 
     override fun start() {
         samplesRecorded = 0

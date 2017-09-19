@@ -47,7 +47,7 @@ public class ListenerApp {
     }
 
     @JsName("runTuner")
-    fun runTuner(parameters: dynamic) {
+    fun runTuner(parameters: TunerParameters) {
       console.log("Running with parameters:")
       console.log(parameters)
 
@@ -55,10 +55,7 @@ public class ListenerApp {
 
       audioAnalyzer.setupMedia()
 
-      val container = this.makeTunerDomElements()
-
-      tuner = PMTuner()
-      tuner.textElement = container
+      tuner = PMTuner(parameters)
       tuner.audioAnalyzer = audioAnalyzer
 
       tuner.run()
@@ -150,11 +147,6 @@ public class ListenerApp {
         }.toTypedArray()
 
       }
-    }
-
-    fun makeTunerDomElements() : HTMLElement {
-      val container = document.getElementById("tunerWindow") as HTMLElement
-      return container
     }
 
     fun makeDomElements() {
