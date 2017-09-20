@@ -92,7 +92,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 pm_log("Comparing...")
 
                 //compare the notes array in the exercise to the notes that were converted from the sample buffer
-                val results = comparisonEngine.compareNoteArrays(listenerApp.parameters.comparisonFlags,it.notes,notesFromSamplesBuffer)
+                val results = comparisonEngine.compareNoteArrays(listenerApp.exercise.comparisonFlags,it.notes,notesFromSamplesBuffer)
 
                 //get rid of the old feedback items on the screen
                 listenerApp.clearFeedbackItems()
@@ -121,8 +121,11 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 //show the user the results
                 listenerApp.parameters.displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
 
+                //only send the network request if the tempo is the default one
                 //contact the server with a network request
-                ListenerNetworkManager.buildAndSendRequest(results)
+                if (UserSettings.isDefaultTempo) {
+                  ListenerNetworkManager.buildAndSendRequest(results)
+                }
             }
         }
 
@@ -149,17 +152,17 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
     fun loadExercise() {
         pm_log("Loading exericse:")
 
-        val generatedExercise = listenerApp.generatedExercise
+        val exercise = listenerApp.exercise
 
         //apply any outside settings?
         //TODO: load the UserSettings tempo
 
         //pm_log("Tempo: " + exercise.tempo)
         val exerciseDefinition = ExerciseDefinition()
-        exerciseDefinition.prerollLengthInBeats = generatedExercise.count_off
+        exerciseDefinition.prerollLengthInBeats = exercise.count_off
 
 
-        val jsNotes = generatedExercise.notes
+        val jsNotes = exercise.notes
 
         exerciseDefinition.notes = jsNotes.map {
             Note(it.noteNumber,it.duration)
@@ -174,10 +177,10 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         currentExercise?.let {
             //sync the tempos from the exercise to the objects that need to know the tempo
             console.log("Testing time sig:" )
-            console.log(generatedExercise)
+            console.log(exercise)
 
-            metronome.timeSignature = generatedExercise.time_signature
-            metronome.prerollBeats = generatedExercise.count_off
+            metronome.timeSignature = exercise.time_signature.split('/').first().toInt()
+            metronome.prerollBeats = exercise.count_off
 
             //make sure the timeKeeper only runs for the length of the exercise (plus the preroll countoff)
             timeKeeper.runForTime = it.getLength() + it.prerollLength() + pitchTracker.latencyTime
@@ -210,7 +213,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
 
             //pm_log("Notes from samples buffer length: " + notesFromSamplesBuffer.count())
 
-            val results = comparisonEngine.compareNoteArrays(listenerApp.parameters.comparisonFlags,it.notes,notesFromSamplesBuffer,isCurrentlyRunning = true)
+            val results = comparisonEngine.compareNoteArrays(listenerApp.exercise.comparisonFlags,it.notes,notesFromSamplesBuffer,isCurrentlyRunning = true)
             //pm_log("Results $results")
 
             listenerApp.clearFeedbackItems()

@@ -24,17 +24,14 @@ external var audioAnalyzer : AudioAnalyzer
 external fun loadXml(url : String, callback: (String) -> Unit)
 
 public class ListenerApp {
-    var globalTempo = 120.0 //should be accessed by everyone
-      private set
 
     fun setTempoForTests(t : Double) {
-      globalTempo = t
+      UserSettings.setTempo(t,true)
     }
 
     lateinit var scoreUtil : EasyScoreUtil
 
     lateinit var exercise : EasyScoreCode
-    lateinit var generatedExercise : GeneratedExercise
 
     lateinit var parameters : AppSetupParameters
 
@@ -44,8 +41,13 @@ public class ListenerApp {
 
     lateinit var tuner : PMTuner
 
+    @JsName("getTempo")
+    fun getTempo() : Double {
+      return UserSettings.tempo
+    }
+
     @JsName("runTuner")
-    fun runTuner(parameters: dynamic) {
+    fun runTuner(parameters: TunerParameters) {
       console.log("Running with parameters:")
       console.log(parameters)
 
@@ -53,10 +55,7 @@ public class ListenerApp {
 
       audioAnalyzer.setupMedia()
 
-      val container = this.makeTunerDomElements()
-
-      tuner = PMTuner()
-      tuner.textElement = container
+      tuner = PMTuner(parameters)
       tuner.audioAnalyzer = audioAnalyzer
 
       tuner.run()
@@ -81,7 +80,6 @@ public class ListenerApp {
           val jsCode = converter.convertJSON(json)
 
           this.exercise = jsCode.easyScoreInfo
-          this.generatedExercise = jsCode.kotlinInfo
 
           this.finishRunApp(parameters)
         })
@@ -105,12 +103,10 @@ public class ListenerApp {
         //check the ones from alterPreferences first
         val prefs = AppPreferences(parameters.metronomeSound,parameters.bpm,parameters.transposition,parameters.pitch)
 
-        this.alterPreferences(prefs)
-
-        this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
-
         //set the global tempo
-        this.globalTempo = this.generatedExercise.tempo
+        UserSettings.setTempo(this.exercise.tempo, true)
+
+        this.alterPreferences(prefs)
 
         this.exerciseManager.loadExercise()
 
@@ -119,15 +115,17 @@ public class ListenerApp {
 
     @JsName("alterPreferences")
     fun alterPreferences(preferences : AppPreferences) {
+      console.log("Altering preferences...")
+      console.log(preferences)
+
       exerciseManager.stop()
       preferences.metronomeSound?.let {
         UserSettings.metronomeAudioOn = it
       }
       preferences.bpm?.let {
         console.log("Setting bpm to $it")
-        //set the tempo
-        globalTempo = it.toDouble()
-        //reset the tempo in the UI
+
+        UserSettings.setTempo(it.toDouble(), it.toDouble() == listenerApp.exercise.tempo)
 
         if (this.scoreUtil.exercise != null) {
           this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
@@ -138,13 +136,17 @@ public class ListenerApp {
       }
       preferences.transposition?.let {
         UserSettings.transposition = it
-        this.generatedExercise = UserSettings.applyToExercise(this.generatedExercise)
-      }
-    }
 
-    fun makeTunerDomElements() : HTMLElement {
-      val container = document.getElementById("tunerWindow") as HTMLElement
-      return container
+        this.exercise.notes = this.exercise.notes.toList().map {
+            if (UserSettings.transposition != 0) {
+                val newNote = SimpleJSNoteObject(noteNumber = it.noteNumber + UserSettings.transposition, duration = it.duration, id= it.id)
+                return@map newNote
+            }
+
+            return@map it
+        }.toTypedArray()
+
+      }
     }
 
     fun makeDomElements() {
@@ -171,7 +173,7 @@ public class ListenerApp {
         feedbackCanvasObj.id = feedbackCanvasName
         document.getElementById(this.parameters.notationContainerName)?.appendChild(feedbackCanvasObj)
 
-        this.makeScore(this.parameters.notationContainerName)
+        this.makeScore(this.parameters.notationContainerName, this.parameters.controlsContainerName)
 
 //        //for testing
 //            val feedbackItems = listOf(
@@ -185,19 +187,20 @@ public class ListenerApp {
 //            }
     }
 
-    fun makeScore(containerElementName : String) {
+    fun makeScore(containerElementName : String, controlsElementName : String) {
         this.scoreUtil = EasyScoreUtil()
         this.scoreUtil.containerElementName = this.parameters.notationContainerName
 
         //make sure it has a reference to the loaded exercise
         this.scoreUtil.exercise = this.exercise
-        this.scoreUtil.generatedExercise = this.generatedExercise
 
         pm_log("Setting up score on " + containerElementName)
         //setup the score
         this.scoreUtil.setupOnElement(containerElementName)
 
         this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
+
+        this.scoreUtil.setupControls(controlsElementName)
 
         this.scoreUtil.buildTitleElements(containerElementName)
 
@@ -249,7 +252,7 @@ public class ListenerApp {
         val oldSVG = document.getElementsByTagName("svg").get(0) as Element
         oldSVG.parentNode?.removeChild(oldSVG)
 
-        listenerApp.makeScore(this.parameters.notationContainerName)
+        listenerApp.makeScore(this.parameters.notationContainerName,this.parameters.controlsContainerName)
         val copyOfFeedbackItems = listenerApp.currentFeedbackItems.toList()
         listenerApp.clearFeedbackItems()
         copyOfFeedbackItems.forEach { listenerApp.addFeedbackItem(it) }
