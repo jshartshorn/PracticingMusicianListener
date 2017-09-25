@@ -9,7 +9,7 @@ import com.practicingmusician.finals.ResultsForDatabase
  * Created by jn on 7/5/17.
  */
 
-external fun networkRequest(url : String, data: PerformanceWrapper)
+external fun networkRequest(url : String, data: dynamic)
 external val listenerApp : ListenerApp
 
 object ListenerNetworkManager {

@@ -47,6 +47,9 @@ var PracticingMusician = function (_, Kotlin) {
   ListenerApp.prototype.getTempo = function () {
     return UserSettings_getInstance().tempo;
   };
+  ListenerApp.prototype.getMetronomeAudio = function () {
+    return UserSettings_getInstance().metronomeAudioOn;
+  };
   ListenerApp.prototype.runTuner = function (parameters) {
     console.log('Running with parameters:');
     console.log(parameters);

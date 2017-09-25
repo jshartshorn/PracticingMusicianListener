@@ -46,6 +46,11 @@ public class ListenerApp {
       return UserSettings.tempo
     }
 
+    @JsName("getMetronomeAudio")
+    fun getMetronomeAudio() : Boolean {
+      return UserSettings.metronomeAudioOn
+    }
+
     @JsName("runTuner")
     fun runTuner(parameters: TunerParameters) {
       console.log("Running with parameters:")

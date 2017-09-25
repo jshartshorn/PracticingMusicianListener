@@ -168,6 +168,13 @@ var EasyScoreUtil = function() {
         notationBody.appendChild(logoContainer)
     }
 
+    this.updateSettingsViaNetwork = function(settingsObj) {
+      var settingsUrl = listenerApp.parameters.url + "settings"
+      console.log("Sending settings to: " + settingsUrl)
+      console.log(settingsObj)
+      networkRequest(settingsUrl, settingsObj)
+    }
+
     this.setupControls = function(controlsContainerName) {
         //remove the old ones
         var myNode = document.getElementById(controlsContainerName)
@@ -187,8 +194,9 @@ var EasyScoreUtil = function() {
         metronomeSlider.min = 40
         metronomeSlider.max = 220
 
-        //TODO: set to initial value
         metronomeSlider.value = listenerApp.getTempo()
+
+        var updateSettingsViaNetwork = this.updateSettingsViaNetwork
 
         metronomeSlider.onchange = function(event) {
           console.log("Change")
@@ -199,24 +207,26 @@ var EasyScoreUtil = function() {
           })
 
           //TODO: store this data with the server
+          //updateSettingsViaNetwork()
         }
 
         container.appendChild(metronomeSlider)
 
         var metronomeAudioButton = document.createElement('input')
         metronomeAudioButton.type = 'checkbox'
+        metronomeAudioButton.id = 'metronomeAudioButton'
+        metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
 
-        //TODO: set to initial value
 
         metronomeAudioButton.onchange = function(event) {
           console.log("Change")
           console.log(event.target.checked)
-          //TODO: set the audio on/off
           listenerApp.alterPreferences({
             metronomeSound: event.target.checked
           })
 
           //TODO: store this data with the server
+          updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
         }
 
         container.appendChild(metronomeAudioButton)
