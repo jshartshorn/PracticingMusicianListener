@@ -33,6 +33,11 @@ function loadXml(url,callback) {
 function networkRequest(url, dataObject) {
     console.log("Object data:")
     console.log(dataObject)
+
+    if (window.form_authenticity_token != undefined) {
+      dataObject.form_authenticity_token = window.form_authenticity_token
+    }
+
     $.ajax({
         url:url,
         type: "POST",
