@@ -1,6 +1,7 @@
 package com.practicingmusician.steppable
 
 import com.practicingmusician.AudioAnalyzer
+import com.practicingmusician.notes.Note
 import com.practicingmusician.pm_log
 
 /**
@@ -34,6 +35,10 @@ class PitchTracker : TimeKeeperSteppable {
 
     fun setup() {
 
+    }
+
+    override fun setInitialOffset(offset: Double) {
+      //TODO: fill the initial samples?
     }
 
     override fun start() {
@@ -72,7 +77,7 @@ class PitchTracker : TimeKeeperSteppable {
 
         pm_log("Timestamp accounting for preroll $timestampAccountingForPreroll")
 
-        var samplesToFill = lengthOfBufferInSamples - samplesRecorded + timestampAccountingForPreroll * 44.1
+        val samplesToFill = lengthOfBufferInSamples - samplesRecorded + timestampAccountingForPreroll * 44.1
 
         if (samplesToFill < 0) {
             pm_log("Not filling yet...")

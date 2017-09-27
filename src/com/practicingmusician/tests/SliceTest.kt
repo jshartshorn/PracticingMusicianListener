@@ -19,6 +19,7 @@ external var listenerApp : ListenerApp
 class MockParameters : AppSetupParameters {
   override val notationContainerName : String = "notationBody"
   override val metronomeContainerName : String = "metronomeContainer"
+  override val controlsContainerName: String = "controlsContainer" //To change initializer of created properties use File | Settings | File Templates.
 
   override val userID : Int = 1
   override val exerciseID: Int = 2
@@ -43,12 +44,12 @@ class MockParameters : AppSetupParameters {
   override val largestDurationRatioDifference: Double = 0.5
   override val largestBeatDifference = 1.0
 
-  override val comparisonFlags = ComparisonFlags(testPitch = true, testRhythm = true, testDuration = true)
-
   override val bpm: Int = 120
   override val metronomeSound = true
   override val pitch = 440.0
   override val transposition: Int = 0
+
+  override val displaySiteDialog = { params: DialogParams -> console.log("Dialog"); console.log(params); }//To change initializer of created properties use File | Settings | File Templates.
 }
 
 object SliceTest {
@@ -58,6 +59,9 @@ object SliceTest {
     val secondsPerBeat = 60.0 / tempo
     val sampleRate = 44100.0
     val bufferLengthInSamples = 1024
+
+    val comparisonFlags = ComparisonFlags(testPitch = true, testDuration = true, testRhythm = true)
+
 
     fun testShouldBe(ideal : CompareResults, testValue : CompareResults) {
         println("Results " + testValue.correct + " / " + testValue.attempted)
@@ -116,7 +120,7 @@ object SliceTest {
 
         val incrementalComparison = IncrementalComparisonEngine()
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(comparisonFlags,notes, copyWithAvgData))
     }
 
     fun trueIncrementalBufferAndComparisonTest() {
@@ -184,7 +188,7 @@ object SliceTest {
             console.log("Sublist:" + sublist.count())
             console.log(sublist)
 
-            testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes,sublist))
+            testShouldBe(CompareResults(sublist.count(),sublist.count()),incrementalComparison.compareNoteArrays(comparisonFlags,notes,sublist))
         }
 
         //testShouldBe(expectedResults,incrementalComparison.results)
@@ -210,7 +214,7 @@ object SliceTest {
 
         val incrementalComparison = IncrementalComparisonEngine()
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(comparisonFlags,notes, copyWithAvgData))
 
     }
 
@@ -245,7 +249,7 @@ object SliceTest {
         expectedResults.attempted = 4
 
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(comparisonFlags,notes, copyWithAvgData))
     }
 
     fun flatTest() {
@@ -279,7 +283,7 @@ object SliceTest {
         expectedResults.attempted = 4
 
 
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(comparisonFlags,notes, copyWithAvgData))
     }
 
     fun rushedTest() {
@@ -304,7 +308,7 @@ object SliceTest {
 
 
         println("Comparing rushed...")
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(comparisonFlags,notes, copyWithAvgData))
     }
 
     //TODO: I think that the effect of the short notes on the starting points gets ignored, which should probably not be the case
@@ -349,7 +353,7 @@ object SliceTest {
 
 
         println("Comparing short notes...")
-        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(listenerApp.parameters.comparisonFlags,notes, copyWithAvgData))
+        testShouldBe(expectedResults,incrementalComparison.compareNoteArrays(comparisonFlags,notes, copyWithAvgData))
     }
 
     @JsName("runTest")

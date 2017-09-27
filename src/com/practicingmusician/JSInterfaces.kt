@@ -13,20 +13,17 @@ import com.practicingmusician.finals.FeedbackType
 
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
-external fun displaySiteDialog(params : DialogParams)
 
 data class DialogParams(val imageType : String, val title : String, val message : String)
 
 data class FlashMessage(val type : String, val message : String)
 
-data class ConverterOutput(val kotlinInfo: GeneratedExercise, val easyScoreInfo: EasyScoreCode)
+data class ConverterOutput(val easyScoreInfo: EasyScoreCode)
 
 external class jsMusicXMLConverter {
   fun convertXMLToJSON(xmlString : String) : dynamic
-  fun convertJSON(input: dynamic, infoAttributes: ConverterInputAttributes) : ConverterOutput
+  fun convertJSON(input: dynamic) : ConverterOutput
 }
-
-data class ConverterInputAttributes(val time_signature : String, val countoff : Int)
 
 data class ComparisonFlags(
   val testPitch : Boolean,
@@ -45,6 +42,7 @@ interface AppSetupParameters {
     //DOM element IDs
     val notationContainerName : String
     val metronomeContainerName : String
+    val controlsContainerName : String
 
     val userID : Int
     val exerciseID: Int
@@ -70,8 +68,7 @@ interface AppSetupParameters {
     val largestBeatDifference : Double
     val minDurationInBeats : Double
 
-    //which metrics to compare
-    val comparisonFlags : ComparisonFlags
+    val displaySiteDialog : (params : DialogParams) -> Unit
 
     //normally would get set in alterPreferences, but can get set here too
     val metronomeSound : Boolean?
@@ -88,13 +85,6 @@ interface AudioAnalyzer {
     fun updatePitch(timestamp : Double) : Double
 }
 
-interface GeneratedExercise {
-    var tempo : Double
-    val time_signature : Int
-    val count_off : Double
-    var notes : Array<SimpleJSNoteObject>
-}
-
 external class Audio(filename : String) {
     var currentTime : Int
     fun play()
@@ -102,19 +92,28 @@ external class Audio(filename : String) {
 
 
 interface EasyScoreCode {
-    val bars : Array<dynamic>
+    val title: String
+    val author: String
+    val time_signature: String
+    val count_off: Double
+    var tempo: Double
+    val comparisonFlags : ComparisonFlags
+    val copyrightInfo: String
+    val systems: Array<dynamic>
+    var notes: Array<SimpleJSNoteObject>
 }
 
-data class SimpleJSNoteObject(val noteNumber : Int, val duration : Double)
+data class SimpleJSNoteObject(val noteNumber : Int, val duration : Double, val id : String = "")
 
 external class EasyScoreUtil  {
-    var exercise : EasyScoreCode
-    lateinit var generatedExercise : GeneratedExercise
+    var exercise : EasyScoreCode?
     lateinit var containerElementName : String
 
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)
+
+    fun setupControls(elementID: String)
 
     fun buildTitleElements(elementID : String)
 

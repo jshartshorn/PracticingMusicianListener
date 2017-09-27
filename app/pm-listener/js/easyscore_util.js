@@ -32,7 +32,6 @@ var EasyScoreUtil = function() {
 
     //gets set later with the current exercise (from notesFromKotlinNotationItems())
     this.exercise = null
-    this.generatedExercise = null
 
     //VexFlow variables that need to be stored
     this.vf = null
@@ -169,6 +168,70 @@ var EasyScoreUtil = function() {
         notationBody.appendChild(logoContainer)
     }
 
+    this.updateSettingsViaNetwork = function(settingsObj) {
+      var settingsUrl = listenerApp.parameters.url + "settings"
+      console.log("Sending settings to: " + settingsUrl)
+      console.log(settingsObj)
+      networkRequest(settingsUrl, settingsObj)
+    }
+
+    this.setupControls = function(controlsContainerName) {
+        //remove the old ones
+        var myNode = document.getElementById(controlsContainerName)
+
+        if (myNode == null) return;
+
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+
+        console.log("Setting on controls")
+
+        var container = document.getElementById(controlsContainerName)
+
+        var metronomeSlider = document.createElement('input')
+        metronomeSlider.type = 'range'
+        metronomeSlider.min = 40
+        metronomeSlider.max = 220
+
+        metronomeSlider.value = listenerApp.getTempo()
+
+        var updateSettingsViaNetwork = this.updateSettingsViaNetwork
+
+        metronomeSlider.onchange = function(event) {
+          console.log("Change")
+          console.log(event)
+          console.log(event.target.value)
+          listenerApp.alterPreferences({
+            bpm: event.target.value
+          })
+
+          //TODO: store this data with the server
+          //updateSettingsViaNetwork()
+        }
+
+        container.appendChild(metronomeSlider)
+
+        var metronomeAudioButton = document.createElement('input')
+        metronomeAudioButton.type = 'checkbox'
+        metronomeAudioButton.id = 'metronomeAudioButton'
+        metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
+
+
+        metronomeAudioButton.onchange = function(event) {
+          console.log("Change")
+          console.log(event.target.checked)
+          listenerApp.alterPreferences({
+            metronomeSound: event.target.checked
+          })
+
+          //TODO: store this data with the server
+          updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
+        }
+
+        container.appendChild(metronomeAudioButton)
+    }
+
     this.setupMetronome = function(metronomeContainerName) {
         //remove the old ones
         var myNode = document.getElementById(metronomeContainerName)
@@ -212,7 +275,7 @@ var EasyScoreUtil = function() {
         //setup the tempo marking
         var tempoMarkingObj = document.createElement("span")
         tempoMarkingObj.id = "tempoMarking"
-        tempoMarkingObj.innerHTML = listenerApp.globalTempo + "<br/> bpm"
+        tempoMarkingObj.innerHTML = listenerApp.getTempo() + "<br/> bpm"
         metronomeContainer.appendChild(tempoMarkingObj)
     }
 
@@ -266,6 +329,9 @@ var EasyScoreUtil = function() {
 
         var barCounter = 0
 
+        console.log("Exercise:")
+        console.log(this.exercise)
+
         for (lineIndex in this.exercise.systems) {
           var curLine = this.exercise.systems[lineIndex]
 
@@ -293,6 +359,10 @@ var EasyScoreUtil = function() {
 
               var notesArray = Array()
               //add all the notes
+
+              console.log("Groups:")
+              console.log(curBar.groups)
+
               for (groupIndex in curBar.groups) {
                   var curGroup = curBar.groups[groupIndex]
 
@@ -300,6 +370,8 @@ var EasyScoreUtil = function() {
 
                   //take the notes and make a string that EasyScore can read, while giving each note a unique ID
 
+                  console.log("Cur group:")
+                  console.log(curGroup)
                   var brokenUpNotes = curGroup.notes//[0].split(",")
 
                   for (var noteIndex in brokenUpNotes) {
@@ -451,8 +523,8 @@ var EasyScoreUtil = function() {
             //pm_log(this.generatedExercise.notes,10)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
-            for (index in this.generatedExercise.notes) {
-                var item = this.generatedExercise.notes[index]
+            for (index in this.exercise.notes) {
+                var item = this.exercise.notes[index]
 
                 var duration = item.duration
 

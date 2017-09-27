@@ -8,7 +8,10 @@ var jsMusicXMLConverter = function() {
     this.convertXMLToJSON = function(xml) {
       console.log("Converting XML to JSON")
 
-      var noDashes = xml.replace(/-/g,'')
+      //xml.replace(/-/g,'')
+      var noDashes = xml.replace(/<(.*?)>/g,function(match) {
+        return match.replace(/-/g,'')
+      })
 
       console.log("No dashes:")
       console.log(noDashes)
@@ -28,7 +31,7 @@ var jsMusicXMLConverter = function() {
       return this.convertJSON(input,infoAttributes)
     }
 
-    this.convertJSON = function(input, infoAttributes) {
+    this.convertJSON = function(input) {
       //temp for testing
 
       if (input == null || input.length == 0) {
@@ -40,8 +43,6 @@ var jsMusicXMLConverter = function() {
       console.log(input)
       console.log(JSON.stringify(input))
 
-
-      this.writeBoilerplate()
 
       //get the part out
       var part = input.scorepartwise.part
@@ -59,18 +60,71 @@ var jsMusicXMLConverter = function() {
           return 120
         }()
 
-      var notes = this.getNotesFromPart(part)
+      var transposition = function() {
+        var firstBar = part.measure[0]
+        var attributes = firstBar.attributes
+        if (attributes == null) return 0
+        var transposition = attributes.transpose
+        if (transposition == null) return 0
+        return 0 - transposition.chromatic
+      }()
 
-      var generatedKotlinInfo = {
-        tempo: tempo,
-        count_off: infoAttributes.countoff,
-        time_signature: function(fullTs) {
-          return fullTs.split('/')[0]
-        }(infoAttributes.time_signature),
-        notes: notes
+      //grab the time signature
+      var time_signature = function() {
+        var firstBar = part.measure[0]
+        var time = firstBar.attributes.time
+        return time.beats + '/' + time.beattype
+        return "4/4"
+      }()
+
+      //get the comparison flags
+      var isPercussionClef = function() {
+            var firstBar = part.measure[0]
+            switch(firstBar.attributes.clef.sign) {
+              case "percussion":
+                return true
+              default:
+                return false
+            }
+      }()
+      var comparisonFlags = {
+        testPitch: true,
+        testRhythm: true,
+        testDuration: true,
+      }
+      if (isPercussionClef) {
+        comparisonFlags.testPitch = false
+        comparisonFlags.testDuration = false
       }
 
-      this.writeKotlinFunction(JSON.stringify(generatedKotlinInfo, null, 4))
+
+      var beats_in_firstBar = function() {
+        var firstBar = part.measure[0]
+        var divisions = firstBar.attributes.divisions
+        if (firstBar.note instanceof Array != true)
+          firstBar.note = [firstBar.note]
+        var durationReduction = firstBar.note.reduce(function(acc, item) {
+          //console.log("item:")
+          //console.log(item);
+          return acc + Number(item.duration)
+        },0)
+        //console.log("Duration reduction: " + durationReduction)
+        return durationReduction / divisions
+      }()
+      var countoff = function() {
+        switch(time_signature) {
+          case "4/4":
+            return 8 - beats_in_firstBar
+            break;
+          case "3/4":
+            return 6 - beats_in_firstBar
+          default:
+            break;
+        }
+        return 4
+      }()
+      console.log("Countoff: " + countoff)
+
 
       //get the score info
       var title = input.scorepartwise.work.worktitle
@@ -80,10 +134,8 @@ var jsMusicXMLConverter = function() {
 
         return ""
       }()
-      var time_signature = infoAttributes.time_signature
 
       var copyrightInfo = function() {
-      //infoAttributes.copyright
         if (input.scorepartwise.identification.rights != undefined) {
           return input.scorepartwise.identification.rights
         }
@@ -99,19 +151,38 @@ var jsMusicXMLConverter = function() {
       //val copyrightInfo = input.scorepartwise.identification.rights
 
       //generated
-      var systems = this.getSystemsForPart(time_signature,part)
+      var systemsAndNotes = this.getSystemsForPart(time_signature,part)
+      var systems = systemsAndNotes.systems
+      var notes = systemsAndNotes.notes
+
+      //apply the transposition if needed
+      if (transposition != 0) {
+        console.log("Original notes:")
+        console.log(notes)
+        notes = notes.map(function(item) {
+          return {
+            noteNumber: item.noteNumber + transposition,
+            duration : item.duration,
+            id: item.id
+          }
+        })
+        console.log("Transposed:")
+        console.log(notes)
+      }
 
       var generatedEasyScoreInfo = {
         title: title,
         author: author,
         time_signature: time_signature,
+        count_off: countoff,
         tempo: tempo,
+        comparisonFlags: comparisonFlags,
         copyrightInfo: copyrightInfo,
-        systems: systems
+        systems: systems,
+        notes: notes
       }
 
       return {
-        kotlinInfo: generatedKotlinInfo,
         easyScoreInfo: generatedEasyScoreInfo,
       }
 
@@ -120,33 +191,12 @@ var jsMusicXMLConverter = function() {
       //return this.output
     }
 
-    this.getNotesFromPart = function(part){
-      var toRet = []
-
-      var divisions = 1
-
-      var measures = part.measure
-      measures.forEach(function(measure) {
-
-        if (measure.attributes != undefined && measure.attributes.divisions != undefined)
-          divisions = Number(measure.attributes.divisions)
-
-        var notes = measure.note
-
-        if (notes.forEach == undefined) {
-          notes = [notes]
-        }
-
-        notes.forEach(function(note) {
-          //get note number from pitch info
-          var noteNumbers = { rest: -1, 'C4': 60, 'D4': 62, 'E4': 64, 'F4': 65, 'G4': 67, 'A4': 69, 'B4': 71, 'C5': 72,
+    this.getMidiInfoFromNoteObject = function(note,divisions) {
+      var noteNumbers = { rest: -1, 'C4': 60, 'D4': 62, 'E4': 64, 'F4': 65, 'G4': 67, 'A4': 69, 'B4': 71, 'C5': 72,
                                          'C#4': 61, 'D#4': 63, 'F#4': 66, 'G#4': 68, 'A#4': 70, 'C#5': 73,
                                         'D5': 74, 'E5': 76, 'F5': 77, 'G5': 79, 'A5': 81, 'B5': 83, 'C6': 84,
            }
-
-
-
-          var key = function() {
+      var key = function() {
             if (note.rest != undefined) {
               return "rest"
             }
@@ -176,18 +226,16 @@ var jsMusicXMLConverter = function() {
             return  step + "" + note.pitch.octave
           }()
 
-          toRet.push({
-            noteNumber: noteNumbers[key],
-            duration: (Number(note.duration) / divisions)
-          })
-        })
-      })
-
-      return toRet
+      return {
+        noteNumber: noteNumbers[key],
+        duration: (Number(note.duration) / divisions)
+      }
     }
 
     this.getSystemsForPart = function(time_signature,part) {
-      var toRet = []
+      var toRetSystems = []
+      var toRetNotes = []
+
       var measures = part.measure
 
       var createSystemObject = this.createSystemObject
@@ -198,8 +246,9 @@ var jsMusicXMLConverter = function() {
 
       var divisions = 1
 
-
       var noteId = 0
+
+      var getMidiInfoFromNoteObject = this.getMidiInfoFromNoteObject
 
       measures.forEach(function(measure) {
         //get the print attributes
@@ -213,7 +262,7 @@ var jsMusicXMLConverter = function() {
         if (printAttributes != undefined) {
           if (curSystem != null) {
             //push it
-            toRet.push(curSystem)
+            toRetSystems.push(curSystem)
             curSystem = null
           }
 
@@ -227,7 +276,7 @@ var jsMusicXMLConverter = function() {
           groups: []
         }
 
-        if (toRet.length == 0 && curSystem.bars.length == 0) {
+        if (toRetSystems.length == 0 && curSystem.bars.length == 0) {
           //try to get the extra attributes
           var ts = measure.attributes.time.beats + "/" + measure.attributes.time.beattype
 
@@ -246,8 +295,11 @@ var jsMusicXMLConverter = function() {
           }()
 
           var keysig = function() {
-            if (measure.attributes.key.fifths == "0") {
-              return "C"
+            switch(measure.attributes.key.fifths) {
+              case "0":
+                return "C"
+              case "-2":
+                return "Bb"
             }
           }()
 
@@ -367,10 +419,16 @@ var jsMusicXMLConverter = function() {
             }
           }
 
+          var fullNoteId = 'note' + noteId
+
+          var midiData = getMidiInfoFromNoteObject(note, divisions)
+          midiData.id = fullNoteId
+          toRetNotes.push(midiData)
+
           var noteObj = {
             note: noteText,
-            id: 'note' + noteId,
-            attributes: attrs
+            id: fullNoteId,
+            attributes: attrs,
           }
 
           noteId++
@@ -394,7 +452,11 @@ var jsMusicXMLConverter = function() {
 
         })
 
-        bar.groups.push(group)
+        console.log("Pushing group:")
+        console.log(group)
+
+        if (group != null)
+          bar.groups.push(group)
 
 
         //get the full duration of the bar and put an alternate time signature in if needed
@@ -414,35 +476,18 @@ var jsMusicXMLConverter = function() {
         curSystem.bars.push(bar)
       })
 
-      if (curSystem != null) toRet.push(curSystem)
+      if (curSystem != null) toRetSystems.push(curSystem)
 
-      return toRet
+      return {
+        systems: toRetSystems,
+        notes: toRetNotes
+      }
     }
 
     this.createSystemObject = function() {
       return {
         bars: []
       }
-    }
-
-    this.writeEasyScoreFunction = function(content) {
-      this.output += "function generateExerciseEasyScoreCode() {\n"
-      this.output += "return "
-      this.output += content
-      this.output += "}\n\n"
-      this.output += "window.generateExerciseEasyScoreCode = generateExerciseEasyScoreCode\n"
-    }
-
-    this.writeKotlinFunction = function(content) {
-      this.output += "function generateExerciseForKotlin() {\n"
-      this.output += "return "
-      this.output += content
-      this.output += "}\n\n"
-      this.output += "window.generateExerciseForKotlin = generateExerciseForKotlin\n"
-    }
-
-    this.writeBoilerplate = function() {
-      this.output += "window.durations = {q: 1.0,h: 2.0,w: 4.0 }\n\n\n"
     }
   }
 

@@ -33,9 +33,9 @@ class IncrementalComparisonEngine {
 
   /* End state */
 
-  //Comapares the ideal (which should be generated from the exercise) to the toTest
+  //Compares the ideal (which should be generated from the exercise) to the toTest
   //which should be generated from the microphone samples
-  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false): CompareResults {
+  fun compareNoteArrays(comparisonFlags: ComparisonFlags, ideal: List<Note>, toTest: List<NotePlacement>, isCurrentlyRunning : Boolean = false, testBeginningBeat : Double = 0.0, testEndingBeat : Double = Double.MAX_VALUE): CompareResults {
 
     this.largestDurationRatioDifference = listenerApp.parameters.largestDurationRatioDifference
     this.largestBeatDifference = listenerApp.parameters.largestBeatDifference
@@ -52,9 +52,18 @@ class IncrementalComparisonEngine {
     }
     if (!isCurrentlyRunning && toTest.count() > 0) {
         doNotTestBeyond = toTest.last().positionInBeats + toTest.last().note.duration
-      }
+    }
+
+    if (testEndingBeat < doNotTestBeyond) {
+      doNotTestBeyond = testEndingBeat
+    }
 
     val functionStartTimestamp = window.performance.now()
+
+    console.log("Comparing: ")
+    console.log(ideal)
+    console.log("To:")
+    console.log(toTest)
 
     //loop through the ideal items to test against
     //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
@@ -88,6 +97,12 @@ class IncrementalComparisonEngine {
         }
 
         //increment the current position of toTest
+      }
+
+      if (curBeatPosition <= testBeginningBeat) {
+        //TODO: reimplement this for segment
+        //console.log("Returned because curBeatPosition <= testBeginningBeat")
+        //continue
       }
 
       if (curBeatPosition >= doNotTestBeyond) {
@@ -140,6 +155,18 @@ class IncrementalComparisonEngine {
       if (comparisonFlags.testDuration) {
         //test the durations of the notes
 
+        /*
+
+          Duration rules:
+          Shouldn't be X seconds different
+          OR 1 beat difference if note is => 2 beats
+
+         */
+
+        //val idealItemLengthInSec = idealItem.duration * 60.0 / listenerApp.globalTempo
+        //val testItemLengthInSec = testItem.note.duration * 60 / listenerApp.globalTempo
+
+
         val durationDifferenceRatio = testItem.note.duration / idealItem.duration
         val durationDifferenceRatioRounded = Math.round(durationDifferenceRatio * 100.0) / 100.0
 
@@ -170,7 +197,7 @@ class IncrementalComparisonEngine {
 
 
 
-      pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest)
+      pm_log("Starting points : " + curBeatPosition + " | " + toTestBeatPositionAtIndexToTest,10)
 
       val distanceAway = -(curBeatPosition - toTestBeatPositionAtIndexToTest)
 
@@ -233,7 +260,7 @@ class IncrementalComparisonEngine {
         feedbackItem.type = FeedbackType.Missed
       }
 
-      if (avgFreq != null && comparisonFlags.testPitch) {
+      if (avgFreq != null && avgFreq != -1.0 && comparisonFlags.testPitch) {
         //are they the same note?
         if (idealItem.noteNumber != testItem.note.noteNumber) {
           //it's a wrong note
@@ -254,14 +281,24 @@ class IncrementalComparisonEngine {
 
             feedbackItemTypes.add(FeedbackMetric("pitch", "+" + distanceInHz.toInt()))
 
+//            console.log("Sharp compared to ideal:")
+//            console.log(idealItem)
+//            console.log("test:")
+//            console.log(testItem.note)
+
             feedbackItem.throwSafeIncorrectSwitch()
           }
-        } else if (avgFreq - idealItem.getFrequency() < 0) {
+        } else if (avgFreq - idealItemFrequency < 0) {
           val distanceInHz = idealItemFrequency - noteBelowFrequency
           val distanceInCents = ((idealItemFrequency - avgFreq) / distanceInHz) * 100.0
           pm_log("Flat by $distanceInHz ($distanceInCents cents)")
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject flat")
+
+//            console.log("Flat compared to ideal:")
+//            console.log(idealItem)
+//            console.log("test:")
+//            console.log(testItem.note)
 
             feedbackItemTypes.add(FeedbackMetric("pitch", "-" + distanceInHz.toInt()))
 

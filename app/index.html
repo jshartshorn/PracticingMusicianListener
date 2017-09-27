@@ -6,7 +6,9 @@
 
     <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="pm-listener/js/local_copies/jquery.js"></script>
+    <script src="pm-listener/js/local_copies/vexflow.js"></script>
+
 
     <script type="text/javascript" src="pm-listener/js/logger.js"></script>
 
@@ -15,12 +17,13 @@
 
     <script src="pm-listener/js/audio.js"></script>
 
-    <script src="https://unpkg.com/vexflow@1.2.83/releases/vexflow-debug.js"></script>
     <script src="pm-listener/js/easyscore_util.js"></script>
 
     <script src="pm-listener/js/index.js"></script>
 
     <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
+
+
 
     <style>
       /* override CSS for the SASS code */
@@ -52,6 +55,10 @@ div#notationPmLogo {
             <!-- this gets filled dynamically -->
         </div>
 
+        <div id="listenerControls">
+          <!-- this gets filled dynamically -->
+        </div>
+
         <span id="medalIndicator"></span>
         <span id="exitFullScreenButton"></span>
     </div>
@@ -63,9 +70,10 @@ div#notationPmLogo {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
-            xmlUrl: "pm-listener/xml/WithTempo2.xml",
+            xmlUrl: "pm-listener/xml/Finals/1 - Quarter March.xml",
             audioAssetPath: "pm-listener/audio/",
 
+            controlsContainerName : "listenerControls",
             notationContainerName : "notationBody",
             metronomeContainerName : "metronomeContainer",
 
@@ -82,14 +90,18 @@ div#notationPmLogo {
             largestDurationRatioDifference: 0.2,
             minDurationInBeats: 0.1,
 
-            comparisonFlags: {
-              testPitch: true,
-              testRhythm: true,
-              testDuration: true,
+            displaySiteDialog: function(params) {
+              alert(
+                "Image: " + params.imageType + "\n" +
+                "Title: " + params.title + "\n" +
+                 "Message: " + params.message
+              );
             },
         })
     }
 </script>
+
+<a href="javascript:listenerApp.toggleState()">Start</a>
 
 </body>
 </html>
