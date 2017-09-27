@@ -33,6 +33,17 @@ function loadXml(url,callback) {
 function networkRequest(url, dataObject) {
     console.log("Object data:")
     console.log(dataObject)
+
+    if (window.form_authenticity_token != undefined) {
+      dataObject.form_authenticity_token = window.form_authenticity_token
+    }
+
+    var token = document.querySelector('meta[name="csrf-token"]').content;
+
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+      jqXHR.setRequestHeader('X-CSRF-Token', token);
+    });
+
     $.ajax({
         url:url,
         type: "POST",
