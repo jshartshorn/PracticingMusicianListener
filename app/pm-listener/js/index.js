@@ -38,6 +38,12 @@ function networkRequest(url, dataObject) {
       dataObject.form_authenticity_token = window.form_authenticity_token
     }
 
+    var token = document.querySelector('meta[name="csrf-token"]').content;
+
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+      jqXHR.setRequestHeader('X-CSRF-Token', token);
+    });
+
     $.ajax({
         url:url,
         type: "POST",
