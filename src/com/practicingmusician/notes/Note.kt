@@ -59,6 +59,9 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
 
         //TODO: cache this for speed?
         fun getFrequencyForNoteNumber(noteNumber : Int) : Double {
+            if (noteNumber == -1) {
+              return -1.0
+            }
             val A440_NoteNumber: Double = 69.0
             val equalTemperamentPitch = UserSettings.pitch * pow(2.0, (noteNumber.toDouble() - A440_NoteNumber) / 12.0)
             return equalTemperamentPitch
@@ -87,6 +90,11 @@ class Note(value : Int, dur : Double, textVal : String = "none") {
                     break
                 }
             }
+
+            if (closestNoteValue == 30) {
+              console.log("RETURNING 30 for " + frequency)
+            }
+
             //println("Returning " + closestNoteValue + " for freq " + frequency)
             return closestNoteValue
         }
