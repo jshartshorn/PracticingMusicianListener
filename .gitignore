@@ -9,3 +9,4 @@ webpack-build/
 node_modules/
 .kobalt/*
 app/pm-listener/xml/Finals/*
+app/pm-listener/xml/Alto Finals/*

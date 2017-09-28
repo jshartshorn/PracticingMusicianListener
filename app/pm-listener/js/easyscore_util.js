@@ -370,8 +370,8 @@ var EasyScoreUtil = function() {
 
                   //take the notes and make a string that EasyScore can read, while giving each note a unique ID
 
-                  console.log("Cur group:")
-                  console.log(curGroup)
+                  //console.log("Cur group:")
+                  //console.log(curGroup)
                   var brokenUpNotes = curGroup.notes//[0].split(",")
 
                   for (var noteIndex in brokenUpNotes) {
