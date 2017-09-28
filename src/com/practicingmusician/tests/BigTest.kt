@@ -19,10 +19,9 @@ object BigTest {
 
   val tempo = 120.0
 
-  fun loadContent() {
-    val xmlURL = "xml/Alto Finals/Song Library 1/Alto Sax - 1 - Hot Cross Buns.xml"
+  fun loadContent(xmlUrl : String) {
 
-    loadXml("pm-listener/" + xmlURL, { callbackData ->
+    loadXml("pm-listener/" + xmlUrl, { callbackData ->
 
       console.log("Callback:")
       //console.log(callbackData)
@@ -56,8 +55,8 @@ object BigTest {
     val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
 
     val expectedResults = CompareResults()
-    expectedResults.correct = 2
-    expectedResults.attempted = 4
+    expectedResults.correct = noteObjects.size
+    expectedResults.attempted = noteObjects.size
 
 
     val comparisonFlags = ComparisonFlags(testPitch = false,testDuration = true,testRhythm = true)
@@ -68,7 +67,7 @@ object BigTest {
   }
 
   @JsName("runTest")
-  fun runTest() {
+  fun runTest(parameters: dynamic) {
 
         listenerApp = ListenerApp()
         listenerApp.parameters = MockParameters()
@@ -76,7 +75,7 @@ object BigTest {
         //setup
         Note.createAllNotes()
 
-        this.loadContent()
+        this.loadContent(parameters.xmlUrl)
 
   }
 
