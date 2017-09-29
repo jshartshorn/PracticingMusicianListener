@@ -254,13 +254,26 @@ class IncrementalComparisonEngine {
       pm_log("Avg freq of test item: " + testItem.note.avgFreq)
 
       //test the intonation of the notes
-      val avgFreq = testItem.note.avgFreq
+      val avgFreqOfTestItem = testItem.note.avgFreq
 
-      if (avgFreq == null) {
+      if (avgFreqOfTestItem == null) {
         feedbackItem.type = FeedbackType.Missed
       }
 
-      if (avgFreq != null && avgFreq != -1.0 && comparisonFlags.testPitch) {
+      //test for rest vs. note
+      if (
+          (testItem.note.noteNumber == -1 && idealItem.noteNumber != -1) ||
+          (testItem.note.noteNumber != -1 && idealItem.noteNumber == -1)
+        ) {
+        console.log("MISMATCHED!")
+        //even if we aren't testing pitch, I think this should throw the flag
+        feedbackItemTypes.add(FeedbackMetric("pitch", "REST"))
+
+        feedbackItem.throwSafeIncorrectSwitch()
+        feedbackItem.type = FeedbackType.Missed
+      }
+
+      if (avgFreqOfTestItem != null && avgFreqOfTestItem != -1.0 && comparisonFlags.testPitch) {
         //are they the same note?
         if (idealItem.noteNumber != testItem.note.noteNumber) {
           //it's a wrong note
@@ -272,9 +285,9 @@ class IncrementalComparisonEngine {
         val noteAboveFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber + 1)
         val noteBelowFrequency = Note.getFrequencyForNoteNumber(idealItem.noteNumber - 1)
 
-        if (avgFreq - idealItemFrequency > 0) {
+        if (avgFreqOfTestItem - idealItemFrequency > 0) {
           val distanceInHz = noteAboveFrequency - idealItemFrequency
-          val distanceInCents = ((avgFreq - idealItemFrequency) / distanceInHz) * 100.0
+          val distanceInCents = ((avgFreqOfTestItem - idealItemFrequency) / distanceInHz) * 100.0
           pm_log("Sharp by $distanceInHz ($distanceInCents cents)")
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject sharp")
@@ -288,9 +301,9 @@ class IncrementalComparisonEngine {
 
             feedbackItem.throwSafeIncorrectSwitch()
           }
-        } else if (avgFreq - idealItemFrequency < 0) {
+        } else if (avgFreqOfTestItem - idealItemFrequency < 0) {
           val distanceInHz = idealItemFrequency - noteBelowFrequency
-          val distanceInCents = ((idealItemFrequency - avgFreq) / distanceInHz) * 100.0
+          val distanceInCents = ((idealItemFrequency - avgFreqOfTestItem) / distanceInHz) * 100.0
           pm_log("Flat by $distanceInHz ($distanceInCents cents)")
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log("Test subject flat")
