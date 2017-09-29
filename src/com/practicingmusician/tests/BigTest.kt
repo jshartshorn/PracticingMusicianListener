@@ -46,24 +46,54 @@ object BigTest {
     val incrementalComparison = IncrementalComparisonEngine()
     val incrementalBufferManager = IncrementalBufferManager()
 
-    val noteObjects = TestBufferGenerator.simpleNotesToNote(exercise.notes)
+    val originalNoteObjects = TestBufferGenerator.simpleNotesToNote(exercise.notes)
 
-    val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(noteObjects, this.tempo)
+    val alteredNotes = mutableListOf<Note>()
+
+    originalNoteObjects.forEach {
+      if (it.noteNumber != -1) {
+        //not a rest
+        val factor = 0.76 //breaks at .75 for allowableRhythmMargin is set to .25
+        alteredNotes.add(Note(it.noteNumber,it.duration * factor,""))
+        alteredNotes.add(Note(-1,it.duration * (1.0 - factor),""))
+      } else {
+        alteredNotes.add(it)
+      }
+    }
+
+    val exerciseSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(alteredNotes, this.tempo)
 
     val exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes(exerciseSamplesCollection)
 
     val copyWithAvgData = TestBufferGenerator.addAvgPitchToSamples(exactCopyGenerated)
 
     val expectedResults = CompareResults()
-    expectedResults.correct = noteObjects.size
-    expectedResults.attempted = noteObjects.size
+    expectedResults.correct = originalNoteObjects.size
+    expectedResults.attempted = originalNoteObjects.size
 
 
     val comparisonFlags = ComparisonFlags(testPitch = false,testDuration = true,testRhythm = true)
 
     println("Comparing rushed...")
-    SliceTest.testShouldBe(expectedResults, incrementalComparison.compareNoteArrays(comparisonFlags, noteObjects, copyWithAvgData))
+    //SliceTest.testShouldBe(expectedResults, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, copyWithAvgData))
 
+
+    //now, shift everything over one beat and see if it still works
+
+    val originalNotesShifted = mutableListOf<Note>()
+    originalNotesShifted.add(Note(-1,1.0,""))
+    originalNotesShifted.addAll(alteredNotes)
+
+    val shiftedSamplesCollection = TestBufferGenerator.generateExactBufferCollectionFromNotes(originalNotesShifted, this.tempo)
+    val shiftedSamplesBackToNotes = incrementalBufferManager.convertSamplesBufferToNotes(shiftedSamplesCollection)
+
+    val shiftedWithAvgData = TestBufferGenerator.addAvgPitchToSamples(shiftedSamplesBackToNotes)
+
+    val expectedResults2 = CompareResults()
+    expectedResults2.correct = 0
+    expectedResults2.attempted = 0
+
+    SliceTest.testShouldBe(expectedResults2, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, shiftedWithAvgData))
   }
 
   @JsName("runTest")
