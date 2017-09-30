@@ -45,6 +45,9 @@ div#notationPmLogo {
 </head>
 <body>
 
+<a href="javascript:listenerApp.toggleState()">Start</a>
+
+
 <div id="notationWindow">
     <div id="notationHeader">
         <span id="settingsButton"></span>
@@ -70,8 +73,10 @@ div#notationPmLogo {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
-            xmlUrl: "pm-listener/xml/Finals/1 - Quarter March.xml",
+            xmlUrl: "pm-listener/xml/Alto Finals/4 - Rhythm 101/1 - Quarter March.xml",
             audioAssetPath: "pm-listener/audio/",
+
+            metronomeSound: false,
 
             controlsContainerName : "listenerControls",
             notationContainerName : "notationBody",
@@ -101,7 +106,6 @@ div#notationPmLogo {
     }
 </script>
 
-<a href="javascript:listenerApp.toggleState()">Start</a>
 
 </body>
 </html>

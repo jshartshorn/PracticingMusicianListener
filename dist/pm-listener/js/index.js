@@ -23,7 +23,7 @@ function loadXml(url,callback) {
       //console.log(result)
       callback(result)
     },
-    failure: function(result) {
+    error: function(result) {
       console.log("Failure..")
       console.log(result)
     }
