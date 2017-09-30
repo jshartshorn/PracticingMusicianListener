@@ -1,5 +1,6 @@
 package com.practicingmusician.tests
 
+import com.practicingmusician.SimpleJSNoteObject
 import com.practicingmusician.finals.NotePlacement
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.SampleCollection
@@ -33,6 +34,12 @@ object TestBufferGenerator {
         }
 
         return collections
+    }
+
+    fun simpleNotesToNote(notes : Array<SimpleJSNoteObject>) : List<Note> {
+      return notes.map {
+        return@map Note(it.noteNumber,it.duration,"")
+      }
     }
 
     fun generateExactBufferCollectionFromNotes(notes : List<Note>, tempo: Double) : List<SampleCollection> {
