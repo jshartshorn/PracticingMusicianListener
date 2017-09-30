@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practicing Musician Tests</title>
+
+    <script type="text/javascript" src="pm-listener/js/logger.js"></script>
+
+    <script>LOG_PRIORITY = 0</script>
+
+    <script src="pm-listener/js/local_copies/jquery.js"></script>
+    <script src="pm-listener/js/local_copies/vexflow.js"></script>
+
+    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
+    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
+
+    <script type="text/javascript" src="../app/pm-listener/js/audio.js"></script>
+
+    <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
+    <script src="pm-listener/js/index.js"></script>
+
+</head>
+
+<style>
+    div.tableDiv {
+        width: 40%;
+        float: left;
+    }
+</style>
+
+<body>
+
+<div id="exercisePanel">
+
+
+    <div id="exercise" class="tableDiv"></div>
+    <div id="micInput" class="tableDiv"></div>
+
+    <script>
+        var listenerApp = null
+        console.log(PracticingMusician.com.practicingmusician.tests.BigTest.runTest(
+          {
+
+             xmlUrl: "xml/Alto Finals/4 - Rhythm 101/1 - Quarter March.xml"
+
+          }
+        ))
+    </script>
+    <a href="javascript:listenerApp.toggleState()">On/Off</a>
+
+
+</div>
+
+</body>
+</html>
