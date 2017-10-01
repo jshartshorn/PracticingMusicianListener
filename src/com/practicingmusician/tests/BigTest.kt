@@ -74,8 +74,8 @@ object BigTest {
 
     val comparisonFlags = ComparisonFlags(testPitch = false,testDuration = true,testRhythm = true)
 
-    println("Comparing rushed...")
-    //SliceTest.testShouldBe(expectedResults, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, copyWithAvgData))
+    println("Comparing exact copy...")
+    SliceTest.testShouldBe(expectedResults, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, copyWithAvgData))
 
 
     //now, shift everything over one beat and see if it still works
@@ -89,10 +89,12 @@ object BigTest {
 
     val shiftedWithAvgData = TestBufferGenerator.addAvgPitchToSamples(shiftedSamplesBackToNotes)
 
+    //This should work on the Quarter Note March with 8/32
     val expectedResults2 = CompareResults()
-    expectedResults2.correct = 0
-    expectedResults2.attempted = 0
+    expectedResults2.correct = 8
+    expectedResults2.attempted = 32
 
+    console.log("Comparing shifted version")
     SliceTest.testShouldBe(expectedResults2, incrementalComparison.compareNoteArrays(comparisonFlags, originalNoteObjects, shiftedWithAvgData))
   }
 
