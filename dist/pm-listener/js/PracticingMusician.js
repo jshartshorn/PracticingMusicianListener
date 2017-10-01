@@ -22,9 +22,9 @@ var PracticingMusician = function (_, Kotlin) {
   var to = Kotlin.kotlin.to_ujzrz7$;
   var mapOf = Kotlin.kotlin.collections.mapOf_qfcya0$;
   var get_indices = Kotlin.kotlin.collections.get_indices_gzk92b$;
+  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var IntRange = Kotlin.kotlin.ranges.IntRange;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
-  var println = Kotlin.kotlin.io.println_s8jyv4$;
   var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   TunerModes.prototype = Object.create(Enum.prototype);
   TunerModes.prototype.constructor = TunerModes;
@@ -1700,11 +1700,17 @@ var PracticingMusician = function (_, Kotlin) {
       }
       pm_log('Pitch : ' + Kotlin.toString(idealItem.getFrequency()) + ' | ' + Kotlin.toString(testItem.note.getFrequency()), 0);
       pm_log('Avg freq of test item: ' + Kotlin.toString(testItem.note.avgFreq));
-      var avgFreq = testItem.note.avgFreq;
-      if (avgFreq == null) {
+      var avgFreqOfTestItem = testItem.note.avgFreq;
+      if (avgFreqOfTestItem == null) {
         feedbackItem.type = FeedbackType$Missed_getInstance();
       }
-      if (avgFreq != null && avgFreq !== -1.0 && comparisonFlags.testPitch) {
+      if (testItem.note.noteNumber === -1 && idealItem.noteNumber !== -1 || (testItem.note.noteNumber !== -1 && idealItem.noteNumber === -1)) {
+        console.log('MISMATCHED!');
+        feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'REST'));
+        throwSafeIncorrectSwitch(feedbackItem);
+        feedbackItem.type = FeedbackType$Missed_getInstance();
+      }
+      if (avgFreqOfTestItem != null && avgFreqOfTestItem !== -1.0 && comparisonFlags.testPitch) {
         if (idealItem.noteNumber !== testItem.note.noteNumber) {
           pm_log('WRONG NOTE *&*&*&*&*&*&*&*');
           feedbackItem.type = FeedbackType$Missed_getInstance();
@@ -1712,9 +1718,9 @@ var PracticingMusician = function (_, Kotlin) {
         var idealItemFrequency = idealItem.getFrequency();
         var noteAboveFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(idealItem.noteNumber + 1 | 0);
         var noteBelowFrequency = Note$Companion_getInstance().getFrequencyForNoteNumber_za3lpa$(idealItem.noteNumber - 1 | 0);
-        if (avgFreq - idealItemFrequency > 0) {
+        if (avgFreqOfTestItem - idealItemFrequency > 0) {
           var distanceInHz = noteAboveFrequency - idealItemFrequency;
-          var distanceInCents = (avgFreq - idealItemFrequency) / distanceInHz * 100.0;
+          var distanceInCents = (avgFreqOfTestItem - idealItemFrequency) / distanceInHz * 100.0;
           pm_log('Sharp by ' + distanceInHz + ' (' + distanceInCents + ' cents)');
           if (distanceInCents > listenerApp.parameters.allowableCentsMargin) {
             pm_log('Test subject sharp');
@@ -1722,9 +1728,9 @@ var PracticingMusician = function (_, Kotlin) {
             throwSafeIncorrectSwitch(feedbackItem);
           }
         }
-         else if (avgFreq - idealItemFrequency < 0) {
+         else if (avgFreqOfTestItem - idealItemFrequency < 0) {
           var distanceInHz_0 = idealItemFrequency - noteBelowFrequency;
-          var distanceInCents_0 = (idealItemFrequency - avgFreq) / distanceInHz_0 * 100.0;
+          var distanceInCents_0 = (idealItemFrequency - avgFreqOfTestItem) / distanceInHz_0 * 100.0;
           pm_log('Flat by ' + distanceInHz_0 + ' (' + distanceInCents_0 + ' cents)');
           if (distanceInCents_0 > listenerApp.parameters.allowableCentsMargin) {
             pm_log('Test subject flat');
@@ -1873,6 +1879,9 @@ var PracticingMusician = function (_, Kotlin) {
     return this.closestNoteToFrequency_14dthe$(frequency);
   };
   Note$Companion.prototype.getFrequencyForNoteNumber_za3lpa$ = function (noteNumber) {
+    if (noteNumber === -1) {
+      return -1.0;
+    }
     var A440_NoteNumber = 69.0;
     var equalTemperamentPitch = UserSettings_getInstance().pitch * Math.pow(2.0, (noteNumber - A440_NoteNumber) / 12.0);
     return equalTemperamentPitch;
@@ -1903,6 +1912,9 @@ var PracticingMusician = function (_, Kotlin) {
        else if (diff > closestFrequency) {
         break;
       }
+    }
+    if (closestNoteValue === 30) {
+      console.log('RETURNING 30 for ' + Kotlin.toString(frequency));
     }
     return closestNoteValue;
   };
@@ -2339,6 +2351,83 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'TimeKeeperAnalyzer',
     interfaces: []
   };
+  function BigTest() {
+    BigTest_instance = this;
+    this.tempo = 120.0;
+  }
+  function BigTest$loadContent$lambda(this$BigTest) {
+    return function (callbackData) {
+      console.log('Callback:');
+      var converter = new jsMusicXMLConverter();
+      var json = converter.convertXMLToJSON(callbackData);
+      console.log('JSON:');
+      var jsCode = converter.convertJSON(json);
+      var exercise = jsCode.easyScoreInfo;
+      this$BigTest.runTestOnExercise_izl8xn$(exercise);
+    };
+  }
+  BigTest.prototype.loadContent_61zpoe$ = function (xmlUrl) {
+    loadXml('pm-listener/' + xmlUrl, BigTest$loadContent$lambda(this));
+  };
+  BigTest.prototype.runTestOnExercise_izl8xn$ = function (exercise) {
+    console.log('Running tests...');
+    var incrementalComparison = new IncrementalComparisonEngine();
+    var incrementalBufferManager = new IncrementalBufferManager();
+    var originalNoteObjects = TestBufferGenerator_getInstance().simpleNotesToNote_hhlze$(exercise.notes);
+    var alteredNotes = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    var tmp$;
+    tmp$ = originalNoteObjects.iterator();
+    while (tmp$.hasNext()) {
+      var element = tmp$.next();
+      if (element.noteNumber !== -1) {
+        var factor = 0.76;
+        alteredNotes.add_11rb$(new Note(element.noteNumber, element.duration * factor, ''));
+        alteredNotes.add_11rb$(new Note(-1, element.duration * (1.0 - factor), ''));
+      }
+       else {
+        alteredNotes.add_11rb$(element);
+      }
+    }
+    var exerciseSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(alteredNotes, this.tempo);
+    var exactCopyGenerated = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(exerciseSamplesCollection);
+    var copyWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(exactCopyGenerated);
+    var expectedResults = new CompareResults();
+    expectedResults.correct = originalNoteObjects.size;
+    expectedResults.attempted = originalNoteObjects.size;
+    var comparisonFlags = new ComparisonFlags(false, true, true);
+    println('Comparing exact copy...');
+    SliceTest_getInstance().testShouldBe_3xie8k$(expectedResults, incrementalComparison.compareNoteArrays_2k3oz0$(comparisonFlags, originalNoteObjects, copyWithAvgData));
+    var originalNotesShifted = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
+    originalNotesShifted.add_11rb$(new Note(-1, 1.0, ''));
+    originalNotesShifted.addAll_brywnq$(alteredNotes);
+    var shiftedSamplesCollection = TestBufferGenerator_getInstance().generateExactBufferCollectionFromNotes_jisecs$(originalNotesShifted, this.tempo);
+    var shiftedSamplesBackToNotes = incrementalBufferManager.convertSamplesBufferToNotes_mtnj1d$(shiftedSamplesCollection);
+    var shiftedWithAvgData = TestBufferGenerator_getInstance().addAvgPitchToSamples_j4do5z$(shiftedSamplesBackToNotes);
+    var expectedResults2 = new CompareResults();
+    expectedResults2.correct = 8;
+    expectedResults2.attempted = 32;
+    console.log('Comparing shifted version');
+    SliceTest_getInstance().testShouldBe_3xie8k$(expectedResults2, incrementalComparison.compareNoteArrays_2k3oz0$(comparisonFlags, originalNoteObjects, shiftedWithAvgData));
+  };
+  BigTest.prototype.runTest = function (parameters) {
+    listenerApp = new ListenerApp();
+    listenerApp.parameters = new MockParameters();
+    listenerApp.setTempoForTests_14dthe$(this.tempo);
+    Note$Companion_getInstance().createAllNotes();
+    this.loadContent_61zpoe$(parameters.xmlUrl);
+  };
+  BigTest.$metadata$ = {
+    kind: Kotlin.Kind.OBJECT,
+    simpleName: 'BigTest',
+    interfaces: []
+  };
+  var BigTest_instance = null;
+  function BigTest_getInstance() {
+    if (BigTest_instance === null) {
+      new BigTest();
+    }
+    return BigTest_instance;
+  }
   function PitchTrackerTest() {
     PitchTrackerTest_instance = this;
   }
@@ -2773,6 +2862,15 @@ var PracticingMusician = function (_, Kotlin) {
     var collections = destination;
     return collections;
   };
+  TestBufferGenerator.prototype.simpleNotesToNote_hhlze$ = function (notes) {
+    var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(notes.length);
+    var tmp$;
+    for (tmp$ = 0; tmp$ !== notes.length; ++tmp$) {
+      var item = notes[tmp$];
+      destination.add_11rb$(new Note(item.noteNumber, item.duration, ''));
+    }
+    return destination;
+  };
   TestBufferGenerator.prototype.generateExactBufferCollectionFromNotes_jisecs$ = function (notes, tempo) {
     var secondsPerBeat = 60.0 / tempo;
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(Kotlin.kotlin.collections.collectionSizeOrDefault_ba2ldo$(notes, 10));
@@ -2950,6 +3048,9 @@ var PracticingMusician = function (_, Kotlin) {
   package$steppable.TimeKeeperSteppable = TimeKeeperSteppable;
   package$steppable.TimeKeeperAnalyzer = TimeKeeperAnalyzer;
   var package$tests = package$practicingmusician.tests || (package$practicingmusician.tests = {});
+  Object.defineProperty(package$tests, 'BigTest', {
+    get: BigTest_getInstance
+  });
   Object.defineProperty(package$tests, 'PitchTrackerTest', {
     get: PitchTrackerTest_getInstance
   });
