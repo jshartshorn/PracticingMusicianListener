@@ -135,7 +135,9 @@ var EasyScoreUtil = function() {
 
         var authorElement = document.createElement("span")
         authorElement.id = "exerciseAuthor"
-        authorElement.innerHTML = "By: " + this.exercise.author
+        if (this.exercise.author != undefined && this.exercise.author.length > 0) {
+          authorElement.innerHTML = "By: " + this.exercise.author
+        }
         titleContainer.appendChild(authorElement)
 
         var notationBody = document.getElementById(containerName)
