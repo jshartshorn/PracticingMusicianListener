@@ -86,12 +86,27 @@ var jsMusicXMLConverter = function() {
           var firstBar = part.measure[0]
           if (firstBar.direction != undefined) {
             console.log("First bar:")
-            var metronomeInfo = firstBar.direction.directiontype.metronome
-            if (metronomeInfo != undefined) {
-              return Number(metronomeInfo.perminute)
+
+            if (!(firstBar.direction instanceof Array)) {
+              firstBar.direction = [firstBar.direction]
             }
+
+            var directionBpm = 120;
+
+            firstBar.direction.forEach(function(dir) {
+               var metronomeInfo = dir.directiontype.metronome
+               if (metronomeInfo != undefined) {
+                directionBpm = Number(metronomeInfo.perminute)
+               }
+            })
+
+
+//            var metronomeInfo = firstBar.direction.directiontype.metronome
+//            if (metronomeInfo != undefined) {
+//              return Number(metronomeInfo.perminute)
+//            }
           }
-          return 120
+          return directionBpm
         }()
 
       var transposition = function() {
@@ -371,7 +386,7 @@ var jsMusicXMLConverter = function() {
           if (note.beam != undefined) {
             if (note.beam.__text == 'begin') {
               //push the old and make a new
-              if (group.notes.length > 0)
+              if (group != null && group.notes.length > 0)
                 bar.groups.push(group)
               group = null
             }
