@@ -371,7 +371,7 @@ var jsMusicXMLConverter = function() {
           if (note.beam != undefined) {
             if (note.beam.__text == 'begin') {
               //push the old and make a new
-              if (group.notes.length > 0)
+              if (group != null && group.notes.length > 0)
                 bar.groups.push(group)
               group = null
             }
