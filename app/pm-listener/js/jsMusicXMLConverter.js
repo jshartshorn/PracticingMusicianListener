@@ -323,6 +323,8 @@ var jsMusicXMLConverter = function() {
             switch(measure.attributes.clef.sign) {
               case "G":
                 return "treble"
+              case "F":
+                return "bass"
               case "percussion":
                 return "percussion"
               default:
