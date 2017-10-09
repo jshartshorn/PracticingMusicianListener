@@ -334,12 +334,18 @@ var EasyScoreUtil = function() {
         console.log("Exercise:")
         console.log(this.exercise)
 
+        var currentClef = 'treble'
+
         for (lineIndex in this.exercise.systems) {
           var curLine = this.exercise.systems[lineIndex]
 
             for (barIndex in curLine.bars) {
               //pm_log("Notating bar " + barIndex,10)
               var curBar = curLine.bars[barIndex]
+
+              if (curBar.extra_attributes != undefined && curBar.extra_attributes.clef != undefined) {
+                currentClef = curBar.extra_attributes.clef
+              }
 
               var barTime = this.exercise.time_signature
 
@@ -401,6 +407,8 @@ var EasyScoreUtil = function() {
                   }
 
                   var additionalInfo = {}
+
+                  additionalInfo.clef = currentClef
 
                   if (curGroup.stem_direction != undefined) {
                       additionalInfo.stem = curGroup.stem_direction
