@@ -178,20 +178,11 @@ var EasyScoreUtil = function() {
     }
 
     this.setupControls = function(controlsContainerName) {
-        //remove the old ones
-        var myNode = document.getElementById(controlsContainerName)
-
-        if (myNode == null) return;
-
-        while (myNode.firstChild) {
-            myNode.removeChild(myNode.firstChild);
-        }
-
         console.log("Setting on controls")
 
         var container = document.getElementById(controlsContainerName)
 
-        var metronomeSlider = document.createElement('input')
+        var metronomeSlider = document.getElementById('metronomeSlider')
         metronomeSlider.type = 'range'
         metronomeSlider.min = 40
         metronomeSlider.max = 220
@@ -200,7 +191,7 @@ var EasyScoreUtil = function() {
 
         var updateSettingsViaNetwork = this.updateSettingsViaNetwork
 
-        metronomeSlider.onchange = function(event) {
+        metronomeSlider.oninput = function(event) {
           console.log("Change")
           console.log(event)
           console.log(event.target.value)
@@ -212,13 +203,9 @@ var EasyScoreUtil = function() {
           //updateSettingsViaNetwork()
         }
 
-        container.appendChild(metronomeSlider)
 
-        var metronomeAudioButton = document.createElement('input')
-        metronomeAudioButton.type = 'checkbox'
-        metronomeAudioButton.id = 'metronomeAudioButton'
+        var metronomeAudioButton = document.getElementById('metronomeAudioButton')
         metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
-
 
         metronomeAudioButton.onchange = function(event) {
           console.log("Change")
@@ -227,11 +214,9 @@ var EasyScoreUtil = function() {
             metronomeSound: event.target.checked
           })
 
-          //TODO: store this data with the server
           updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
         }
 
-        container.appendChild(metronomeAudioButton)
     }
 
     this.setupMetronome = function(metronomeContainerName) {
@@ -274,11 +259,8 @@ var EasyScoreUtil = function() {
             document.getElementById("metronomeItems").appendChild(metronomeItemObj)
         }
 
-        //setup the tempo marking
-        var tempoMarkingObj = document.createElement("span")
-        tempoMarkingObj.id = "tempoMarking"
-        tempoMarkingObj.innerHTML = listenerApp.getTempo() + "<br/> bpm"
-        metronomeContainer.appendChild(tempoMarkingObj)
+        var tempoMarkingObj = document.getElementById("tempoMarking")
+        tempoMarkingObj.value = listenerApp.getTempo()
     }
 
     //make a new system (measure) of a given width

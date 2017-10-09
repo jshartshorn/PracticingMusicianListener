@@ -39,6 +39,17 @@ div#notationPmLogo {
   background-image: url("pm-listener/images/logo.png")
 }
 
+span#playPauseButton {
+    background-image: url("pm-listener/images/play-arrow-icon.svg");
+}
+
+span#printButton {
+    background-image: url("pm-listener/images/print-icon.svg");
+}
+
+input#metronomeAudioButton + label {
+    background-image: url("pm-listener/images/volume-off-icon.svg");
+}
 
     </style>
 
@@ -50,20 +61,40 @@ div#notationPmLogo {
 
 <div id="notationWindow">
     <div id="notationHeader">
-        <span id="settingsButton"></span>
-        <span id="playPauseButton" onclick="javascript:listenerApp.toggleState()"></span>
-        <span id="repeatButton"></span>
 
-        <div id="metronomeContainer">
-            <!-- this gets filled dynamically -->
+      	<span id="medalIndicator"></span>
+        <span id="playPauseButton" onclick="listenerApp.toggleState()"></span>
+	      <span id="metronomeAudioButtonContainer">
+          <input type="checkbox" id="metronomeAudioButton" /><label for="metronomeAudioButton"></label>
+        </span>
+
+
+        <div id="controlsContainer">
+          <div id="metronomeContainer">
+          </div>
+
+	        <div id="listenerControls">
+            <div id="sliderContainer">
+              <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0" />
+              <div id="sliderNumbers">
+                <span class="sliderNumber">40</span>
+                <span class="sliderNumber">60</span>
+                <span class="sliderNumber">80</span>
+                <span class="sliderNumber">100</span>
+                <span class="sliderNumber">120</span>
+                <span class="sliderNumber">140</span>
+                <span class="sliderNumber">160</span>
+                <span class="sliderNumber">180</span>
+                <span class="sliderNumber">200</span>
+              </div>
+            </div>
+	          <input id="tempoMarking" type="text"></input>
+            <span id="tempoMarkingMeta">BPM</span>
+          </div>
         </div>
 
-        <div id="listenerControls">
-          <!-- this gets filled dynamically -->
-        </div>
+        <span id="printButton"></span>
 
-        <span id="medalIndicator"></span>
-        <span id="exitFullScreenButton"></span>
     </div>
     <div id="notationBody">
         <!-- this gets filled dynamically -->
