@@ -302,6 +302,8 @@ var jsMusicXMLConverter = function() {
 
       var getMidiInfoFromNoteObject = this.getMidiInfoFromNoteObject
 
+      var clef = 'treble'
+
       measures.forEach(function(measure) {
         //get the print attributes
         var printAttributes = measure.print
@@ -334,7 +336,7 @@ var jsMusicXMLConverter = function() {
 
           measureTs = measure.attributes.time.beats
 
-          var clef = function() {
+          clef = function() {
             switch(measure.attributes.clef.sign) {
               case "G":
                 return "treble"
@@ -401,11 +403,17 @@ var jsMusicXMLConverter = function() {
           var key = function() {
 
             if (note.rest != undefined) {
-              if (note.duration / divisions == 4.0) {
-                return "D5"
-              }
-              //console.warn("Rest duration: " + note.duration)
-              return "B4"
+                if (note.duration / divisions == 4.0) {
+                  if (clef == 'treble')
+                    return "D5"
+                  else if (clef == 'bass')
+                    return "F3"
+                }
+                //console.warn("Rest duration: " + note.duration)
+                if (clef == 'treble')
+                  return "B4"
+                else if (clef == 'bass')
+                  return "D3"
             }
 
             if (note.unpitched != undefined) {
