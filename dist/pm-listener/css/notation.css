@@ -55,10 +55,10 @@ div.feedbackItem {
   /* background-color: #C45462; */ }
 
 div.feedbackItem.incorrect_note {
-  background-image: url("../images/incorrect-note.png"); }
+  background-image: url("../images/miss-icon.svg"); }
 
 div.feedbackItem.off_note {
-  background-image: url("../images/off-note-icon.png"); }
+  background-image: url("../images/hit-icon.svg"); }
 
 div.feedbackItemContainer {
   display: none; }
