@@ -70,24 +70,28 @@ input#metronomeAudioButton + label {
 
 
         <div id="controlsContainer">
-          <div id="metronomeContainer">
-          </div>
+
 
 	        <div id="listenerControls">
+            <div id="metronomeAndSlider">
+              <div id="metronomeContainer">
+              </div>
             <div id="sliderContainer">
               <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0" />
               <div id="sliderNumbers">
-                <span class="sliderNumber">40</span>
-                <span class="sliderNumber">60</span>
-                <span class="sliderNumber">80</span>
-                <span class="sliderNumber">100</span>
-                <span class="sliderNumber">120</span>
-                <span class="sliderNumber">140</span>
-                <span class="sliderNumber">160</span>
-                <span class="sliderNumber">180</span>
-                <span class="sliderNumber">200</span>
+                <span class="sliderNumber" id="sliderNumber40">40</span>
+                <span class="sliderNumber" id="sliderNumber60">60</span>
+                <span class="sliderNumber" id="sliderNumber80">80</span>
+                <span class="sliderNumber" id="sliderNumber100">100</span>
+                <span class="sliderNumber" id="sliderNumber120">120</span>
+                <span class="sliderNumber" id="sliderNumber140">140</span>
+                <span class="sliderNumber" id="sliderNumber160">160</span>
+                <span class="sliderNumber" id="sliderNumber180">180</span>
+                <span class="sliderNumber" id="sliderNumber200">200</span>
               </div>
             </div>
+            </div>
+
 	          <input id="tempoMarking" type="text"></input>
             <span id="tempoMarkingMeta">BPM</span>
           </div>

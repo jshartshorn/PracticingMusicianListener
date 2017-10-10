@@ -198,7 +198,6 @@ var EasyScoreUtil = function() {
           listenerApp.alterPreferences({
             bpm: event.target.value
           })
-
           //TODO: store this data with the server
           //updateSettingsViaNetwork()
         }
@@ -261,6 +260,18 @@ var EasyScoreUtil = function() {
 
         var tempoMarkingObj = document.getElementById("tempoMarking")
         tempoMarkingObj.value = listenerApp.getTempo()
+
+        var tempo = listenerApp.getTempo()
+
+        //highlight the correct number by the slider
+        var closest = Math.ceil(tempo / 20) * 20;
+        if (closest < 40) {
+          closest = 40
+        }
+        if (closest > 200) {
+          closest = 200
+        }
+        
     }
 
     //make a new system (measure) of a given width
