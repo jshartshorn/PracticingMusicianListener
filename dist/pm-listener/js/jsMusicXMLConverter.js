@@ -340,6 +340,9 @@ var jsMusicXMLConverter = function() {
             switch(measure.attributes.clef.sign) {
               case "G":
                 return "treble"
+              case "C":
+                //TODO: tenor clef
+                return "alto"
               case "F":
                 return "bass"
               case "percussion":
@@ -406,12 +409,16 @@ var jsMusicXMLConverter = function() {
                 if (note.duration / divisions == 4.0) {
                   if (clef == 'treble')
                     return "D5"
+                  else if (clef == 'alto')
+                    return "E4"
                   else if (clef == 'bass')
                     return "F3"
                 }
                 //console.warn("Rest duration: " + note.duration)
                 if (clef == 'treble')
                   return "B4"
+                else if (clef == 'alto')
+                  return "C4"
                 else if (clef == 'bass')
                   return "D3"
             }

@@ -154,8 +154,8 @@ var PracticingMusician = function (_, Kotlin) {
     this.scoreUtil.exercise = this.exercise;
     pm_log('Setting up score on ' + containerElementName);
     this.scoreUtil.setupOnElement(containerElementName);
-    this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
     this.scoreUtil.setupControls(controlsElementName);
+    this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
     this.scoreUtil.buildTitleElements(containerElementName);
     this.scoreUtil.notateExercise();
   };
@@ -875,6 +875,7 @@ var PracticingMusician = function (_, Kotlin) {
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
         listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
+        listenerApp.scoreUtil.displayMedal(iconType);
         if (UserSettings_getInstance().isDefaultTempo) {
           ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
         }
@@ -896,11 +897,13 @@ var PracticingMusician = function (_, Kotlin) {
     this.metronome.start();
     this.pitchTracker.start();
     this.timeKeeper.start();
+    listenerApp.scoreUtil.changePlayButton('playing');
   };
   ExerciseManager.prototype.stop = function () {
     this.timeKeeper.stop();
     this.metronome.stop();
     this.pitchTracker.stop();
+    listenerApp.scoreUtil.changePlayButton('stopped');
   };
   ExerciseManager.prototype.loadExercise = function () {
     var tmp$;

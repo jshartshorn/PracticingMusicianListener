@@ -210,6 +210,18 @@ span#medalIndicator {
     height: 36px;
 }
 
+span#medalIndicator.medal-gold-icon {
+    background-image: url($pm-image-path + "medal-gold-icon.svg");
+}
+
+span#medalIndicator.medal-silver-icon {
+    background-image: url($pm-image-path + "medal-silver-icon.svg");
+}
+
+span#medalIndicator.medal-bronze-icon {
+    background-image: url($pm-image-path + "medal-bronze-icon.svg");
+}
+
 /* metronome slider */
 
 div#sliderNumbers {

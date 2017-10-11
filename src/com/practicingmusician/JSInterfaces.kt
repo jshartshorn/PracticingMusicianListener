@@ -111,6 +111,8 @@ external class EasyScoreUtil  {
 
     fun changePlayButton(buttonClass : String)
 
+    fun displayMedal(medalClass : String)
+
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)
