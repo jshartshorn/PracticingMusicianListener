@@ -109,6 +109,8 @@ external class EasyScoreUtil  {
     var exercise : EasyScoreCode?
     lateinit var containerElementName : String
 
+    fun changePlayButton(buttonClass : String)
+
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)

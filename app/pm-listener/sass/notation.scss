@@ -72,11 +72,11 @@ div.feedbackItem {
 }
 
 div.feedbackItem.incorrect_note {
-    background-image: url($pm-image-path + "incorrect-note.png");
+    background-image: url($pm-image-path + "miss-icon.svg");
 }
 
 div.feedbackItem.off_note {
-    background-image: url($pm-image-path + "off-note-icon.png");
+    background-image: url($pm-image-path + "hit-icon.svg");
 }
 
 div.feedbackItemContainer {
@@ -175,8 +175,12 @@ span#playPauseButton, span#metronomeAudioButtonContainer, span#printButton {
   height: 24px;
 }
 
-span#playPauseButton {
+span#playPauseButton.stopped {
     background-image: url($pm-image-path + "play-arrow-icon.svg");
+}
+
+span#playPauseButton.playing {
+    background-image: url($pm-image-path + "stop-icon.svg");
 }
 
 span#printButton {
@@ -197,6 +201,10 @@ input#metronomeAudioButton + label {
     background-image: url($pm-image-path + "volume-off-icon.svg");
 }
 
+input#metronomeAudioButton:checked + label {
+    background-image: url($pm-image-path + "volume-on-icon.svg");
+}
+
 span#medalIndicator {
     width: 36px;
     height: 36px;
@@ -207,10 +215,18 @@ span#medalIndicator {
 div#sliderNumbers {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 
 span.sliderNumber {
   display: block;
+  color: #aaaaaa;
+  font-size: 10px;
+}
+
+span.sliderNumber.highlighted {
+  color: #5c5c5c;
+  font-size: 22px;
 }
 
 input#metronomeSlider {

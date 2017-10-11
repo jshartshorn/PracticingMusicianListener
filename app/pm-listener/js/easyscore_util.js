@@ -57,6 +57,11 @@ var EasyScoreUtil = function() {
     //useful for getting placement information later
     this.systems = Array()
 
+    this.sliderMin = 40
+    this.sliderMax = 220
+    this.sliderIncrement = 20
+
+
     //setup the basic notation stuff
     this.setupOnElement = function(elementID) {
         //calculate the scale
@@ -116,6 +121,11 @@ var EasyScoreUtil = function() {
         this.voice = this.score.voice.bind(this.score);
         this.notes = this.score.notes.bind(this.score);
         this.beam = this.score.beam.bind(this.score);
+    }
+
+    this.changePlayButton = function(className) {
+      var button = document.getElementById("playPauseButton")
+      button.className = className
     }
 
     this.buildTitleElements = function(containerName) {
@@ -184,8 +194,8 @@ var EasyScoreUtil = function() {
 
         var metronomeSlider = document.getElementById('metronomeSlider')
         metronomeSlider.type = 'range'
-        metronomeSlider.min = 40
-        metronomeSlider.max = 220
+        metronomeSlider.min = this.sliderMin
+        metronomeSlider.max = this.sliderMax
 
         metronomeSlider.value = listenerApp.getTempo()
 
@@ -201,6 +211,19 @@ var EasyScoreUtil = function() {
           //TODO: store this data with the server
           //updateSettingsViaNetwork()
         }
+
+        var sliderNumbersContainer = document.getElementById('sliderNumbers')
+        while (sliderNumbersContainer.firstChild) {
+            sliderNumbersContainer.removeChild(sliderNumbersContainer.firstChild);
+        }
+        for (var i = this.sliderMin; i <= this.sliderMax; i += this.sliderIncrement) {
+          var sliderNumberSpan = document.createElement('span')
+          sliderNumberSpan.className = 'sliderNumber'
+          sliderNumberSpan.id = 'sliderNumber' + i
+          sliderNumberSpan.innerHTML = "" + i
+          sliderNumbersContainer.appendChild(sliderNumberSpan)
+        }
+
 
 
         var metronomeAudioButton = document.getElementById('metronomeAudioButton')
@@ -264,14 +287,19 @@ var EasyScoreUtil = function() {
         var tempo = listenerApp.getTempo()
 
         //highlight the correct number by the slider
-        var closest = Math.ceil(tempo / 20) * 20;
-        if (closest < 40) {
-          closest = 40
+        var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
+        if (closest < this.sliderMin) {
+          closest = this.sliderMin
         }
-        if (closest > 200) {
-          closest = 200
+        if (closest > this.sliderMax) {
+          closest = this.sliderMax
         }
-        
+        console.log("closest: " + closest)
+        Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
+          el.className = "sliderNumber"
+        })
+        var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
+        sliderNumberSpan.className += " highlighted"
     }
 
     //make a new system (measure) of a given width

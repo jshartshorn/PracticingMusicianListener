@@ -39,8 +39,12 @@ div#notationPmLogo {
   background-image: url("pm-listener/images/logo.png")
 }
 
-span#playPauseButton {
+span#playPauseButton.stopped {
     background-image: url("pm-listener/images/play-arrow-icon.svg");
+}
+
+span#playPauseButton.playing {
+    background-image: url("pm-listener/images/stop-icon.svg");
 }
 
 span#printButton {
@@ -49,6 +53,10 @@ span#printButton {
 
 input#metronomeAudioButton + label {
     background-image: url("pm-listener/images/volume-off-icon.svg");
+}
+
+input#metronomeAudioButton:checked + label {
+    background-image: url("pm-listener/images/volume-on-icon.svg");
 }
 
     </style>
@@ -63,7 +71,7 @@ input#metronomeAudioButton + label {
     <div id="notationHeader">
 
       	<span id="medalIndicator"></span>
-        <span id="playPauseButton" onclick="listenerApp.toggleState()"></span>
+        <span id="playPauseButton" class="stopped" onclick="listenerApp.toggleState()"></span>
 	      <span id="metronomeAudioButtonContainer">
           <input type="checkbox" id="metronomeAudioButton" /><label for="metronomeAudioButton"></label>
         </span>
@@ -76,20 +84,11 @@ input#metronomeAudioButton + label {
             <div id="metronomeAndSlider">
               <div id="metronomeContainer">
               </div>
-            <div id="sliderContainer">
-              <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0" />
-              <div id="sliderNumbers">
-                <span class="sliderNumber" id="sliderNumber40">40</span>
-                <span class="sliderNumber" id="sliderNumber60">60</span>
-                <span class="sliderNumber" id="sliderNumber80">80</span>
-                <span class="sliderNumber" id="sliderNumber100">100</span>
-                <span class="sliderNumber" id="sliderNumber120">120</span>
-                <span class="sliderNumber" id="sliderNumber140">140</span>
-                <span class="sliderNumber" id="sliderNumber160">160</span>
-                <span class="sliderNumber" id="sliderNumber180">180</span>
-                <span class="sliderNumber" id="sliderNumber200">200</span>
+              <div id="sliderContainer">
+                <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0" />
+                <div id="sliderNumbers">
+                </div>
               </div>
-            </div>
             </div>
 
 	          <input id="tempoMarking" type="text"></input>
