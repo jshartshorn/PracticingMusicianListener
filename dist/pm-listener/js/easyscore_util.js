@@ -129,6 +129,16 @@ var EasyScoreUtil = function() {
         button.className = className
     }
 
+<<<<<<< HEAD
+=======
+    this.displayMedal = function(medalClass) {
+      var medalIndicator = document.getElementById('medalIndicator')
+      if (medalIndicator != null) {
+        medalIndicator.className = medalClass
+      }
+    }
+
+>>>>>>> feature/implementing-design
     this.buildTitleElements = function(containerName) {
         //remove the old one
         var oldTitleContainer = document.getElementById("titleContainer")

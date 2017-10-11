@@ -875,6 +875,7 @@ var PracticingMusician = function (_, Kotlin) {
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
         listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
+        listenerApp.scoreUtil.displayMedal(iconType);
         if (UserSettings_getInstance().isDefaultTempo) {
           ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
         }
