@@ -133,7 +133,6 @@ span#playPauseButton, span#metronomeAudioButtonContainer, span#printButton {
   display: block;
   width: 24px;
   height: 24px; }
-<<<<<<< HEAD
 
 span#playPauseButton.stopped {
   background-image: url("../images/play-arrow-icon.svg"); }
@@ -155,29 +154,6 @@ input#metronomeAudioButton + label {
 input#metronomeAudioButton + label {
   background-image: url("../images/volume-off-icon.svg"); }
 
-=======
-
-span#playPauseButton.stopped {
-  background-image: url("../images/play-arrow-icon.svg"); }
-
-span#playPauseButton.playing {
-  background-image: url("../images/stop-icon.svg"); }
-
-span#printButton {
-  background-image: url("../images/print-icon.svg"); }
-
-input#metronomeAudioButton {
-  display: none; }
-
-input#metronomeAudioButton + label {
-  width: 24px;
-  height: 24px;
-  display: inline-block; }
-
-input#metronomeAudioButton + label {
-  background-image: url("../images/volume-off-icon.svg"); }
-
->>>>>>> feature/implementing-design
 input#metronomeAudioButton:checked + label {
   background-image: url("../images/volume-on-icon.svg"); }
 
@@ -185,8 +161,6 @@ span#medalIndicator {
   width: 36px;
   height: 36px; }
 
-<<<<<<< HEAD
-=======
 span#medalIndicator.medal-gold-icon {
   background-image: url("../images/medal-gold-icon.svg"); }
 
@@ -196,7 +170,6 @@ span#medalIndicator.medal-silver-icon {
 span#medalIndicator.medal-bronze-icon {
   background-image: url("../images/medal-bronze-icon.svg"); }
 
->>>>>>> feature/implementing-design
 /* metronome slider */
 div#sliderNumbers {
   display: flex;
