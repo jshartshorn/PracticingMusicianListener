@@ -306,7 +306,8 @@ var EasyScoreUtil = function() {
             el.className = "sliderNumber"
           })
           var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
-          sliderNumberSpan.className += " highlighted"
+          if (sliderNumberSpan != null)
+            sliderNumberSpan.className += " highlighted"
         }
     }
 
