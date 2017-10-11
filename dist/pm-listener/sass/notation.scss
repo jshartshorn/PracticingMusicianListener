@@ -5,10 +5,6 @@ div#notationWindow {
     flex-direction: column;
 }
 
-div#notationWindow span {
-    bor-der: 1px solid black; /* temporary */
-}
-
 div#notationHeader {
     height: 120px;
     width: 100%;
@@ -16,6 +12,11 @@ div#notationHeader {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+}
+
+div#controlsContainer {
+    display: flex;
+    flex-direction: column;
 }
 
 /* Notation body stuff */
@@ -71,11 +72,11 @@ div.feedbackItem {
 }
 
 div.feedbackItem.incorrect_note {
-    background-image: url($pm-image-path + "incorrect-note.png");
+    background-image: url($pm-image-path + "miss-icon.svg");
 }
 
 div.feedbackItem.off_note {
-    background-image: url($pm-image-path + "off-note-icon.png");
+    background-image: url($pm-image-path + "hit-icon.svg");
 }
 
 div.feedbackItemContainer {
@@ -132,10 +133,23 @@ div#metronomeItems {
     align-items: center;
 }
 
-span#tempoMarking {
+div#listenerControls {
+    display: flex;
+    align-items: center;
+}
+
+input#tempoMarking {
     display: block;
-    color: #bbb;
-    text-align: center;
+    margin-left: 10px;
+    padding: 14px;
+    background: #f5f5f5;
+    border: none;
+    width: 60px;
+}
+
+span#tempoMarkingMeta {
+    display: block;
+    margin-left: 10px;
 }
 
 span.metronomeItem {
@@ -150,35 +164,161 @@ span.metronomeItem.highlighted {
     width: 24px;
     height: 24px;
     border-radius: 12px;
-    background-color: #AD6039;
+    background-color: #2b4d71;
 }
 
 /* header buttons */
 
-span#settingsButton, span#playPauseButton, span#repeatButton, span#medalIndicator, span#exitFullScreenButton {
-    width: 24px;
-    height: 24px;
-    background-repeat: no-repeat;
+span#playPauseButton, span#metronomeAudioButtonContainer, span#printButton {
+  display: block;
+  width: 24px;
+  height: 24px;
 }
 
-span#settingsButton {
-    background-image: url($pm-image-path + "ic_settings_24px.png");
+span#playPauseButton.stopped {
+    background-image: url($pm-image-path + "play-arrow-icon.svg");
 }
 
-span#playPauseButton {
-    background-image: url($pm-image-path + "ic_play_arrow_24px.png");
+span#playPauseButton.playing {
+    background-image: url($pm-image-path + "stop-icon.svg");
 }
 
-span#repeatButton {
-    background-image: url($pm-image-path + "ic_repeat_24px.png");
+span#printButton {
+    background-image: url($pm-image-path + "print-icon.svg");
 }
 
-span#exitFullScreenButton {
-    background-image: url($pm-image-path + "ic_fullscreen_exit_24px.png");
+input#metronomeAudioButton {
+    display: none;
+}
+
+input#metronomeAudioButton + label {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+}
+
+input#metronomeAudioButton + label {
+    background-image: url($pm-image-path + "volume-off-icon.svg");
+}
+
+input#metronomeAudioButton:checked + label {
+    background-image: url($pm-image-path + "volume-on-icon.svg");
 }
 
 span#medalIndicator {
-    background-image: url($pm-image-path + "medal.png");
-    width: 60px;
-    height: 60px;
+    width: 36px;
+    height: 36px;
+}
+
+/* metronome slider */
+
+div#sliderNumbers {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+span.sliderNumber {
+  display: block;
+  color: #aaaaaa;
+  font-size: 10px;
+}
+
+span.sliderNumber.highlighted {
+  color: #5c5c5c;
+  font-size: 22px;
+}
+
+input#metronomeSlider {
+  width: 400px !important;
+}
+
+input[type=range] {
+  height: 14px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #2B4D71;
+  border-radius: 0px;
+  border: 0px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 8px;
+  width: 20px;
+  border-radius: 0px;
+  background: #2B4D71;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3.5px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #2B4D71;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #2B4D71;
+  border-radius: 0px;
+  border: 0px solid #000000;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 8px;
+  width: 20px;
+  border-radius: 0px;
+  background: #2B4D71;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #2B4D71;
+  border: 0px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-fill-upper {
+  background: #2B4D71;
+  border: 0px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000000;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 8px;
+  width: 20px;
+  border-radius: 0px;
+  background: #2B4D71;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #2B4D71;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #2B4D71;
 }
