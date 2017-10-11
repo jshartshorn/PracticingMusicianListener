@@ -125,7 +125,8 @@ var EasyScoreUtil = function() {
 
     this.changePlayButton = function(className) {
       var button = document.getElementById("playPauseButton")
-      button.className = className
+      if (button != null)
+        button.className = className
     }
 
     this.buildTitleElements = function(containerName) {
@@ -193,58 +194,62 @@ var EasyScoreUtil = function() {
         var container = document.getElementById(controlsContainerName)
 
         var metronomeSlider = document.getElementById('metronomeSlider')
-        metronomeSlider.type = 'range'
-        metronomeSlider.min = this.sliderMin
-        metronomeSlider.max = this.sliderMax
+        if (metronomeSlider != null) {
+          metronomeSlider.type = 'range'
+          metronomeSlider.min = this.sliderMin
+          metronomeSlider.max = this.sliderMax
+          metronomeSlider.value = listenerApp.getTempo()
 
-        metronomeSlider.value = listenerApp.getTempo()
+          var updateSettingsViaNetwork = this.updateSettingsViaNetwork
 
-        var updateSettingsViaNetwork = this.updateSettingsViaNetwork
-
-        metronomeSlider.oninput = function(event) {
-          console.log("Change")
-          console.log(event)
-          console.log(event.target.value)
-          listenerApp.alterPreferences({
-            bpm: event.target.value
-          })
-          //TODO: store this data with the server
-          //updateSettingsViaNetwork()
+          metronomeSlider.oninput = function(event) {
+            console.log("Change")
+            console.log(event)
+            console.log(event.target.value)
+            listenerApp.alterPreferences({
+              bpm: event.target.value
+            })
+            //TODO: store this data with the server
+            //updateSettingsViaNetwork()
+          }
         }
+
 
         var sliderNumbersContainer = document.getElementById('sliderNumbers')
-        while (sliderNumbersContainer.firstChild) {
+
+        if (sliderNumbersContainer != null) {
+          while (sliderNumbersContainer.firstChild) {
             sliderNumbersContainer.removeChild(sliderNumbersContainer.firstChild);
+          }
+          for (var i = this.sliderMin; i <= this.sliderMax; i += this.sliderIncrement) {
+            var sliderNumberSpan = document.createElement('span')
+            sliderNumberSpan.className = 'sliderNumber'
+            sliderNumberSpan.id = 'sliderNumber' + i
+            sliderNumberSpan.innerHTML = "" + i
+            sliderNumbersContainer.appendChild(sliderNumberSpan)
+          }
         }
-        for (var i = this.sliderMin; i <= this.sliderMax; i += this.sliderIncrement) {
-          var sliderNumberSpan = document.createElement('span')
-          sliderNumberSpan.className = 'sliderNumber'
-          sliderNumberSpan.id = 'sliderNumber' + i
-          sliderNumberSpan.innerHTML = "" + i
-          sliderNumbersContainer.appendChild(sliderNumberSpan)
-        }
-
-
 
         var metronomeAudioButton = document.getElementById('metronomeAudioButton')
-        metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
+        if (metronomeAudioButton != null) {
+          metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
 
-        metronomeAudioButton.onchange = function(event) {
-          console.log("Change")
-          console.log(event.target.checked)
-          listenerApp.alterPreferences({
-            metronomeSound: event.target.checked
-          })
+          metronomeAudioButton.onchange = function(event) {
+            console.log("Change")
+            console.log(event.target.checked)
+            listenerApp.alterPreferences({
+              metronomeSound: event.target.checked
+            })
 
-          updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
+            updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
+          }
         }
-
     }
 
     this.setupMetronome = function(metronomeContainerName) {
         //remove the old ones
         var myNode = document.getElementById(metronomeContainerName)
-        while (myNode.firstChild) {
+        while (myNode != null && myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
         }
 
@@ -263,43 +268,46 @@ var EasyScoreUtil = function() {
         }
 
         var metronomeContainer = document.getElementById(metronomeContainerName)
-        metronomeContainer.style.display = "flex"
-        metronomeContainer.style.flexDirection = "row"
-        metronomeContainer.style.justifyContent = "space-around"
-        metronomeContainer.style.alignItems = "center"
+
+        if (metronomeContainer != null) {
+          metronomeContainer.style.display = "flex"
+          metronomeContainer.style.flexDirection = "row"
+          metronomeContainer.style.justifyContent = "space-around"
+          metronomeContainer.style.alignItems = "center"
 
 
-        var metronomeItemsObj = document.createElement("div")
-        metronomeItemsObj.id = "metronomeItems"
-        document.getElementById(metronomeContainerName).appendChild(metronomeItemsObj)
+          var metronomeItemsObj = document.createElement("div")
+          metronomeItemsObj.id = "metronomeItems"
+          document.getElementById(metronomeContainerName).appendChild(metronomeItemsObj)
 
-        for (var i = 0; i < metronomeItemsToCreate; i++) {
-            var metronomeItemObj = document.createElement("span")
-            metronomeItemObj.className = "metronomeItem"
-            if (i == 0)
-                metronomeItemObj.className += " highlighted"
-            document.getElementById("metronomeItems").appendChild(metronomeItemObj)
+          for (var i = 0; i < metronomeItemsToCreate; i++) {
+              var metronomeItemObj = document.createElement("span")
+              metronomeItemObj.className = "metronomeItem"
+              if (i == 0)
+                  metronomeItemObj.className += " highlighted"
+              document.getElementById("metronomeItems").appendChild(metronomeItemObj)
+          }
+
+          var tempoMarkingObj = document.getElementById("tempoMarking")
+          tempoMarkingObj.value = listenerApp.getTempo()
+
+          var tempo = listenerApp.getTempo()
+
+          //highlight the correct number by the slider
+          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
+          if (closest < this.sliderMin) {
+            closest = this.sliderMin
+          }
+          if (closest > this.sliderMax) {
+            closest = this.sliderMax
+          }
+          console.log("closest: " + closest)
+          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
+            el.className = "sliderNumber"
+          })
+          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
+          sliderNumberSpan.className += " highlighted"
         }
-
-        var tempoMarkingObj = document.getElementById("tempoMarking")
-        tempoMarkingObj.value = listenerApp.getTempo()
-
-        var tempo = listenerApp.getTempo()
-
-        //highlight the correct number by the slider
-        var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
-        if (closest < this.sliderMin) {
-          closest = this.sliderMin
-        }
-        if (closest > this.sliderMax) {
-          closest = this.sliderMax
-        }
-        console.log("closest: " + closest)
-        Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
-          el.className = "sliderNumber"
-        })
-        var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
-        sliderNumberSpan.className += " highlighted"
     }
 
     //make a new system (measure) of a given width
