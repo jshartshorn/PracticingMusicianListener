@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practicing Musician</title>
+
+    <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
+
+    <script src="pm-listener/js/local_copies/jquery.js"></script>
+    <script src="pm-listener/js/local_copies/vexflow.js"></script>
+
+
+    <script type="text/javascript" src="pm-listener/js/logger.js"></script>
+
+    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
+    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
+
+    <script src="pm-listener/js/audio.js"></script>
+
+    <script src="pm-listener/js/easyscore_util.js"></script>
+
+    <script src="pm-listener/js/index.js"></script>
+
+    <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
+
+
+
+    <style>
+      /* override CSS for the SASS code */
+div.feedbackItem.incorrect_note {
+    background-image: url("pm-listener/images/incorrect-note.png");
+}
+
+div.feedbackItem.off_note {
+    background-image: url("pm-listener/images/off-note-icon.png");
+}
+
+div#notationPmLogo {
+  background-image: url("pm-listener/images/logo.png")
+}
+
+
+    </style>
+
+</head>
+<body>
+
+<span class="icon_test" style="display: block; width: 60px; height: 60px; background-image: url('pm-listener/images/medal-bronze-icon.svg')"></span>
+
+<a href="javascript:listenerApp.toggleState()">Start</a>
+
+
+<div id="notationWindow">
+    <div id="notationHeader">
+        <span id="settingsButton"></span>
+        <span id="playPauseButton" onclick="javascript:listenerApp.toggleState()"></span>
+        <span id="repeatButton"></span>
+
+        <div id="metronomeContainer">
+            <!-- this gets filled dynamically -->
+        </div>
+
+        <div id="listenerControls">
+          <!-- this gets filled dynamically -->
+        </div>
+
+        <span id="medalIndicator"></span>
+        <span id="exitFullScreenButton"></span>
+    </div>
+    <div id="notationBody">
+        <!-- this gets filled dynamically -->
+    </div>
+</div>
+<script type="text/javascript">
+
+</script>
+
+
+</body>
+</html>

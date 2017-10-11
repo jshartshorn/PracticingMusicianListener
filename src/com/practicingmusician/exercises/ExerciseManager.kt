@@ -140,12 +140,14 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         metronome.start()
         pitchTracker.start()
         timeKeeper.start()
+        listenerApp.scoreUtil.changePlayButton("playing")
     }
 
     fun stop() {
         timeKeeper.stop()
         metronome.stop()
         pitchTracker.stop()
+        listenerApp.scoreUtil.changePlayButton("stopped")
     }
 
     @JsName("loadExercise")

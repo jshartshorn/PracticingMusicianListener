@@ -23,82 +23,11 @@
 
     <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
 
-
-
-    <style>
-      /* override CSS for the SASS code */
-div.feedbackItem.incorrect_note {
-    background-image: url("pm-listener/images/miss-icon.svg");
-}
-
-div.feedbackItem.off_note {
-    background-image: url("pm-listener/images/hit-icon.svg");
-}
-
-div#notationPmLogo {
-  background-image: url("pm-listener/images/logo.png")
-}
-
-span#playPauseButton.stopped {
-    background-image: url("pm-listener/images/play-arrow-icon.svg");
-}
-
-span#playPauseButton.playing {
-    background-image: url("pm-listener/images/stop-icon.svg");
-}
-
-span#printButton {
-    background-image: url("pm-listener/images/print-icon.svg");
-}
-
-input#metronomeAudioButton + label {
-    background-image: url("pm-listener/images/volume-off-icon.svg");
-}
-
-input#metronomeAudioButton:checked + label {
-    background-image: url("pm-listener/images/volume-on-icon.svg");
-}
-
-    </style>
-
 </head>
 <body>
 
-<a href="javascript:listenerApp.toggleState()">Start</a>
-
 
 <div id="notationWindow">
-    <div id="notationHeader">
-
-      	<span id="medalIndicator"></span>
-        <span id="playPauseButton" class="stopped" onclick="listenerApp.toggleState()"></span>
-	      <span id="metronomeAudioButtonContainer">
-          <input type="checkbox" id="metronomeAudioButton" /><label for="metronomeAudioButton"></label>
-        </span>
-
-
-        <div id="controlsContainer">
-
-
-	        <div id="listenerControls">
-            <div id="metronomeAndSlider">
-              <div id="metronomeContainer">
-              </div>
-              <div id="sliderContainer">
-                <input class="slider" id="metronomeSlider" type="range" min="0" max="100" value="0" />
-                <div id="sliderNumbers">
-                </div>
-              </div>
-            </div>
-
-	          <input id="tempoMarking" type="text"></input>
-            <span id="tempoMarkingMeta">BPM</span>
-          </div>
-        </div>
-
-        <span id="printButton"></span>
-
-    </div>
     <div id="notationBody">
         <!-- this gets filled dynamically -->
     </div>

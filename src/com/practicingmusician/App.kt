@@ -203,9 +203,9 @@ public class ListenerApp {
         //setup the score
         this.scoreUtil.setupOnElement(containerElementName)
 
-        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
-
         this.scoreUtil.setupControls(controlsElementName)
+
+        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
 
         this.scoreUtil.buildTitleElements(containerElementName)
 
@@ -233,6 +233,7 @@ public class ListenerApp {
                   )
                   return
                 }
+
 
                 exerciseManager.createSteppables()
                 exerciseManager.setup()
