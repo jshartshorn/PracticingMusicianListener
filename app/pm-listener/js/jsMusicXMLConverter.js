@@ -404,13 +404,13 @@ var jsMusicXMLConverter = function() {
 
             if (note.rest != undefined) {
                 if (note.duration / divisions == 4.0) {
-                  if (clef == 'treble')
+                  if (clef == 'treble' || clef == 'percussion')
                     return "D5"
                   else if (clef == 'bass')
                     return "F3"
                 }
                 //console.warn("Rest duration: " + note.duration)
-                if (clef == 'treble')
+                if (clef == 'treble' || clef == 'percussion')
                   return "B4"
                 else if (clef == 'bass')
                   return "D3"
