@@ -241,6 +241,14 @@ span.sliderNumber.highlighted {
   font-size: 22px;
 }
 
+span.sliderNumberSeparator {
+  display: block;
+  background-color: #f4f3f3;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px;
+}
+
 input#metronomeSlider {
   width: 400px !important;
 }
