@@ -28,20 +28,20 @@ div.notationBodyContainer {
     position: relative;
 }
 
-
-/* Title */
+/* Title and footer */
 
 div#titleContainer {
     text-align: center;
 }
 
 span#mainTitle {
-    font-size: 1.4em;
+    font-size: 24px;
+    color: #5c5c5c;
 }
 
 span#exerciseAuthor {
-    font-size: .8em;
-    margin-top: 4px;
+    font-size: 11px;
+    margin-top: #5c5c5c;
 }
 
 div#titleContainer span {
@@ -50,8 +50,9 @@ div#titleContainer span {
 
 div#copyrightContainer {
     text-align: center;
-    font-size: .8em;
     margin-top: 60px;
+    font-size: 9px;
+    color: #5c5c5c;
 }
 
 div#notationPmLogo {
@@ -63,66 +64,7 @@ div#notationPmLogo {
   position: absolute;
 }
 
-/* Feedback */
-
-div.feedbackItem {
-    width: 12px;
-    height: 12px;
-    /* background-color: #C45462; */
-}
-
-div.feedbackItem.incorrect_note {
-    background-image: url($pm-image-path + "miss-icon.svg");
-}
-
-div.feedbackItem.off_note {
-    background-image: url($pm-image-path + "hit-icon.svg");
-}
-
-div.feedbackItemContainer {
-    display: none;
-}
-
-div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
- div.feedbackItem.off_note:hover div.feedbackItemContainer{
-    display: block !important;
-    position: absolute;
-
-    top: 12px;
-    left: -64px;
-
-    width: 120px;
-    border-radius: 10px;
-
-    padding: 10px;
-
-    background-color: #F8F8F8;
-    box-shadow: 0px 0px 6px #ccc;
-
-    z-index: 100;
-}
-
-span.feedbackKey, span.feedbackValue {
-    font-size: .9em;
-    display: inline-block;
-    text-transform: uppercase;
-}
-
-span.feedbackKey {
-    color: #9B9B9B;
-    width: 60%;
-}
-
-span.feedbackValue {
-    width: 40%;
-    text-align: right;
-}
-
-span.feedbackItemElement {
-    display: block;
-}
-
-/* Metronome Items */
+/* Metronome Items and controls */
 
 div#metronomeItems {
     min-width: 160px;
@@ -145,11 +87,17 @@ input#tempoMarking {
     background: #f5f5f5;
     border: none;
     width: 60px;
+
+    color: #5c5c5c;
+    font-size: 10px;
 }
 
 span#tempoMarkingMeta {
     display: block;
     margin-left: 10px;
+
+    color: #5c5c5c;
+    font-size: 10px;
 }
 
 span.metronomeItem {
@@ -236,14 +184,90 @@ span.sliderNumber {
   font-size: 10px;
 }
 
+/*
 span.sliderNumber.highlighted {
   color: #5c5c5c;
   font-size: 22px;
 }
+*/
+
+span.sliderNumberSeparator {
+  display: block;
+  background-color: #f4f3f3;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px;
+}
 
 input#metronomeSlider {
-  width: 400px !important;
+  width: 400px !important;'
+  background: none;
 }
+
+
+
+
+
+/* Feedback */
+
+div.feedbackItem {
+    width: 12px;
+    height: 12px;
+    /* background-color: #C45462; */
+}
+
+div.feedbackItem.incorrect_note {
+    background-image: url($pm-image-path + "miss-icon.svg");
+}
+
+div.feedbackItem.off_note {
+    background-image: url($pm-image-path + "hit-icon.svg");
+}
+
+div.feedbackItemContainer {
+    display: none;
+}
+
+div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
+ div.feedbackItem.off_note:hover div.feedbackItemContainer{
+    display: block !important;
+    position: absolute;
+
+    top: 12px;
+    left: -64px;
+
+    width: 120px;
+    border-radius: 10px;
+
+    padding: 10px;
+
+    background-color: #F8F8F8;
+    box-shadow: 0px 0px 6px #ccc;
+
+    z-index: 100;
+}
+
+span.feedbackKey, span.feedbackValue {
+    font-size: .9em;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+span.feedbackKey {
+    color: #9B9B9B;
+    width: 60%;
+}
+
+span.feedbackValue {
+    width: 40%;
+    text-align: right;
+}
+
+span.feedbackItemElement {
+    display: block;
+}
+
+/* Slider stuff -- auto-generated */
 
 input[type=range] {
   height: 14px;

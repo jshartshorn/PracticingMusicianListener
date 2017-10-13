@@ -84,14 +84,17 @@ var jsMusicXMLConverter = function() {
       var tempo = //infoAttributes.tempo
         function() {
           var firstBar = part.measure[0]
+          var directionBpm = 120;
+
           if (firstBar.direction != undefined) {
             console.log("First bar:")
+
+
 
             if (!(firstBar.direction instanceof Array)) {
               firstBar.direction = [firstBar.direction]
             }
 
-            var directionBpm = 120;
 
             firstBar.direction.forEach(function(dir) {
                var metronomeInfo = dir.directiontype.metronome
