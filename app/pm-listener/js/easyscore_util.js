@@ -302,23 +302,23 @@ var EasyScoreUtil = function() {
           var tempoMarkingObj = document.getElementById("tempoMarking")
           tempoMarkingObj.value = listenerApp.getTempo()
 
-          var tempo = listenerApp.getTempo()
-
-          //highlight the correct number by the slider
-          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
-          if (closest < this.sliderMin) {
-            closest = this.sliderMin
-          }
-          if (closest > this.sliderMax - this.sliderIncrement) {
-            closest = this.sliderMax - this.sliderIncrement
-          }
-          console.log("closest: " + closest)
-          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
-            el.className = "sliderNumber"
-          })
-          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
-          if (sliderNumberSpan != null)
-            sliderNumberSpan.className += " highlighted"
+//          var tempo = listenerApp.getTempo()
+//
+//          //highlight the correct number by the slider
+//          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
+//          if (closest < this.sliderMin) {
+//            closest = this.sliderMin
+//          }
+//          if (closest > this.sliderMax - this.sliderIncrement) {
+//            closest = this.sliderMax - this.sliderIncrement
+//          }
+//          console.log("closest: " + closest)
+//          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
+//            el.className = "sliderNumber"
+//          })
+//          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
+//          if (sliderNumberSpan != null)
+//            sliderNumberSpan.className += " highlighted"
         }
     }
 
