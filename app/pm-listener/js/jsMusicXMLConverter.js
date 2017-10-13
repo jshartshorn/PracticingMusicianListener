@@ -84,14 +84,17 @@ var jsMusicXMLConverter = function() {
       var tempo = //infoAttributes.tempo
         function() {
           var firstBar = part.measure[0]
+          var directionBpm = 120;
+
           if (firstBar.direction != undefined) {
             console.log("First bar:")
+
+
 
             if (!(firstBar.direction instanceof Array)) {
               firstBar.direction = [firstBar.direction]
             }
 
-            var directionBpm = 120;
 
             firstBar.direction.forEach(function(dir) {
                var metronomeInfo = dir.directiontype.metronome
@@ -340,6 +343,9 @@ var jsMusicXMLConverter = function() {
             switch(measure.attributes.clef.sign) {
               case "G":
                 return "treble"
+              case "C":
+                //TODO: tenor clef
+                return "alto"
               case "F":
                 return "bass"
               case "percussion":
@@ -404,14 +410,18 @@ var jsMusicXMLConverter = function() {
 
             if (note.rest != undefined) {
                 if (note.duration / divisions == 4.0) {
-                  if (clef == 'treble')
+                  if (clef == 'treble' || clef == 'percussion')
                     return "D5"
+                  else if (clef == 'alto')
+                    return "E4"
                   else if (clef == 'bass')
                     return "F3"
                 }
                 //console.warn("Rest duration: " + note.duration)
-                if (clef == 'treble')
+                if (clef == 'treble' || clef == 'percussion')
                   return "B4"
+                else if (clef == 'alto')
+                  return "C4"
                 else if (clef == 'bass')
                   return "D3"
             }
