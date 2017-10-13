@@ -228,12 +228,16 @@ var EasyScoreUtil = function() {
           while (sliderNumbersContainer.firstChild) {
             sliderNumbersContainer.removeChild(sliderNumbersContainer.firstChild);
           }
-          for (var i = this.sliderMin; i <= this.sliderMax; i += this.sliderIncrement) {
+          for (var i = this.sliderMin; i < this.sliderMax; i += this.sliderIncrement) {
             var sliderNumberSpan = document.createElement('span')
             sliderNumberSpan.className = 'sliderNumber'
             sliderNumberSpan.id = 'sliderNumber' + i
             sliderNumberSpan.innerHTML = "" + i
             sliderNumbersContainer.appendChild(sliderNumberSpan)
+
+            var sliderNumberSeparator = document.createElement('span')
+            sliderNumberSeparator.className = 'sliderNumberSeparator'
+            sliderNumbersContainer.appendChild(sliderNumberSeparator)
           }
         }
 
@@ -298,23 +302,23 @@ var EasyScoreUtil = function() {
           var tempoMarkingObj = document.getElementById("tempoMarking")
           tempoMarkingObj.value = listenerApp.getTempo()
 
-          var tempo = listenerApp.getTempo()
-
-          //highlight the correct number by the slider
-          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
-          if (closest < this.sliderMin) {
-            closest = this.sliderMin
-          }
-          if (closest > this.sliderMax) {
-            closest = this.sliderMax
-          }
-          console.log("closest: " + closest)
-          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
-            el.className = "sliderNumber"
-          })
-          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
-          if (sliderNumberSpan != null)
-            sliderNumberSpan.className += " highlighted"
+//          var tempo = listenerApp.getTempo()
+//
+//          //highlight the correct number by the slider
+//          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
+//          if (closest < this.sliderMin) {
+//            closest = this.sliderMin
+//          }
+//          if (closest > this.sliderMax - this.sliderIncrement) {
+//            closest = this.sliderMax - this.sliderIncrement
+//          }
+//          console.log("closest: " + closest)
+//          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
+//            el.className = "sliderNumber"
+//          })
+//          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
+//          if (sliderNumberSpan != null)
+//            sliderNumberSpan.className += " highlighted"
         }
     }
 
