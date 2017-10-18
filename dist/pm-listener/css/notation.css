@@ -28,6 +28,7 @@ div#titleContainer {
 
 span#mainTitle {
   font-size: 24px;
+  font-weight: 200;
   color: #5c5c5c; }
 
 span#exerciseAuthor {
@@ -41,7 +42,8 @@ div#copyrightContainer {
   text-align: center;
   margin-top: 60px;
   font-size: 9px;
-  color: #5c5c5c; }
+  color: #5c5c5c;
+  font-weight: 200; }
 
 div#notationPmLogo {
   background-image: url("../images/logo.png");
@@ -137,7 +139,8 @@ div#sliderNumbers {
 span.sliderNumber {
   display: block;
   color: #aaaaaa;
-  font-size: 10px; }
+  font-size: 10px;
+  font-weight: 300; }
 
 /*
 span.sliderNumber.highlighted {
@@ -185,13 +188,14 @@ div.feedbackItem.off_note:hover div.feedbackItemContainer {
   z-index: 100; }
 
 span.feedbackKey, span.feedbackValue {
-  font-size: .9em;
+  font-size: 10px;
   display: inline-block;
   text-transform: uppercase; }
 
 span.feedbackKey {
-  color: #9B9B9B;
-  width: 60%; }
+  color: #aaaaaa;
+  width: 60%;
+  font-weight: 800px; }
 
 span.feedbackValue {
   width: 40%;
