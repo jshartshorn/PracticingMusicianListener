@@ -21,24 +21,26 @@ div.notationBodyContainer {
   width: 100%;
   position: relative; }
 
-/* Title */
+/* Title and footer */
 div#titleContainer {
   text-align: center; }
 
 span#mainTitle {
-  font-size: 1.4em; }
+  font-size: 24px;
+  color: #5c5c5c; }
 
 span#exerciseAuthor {
-  font-size: .8em;
-  margin-top: 4px; }
+  font-size: 11px;
+  margin-top: #5c5c5c; }
 
 div#titleContainer span {
   display: block; }
 
 div#copyrightContainer {
   text-align: center;
-  font-size: .8em;
-  margin-top: 60px; }
+  margin-top: 60px;
+  font-size: 9px;
+  color: #5c5c5c; }
 
 div#notationPmLogo {
   background-image: url("../images/logo.png");
@@ -47,6 +49,108 @@ div#notationPmLogo {
   bottom: 0px;
   left: 0px;
   position: absolute; }
+
+/* Metronome Items and controls */
+div#metronomeItems {
+  min-width: 160px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center; }
+
+div#listenerControls {
+  display: flex;
+  align-items: center; }
+
+input#tempoMarking {
+  display: block;
+  margin-left: 10px;
+  padding: 14px;
+  background: #f5f5f5;
+  border: none;
+  width: 60px;
+  color: #5c5c5c;
+  font-size: 10px; }
+
+span#tempoMarkingMeta {
+  display: block;
+  margin-left: 10px;
+  color: #5c5c5c;
+  font-size: 10px; }
+
+span.metronomeItem {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: #D8D8D8; }
+
+span.metronomeItem.highlighted {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  background-color: #2b4d71; }
+
+/* header buttons */
+img#playPauseButton, img#metronomeAudioButton, img#printButton {
+  display: block;
+  width: 24px;
+  height: 24px; }
+
+img#playPauseButton.stopped {
+  background-image: url("../images/play-arrow-icon.svg"); }
+
+img#playPauseButton.playing {
+  background-image: url("../images/stop-icon.svg"); }
+
+img#printButton {
+  background-image: url("../images/print-icon.svg"); }
+
+#metronomeAudioButton {
+  background-image: url("../images/volume-off-icon.svg"); }
+
+#metronomeAudioButton.checked {
+  background-image: url("../images/volume-on-icon.svg"); }
+
+span#medalIndicator {
+  width: 36px;
+  height: 36px; }
+
+span#medalIndicator.medal-gold-icon {
+  background-image: url("../images/medal-gold-icon.svg"); }
+
+span#medalIndicator.medal-silver-icon {
+  background-image: url("../images/medal-silver-icon.svg"); }
+
+span#medalIndicator.medal-bronze-icon {
+  background-image: url("../images/medal-bronze-icon.svg"); }
+
+/* metronome slider */
+div#sliderNumbers {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; }
+
+span.sliderNumber {
+  display: block;
+  color: #aaaaaa;
+  font-size: 10px; }
+
+/*
+span.sliderNumber.highlighted {
+  color: #5c5c5c;
+  font-size: 22px;
+}
+*/
+span.sliderNumberSeparator {
+  display: block;
+  background-color: #f4f3f3;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px; }
+
+input#metronomeSlider {
+  width: 400px !important;
+  background: none; }
 
 /* Feedback */
 div.feedbackItem {
@@ -92,102 +196,7 @@ span.feedbackValue {
 span.feedbackItemElement {
   display: block; }
 
-/* Metronome Items */
-div#metronomeItems {
-  min-width: 160px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center; }
-
-div#listenerControls {
-  display: flex;
-  align-items: center; }
-
-input#tempoMarking {
-  display: block;
-  margin-left: 10px;
-  padding: 14px;
-  background: #f5f5f5;
-  border: none;
-  width: 60px; }
-
-span#tempoMarkingMeta {
-  display: block;
-  margin-left: 10px; }
-
-span.metronomeItem {
-  width: 12px;
-  height: 12px;
-  border-radius: 6px;
-  background-color: #D8D8D8; }
-
-span.metronomeItem.highlighted {
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
-  background-color: #2b4d71; }
-
-/* header buttons */
-span#playPauseButton, span#metronomeAudioButtonContainer, span#printButton {
-  display: block;
-  width: 24px;
-  height: 24px; }
-
-span#playPauseButton.stopped {
-  background-image: url("../images/play-arrow-icon.svg"); }
-
-span#playPauseButton.playing {
-  background-image: url("../images/stop-icon.svg"); }
-
-span#printButton {
-  background-image: url("../images/print-icon.svg"); }
-
-input#metronomeAudioButton {
-  display: none; }
-
-input#metronomeAudioButton + label {
-  width: 24px;
-  height: 24px;
-  display: inline-block; }
-
-input#metronomeAudioButton + label {
-  background-image: url("../images/volume-off-icon.svg"); }
-
-input#metronomeAudioButton:checked + label {
-  background-image: url("../images/volume-on-icon.svg"); }
-
-span#medalIndicator {
-  width: 36px;
-  height: 36px; }
-
-span#medalIndicator.medal-gold-icon {
-  background-image: url("../images/medal-gold-icon.svg"); }
-
-span#medalIndicator.medal-silver-icon {
-  background-image: url("../images/medal-silver-icon.svg"); }
-
-span#medalIndicator.medal-bronze-icon {
-  background-image: url("../images/medal-bronze-icon.svg"); }
-
-/* metronome slider */
-div#sliderNumbers {
-  display: flex;
-  justify-content: space-around;
-  align-items: center; }
-
-span.sliderNumber {
-  display: block;
-  color: #aaaaaa;
-  font-size: 10px; }
-
-span.sliderNumber.highlighted {
-  color: #5c5c5c;
-  font-size: 22px; }
-
-input#metronomeSlider {
-  width: 400px !important; }
-
+/* Slider stuff -- auto-generated */
 input[type=range] {
   height: 14px;
   -webkit-appearance: none;
