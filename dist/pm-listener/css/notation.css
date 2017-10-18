@@ -1,6 +1,7 @@
 div#notationWindow {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  padding: 20px; }
 
 div#notationHeader {
   height: 120px;
@@ -111,17 +112,17 @@ img#printButton {
 #metronomeAudioButton.checked {
   background-image: url("../images/volume-on-icon.svg"); }
 
-span#medalIndicator {
+#medalIndicator {
   width: 36px;
   height: 36px; }
 
-span#medalIndicator.medal-gold-icon {
+#medalIndicator.medal-gold-icon {
   background-image: url("../images/medal-gold-icon.svg"); }
 
-span#medalIndicator.medal-silver-icon {
+#medalIndicator.medal-silver-icon {
   background-image: url("../images/medal-silver-icon.svg"); }
 
-span#medalIndicator.medal-bronze-icon {
+#medalIndicator.medal-bronze-icon {
   background-image: url("../images/medal-bronze-icon.svg"); }
 
 /* metronome slider */
