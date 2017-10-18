@@ -243,16 +243,20 @@ var EasyScoreUtil = function() {
 
         var metronomeAudioButton = document.getElementById('metronomeAudioButton')
         if (metronomeAudioButton != null) {
-          metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
+          var audioOn = listenerApp.getMetronomeAudio()
 
-          metronomeAudioButton.onchange = function(event) {
-            console.log("Change")
-            console.log(event.target.checked)
+          metronomeAudioButton.className = audioOn ? "checked" : ""
+
+          metronomeAudioButton.onclick = function() {
+            var newPref = !listenerApp.getMetronomeAudio()
+
             listenerApp.alterPreferences({
-              metronomeSound: event.target.checked
+              metronomeSound: newPref
             })
 
-            updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
+            metronomeAudioButton.className = newPref ? "checked" : ""
+
+            updateSettingsViaNetwork({metronome_audio_on: newPref})
           }
         }
     }
@@ -302,6 +306,19 @@ var EasyScoreUtil = function() {
           var tempoMarkingObj = document.getElementById("tempoMarking")
           tempoMarkingObj.value = listenerApp.getTempo()
 
+          tempoMarkingObj.onchange = function(val) {
+            //TODO: validation
+            var bpm = Number(val.target.value)
+            if (isNaN(bpm) || ((bpm < 40 || bpm > 220) )) {
+              alert("Invalid tempo")
+              val.target.value = listenerApp.getTempo()
+              return
+            }
+            listenerApp.alterPreferences({bpm: bpm})
+            var metronomeSlider = document.getElementById('metronomeSlider')
+            metronomeSlider.value = bpm
+
+          }
 //          var tempo = listenerApp.getTempo()
 //
 //          //highlight the correct number by the slider

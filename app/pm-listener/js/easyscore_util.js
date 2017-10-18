@@ -243,16 +243,20 @@ var EasyScoreUtil = function() {
 
         var metronomeAudioButton = document.getElementById('metronomeAudioButton')
         if (metronomeAudioButton != null) {
-          metronomeAudioButton.checked = listenerApp.getMetronomeAudio()
+          var audioOn = listenerApp.getMetronomeAudio()
 
-          metronomeAudioButton.onchange = function(event) {
-            console.log("Change")
-            console.log(event.target.checked)
+          metronomeAudioButton.className = audioOn ? "checked" : ""
+
+          metronomeAudioButton.onclick = function() {
+            var newPref = !listenerApp.getMetronomeAudio()
+
             listenerApp.alterPreferences({
-              metronomeSound: event.target.checked
+              metronomeSound: newPref
             })
 
-            updateSettingsViaNetwork({metronome_audio_on: event.target.checked})
+            metronomeAudioButton.className = newPref ? "checked" : ""
+
+            updateSettingsViaNetwork({metronome_audio_on: newPref})
           }
         }
     }

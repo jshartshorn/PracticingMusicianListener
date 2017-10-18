@@ -3,6 +3,7 @@ $pm-image-path: '../images/' !default;
 div#notationWindow {
     display: flex;
     flex-direction: column;
+    padding: 20px;
 }
 
 div#notationHeader {
@@ -23,7 +24,7 @@ div#controlsContainer {
 
 div.notationBodyContainer {
     color: #4A4A4A;
-    min-width: 700px !important;
+    min-width: 640px !important;
     width: 100%;
     position: relative;
 }
@@ -117,56 +118,46 @@ span.metronomeItem.highlighted {
 
 /* header buttons */
 
-span#playPauseButton, span#metronomeAudioButtonContainer, span#printButton {
+img#playPauseButton, img#metronomeAudioButton, img#printButton {
   display: block;
   width: 24px;
   height: 24px;
 }
 
-span#playPauseButton.stopped {
+img#playPauseButton.stopped {
     background-image: url($pm-image-path + "play-arrow-icon.svg");
 }
 
-span#playPauseButton.playing {
+img#playPauseButton.playing {
     background-image: url($pm-image-path + "stop-icon.svg");
 }
 
-span#printButton {
+img#printButton {
     background-image: url($pm-image-path + "print-icon.svg");
 }
 
-input#metronomeAudioButton {
-    display: none;
-}
-
-input#metronomeAudioButton + label {
-      width: 24px;
-      height: 24px;
-      display: inline-block;
-}
-
-input#metronomeAudioButton + label {
+#metronomeAudioButton {
     background-image: url($pm-image-path + "volume-off-icon.svg");
 }
 
-input#metronomeAudioButton:checked + label {
+#metronomeAudioButton.checked {
     background-image: url($pm-image-path + "volume-on-icon.svg");
 }
 
-span#medalIndicator {
+#medalIndicator {
     width: 36px;
     height: 36px;
 }
 
-span#medalIndicator.medal-gold-icon {
+#medalIndicator.medal-gold-icon {
     background-image: url($pm-image-path + "medal-gold-icon.svg");
 }
 
-span#medalIndicator.medal-silver-icon {
+#medalIndicator.medal-silver-icon {
     background-image: url($pm-image-path + "medal-silver-icon.svg");
 }
 
-span#medalIndicator.medal-bronze-icon {
+#medalIndicator.medal-bronze-icon {
     background-image: url($pm-image-path + "medal-bronze-icon.svg");
 }
 
@@ -200,7 +191,7 @@ span.sliderNumberSeparator {
 }
 
 input#metronomeSlider {
-  width: 400px !important;'
+  width: 400px !important;
   background: none;
 }
 
