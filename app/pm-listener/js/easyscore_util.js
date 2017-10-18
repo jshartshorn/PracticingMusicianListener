@@ -45,9 +45,9 @@ var EasyScoreUtil = function() {
     //formatting info for the notation
     this.contentScaleFactor = 1.0
     this.useScaling = true
-    this.assumedCanvasWidth = 1024 //this will never change, although the scaling factor will change this
+    this.assumedCanvasWidth = 1124 //this will never change, although the scaling factor will change this
     this.barHeight = 160
-    this.firstBarAddition = 40
+    this.firstBarAddition = 100
     this.scoreWidth = 0
 
     //counter so that we can get an individual ID for each note
@@ -335,23 +335,6 @@ var EasyScoreUtil = function() {
             metronomeSlider.value = bpm
 
           }
-//          var tempo = listenerApp.getTempo()
-//
-//          //highlight the correct number by the slider
-//          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
-//          if (closest < this.sliderMin) {
-//            closest = this.sliderMin
-//          }
-//          if (closest > this.sliderMax - this.sliderIncrement) {
-//            closest = this.sliderMax - this.sliderIncrement
-//          }
-//          console.log("closest: " + closest)
-//          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
-//            el.className = "sliderNumber"
-//          })
-//          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
-//          if (sliderNumberSpan != null)
-//            sliderNumberSpan.className += " highlighted"
         }
     }
 
@@ -360,7 +343,7 @@ var EasyScoreUtil = function() {
 
         if (options == undefined) options = {}
 
-        var width = this.scoreWidth / options.barsInSystem
+        var width = (this.scoreWidth / options.barsInSystem) - (this.firstBarAddition / options.barsInSystem)
 
         if (options.positionInLine == 0) {
             width += this.firstBarAddition
@@ -516,20 +499,6 @@ var EasyScoreUtil = function() {
                     })
                   })
 
-
-                  //notes[2].addAnnotation(0, new VF.Annotation('L').setPosition(3));
-
-//                  notes[2].addArticulation(0, new VF.Articulation('a|').setPosition(3));
-//
-//                  var articulationPosition = function(stemDirection) {
-//                    if (stemDirection == -1) {
-//                      return 4
-//                    } else {
-//                      return 3
-//                    }
-//                  }(notes[3].stem_direction)
-//                  notes[3].addArticulation(0, new VF.Articulation('am').setPosition(articulationPosition));
-
                   //check if it's beamed
                   if (curGroup.beam === true) {
                       notes = this.beam(notes)
@@ -561,6 +530,22 @@ var EasyScoreUtil = function() {
                               break
                           case "key_signature":
                               stave.addKeySignature(value)
+                              break
+                          case "barlines":
+                              if (value.length == 0) break
+                              value.forEach(function(barline) {
+                                switch(barline.repeatType) {
+                                case "begin":
+                                  stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN);
+                                  break
+                                case "end":
+                                  stave.setEndBarType(VF.Barline.type.REPEAT_END)
+                                  break
+                                default:
+                                  pm_log("Unknown attribute:" + attr,10)
+                                }
+                              })
+
                               break
                           default:
                               pm_log("Unknown attribute:" + attr,10)

@@ -330,7 +330,8 @@ var jsMusicXMLConverter = function() {
         }
 
         var bar = {
-          groups: []
+          groups: [],
+          extra_attributes: {},
         }
 
         if (toRetSystems.length == 0 && curSystem.bars.length == 0) {
@@ -368,9 +369,46 @@ var jsMusicXMLConverter = function() {
           bar.extra_attributes = {
             time_signature: ts,
             clef: clef,
-            key_signature: keysig
+            key_signature: keysig,
+            barlines: repeatInfo,
           }
         }
+
+        var repeatInfo = function() {
+            var barlines = measure.barline
+            if (barlines == undefined) return []
+
+            var toRet = []
+
+            if (!(barlines instanceof Array)) {
+              barlines = [barlines]
+            }
+
+            barlines.forEach(function(barline){
+              var repeatType = ""
+
+              if (barline.repeat == undefined) return;
+
+              switch(barline.repeat._direction) {
+                case "forward":
+                  repeatType = "begin"
+                  break
+                case "backward":
+                default:
+                  repeatType = "end"
+              }
+
+              toRet.push({
+                repeatType: repeatType
+              })
+
+            })
+
+
+            return toRet
+          }()
+
+        bar.extra_attributes.barlines = repeatInfo
 
         var group = {
           notes : []
