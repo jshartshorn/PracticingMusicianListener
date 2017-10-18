@@ -39,35 +39,35 @@ div#notationPmLogo {
   background-image: url("pm-listener/images/logo.png")
 }
 
-span#playPauseButton.stopped {
+#playPauseButton.stopped {
     background-image: url("pm-listener/images/play-arrow-icon.svg");
 }
 
-span#playPauseButton.playing {
+#playPauseButton.playing {
     background-image: url("pm-listener/images/stop-icon.svg");
 }
 
-span#printButton {
+#printButton {
     background-image: url("pm-listener/images/print-icon.svg");
 }
 
-input#metronomeAudioButton + label {
+#metronomeAudioButton {
     background-image: url("pm-listener/images/volume-off-icon.svg");
 }
 
-input#metronomeAudioButton:checked + label {
+#metronomeAudioButton.checked {
     background-image: url("pm-listener/images/volume-on-icon.svg");
 }
 
-span#medalIndicator.medal-gold-icon {
+#medalIndicator.medal-gold-icon {
     background-image: url("pm-listener/images/medal-gold-icon.svg");
 }
 
-span#medalIndicator.medal-silver-icon {
+#medalIndicator.medal-silver-icon {
     background-image: url("pm-listener/images/medal-silver-icon.svg");
 }
 
-span#medalIndicator.medal-bronze-icon {
+#medalIndicator.medal-bronze-icon {
     background-image: url("pm-listener/images/medal-bronze-icon.svg");
 }
 
@@ -82,11 +82,9 @@ span#medalIndicator.medal-bronze-icon {
 <div id="notationWindow">
     <div id="notationHeader">
 
-      	<span id="medalIndicator"></span>
-        <span id="playPauseButton" class="stopped" onclick="listenerApp.toggleState()"></span>
-	      <span id="metronomeAudioButtonContainer">
-          <input type="checkbox" id="metronomeAudioButton" /><label for="metronomeAudioButton"></label>
-        </span>
+      	<img id="medalIndicator" />
+        <img src="pm-listener/images/blank.svg" id="playPauseButton" class="stopped" onclick="listenerApp.toggleState()" title="Play/Stop/Repeat"/>
+        <img src="pm-listener/images/blank.svg" id="metronomeAudioButton" title="Metronome Audio On/Off"/>
 
 
         <div id="controlsContainer">
@@ -108,7 +106,7 @@ span#medalIndicator.medal-bronze-icon {
           </div>
         </div>
 
-        <span id="printButton"></span>
+        <img src="pm-listener/images/blank.svg" id="printButton" title="Print"/>
 
     </div>
     <div id="notationBody">
