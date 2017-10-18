@@ -125,8 +125,14 @@ var EasyScoreUtil = function() {
 
     this.changePlayButton = function(className) {
       var button = document.getElementById("playPauseButton")
-      if (button != null)
+      if (button != null) {
+        var currentClass = button.className
+
+        if (currentClass == 'playing' && className == 'stopped')
+          className = 'restart'
+
         button.className = className
+      }
     }
 
     this.displayMedal = function(medalClass) {

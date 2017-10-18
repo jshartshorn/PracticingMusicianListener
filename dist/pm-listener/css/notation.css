@@ -103,6 +103,9 @@ img#playPauseButton.stopped {
 img#playPauseButton.playing {
   background-image: url("../images/stop-icon.svg"); }
 
+img#playPauseButton.restart {
+  background-image: url("../images/restart-icon.svg"); }
+
 img#printButton {
   background-image: url("../images/print-icon.svg"); }
 
