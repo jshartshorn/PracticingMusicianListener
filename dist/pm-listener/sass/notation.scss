@@ -132,6 +132,10 @@ img#playPauseButton.playing {
     background-image: url($pm-image-path + "stop-icon.svg");
 }
 
+img#playPauseButton.restart {
+    background-image: url($pm-image-path + "restart-icon.svg");
+}
+
 img#printButton {
     background-image: url($pm-image-path + "print-icon.svg");
 }
