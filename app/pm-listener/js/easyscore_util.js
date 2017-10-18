@@ -256,6 +256,16 @@ var EasyScoreUtil = function() {
           metronomeAudioButton.onclick = function() {
             var newPref = !listenerApp.getMetronomeAudio()
 
+            if (newPref == true) {
+              listenerApp.parameters.displaySiteDialog(
+                {
+                  imageType: "medal-fail-icon",
+                  title: "Audio Alert",
+                  message: "To reduce microphone interference, use headphones.",
+                }
+              )
+            }
+
             listenerApp.alterPreferences({
               metronomeSound: newPref
             })
