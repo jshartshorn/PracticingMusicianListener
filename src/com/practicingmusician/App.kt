@@ -255,8 +255,8 @@ public class ListenerApp {
     fun doResizeActions() {
         pm_log("Resized window w/ container: " + this.parameters.notationContainerName,10)
 
-        val oldSVG = document.getElementsByTagName("svg").get(0) as Element
-        oldSVG.parentNode?.removeChild(oldSVG)
+        val oldSVG = document.getElementsByTagName("svg").get(0)
+        oldSVG?.parentNode?.removeChild(oldSVG)
 
         listenerApp.makeScore(this.parameters.notationContainerName,this.parameters.controlsContainerName)
         val copyOfFeedbackItems = listenerApp.currentFeedbackItems.toList()

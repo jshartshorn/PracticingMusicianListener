@@ -124,57 +124,7 @@ class Metronome : TimeKeeperSteppable {
     }
 
     fun updateMetronomeUI(beat : Int) {
-        //val el = document.getElementById("metronome") as HTMLElement
-        //el.textContent = "$beat"
-        //console.log("Updaing metronome UI to beat $beat in $timeSignature")
         listenerApp.highlightMetronomeItem(beat % timeSignature)
-    }
-
-    /*
-     * Given a certain timestamp, figure out which beat it belongs to
-     */
-    //NOT CURRENTLY USED
-    fun getBeatOfTimestamp(timestamp : Double) : Double {
-
-        var firstItem = -1.0
-        var secondItem = -1.0
-
-
-        var lastItemBefore : Int
-
-        for(index in beatTimes.indices) {
-            val beat = beatTimes[index]
-
-            if (beat > timestamp) {
-                lastItemBefore = index - 1
-
-                if (lastItemBefore == -1) {
-                    //the timestamp is before the first beat
-                    //TODO: This may not be right -- may have to make an artificial next beat for it
-                    return -1.0
-                }
-
-                firstItem = beatTimes[lastItemBefore]
-                secondItem = beat
-
-                break
-            }
-        }
-
-        if (firstItem == -1.0) {
-            return -1.0
-        }
-
-        val distanceBetweenBeats = secondItem - firstItem
-
-        val distanceFromStampToFirstBeat = timestamp - firstItem
-
-        val percentageThroughBeat = distanceFromStampToFirstBeat / distanceBetweenBeats
-
-        //now we need to figure out the index of the beat and add it
-
-        //TODO: ("This isn't the correct return value yet")
-        return percentageThroughBeat
     }
 
 }
