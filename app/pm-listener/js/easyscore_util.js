@@ -104,7 +104,7 @@ var EasyScoreUtil = function() {
 
         this.vf = new Vex.Flow.Factory({
                 renderer: {
-                  selector: elementID,
+                  elementId: elementID,
                   width: actualWindowWidth * this.contentScaleFactor,
                   height: totalLines * this.barHeight * this.contentScaleFactor,
                   backend: VF.Renderer.Backends.SVG
@@ -255,6 +255,16 @@ var EasyScoreUtil = function() {
 
           metronomeAudioButton.onclick = function() {
             var newPref = !listenerApp.getMetronomeAudio()
+
+            if (newPref == true) {
+              listenerApp.parameters.displaySiteDialog(
+                {
+                  imageType: "medal-fail-icon",
+                  title: "Audio Alert",
+                  message: "To reduce microphone interference, use headphones.",
+                }
+              )
+            }
 
             listenerApp.alterPreferences({
               metronomeSound: newPref

@@ -37,6 +37,7 @@ div#titleContainer {
 
 span#mainTitle {
     font-size: 24px;
+    font-weight: 200;
     color: #5c5c5c;
 }
 
@@ -54,6 +55,7 @@ div#copyrightContainer {
     margin-top: 60px;
     font-size: 9px;
     color: #5c5c5c;
+    font-weight: 200;
 }
 
 div#notationPmLogo {
@@ -177,6 +179,7 @@ span.sliderNumber {
   display: block;
   color: #aaaaaa;
   font-size: 10px;
+  font-weight: 300;
 }
 
 /*
@@ -243,14 +246,15 @@ div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
 }
 
 span.feedbackKey, span.feedbackValue {
-    font-size: .9em;
+    font-size: 10px;
     display: inline-block;
     text-transform: uppercase;
 }
 
 span.feedbackKey {
-    color: #9B9B9B;
+    color: #aaaaaa;
     width: 60%;
+    font-weight: 800px;
 }
 
 span.feedbackValue {
