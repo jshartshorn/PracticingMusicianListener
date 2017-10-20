@@ -47,15 +47,15 @@ var jsMusicXMLConverter = function() {
         return match.replace(/-/g,'')
       })
 
-      console.log("No dashes:")
-      console.log(noDashes)
+      //console.log("No dashes:")
+      //console.log(noDashes)
 
       var jsonConverter = new X2JS()
 
       var jsonVersion = jsonConverter.xml_str2json(noDashes)
 
-      console.log("Going to return:")
-      console.log(jsonVersion)
+      //console.log("Going to return:")
+      //console.log(jsonVersion)
 
       return jsonVersion
     }
@@ -73,9 +73,9 @@ var jsMusicXMLConverter = function() {
         //input = JSON.parse(testInput3)
       }
 
-      console.log("Going to convert json object:")
-      console.log(input)
-      console.log(JSON.stringify(input))
+      //console.log("Going to convert json object:")
+      //console.log(input)
+      //console.log(JSON.stringify(input))
 
 
       //get the part out
@@ -310,8 +310,8 @@ var jsMusicXMLConverter = function() {
       measures.forEach(function(measure) {
         //get the print attributes
         var printAttributes = measure.print
-        console.log("Print attributes:")
-        console.log(printAttributes)
+        //console.log("Print attributes:")
+        //console.log(printAttributes)
 
         if (measure.attributes != undefined && measure.attributes.divisions != undefined)
           divisions = Number(measure.attributes.divisions)
@@ -562,8 +562,8 @@ var jsMusicXMLConverter = function() {
 
         })
 
-        console.log("Pushing group:")
-        console.log(group)
+        //console.log("Pushing group:")
+        //console.log(group)
 
         if (group != null)
           bar.groups.push(group)
@@ -580,7 +580,7 @@ var jsMusicXMLConverter = function() {
           bar.extra_attributes.alternate_timeSignature = calculatedDuration + '/4'
         }
 
-        console.log("Bar duration: " + calculatedDuration)
+        //console.log("Bar duration: " + calculatedDuration)
 
 
         curSystem.bars.push(bar)

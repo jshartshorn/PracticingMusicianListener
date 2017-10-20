@@ -425,8 +425,8 @@ var EasyScoreUtil = function() {
               var notesArray = Array()
               //add all the notes
 
-              console.log("Groups:")
-              console.log(curBar.groups)
+              //console.log("Groups:")
+              //console.log(curBar.groups)
 
               for (groupIndex in curBar.groups) {
                   var curGroup = curBar.groups[groupIndex]
