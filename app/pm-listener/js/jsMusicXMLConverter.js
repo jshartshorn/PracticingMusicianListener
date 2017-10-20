@@ -163,6 +163,7 @@ var jsMusicXMLConverter = function() {
         //console.log("Duration reduction: " + durationReduction)
         return durationReduction / divisions
       }()
+
       var countoff = function() {
         switch(time_signature) {
           case "4/4":
@@ -175,6 +176,7 @@ var jsMusicXMLConverter = function() {
         }
         return 4
       }()
+
       console.log("Countoff: " + countoff)
 
 
@@ -289,7 +291,6 @@ var jsMusicXMLConverter = function() {
 
     this.getSystemsForPart = function(time_signature,part) {
       var toRetSystems = []
-      var toRetNotes = []
 
       var measures = part.measure
 
@@ -370,7 +371,6 @@ var jsMusicXMLConverter = function() {
             time_signature: ts,
             clef: clef,
             key_signature: keysig,
-            barlines: repeatInfo,
           }
         }
 
@@ -532,11 +532,11 @@ var jsMusicXMLConverter = function() {
           var fullNoteId = 'note' + noteId
 
           var midiData = getMidiInfoFromNoteObject(note, divisions)
-          midiData.id = fullNoteId
-          toRetNotes.push(midiData)
 
           var noteObj = {
             note: noteText,
+            divisions: divisions,
+            midiData: midiData,
             id: fullNoteId,
             attributes: attrs,
           }
@@ -587,6 +587,26 @@ var jsMusicXMLConverter = function() {
       })
 
       if (curSystem != null) toRetSystems.push(curSystem)
+
+      console.log("Going to map notes from:")
+      console.log(toRetSystems)
+
+      var toRetNotes = []
+      toRetSystems.forEach(function(system){
+        system.bars.forEach(function(bar) {
+
+          bar.groups.forEach(function(group){
+
+            group.notes.forEach(function(note) {
+              toRetNotes.push(note.midiData)
+            })
+
+
+          })
+        })
+      })
+
+
 
       return {
         systems: toRetSystems,
