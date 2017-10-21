@@ -591,22 +591,55 @@ var jsMusicXMLConverter = function() {
       console.log("Going to map notes from:")
       console.log(toRetSystems)
 
+      //build an array of the notes
+
+      var repeats = []
+
+      var barCounter = 0
+      var noteCounter = 0
+
       var toRetNotes = []
       toRetSystems.forEach(function(system){
         system.bars.forEach(function(bar) {
+
+          if (bar.extra_attributes.barlines != undefined) {
+            var barlines = bar.extra_attributes.barlines
+            barlines.forEach(function(barline) {
+              if (barline.repeatType != undefined) {
+                if (barline.repeatType == 'begin') {
+                  repeats.push({open:noteCounter,close:null})
+                }
+              }
+            })
+          }
 
           bar.groups.forEach(function(group){
 
             group.notes.forEach(function(note) {
               toRetNotes.push(note.midiData)
+              noteCounter++
             })
 
 
           })
+
+          if (bar.extra_attributes.barlines != undefined) {
+            var barlines = bar.extra_attributes.barlines
+            barlines.forEach(function(barline) {
+              if (barline.repeatType != undefined) {
+                if (barline.repeatType == 'end') {
+                  repeats[repeats.length - 1].close = noteCounter - 1 //the last note
+                }
+              }
+            })
+          }
+
+          barCounter++
         })
       })
 
-
+      console.log("Repeats: ")
+      console.log(repeats)
 
       return {
         systems: toRetSystems,
