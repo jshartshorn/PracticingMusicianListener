@@ -793,8 +793,20 @@ var EasyScoreUtil = function() {
             return itemObj
         })
 
-        var feedbackContainerObj = document.createElement("div")
-        feedbackContainerObj.className = "feedbackItemContainer"
+        var feedbackContainerDivId = 'feedbackItem_x' + x + '_y' + y
+        var feedbackContainerObj = document.getElementById(feedbackContainerDivId)
+
+        if (feedbackContainerObj == undefined) {
+          feedbackContainerObj = document.createElement("div")
+          feedbackContainerObj.className = "feedbackItemContainer"
+          feedbackContainerObj.id = feedbackContainerDivId
+        } else {
+          //make the separator
+          var separator = document.createElement("div")
+          separator.className = "feedbackSeparator"
+          feedbackContainerObj.appendChild(separator)
+        }
+
 
         feedbackItems.forEach(function(item) {
             feedbackContainerObj.appendChild(item)
