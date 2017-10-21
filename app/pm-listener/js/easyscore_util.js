@@ -661,8 +661,15 @@ var EasyScoreUtil = function() {
 
         if (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y) {
             //the nextItem appears on the next line
-
             distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
+        }
+
+        if (currentItem.stave.getBoundingBox().x > nextItem.stave.getBoundingBox().x) {
+           //or, next item appears before the current item -- e.g. in a repeat situation
+           //console.log("BEFORE")
+           //console.log(currentItem.stave.getBoundingBox())
+           //console.log(nextItem.stave.getBoundingBox())
+           distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
         }
 
         return {
