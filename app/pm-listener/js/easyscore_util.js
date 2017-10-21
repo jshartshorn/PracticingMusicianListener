@@ -731,28 +731,6 @@ var EasyScoreUtil = function() {
         return pos
     }
 
-    //draw feedback item at a given position
-    this.drawFeedbackAtPosition = function(canvas,feedbackItemType,x,y) {
-
-            var ctx = canvas.getContext('2d');
-
-            ctx.font = "16px Arial"
-            ctx.textAlign = "center"
-            ctx.textBaseline = "top";
-            ctx.fillText(feedbackItemType,x * this.contentScaleFactor,y * this.contentScaleFactor)
-
-            //to test location
-//            ctx.strokeStyle = '#4990E2';
-//                               ctx.lineWidth = 3;
-//
-//                        	   // Stroked triangle
-//                        	   ctx.beginPath();
-//                        	   ctx.moveTo(x,y);
-//                        	   ctx.lineTo(x + 2,y);
-//                        	   ctx.closePath();
-//                        	   ctx.stroke();
-    }
-
     this.createArticulationElement = function() {
       var obj = document.createElement('div')
       obj.className = 'articulationItem'
@@ -770,7 +748,11 @@ var EasyScoreUtil = function() {
       document.getElementById(this.containerElementName).appendChild(obj)
     }
 
-    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y) {
+    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray, beat) {
+        var positionForBeat = this.getPositionForBeat(beat)
+        var x = positionForBeat.x
+        var y = this.getFeedbackYPosition(positionForBeat.y)
+
         var feedbackWidth = 16 * this.contentScaleFactor
         var obj = document.createElement('div');
         obj.className = "feedbackItem"

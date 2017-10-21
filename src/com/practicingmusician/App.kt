@@ -306,11 +306,6 @@ public class ListenerApp {
     //add a feedback item to a certain beat
     fun addFeedbackItem(feedbackItem : FeedbackItem) {
         if (currentFeedbackItems.indexOf(feedbackItem) == -1) currentFeedbackItems += feedbackItem
-        val positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat)
-        //pm_log("Position for beat: ",10)
-        //pm_log(positionForBeat,10)
-        val positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
-        //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
-        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),positionForBeat.x,positionY)
+        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),feedbackItem.beat)
     }
 }
