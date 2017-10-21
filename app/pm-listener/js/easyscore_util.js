@@ -578,8 +578,8 @@ var EasyScoreUtil = function() {
             var currentPosition = 0
 
             //these will be the elements we store and return
-            var beginningItemIndex = null
-            var endingItemIndex = null
+            var beginningItem = null
+            var endingItem = null
 
             //the beat positions of those elements
             var firstItemBeatPosition = 0
@@ -589,7 +589,7 @@ var EasyScoreUtil = function() {
             var percent = null
 
             //pm_log("Searching for beat " + beat + " in",10)
-            //pm_log(this.generatedExercise.notes,10)
+            //pm_log(this.exercise.notes,10)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
             for (index in this.exercise.notes) {
@@ -598,18 +598,18 @@ var EasyScoreUtil = function() {
                 var duration = item.duration
 
                 if (currentPosition <= beat) {
-                    beginningItemIndex = index
-                    endingItemIndex = index
+                    beginningItem = item
+                    endingItem = item
 
                     firstItemBeatPosition = currentPosition
                     lastNoteBeatPosition = currentPosition
                 } else {
-                    if (beginningItemIndex == null) {
-                        beginningItemIndex = index
+                    if (beginningItem == null) {
+                        beginningItem = item
                         firstItemBeatPosition = currentPosition
                     }
                     //set the end item index
-                    endingItemIndex = index
+                    endingItem = item
                     lastItemBeatPosition = currentPosition
 
                     if (currentPosition >= beat) {
@@ -630,9 +630,9 @@ var EasyScoreUtil = function() {
 
             //pm_log("End pos: " + currentPosition)
             return {
-                "currentItemIndex": beginningItemIndex, //item at or before the beat
-                "nextItemIndex": endingItemIndex, //item after the beat
-                "percent" : percent //percent that describes the distance
+                currentItem: beginningItem, //item at or before the beat
+                nextItem: endingItem, //item after the beat
+                percent : percent //percent that describes the distance
             }
      }
 
@@ -645,8 +645,8 @@ var EasyScoreUtil = function() {
         //pm_log(ts,10)
 
         //use the ids to get the actual elements
-        var currentItem = this.id("note" + ts.currentItemIndex)
-        var nextItem = this.id("note" + ts.nextItemIndex)
+        var currentItem = this.id(ts.currentItem.noteId) //this.id("note" + ts.currentItemIndex)
+        var nextItem = this.id(ts.nextItem.noteId) //this.id("note" + ts.nextItemIndex)
 
         //pm_log("Current and next: ",10)
         //pm_log(currentItem,10)

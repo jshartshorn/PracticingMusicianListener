@@ -532,6 +532,7 @@ var jsMusicXMLConverter = function() {
           var fullNoteId = 'note' + noteId
 
           var midiData = getMidiInfoFromNoteObject(note, divisions)
+          midiData.noteId = fullNoteId
 
           var noteObj = {
             note: noteText,
@@ -607,7 +608,7 @@ var jsMusicXMLConverter = function() {
             barlines.forEach(function(barline) {
               if (barline.repeatType != undefined) {
                 if (barline.repeatType == 'begin') {
-                  repeats.push({open:noteCounter,close:null})
+                  repeats.push({open:toRetNotes.length,close:null})
                 }
               }
             })
@@ -617,7 +618,6 @@ var jsMusicXMLConverter = function() {
 
             group.notes.forEach(function(note) {
               toRetNotes.push(note.midiData)
-              noteCounter++
             })
 
 
@@ -628,7 +628,17 @@ var jsMusicXMLConverter = function() {
             barlines.forEach(function(barline) {
               if (barline.repeatType != undefined) {
                 if (barline.repeatType == 'end') {
-                  repeats[repeats.length - 1].close = noteCounter - 1 //the last note
+                  repeats[repeats.length - 1].close = toRetNotes.length //the last note
+
+
+                  //copy the subset of the array
+                  var repeatedSection = repeats[repeats.length - 1]
+                  var slice = toRetNotes.slice(repeatedSection.open,repeatedSection.close)
+
+                  console.log("Going to append slice:")
+                  console.log(slice)
+
+                  toRetNotes.push.apply(toRetNotes,slice)
                 }
               }
             })
@@ -640,6 +650,9 @@ var jsMusicXMLConverter = function() {
 
       console.log("Repeats: ")
       console.log(repeats)
+
+      console.log("Total notes:")
+      console.log(toRetNotes.length)
 
       return {
         systems: toRetSystems,
