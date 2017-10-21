@@ -658,18 +658,14 @@ var EasyScoreUtil = function() {
         //find the middles of the items
         var distance = this.middlePositionOfItem(nextItem) - this.middlePositionOfItem(currentItem)
 
-
-        if (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y) {
+        if (
+          (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y)
+          ||
+          (currentItem.stave.getBoundingBox().x > nextItem.stave.getBoundingBox().x)
+           ) {
             //the nextItem appears on the next line
+            //or, if the nextItem is before the current item due to a repeat
             distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
-        }
-
-        if (currentItem.stave.getBoundingBox().x > nextItem.stave.getBoundingBox().x) {
-           //or, next item appears before the current item -- e.g. in a repeat situation
-           //console.log("BEFORE")
-           //console.log(currentItem.stave.getBoundingBox())
-           //console.log(nextItem.stave.getBoundingBox())
-           distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
         }
 
         return {
