@@ -493,6 +493,15 @@ var EasyScoreUtil = function() {
                   //console.log("Notes:")
                   //console.log(notes)
 
+                  //center the whole rests
+                  brokenUpNotes.forEach(function(noteInfo) {
+                    var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
+                    if (note.duration == 'w' && note.noteType == 'r') {
+                      note.align_center = true
+                      note.x_shift = 0
+                    }
+                  })
+
                   brokenUpNotes.forEach(function(noteInfo) {
                     //console.log("Searching for note: " + noteInfo.id)
                     var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
