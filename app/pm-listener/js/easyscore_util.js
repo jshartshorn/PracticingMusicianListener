@@ -498,9 +498,6 @@ var EasyScoreUtil = function() {
                     var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
                     if (note.duration == 'w' && note.noteType == 'r') {
                       note.align_center = true
-                      console.log("Whole rest: ")
-                      console.log(note)
-                      console.log(system)
                       note.x_shift = 0
                     }
                   })
