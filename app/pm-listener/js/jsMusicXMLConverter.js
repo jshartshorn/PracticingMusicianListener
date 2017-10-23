@@ -265,15 +265,15 @@ var jsMusicXMLConverter = function() {
             var step = note.pitch.step
 
             step += function() {
-              if (note.accidental != undefined) {
-              switch(note.accidental) {
-                case "sharp":
-                  return "#"
-                case "flat":
-                  return 'b'
-                default:
-                  return ''
-              }
+              if (note.pitch != undefined && note.pitch.alter != undefined) {
+                switch(Number(note.pitch.alter)) {
+                  case 1:
+                    return "#"
+                  case -1:
+                    return 'b'
+                  default:
+                    return ''
+                }
               }
               return ''
             }()
@@ -484,6 +484,8 @@ var jsMusicXMLConverter = function() {
                   return "#"
                 case "flat":
                   return 'b'
+                case "natural":
+                  return 'n'
                 default:
                   return ''
               }
