@@ -446,6 +446,8 @@ var jsMusicXMLConverter = function() {
                   return "#"
                 case "flat":
                   return 'b'
+                case "natural":
+                  return 'n'
                 default:
                   return ''
               }
