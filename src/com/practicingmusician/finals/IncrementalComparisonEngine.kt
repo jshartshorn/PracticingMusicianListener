@@ -266,8 +266,12 @@ class IncrementalComparisonEngine {
           (testItem.note.noteNumber != -1 && idealItem.noteNumber == -1)
         ) {
         console.log("MISMATCHED!")
-        //even if we aren't testing pitch, I think this should throw the flag
-        feedbackItemTypes.add(FeedbackMetric("pitch", "REST"))
+
+        if (idealItem.noteNumber != -1) {
+          feedbackItemTypes.add(FeedbackMetric("pitch", "Not played"))
+        } else {
+          feedbackItemTypes.add(FeedbackMetric("duration", "rest"))
+        }
 
         feedbackItem.throwSafeIncorrectSwitch()
         feedbackItem.type = FeedbackType.Missed
