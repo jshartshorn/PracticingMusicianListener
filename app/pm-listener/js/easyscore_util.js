@@ -106,25 +106,23 @@ var EasyScoreUtil = function() {
           page.className = "notationPage"
           page.id = "notationPage_" + "page" + i
           document.getElementById(elementID).appendChild(page)
+        }
 
-          var curVf = new Vex.Flow.Factory({
+        this.vf = new Vex.Flow.Factory({
                 renderer: {
-                  elementId: page.id,
+                  elementId: 'notationPage_page0',
                   width: actualWindowWidth * this.contentScaleFactor,
                   height: totalLines * this.barHeight * this.contentScaleFactor,
                   backend: VF.Renderer.Backends.SVG
                   }
                 });
 
-          this.vfs.push(curVf)
-
-          curVf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
-
-          this.scores.push ( curVf.EasyScore({ throwOnError: true }) );
-        }
+        this.vf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
 
         this.registry = new VF.Registry();
         VF.Registry.enableDefaultRegistry(this.registry);
+
+        this.scores.push ( this.vf.EasyScore({ throwOnError: true }) );
     }
 
     this.changePlayButton = function(className) {
@@ -360,7 +358,7 @@ var EasyScoreUtil = function() {
     }
 
     //make a new system (measure) of a given width
-    this.makeSystem = function(options,vf) {
+    this.makeSystem = function(options) {
 
         if (options == undefined) options = {}
 
@@ -387,7 +385,7 @@ var EasyScoreUtil = function() {
         //pm_log("Creating at x " + this.scorePositionX,10)
         //pm_log("Creating at y " + this.scorePositionY,10)
 
-        var system = vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
+        var system = this.vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
 
         this.measureCounter += 1
         this.scorePositionX += width;
@@ -404,8 +402,6 @@ var EasyScoreUtil = function() {
         var curScore = this.scores[this.scores.length - 1]
 
         curScore.set({time: this.exercise.time_signature})
-
-        var curVf = this.vfs[this.vfs.length - 1]
 
         var totalBars = this.exercise.systems.reduce(function(total, cur) { return total + cur.bars.length },0)
 
@@ -443,7 +439,7 @@ var EasyScoreUtil = function() {
                 }
               }
 
-              var system = this.makeSystem(barOptions,curVf)
+              var system = this.makeSystem(barOptions)
 
               this.systems.push(system)
 
@@ -597,7 +593,7 @@ var EasyScoreUtil = function() {
         }
 
         //draw it to the screen
-        curVf.draw();
+        this.vf.draw();
         VF.Registry.disableDefaultRegistry();
     }
 
