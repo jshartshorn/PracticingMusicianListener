@@ -421,9 +421,9 @@ var EasyScoreUtil = function() {
 
           console.log("Page: " + curPageNumber)
 
-          var curVf = this.vfs[0]
+          var curVf = this.vfs[curPageNumber]
 
-          var curScore = this.scores[0]
+          var curScore = this.scores[curPageNumber]
 
           curScore.set({time: this.exercise.time_signature})
 
@@ -602,10 +602,11 @@ var EasyScoreUtil = function() {
 
           }
 
+          curVf.draw();
+
         }
 
         //draw it to the screen
-        curVf.draw();
         VF.Registry.disableDefaultRegistry();
     }
 
