@@ -93,6 +93,8 @@ var EasyScoreUtil = function() {
 
         this.scorePositionInitialX = (actualWindowWidth / 2) - (totalWidthWillBe / 2)
 
+        this.numberOfPages = Math.ceil(totalLines / this.numberOfSystemsPerPage)
+
         pm_log("Total width will be " + totalWidthWillBe,10)
         pm_log("Total height will be " + totalLines * this.barHeight)
 
@@ -104,7 +106,6 @@ var EasyScoreUtil = function() {
         indicatorCanvas.width = actualWindowWidth * this.contentScaleFactor
         indicatorCanvas.height = totalLines * this.barHeight * this.contentScaleFactor
 
-        this.numberOfPages = Math.ceil(totalLines / this.numberOfSystemsPerPage)
 
         for (var i = 0; i < this.numberOfPages; i++) {
           var page = document.createElement('div')
@@ -116,7 +117,7 @@ var EasyScoreUtil = function() {
                 renderer: {
                   elementId: page.id,
                   width: actualWindowWidth * this.contentScaleFactor,
-                  height: totalLines * this.barHeight * this.contentScaleFactor,
+                  height: this.numberOfSystemsPerPage * this.barHeight * this.contentScaleFactor,
                   backend: VF.Renderer.Backends.SVG
                   }
                 });
@@ -410,14 +411,18 @@ var EasyScoreUtil = function() {
 
         var barCounter = 0
 
-        console.log("Exercise:")
-        console.log(this.exercise)
-
         var currentClef = 'treble'
 
         for (lineIndex in this.exercise.systems) {
 
           var curPageNumber = Math.floor(lineIndex / this.numberOfSystemsPerPage)
+
+          //is it the beginning of a new page
+          var isNewPage = (curPageNumber == lineIndex / this.numberOfSystemsPerPage)
+
+          if (isNewPage) {
+            this.scorePositionY = 0
+          }
 
           console.log("Page: " + curPageNumber)
 
