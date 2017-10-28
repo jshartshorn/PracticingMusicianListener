@@ -312,6 +312,6 @@ public class ListenerApp {
         //pm_log(positionForBeat,10)
         val positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
         //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
-        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),positionForBeat.x,positionY)
+        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),positionForBeat.x,positionY,positionForBeat.page)
     }
 }

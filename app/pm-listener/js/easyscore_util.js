@@ -815,7 +815,7 @@ var EasyScoreUtil = function() {
         return pos
     }
 
-    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y) {
+    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y,pageNum) {
         var feedbackWidth = 16 * this.contentScaleFactor
         var obj = document.createElement('div');
         obj.className = "feedbackItem"
@@ -869,7 +869,7 @@ var EasyScoreUtil = function() {
         obj.style.top = "" + y  * this.contentScaleFactor + "px"
         obj.style.left = "" + x * this.contentScaleFactor - (feedbackWidth / 2) + "px"
 
-        document.getElementById(this.containerElementName).appendChild(obj)
+        document.getElementById("notationPage_page" + pageNum).appendChild(obj)
     }
 
 }
