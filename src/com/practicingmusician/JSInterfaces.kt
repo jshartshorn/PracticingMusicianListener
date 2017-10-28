@@ -124,6 +124,9 @@ external class EasyScoreUtil  {
     fun notateExercise()
     fun drawIndicatorLine(canvas : dynamic, beat : Double)
 
+    fun getPageForBeat(beat : Double) : Int
+    fun showPageNumber(pageNumber : Int)
+
     fun getPositionForBeat(beat: Double) : BeatPosition
     fun getFeedbackYPosition(staveTopY : Double) : Double
 

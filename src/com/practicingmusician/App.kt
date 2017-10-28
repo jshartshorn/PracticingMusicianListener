@@ -270,6 +270,7 @@ public class ListenerApp {
         val indicatorCanvas = document.getElementById("indicatorCanvas") as? HTMLCanvasElement
         indicatorCanvas?.getContext("2d").asDynamic().clearRect(0, 0, indicatorCanvas?.width, indicatorCanvas?.height);
         this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
+        this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat))
     }
 
     //highlight a certain item in the HTML metronome indicators

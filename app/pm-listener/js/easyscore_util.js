@@ -772,6 +772,11 @@ var EasyScoreUtil = function() {
         return stave
     }
 
+    this.getPageForBeat = function(beat) {
+      var ts = this.getElementsForBeat(beat)
+      return ts.currentItemPage
+    }
+
     //draw the indicator line (blue line that shows current position)
     this.drawIndicatorLine = function(canvas, beat) {
 
