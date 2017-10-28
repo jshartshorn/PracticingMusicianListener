@@ -135,6 +135,50 @@ var EasyScoreUtil = function() {
           this.scores.push ( curVf.EasyScore({ throwOnError: true }) );
         }
 
+        //set up the pagination controls
+        this.buildPaginationControls(elementID)
+    }
+
+    this.buildPaginationControls = function(elementID) {
+      var paginationControls = document.createElement('div')
+      paginationControls.id = 'notationPaginationControls'
+
+      var previousPageLink = document.createElement('span')
+      previousPageLink.className = "paginationLink"
+      previousPageLink.id = 'paginationPreviousPage'
+      previousPageLink.innerHTML = "<"
+      paginationControls.appendChild(previousPageLink)
+
+      var pageText = document.createElement('span')
+      pageText.id = 'paginationLabel'
+      pageText.innerHTML = "page"
+      paginationControls.appendChild(pageText)
+
+      var nextPageLink = document.createElement('span')
+      nextPageLink.className = "paginationLink"
+      nextPageLink.id = 'paginationNextPage'
+      nextPageLink.innerHTML = ">"
+      paginationControls.appendChild(nextPageLink)
+
+      var notationBody = document.getElementById(elementID)
+      notationBody.appendChild(paginationControls)
+
+      this.setPaginationControlsState()
+    }
+
+    this.setPaginationControlsState = function() {
+      var pageText = document.getElementById('paginationLabel')
+      pageText.innerHTML = "page " + (this.currentVisiblePageNumber + 1) + "/" + this.numberOfPages
+
+      var previousPageLink = document.getElementById('paginationPreviousPage')
+      previousPageLink.onclick = function() {
+        alert("Previous")
+      }
+
+      var nextPageLink = document.getElementById('paginationNextPage')
+      nextPageLink.onclick = function() {
+        alert("Next")
+      }
     }
 
     this.changePlayButton = function(className) {
