@@ -95,6 +95,9 @@ var EasyScoreUtil = function() {
 
         this.numberOfPages = Math.ceil(totalLines / this.numberOfSystemsPerPage)
 
+        var pageWidth = actualWindowWidth * this.contentScaleFactor
+        var pageHeight = this.numberOfSystemsPerPage * this.barHeight * this.contentScaleFactor
+
         pm_log("Total width will be " + totalWidthWillBe,10)
         pm_log("Total height will be " + totalLines * this.barHeight)
 
@@ -103,8 +106,9 @@ var EasyScoreUtil = function() {
         pm_log("Setting up indicator canvas",10)
         pm_log(indicatorCanvas,10)
 
-        indicatorCanvas.width = actualWindowWidth * this.contentScaleFactor
-        indicatorCanvas.height = totalLines * this.barHeight * this.contentScaleFactor
+        indicatorCanvas.width = pageWidth
+        indicatorCanvas.height = pageHeight
+
 
 
         for (var i = 0; i < this.numberOfPages; i++) {
@@ -116,8 +120,8 @@ var EasyScoreUtil = function() {
           var curVf = new Vex.Flow.Factory({
                 renderer: {
                   elementId: page.id,
-                  width: actualWindowWidth * this.contentScaleFactor,
-                  height: this.numberOfSystemsPerPage * this.barHeight * this.contentScaleFactor,
+                  width: pageWidth,
+                  height: pageHeight,
                   backend: VF.Renderer.Backends.SVG
                   }
                 });
