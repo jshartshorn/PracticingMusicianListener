@@ -502,6 +502,13 @@ var EasyScoreUtil = function() {
 
                       notesString += "[id=\"" + note.id + "\"]"
 
+                      //find the note
+                      var otherNote = this.exercise.notes.find(function(n) { return n.id == note.id })
+                      if (otherNote != null) {
+                        //console.log("Assigning page " + curPageNumber + " to note " + note.id)
+                        otherNote.pageNumber = curPageNumber
+                      }
+
                       this.noteIDNumber++
                   }
 
@@ -631,6 +638,9 @@ var EasyScoreUtil = function() {
             var beginningItemIndex = null
             var endingItemIndex = null
 
+            var currentItemPage = -1
+            var nextItemPage = -1
+
             //the beat positions of those elements
             var firstItemBeatPosition = 0
             var lastItemBeatPosition = 0
@@ -649,17 +659,22 @@ var EasyScoreUtil = function() {
 
                 if (currentPosition <= beat) {
                     beginningItemIndex = index
+                    currentItemPage = item.pageNumber
+
                     endingItemIndex = index
+                    nextItemPage = item.pageNumber
 
                     firstItemBeatPosition = currentPosition
                     lastNoteBeatPosition = currentPosition
                 } else {
                     if (beginningItemIndex == null) {
                         beginningItemIndex = index
+                        currentItemPage = item.pageNumber
                         firstItemBeatPosition = currentPosition
                     }
                     //set the end item index
                     endingItemIndex = index
+                    nextItemPage = item.pageNumber
                     lastItemBeatPosition = currentPosition
 
                     if (currentPosition >= beat) {
@@ -678,10 +693,14 @@ var EasyScoreUtil = function() {
 
             if (percent < 0 || isNaN(percent)) percent = 0
 
+            //console.log("Current page: " + currentItemPage + " Next: " + nextItemPage)
+
             //pm_log("End pos: " + currentPosition)
             return {
                 "currentItemIndex": beginningItemIndex, //item at or before the beat
+                "currentItemPage" : currentItemPage,
                 "nextItemIndex": endingItemIndex, //item after the beat
+                "nextItemPage" : nextItemPage,
                 "percent" : percent //percent that describes the distance
             }
      }
@@ -697,10 +716,6 @@ var EasyScoreUtil = function() {
         //use the ids to get the actual elements
         var currentItem = this.id("note" + ts.currentItemIndex)
         var nextItem = this.id("note" + ts.nextItemIndex)
-
-        //pm_log("Current and next: ",10)
-        //pm_log(currentItem,10)
-        //pm_log(nextItem,10)
 
         var staveYPos = currentItem.stave.getYForLine(0)
         var initialPos = this.middlePositionOfItem(currentItem)
