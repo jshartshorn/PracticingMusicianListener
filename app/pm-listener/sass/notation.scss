@@ -73,6 +73,15 @@ div#notationPaginationControls {
   right: 0px;
 }
 
+span.paginationLink {
+  display: inline-block;
+  padding: 0px 6px;
+}
+
+span.paginationLink.disabled {
+  color: #aaa;
+}
+
 /* Metronome Items and controls */
 
 div#metronomeItems {

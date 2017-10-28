@@ -170,14 +170,30 @@ var EasyScoreUtil = function() {
       var pageText = document.getElementById('paginationLabel')
       pageText.innerHTML = "page " + (this.currentVisiblePageNumber + 1) + "/" + this.numberOfPages
 
+      var showPage = this.showPageNumber.bind(this)
+      var currentVisiblePageNumber = this.currentVisiblePageNumber
+
       var previousPageLink = document.getElementById('paginationPreviousPage')
-      previousPageLink.onclick = function() {
-        alert("Previous")
+      if (currentVisiblePageNumber > 0) {
+        previousPageLink.onclick = function() {
+          showPage(currentVisiblePageNumber - 1)
+        }
+        previousPageLink.className = "paginationLink"
+      } else {
+        previousPageLink.onclick = null
+        previousPageLink.className = "paginationLink disabled"
       }
 
+
       var nextPageLink = document.getElementById('paginationNextPage')
-      nextPageLink.onclick = function() {
-        alert("Next")
+      if (currentVisiblePageNumber < this.numberOfPages - 1) {
+        nextPageLink.onclick = function() {
+          showPage(currentVisiblePageNumber + 1)
+        }
+        nextPageLink.className = "paginationLink"
+      } else {
+        nextPageLink.onclick = null
+        nextPageLink.className = "paginationLink disabled"
       }
     }
 
@@ -684,6 +700,8 @@ var EasyScoreUtil = function() {
 
       var pageToShow = document.getElementById("notationPage_" + "page" + pageNum)
       pageToShow.className += " pageVisible"
+
+      this.setPaginationControlsState()
     }
 
     //given a certain beat, return the elements (notes) that surround it.
