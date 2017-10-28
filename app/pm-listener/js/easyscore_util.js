@@ -20,6 +20,8 @@ var EasyScoreUtil = function() {
 
     this.containerElementName = ""
 
+    this.currentVisiblePageNumber = 0
+
     //the current position that systems are being placed on the screen
     this.scorePositionInitialX = 60
     this.scorePositionInitialY = 20
@@ -624,6 +626,20 @@ var EasyScoreUtil = function() {
 
         //draw it to the screen
         VF.Registry.disableDefaultRegistry();
+
+        //show the first page
+        this.showPageNumber(0)
+    }
+
+    this.showPageNumber = function(pageNum) {
+      this.currentVisiblePageNumber = pageNum
+      var allPages = document.getElementsByClassName("notationPage")
+      Array.from(allPages).forEach(function(el) {
+            el.className = "notationPage"
+      })
+
+      var pageToShow = document.getElementById("notationPage_" + "page" + pageNum)
+      pageToShow.className += " pageVisible"
     }
 
     //given a certain beat, return the elements (notes) that surround it.
@@ -732,7 +748,8 @@ var EasyScoreUtil = function() {
 
         return {
                 x: (initialPos + distance * ts.percent),
-                y: staveYPos
+                y: staveYPos,
+                page: ts.currentItemPage
             }
 
 
@@ -791,45 +808,6 @@ var EasyScoreUtil = function() {
         var stave = this.getBasicStave()
         var pos = stave.height + topStaveY + 40
         return pos
-    }
-
-    //draw feedback item at a given position
-    this.drawFeedbackAtPosition = function(canvas,feedbackItemType,x,y) {
-
-            var ctx = canvas.getContext('2d');
-
-            ctx.font = "16px Arial"
-            ctx.textAlign = "center"
-            ctx.textBaseline = "top";
-            ctx.fillText(feedbackItemType,x * this.contentScaleFactor,y * this.contentScaleFactor)
-
-            //to test location
-//            ctx.strokeStyle = '#4990E2';
-//                               ctx.lineWidth = 3;
-//
-//                        	   // Stroked triangle
-//                        	   ctx.beginPath();
-//                        	   ctx.moveTo(x,y);
-//                        	   ctx.lineTo(x + 2,y);
-//                        	   ctx.closePath();
-//                        	   ctx.stroke();
-    }
-
-    this.createArticulationElement = function() {
-      var obj = document.createElement('div')
-      obj.className = 'articulationItem'
-      obj.innerHTML = "V"
-
-      var x = 100
-      var y = 100
-
-      var articulationWidth = 10
-
-      obj.style.position = "absolute"
-      obj.style.top = "" + y  * this.contentScaleFactor + "px"
-      obj.style.left = "" + x * this.contentScaleFactor - (articulationWidth / 2) + "px"
-
-      document.getElementById(this.containerElementName).appendChild(obj)
     }
 
     this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y) {

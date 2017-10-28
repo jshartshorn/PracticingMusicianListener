@@ -269,7 +269,11 @@ span.feedbackItemElement {
 /* Pagination */
 
 div.notationPage {
+  display: none;
+}
 
+div.notationPage.pageVisible {
+  display: block;
 }
 
 /* Slider stuff -- auto-generated */
