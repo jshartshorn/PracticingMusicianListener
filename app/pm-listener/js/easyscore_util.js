@@ -681,10 +681,12 @@ var EasyScoreUtil = function() {
       var allPages = document.getElementsByClassName("notationPage")
       Array.from(allPages).forEach(function(el) {
             el.className = "notationPage"
+            el.style.display = "none"
       })
 
       var pageToShow = document.getElementById("notationPage_" + "page" + pageNum)
       pageToShow.className += " pageVisible"
+      pageToShow.style.display = "block"
 
       this.setPaginationControlsState()
     }

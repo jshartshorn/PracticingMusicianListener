@@ -292,11 +292,11 @@ span.feedbackItemElement {
 /* Pagination */
 
 div.notationPage {
-  display: none;
+  visibility: hidden;
 }
 
 div.notationPage.pageVisible {
-  display: block;
+  visibility: visible;
 }
 
 div.feedbackSeparator {
