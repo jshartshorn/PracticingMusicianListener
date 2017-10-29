@@ -548,7 +548,7 @@ var EasyScoreUtil = function() {
                       notesString += "[id=\"" + note.id + "\"]"
 
                       //find the note
-                      var otherNote = this.exercise.notes.find(function(n) { return n.id == note.id })
+                      var otherNote = this.exercise.notes.find(function(n) { return n.noteId == note.id })
                       if (otherNote != null) {
                         //console.log("Assigning page " + curPageNumber + " to note " + note.id)
                         otherNote.page = curPageNumber
