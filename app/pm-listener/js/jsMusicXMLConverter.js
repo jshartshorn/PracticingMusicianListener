@@ -47,15 +47,15 @@ var jsMusicXMLConverter = function() {
         return match.replace(/-/g,'')
       })
 
-      console.log("No dashes:")
-      console.log(noDashes)
+      //console.log("No dashes:")
+      //console.log(noDashes)
 
       var jsonConverter = new X2JS()
 
       var jsonVersion = jsonConverter.xml_str2json(noDashes)
 
-      console.log("Going to return:")
-      console.log(jsonVersion)
+      //console.log("Going to return:")
+      //console.log(jsonVersion)
 
       return jsonVersion
     }
@@ -73,9 +73,9 @@ var jsMusicXMLConverter = function() {
         //input = JSON.parse(testInput3)
       }
 
-      console.log("Going to convert json object:")
-      console.log(input)
-      console.log(JSON.stringify(input))
+      //console.log("Going to convert json object:")
+      //console.log(input)
+      //console.log(JSON.stringify(input))
 
 
       //get the part out
@@ -163,6 +163,7 @@ var jsMusicXMLConverter = function() {
         //console.log("Duration reduction: " + durationReduction)
         return durationReduction / divisions
       }()
+
       var countoff = function() {
         switch(time_signature) {
           case "4/4":
@@ -175,6 +176,7 @@ var jsMusicXMLConverter = function() {
         }
         return 4
       }()
+
       console.log("Countoff: " + countoff)
 
 
@@ -289,7 +291,6 @@ var jsMusicXMLConverter = function() {
 
     this.getSystemsForPart = function(time_signature,part) {
       var toRetSystems = []
-      var toRetNotes = []
 
       var measures = part.measure
 
@@ -310,8 +311,8 @@ var jsMusicXMLConverter = function() {
       measures.forEach(function(measure) {
         //get the print attributes
         var printAttributes = measure.print
-        console.log("Print attributes:")
-        console.log(printAttributes)
+        //console.log("Print attributes:")
+        //console.log(printAttributes)
 
         if (measure.attributes != undefined && measure.attributes.divisions != undefined)
           divisions = Number(measure.attributes.divisions)
@@ -330,7 +331,8 @@ var jsMusicXMLConverter = function() {
         }
 
         var bar = {
-          groups: []
+          groups: [],
+          extra_attributes: {},
         }
 
         if (toRetSystems.length == 0 && curSystem.bars.length == 0) {
@@ -368,9 +370,45 @@ var jsMusicXMLConverter = function() {
           bar.extra_attributes = {
             time_signature: ts,
             clef: clef,
-            key_signature: keysig
+            key_signature: keysig,
           }
         }
+
+        var repeatInfo = function() {
+            var barlines = measure.barline
+            if (barlines == undefined) return []
+
+            var toRet = []
+
+            if (!(barlines instanceof Array)) {
+              barlines = [barlines]
+            }
+
+            barlines.forEach(function(barline){
+              var repeatType = ""
+
+              if (barline.repeat == undefined) return;
+
+              switch(barline.repeat._direction) {
+                case "forward":
+                  repeatType = "begin"
+                  break
+                case "backward":
+                default:
+                  repeatType = "end"
+              }
+
+              toRet.push({
+                repeatType: repeatType
+              })
+
+            })
+
+
+            return toRet
+          }()
+
+        bar.extra_attributes.barlines = repeatInfo
 
         var group = {
           notes : []
@@ -496,11 +534,12 @@ var jsMusicXMLConverter = function() {
           var fullNoteId = 'note' + noteId
 
           var midiData = getMidiInfoFromNoteObject(note, divisions)
-          midiData.id = fullNoteId
-          toRetNotes.push(midiData)
+          midiData.noteId = fullNoteId
 
           var noteObj = {
             note: noteText,
+            divisions: divisions,
+            midiData: midiData,
             id: fullNoteId,
             attributes: attrs,
           }
@@ -526,8 +565,8 @@ var jsMusicXMLConverter = function() {
 
         })
 
-        console.log("Pushing group:")
-        console.log(group)
+        //console.log("Pushing group:")
+        //console.log(group)
 
         if (group != null)
           bar.groups.push(group)
@@ -544,13 +583,78 @@ var jsMusicXMLConverter = function() {
           bar.extra_attributes.alternate_timeSignature = calculatedDuration + '/4'
         }
 
-        console.log("Bar duration: " + calculatedDuration)
+        //console.log("Bar duration: " + calculatedDuration)
 
 
         curSystem.bars.push(bar)
       })
 
       if (curSystem != null) toRetSystems.push(curSystem)
+
+      console.log("Going to map notes from:")
+      console.log(toRetSystems)
+
+      //build an array of the notes
+
+      var repeats = []
+
+      var barCounter = 0
+      var noteCounter = 0
+
+      var toRetNotes = []
+      toRetSystems.forEach(function(system){
+        system.bars.forEach(function(bar) {
+
+          if (bar.extra_attributes.barlines != undefined) {
+            var barlines = bar.extra_attributes.barlines
+            barlines.forEach(function(barline) {
+              if (barline.repeatType != undefined) {
+                if (barline.repeatType == 'begin') {
+                  repeats.push({open:toRetNotes.length,close:null})
+                }
+              }
+            })
+          }
+
+          bar.groups.forEach(function(group){
+
+            group.notes.forEach(function(note) {
+              toRetNotes.push(note.midiData)
+            })
+
+
+          })
+
+          if (bar.extra_attributes.barlines != undefined) {
+            var barlines = bar.extra_attributes.barlines
+            barlines.forEach(function(barline) {
+              if (barline.repeatType != undefined) {
+                if (barline.repeatType == 'end') {
+                  repeats[repeats.length - 1].close = toRetNotes.length //the last note
+
+
+                  //copy the subset of the array
+                  var repeatedSection = repeats[repeats.length - 1]
+                  var slice = toRetNotes.slice(repeatedSection.open,repeatedSection.close)
+
+                  console.log("Going to append slice:")
+                  console.log(slice)
+
+                  toRetNotes.push.apply(toRetNotes,slice)
+                }
+              }
+            })
+          }
+
+          barCounter++
+        })
+      })
+
+      console.log("Repeats: ")
+      console.log(repeats)
+
+      console.log("Total notes:")
+      console.log(toRetNotes.length)
 
       return {
         systems: toRetSystems,

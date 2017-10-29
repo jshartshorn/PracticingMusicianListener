@@ -299,6 +299,13 @@ div.notationPage.pageVisible {
   display: block;
 }
 
+div.feedbackSeparator {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid black;
+    margin: 4px 0px 4px 0px;
+}
+
 /* Slider stuff -- auto-generated */
 
 input[type=range] {

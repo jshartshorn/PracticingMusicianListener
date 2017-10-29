@@ -42,9 +42,9 @@ var EasyScoreUtil = function() {
     //formatting info for the notation
     this.contentScaleFactor = 1.0
     this.useScaling = true
-    this.assumedCanvasWidth = 1024 //this will never change, although the scaling factor will change this
+    this.assumedCanvasWidth = 1124 //this will never change, although the scaling factor will change this
     this.barHeight = 160
-    this.firstBarAddition = 40
+    this.firstBarAddition = 100
 
     this.numberOfSystemsPerPage = 4
     this.numberOfPages = -1 //will get set later
@@ -409,23 +409,6 @@ var EasyScoreUtil = function() {
             metronomeSlider.value = bpm
 
           }
-//          var tempo = listenerApp.getTempo()
-//
-//          //highlight the correct number by the slider
-//          var closest = Math.ceil(tempo / this.sliderIncrement) * this.sliderIncrement;
-//          if (closest < this.sliderMin) {
-//            closest = this.sliderMin
-//          }
-//          if (closest > this.sliderMax - this.sliderIncrement) {
-//            closest = this.sliderMax - this.sliderIncrement
-//          }
-//          console.log("closest: " + closest)
-//          Array.from(document.getElementsByClassName('sliderNumber')).forEach(function(el) {
-//            el.className = "sliderNumber"
-//          })
-//          var sliderNumberSpan = document.getElementById('sliderNumber' + closest)
-//          if (sliderNumberSpan != null)
-//            sliderNumberSpan.className += " highlighted"
         }
     }
 
@@ -434,7 +417,7 @@ var EasyScoreUtil = function() {
 
         if (options == undefined) options = {}
 
-        var width = this.scoreWidth / options.barsInSystem
+        var width = (this.scoreWidth / options.barsInSystem) - (this.firstBarAddition / options.barsInSystem)
 
         if (options.positionInLine == 0) {
             width += this.firstBarAddition
@@ -529,8 +512,8 @@ var EasyScoreUtil = function() {
               var notesArray = Array()
               //add all the notes
 
-              console.log("Groups:")
-              console.log(curBar.groups)
+              //console.log("Groups:")
+              //console.log(curBar.groups)
 
               for (groupIndex in curBar.groups) {
                   var curGroup = curBar.groups[groupIndex]
@@ -568,7 +551,7 @@ var EasyScoreUtil = function() {
                       var otherNote = this.exercise.notes.find(function(n) { return n.id == note.id })
                       if (otherNote != null) {
                         //console.log("Assigning page " + curPageNumber + " to note " + note.id)
-                        otherNote.pageNumber = curPageNumber
+                        otherNote.page = curPageNumber
                       }
 
                       this.noteIDNumber++
@@ -619,20 +602,6 @@ var EasyScoreUtil = function() {
                     })
                   })
 
-
-                  //notes[2].addAnnotation(0, new VF.Annotation('L').setPosition(3));
-
-//                  notes[2].addArticulation(0, new VF.Articulation('a|').setPosition(3));
-//
-//                  var articulationPosition = function(stemDirection) {
-//                    if (stemDirection == -1) {
-//                      return 4
-//                    } else {
-//                      return 3
-//                    }
-//                  }(notes[3].stem_direction)
-//                  notes[3].addArticulation(0, new VF.Articulation('am').setPosition(articulationPosition));
-
                   //check if it's beamed
                   if (curGroup.beam === true) {
                       notes = curScore.beam(notes)
@@ -664,6 +633,22 @@ var EasyScoreUtil = function() {
                               break
                           case "key_signature":
                               stave.addKeySignature(value)
+                              break
+                          case "barlines":
+                              if (value.length == 0) break
+                              value.forEach(function(barline) {
+                                switch(barline.repeatType) {
+                                case "begin":
+                                  stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN);
+                                  break
+                                case "end":
+                                  stave.setEndBarType(VF.Barline.type.REPEAT_END)
+                                  break
+                                default:
+                                  pm_log("Unknown attribute:" + attr,10)
+                                }
+                              })
+
                               break
                           default:
                               pm_log("Unknown attribute:" + attr,10)
@@ -713,11 +698,8 @@ var EasyScoreUtil = function() {
             var currentPosition = 0
 
             //these will be the elements we store and return
-            var beginningItemIndex = null
-            var endingItemIndex = null
-
-            var currentItemPage = -1
-            var nextItemPage = -1
+            var beginningItem = null
+            var endingItem = null
 
             //the beat positions of those elements
             var firstItemBeatPosition = 0
@@ -727,7 +709,7 @@ var EasyScoreUtil = function() {
             var percent = null
 
             //pm_log("Searching for beat " + beat + " in",10)
-            //pm_log(this.generatedExercise.notes,10)
+            //pm_log(this.exercise.notes,10)
 
             //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
             for (index in this.exercise.notes) {
@@ -736,23 +718,18 @@ var EasyScoreUtil = function() {
                 var duration = item.duration
 
                 if (currentPosition <= beat) {
-                    beginningItemIndex = index
-                    currentItemPage = item.pageNumber
-
-                    endingItemIndex = index
-                    nextItemPage = item.pageNumber
+                    beginningItem = item
+                    endingItem = item
 
                     firstItemBeatPosition = currentPosition
                     lastNoteBeatPosition = currentPosition
                 } else {
-                    if (beginningItemIndex == null) {
-                        beginningItemIndex = index
-                        currentItemPage = item.pageNumber
+                    if (beginningItem == null) {
+                        beginningItem = item
                         firstItemBeatPosition = currentPosition
                     }
                     //set the end item index
-                    endingItemIndex = index
-                    nextItemPage = item.pageNumber
+                    endingItem = item
                     lastItemBeatPosition = currentPosition
 
                     if (currentPosition >= beat) {
@@ -775,11 +752,9 @@ var EasyScoreUtil = function() {
 
             //pm_log("End pos: " + currentPosition)
             return {
-                "currentItemIndex": beginningItemIndex, //item at or before the beat
-                "currentItemPage" : currentItemPage,
-                "nextItemIndex": endingItemIndex, //item after the beat
-                "nextItemPage" : nextItemPage,
-                "percent" : percent //percent that describes the distance
+                currentItem: beginningItem, //item at or before the beat
+                nextItem: endingItem, //item after the beat
+                percent : percent //percent that describes the distance
             }
      }
 
@@ -792,8 +767,8 @@ var EasyScoreUtil = function() {
         //pm_log(ts,10)
 
         //use the ids to get the actual elements
-        var currentItem = this.id("note" + ts.currentItemIndex)
-        var nextItem = this.id("note" + ts.nextItemIndex)
+        var currentItem = this.id(ts.currentItem.noteId) //this.id("note" + ts.currentItemIndex)
+        var nextItem = this.id(ts.nextItem.noteId) //this.id("note" + ts.nextItemIndex)
 
         var staveYPos = currentItem.stave.getYForLine(0)
         var initialPos = this.middlePositionOfItem(currentItem)
@@ -801,17 +776,20 @@ var EasyScoreUtil = function() {
         //find the middles of the items
         var distance = this.middlePositionOfItem(nextItem) - this.middlePositionOfItem(currentItem)
 
-
-        if (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y) {
+        if (
+          (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y)
+          ||
+          (currentItem.stave.getBoundingBox().x > nextItem.stave.getBoundingBox().x)
+           ) {
             //the nextItem appears on the next line
-
+            //or, if the nextItem is before the current item due to a repeat
             distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
         }
 
         return {
                 x: (initialPos + distance * ts.percent),
                 y: staveYPos,
-                page: ts.currentItemPage
+                page: ts.currentItem.page
             }
 
 
@@ -836,7 +814,7 @@ var EasyScoreUtil = function() {
 
     this.getPageForBeat = function(beat) {
       var ts = this.getElementsForBeat(beat)
-      return ts.currentItemPage
+      return ts.currentItem.page
     }
 
     //draw the indicator line (blue line that shows current position)
@@ -877,7 +855,12 @@ var EasyScoreUtil = function() {
         return pos
     }
 
-    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray,x,y,pageNum) {
+    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray, beat) {
+        var positionForBeat = this.getPositionForBeat(beat)
+        var x = positionForBeat.x
+        var y = this.getFeedbackYPosition(positionForBeat.y)
+        var pageNum = positionForBeat.page
+
         var feedbackWidth = 16 * this.contentScaleFactor
         var obj = document.createElement('div');
         obj.className = "feedbackItem"
@@ -918,8 +901,20 @@ var EasyScoreUtil = function() {
             return itemObj
         })
 
-        var feedbackContainerObj = document.createElement("div")
-        feedbackContainerObj.className = "feedbackItemContainer"
+        var feedbackContainerDivId = 'feedbackItem_x' + x + '_y' + y
+        var feedbackContainerObj = document.getElementById(feedbackContainerDivId)
+
+        if (feedbackContainerObj == undefined) {
+          feedbackContainerObj = document.createElement("div")
+          feedbackContainerObj.className = "feedbackItemContainer"
+          feedbackContainerObj.id = feedbackContainerDivId
+        } else {
+          //make the separator
+          var separator = document.createElement("div")
+          separator.className = "feedbackSeparator"
+          feedbackContainerObj.appendChild(separator)
+        }
+
 
         feedbackItems.forEach(function(item) {
             feedbackContainerObj.appendChild(item)
