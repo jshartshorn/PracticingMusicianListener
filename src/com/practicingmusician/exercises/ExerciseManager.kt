@@ -70,6 +70,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         //This will happen at the end of a run, or if the pause/stop button is pressed
         timeKeeper.finishedActions.add {
 
+            //change the play button
+            listenerApp.scoreUtil.changePlayButton("stopped")
+
             //make sure any future audio calls are cancelled (that would happen after the current timestamp)
             audioManager.cancelAllAudio()
 
