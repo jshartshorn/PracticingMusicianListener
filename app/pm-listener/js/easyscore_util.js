@@ -168,7 +168,7 @@ var EasyScoreUtil = function() {
 
     this.setPaginationControlsState = function() {
       var pageText = document.getElementById('paginationLabel')
-      pageText.innerHTML = "page " + (this.currentVisiblePageNumber + 1) + "/" + this.numberOfPages
+      pageText.innerHTML = "page " + (this.currentVisiblePageNumber + 1) + " / " + this.numberOfPages
 
       var showPage = this.showPageNumber.bind(this)
       var currentVisiblePageNumber = this.currentVisiblePageNumber
