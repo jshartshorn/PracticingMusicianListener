@@ -67,6 +67,8 @@ div#notationPmLogo {
   position: absolute;
 }
 
+/* Pagination */
+
 div#notationPaginationControls {
   position: absolute;
   bottom: 0px;
@@ -81,8 +83,19 @@ span#paginationLabel {
 
 span.paginationLink {
   display: inline-block;
-  padding: 0px 6px;
+  margin: 0px 6px;
   cursor: pointer;
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+}
+
+span.paginationLink.pageForward {
+    background-image: url($pm-image-path + "page-forward-icon.svg");
+}
+
+span.paginationLink.pageBackward {
+    background-image: url($pm-image-path + "page-back-icon.svg");
 }
 
 span.paginationLink.disabled {
@@ -288,8 +301,6 @@ span.feedbackValue {
 span.feedbackItemElement {
     display: block;
 }
-
-/* Pagination */
 
 div.notationPage {
   visibility: hidden;

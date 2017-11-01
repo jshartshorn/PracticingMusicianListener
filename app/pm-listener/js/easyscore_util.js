@@ -146,7 +146,7 @@ var EasyScoreUtil = function() {
       var previousPageLink = document.createElement('span')
       previousPageLink.className = "paginationLink"
       previousPageLink.id = 'paginationPreviousPage'
-      previousPageLink.innerHTML = "<"
+      previousPageLink.innerHTML = ""
       paginationControls.appendChild(previousPageLink)
 
       var pageText = document.createElement('span')
@@ -157,7 +157,7 @@ var EasyScoreUtil = function() {
       var nextPageLink = document.createElement('span')
       nextPageLink.className = "paginationLink"
       nextPageLink.id = 'paginationNextPage'
-      nextPageLink.innerHTML = ">"
+      nextPageLink.innerHTML = ""
       paginationControls.appendChild(nextPageLink)
 
       var notationBody = document.getElementById(elementID)
@@ -178,10 +178,10 @@ var EasyScoreUtil = function() {
         previousPageLink.onclick = function() {
           showPage(currentVisiblePageNumber - 1)
         }
-        previousPageLink.className = "paginationLink"
+        previousPageLink.className = "paginationLink pageBackward"
       } else {
         previousPageLink.onclick = null
-        previousPageLink.className = "paginationLink disabled"
+        previousPageLink.className = "paginationLink pageBackward disabled"
       }
 
 
@@ -190,10 +190,10 @@ var EasyScoreUtil = function() {
         nextPageLink.onclick = function() {
           showPage(currentVisiblePageNumber + 1)
         }
-        nextPageLink.className = "paginationLink"
+        nextPageLink.className = "paginationLink pageForward"
       } else {
         nextPageLink.onclick = null
-        nextPageLink.className = "paginationLink disabled"
+        nextPageLink.className = "paginationLink pageForeward disabled"
       }
     }
 
