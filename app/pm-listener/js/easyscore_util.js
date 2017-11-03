@@ -100,6 +100,11 @@ var EasyScoreUtil = function() {
         var pageWidth = actualWindowWidth * this.contentScaleFactor
         var pageHeight = this.numberOfSystemsPerPage * this.barHeight * this.contentScaleFactor
 
+        //if we have fewer than a full page of systems, set it to smaller
+        if (totalLines < this.numberOfSystemsPerPage) {
+          pageHeight = totalLines * this.barHeight * this.contentScaleFactor
+        }
+
         pm_log("Total width will be " + totalWidthWillBe,10)
         pm_log("Total height will be " + totalLines * this.barHeight)
 
@@ -140,6 +145,8 @@ var EasyScoreUtil = function() {
     }
 
     this.buildPaginationControls = function(elementID) {
+      if (this.numberOfPages <= 1) { return }
+
       var paginationControls = document.createElement('div')
       paginationControls.id = 'notationPaginationControls'
 
