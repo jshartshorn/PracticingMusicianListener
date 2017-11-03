@@ -5,16 +5,15 @@
  * Written as a global variable, but it does store some state information, since the notation should
  * only be done once
  */
-
 VF = Vex.Flow;
 
 //helper function
-function concat(a, b) { return a.concat(b); }
-
+function concat(a, b) {
+    return a.concat(b);
+}
 
 var indicatorCanvasName = "indicatorCanvas";
 var feedbackCanvasName = "feedbackCanvas";
-
 
 var EasyScoreUtil = function() {
 
@@ -37,8 +36,10 @@ var EasyScoreUtil = function() {
 
     //VexFlow variables that need to be stored
     this.registry = null
-    //helper function to get easy access to notes later on
-    this.id = function (id) { return this.registry.getElementById(id); }
+        //helper function to get easy access to notes later on
+    this.id = function(id) {
+        return this.registry.getElementById(id);
+    }
     this.vfs = [] //the vf for each page
     this.scores = [] //stores the individual pages
 
@@ -66,13 +67,11 @@ var EasyScoreUtil = function() {
     this.sliderMax = 220
     this.sliderIncrement = 20
 
-
     //setup the basic notation stuff
     this.setupOnElement = function(elementID) {
 
         this.registry = new VF.Registry();
         VF.Registry.enableDefaultRegistry(this.registry);
-
 
         //calculate the scale
         var actualWindowWidth = document.getElementById(elementID).offsetWidth
@@ -86,7 +85,6 @@ var EasyScoreUtil = function() {
         var availableWidthAfterMargin = actualWindowWidth - (this.scorePositionInitialX * 2)
 
         pm_log("Avail width: " + availableWidthAfterMargin)
-
 
         //calculate the width
         var totalLines = this.exercise.systems.length
@@ -103,42 +101,42 @@ var EasyScoreUtil = function() {
 
         //if we have fewer than a full page of systems, set it to smaller
         if (totalLines < this.numberOfSystemsPerPage) {
-          pageHeight = totalLines * this.barHeight * this.contentScaleFactor
+            pageHeight = totalLines * this.barHeight * this.contentScaleFactor
         }
 
-        pm_log("Total width will be " + totalWidthWillBe,10)
+        pm_log("Total width will be " + totalWidthWillBe, 10)
         pm_log("Total height will be " + totalLines * this.barHeight)
 
         var indicatorCanvas = document.getElementById(indicatorCanvasName)
 
-        pm_log("Setting up indicator canvas",10)
-        pm_log(indicatorCanvas,10)
+        pm_log("Setting up indicator canvas", 10)
+        pm_log(indicatorCanvas, 10)
 
         indicatorCanvas.width = pageWidth
         indicatorCanvas.height = pageHeight
 
-
-
         for (var i = 0; i < this.numberOfPages; i++) {
-          var page = document.createElement('div')
-          page.className = "notationPage"
-          page.id = "notationPage_" + "page" + i
-          document.getElementById(elementID).appendChild(page)
+            var page = document.createElement('div')
+            page.className = "notationPage"
+            page.id = "notationPage_" + "page" + i
+            document.getElementById(elementID).appendChild(page)
 
-          var curVf = new Vex.Flow.Factory({
+            var curVf = new Vex.Flow.Factory({
                 renderer: {
-                  elementId: page.id,
-                  width: pageWidth,
-                  height: pageHeight,
-                  backend: VF.Renderer.Backends.SVG
-                  }
-                });
+                    elementId: page.id,
+                    width: pageWidth,
+                    height: pageHeight,
+                    backend: VF.Renderer.Backends.SVG
+                }
+            });
 
-          curVf.context.scale(this.contentScaleFactor,this.contentScaleFactor)
+            curVf.context.scale(this.contentScaleFactor, this.contentScaleFactor)
 
-          this.vfs.push(curVf)
+            this.vfs.push(curVf)
 
-          this.scores.push ( curVf.EasyScore({ throwOnError: true }) );
+            this.scores.push(curVf.EasyScore({
+                throwOnError: true
+            }));
         }
 
         //set up the pagination controls
@@ -146,82 +144,83 @@ var EasyScoreUtil = function() {
     }
 
     this.buildPaginationControls = function(elementID) {
-      if (this.numberOfPages <= 1) { return }
+        if (this.numberOfPages <= 1) {
+            return
+        }
 
-      var paginationControls = document.createElement('div')
-      paginationControls.id = 'notationPaginationControls'
+        var paginationControls = document.createElement('div')
+        paginationControls.id = 'notationPaginationControls'
 
-      var previousPageLink = document.createElement('span')
-      previousPageLink.className = "paginationLink"
-      previousPageLink.id = 'paginationPreviousPage'
-      previousPageLink.innerHTML = ""
-      paginationControls.appendChild(previousPageLink)
+        var previousPageLink = document.createElement('span')
+        previousPageLink.className = "paginationLink"
+        previousPageLink.id = 'paginationPreviousPage'
+        previousPageLink.innerHTML = ""
+        paginationControls.appendChild(previousPageLink)
 
-      var pageText = document.createElement('span')
-      pageText.id = 'paginationLabel'
-      pageText.innerHTML = "page"
-      paginationControls.appendChild(pageText)
+        var pageText = document.createElement('span')
+        pageText.id = 'paginationLabel'
+        pageText.innerHTML = "page"
+        paginationControls.appendChild(pageText)
 
-      var nextPageLink = document.createElement('span')
-      nextPageLink.className = "paginationLink"
-      nextPageLink.id = 'paginationNextPage'
-      nextPageLink.innerHTML = ""
-      paginationControls.appendChild(nextPageLink)
+        var nextPageLink = document.createElement('span')
+        nextPageLink.className = "paginationLink"
+        nextPageLink.id = 'paginationNextPage'
+        nextPageLink.innerHTML = ""
+        paginationControls.appendChild(nextPageLink)
 
-      var notationBody = document.getElementById(elementID)
-      notationBody.appendChild(paginationControls)
+        var notationBody = document.getElementById(elementID)
+        notationBody.appendChild(paginationControls)
 
-      this.setPaginationControlsState()
+        this.setPaginationControlsState()
     }
 
     this.setPaginationControlsState = function() {
-      var pageText = document.getElementById('paginationLabel')
-      pageText.innerHTML = "page " + (this.currentVisiblePageNumber + 1) + " / " + this.numberOfPages
+        var pageText = document.getElementById('paginationLabel')
+        pageText.innerHTML = "page " + (this.currentVisiblePageNumber + 1) + " / " + this.numberOfPages
 
-      var showPage = this.showPageNumber.bind(this)
-      var currentVisiblePageNumber = this.currentVisiblePageNumber
+        var showPage = this.showPageNumber.bind(this)
+        var currentVisiblePageNumber = this.currentVisiblePageNumber
 
-      var previousPageLink = document.getElementById('paginationPreviousPage')
-      if (currentVisiblePageNumber > 0) {
-        previousPageLink.onclick = function() {
-          showPage(currentVisiblePageNumber - 1)
+        var previousPageLink = document.getElementById('paginationPreviousPage')
+        if (currentVisiblePageNumber > 0) {
+            previousPageLink.onclick = function() {
+                showPage(currentVisiblePageNumber - 1)
+            }
+            previousPageLink.className = "paginationLink pageBackward"
+        } else {
+            previousPageLink.onclick = null
+            previousPageLink.className = "paginationLink pageBackward disabled"
         }
-        previousPageLink.className = "paginationLink pageBackward"
-      } else {
-        previousPageLink.onclick = null
-        previousPageLink.className = "paginationLink pageBackward disabled"
-      }
 
-
-      var nextPageLink = document.getElementById('paginationNextPage')
-      if (currentVisiblePageNumber < this.numberOfPages - 1) {
-        nextPageLink.onclick = function() {
-          showPage(currentVisiblePageNumber + 1)
+        var nextPageLink = document.getElementById('paginationNextPage')
+        if (currentVisiblePageNumber < this.numberOfPages - 1) {
+            nextPageLink.onclick = function() {
+                showPage(currentVisiblePageNumber + 1)
+            }
+            nextPageLink.className = "paginationLink pageForward"
+        } else {
+            nextPageLink.onclick = null
+            nextPageLink.className = "paginationLink pageForeward disabled"
         }
-        nextPageLink.className = "paginationLink pageForward"
-      } else {
-        nextPageLink.onclick = null
-        nextPageLink.className = "paginationLink pageForeward disabled"
-      }
     }
 
     this.changePlayButton = function(className) {
-      var button = document.getElementById("playPauseButton")
-      if (button != null) {
-        var currentClass = button.className
+        var button = document.getElementById("playPauseButton")
+        if (button != null) {
+            var currentClass = button.className
 
-        if (currentClass == 'playing' && className == 'stopped')
-          className = 'restart'
+            if (currentClass == 'playing' && className == 'stopped')
+                className = 'restart'
 
-        button.className = className
-      }
+            button.className = className
+        }
     }
 
     this.displayMedal = function(medalClass) {
-      var medalIndicator = document.getElementById('medalIndicator')
-      if (medalIndicator != null) {
-        medalIndicator.className = medalClass
-      }
+        var medalIndicator = document.getElementById('medalIndicator')
+        if (medalIndicator != null) {
+            medalIndicator.className = medalClass
+        }
     }
 
     this.buildTitleElements = function(containerName) {
@@ -242,12 +241,12 @@ var EasyScoreUtil = function() {
         var authorElement = document.createElement("span")
         authorElement.id = "exerciseAuthor"
         if (this.exercise.author != undefined && this.exercise.author.length > 0) {
-          authorElement.innerHTML = "By: " + this.exercise.author
+            authorElement.innerHTML = "By: " + this.exercise.author
         }
         titleContainer.appendChild(authorElement)
 
         var notationBody = document.getElementById(containerName)
-        notationBody.insertBefore(titleContainer,notationBody.childNodes[0])
+        notationBody.insertBefore(titleContainer, notationBody.childNodes[0])
 
         //the bottom info
         var copyrightInfoContainer = document.getElementById("copyrightContainer")
@@ -266,7 +265,7 @@ var EasyScoreUtil = function() {
         //remove the old logo, if it exists
         var logoContainer = document.getElementById("notationPmLogo")
         if (logoContainer != null) {
-          logoContainer.parentNode.removeChild(logoContainer)
+            logoContainer.parentNode.removeChild(logoContainer)
         }
 
         //new one
@@ -277,10 +276,10 @@ var EasyScoreUtil = function() {
     }
 
     this.updateSettingsViaNetwork = function(settingsObj) {
-      var settingsUrl = listenerApp.parameters.url + "settings"
-      console.log("Sending settings to: " + settingsUrl)
-      console.log(settingsObj)
-      networkRequest(settingsUrl, settingsObj)
+        var settingsUrl = listenerApp.parameters.url + "settings"
+        console.log("Sending settings to: " + settingsUrl)
+        console.log(settingsObj)
+        networkRequest(settingsUrl, settingsObj)
     }
 
     this.setupControls = function(controlsContainerName) {
@@ -290,72 +289,71 @@ var EasyScoreUtil = function() {
 
         var metronomeSlider = document.getElementById('metronomeSlider')
         if (metronomeSlider != null) {
-          metronomeSlider.type = 'range'
-          metronomeSlider.min = this.sliderMin
-          metronomeSlider.max = this.sliderMax
-          metronomeSlider.value = listenerApp.getTempo()
+            metronomeSlider.type = 'range'
+            metronomeSlider.min = this.sliderMin
+            metronomeSlider.max = this.sliderMax
+            metronomeSlider.value = listenerApp.getTempo()
 
-          var updateSettingsViaNetwork = this.updateSettingsViaNetwork
+            var updateSettingsViaNetwork = this.updateSettingsViaNetwork
 
-          metronomeSlider.oninput = function(event) {
-            console.log("Change")
-            console.log(event)
-            console.log(event.target.value)
-            listenerApp.alterPreferences({
-              bpm: event.target.value
-            })
-            //TODO: store this data with the server
-            //updateSettingsViaNetwork()
-          }
+            metronomeSlider.oninput = function(event) {
+                console.log("Change")
+                console.log(event)
+                console.log(event.target.value)
+                listenerApp.alterPreferences({
+                        bpm: event.target.value
+                    })
+                    //TODO: store this data with the server
+                    //updateSettingsViaNetwork()
+            }
         }
-
 
         var sliderNumbersContainer = document.getElementById('sliderNumbers')
 
         if (sliderNumbersContainer != null) {
-          while (sliderNumbersContainer.firstChild) {
-            sliderNumbersContainer.removeChild(sliderNumbersContainer.firstChild);
-          }
-          for (var i = this.sliderMin; i < this.sliderMax; i += this.sliderIncrement) {
-            var sliderNumberSpan = document.createElement('span')
-            sliderNumberSpan.className = 'sliderNumber'
-            sliderNumberSpan.id = 'sliderNumber' + i
-            sliderNumberSpan.innerHTML = "" + i
-            sliderNumbersContainer.appendChild(sliderNumberSpan)
+            while (sliderNumbersContainer.firstChild) {
+                sliderNumbersContainer.removeChild(sliderNumbersContainer.firstChild);
+            }
+            for (var i = this.sliderMin; i < this.sliderMax; i += this.sliderIncrement) {
+                var sliderNumberSpan = document.createElement('span')
+                sliderNumberSpan.className = 'sliderNumber'
+                sliderNumberSpan.id = 'sliderNumber' + i
+                sliderNumberSpan.innerHTML = "" + i
+                sliderNumbersContainer.appendChild(sliderNumberSpan)
 
-            var sliderNumberSeparator = document.createElement('span')
-            sliderNumberSeparator.className = 'sliderNumberSeparator'
-            sliderNumbersContainer.appendChild(sliderNumberSeparator)
-          }
+                var sliderNumberSeparator = document.createElement('span')
+                sliderNumberSeparator.className = 'sliderNumberSeparator'
+                sliderNumbersContainer.appendChild(sliderNumberSeparator)
+            }
         }
 
         var metronomeAudioButton = document.getElementById('metronomeAudioButton')
         if (metronomeAudioButton != null) {
-          var audioOn = listenerApp.getMetronomeAudio()
+            var audioOn = listenerApp.getMetronomeAudio()
 
-          metronomeAudioButton.className = audioOn ? "checked" : ""
+            metronomeAudioButton.className = audioOn ? "checked" : ""
 
-          metronomeAudioButton.onclick = function() {
-            var newPref = !listenerApp.getMetronomeAudio()
+            metronomeAudioButton.onclick = function() {
+                var newPref = !listenerApp.getMetronomeAudio()
 
-            if (newPref == true) {
-              listenerApp.parameters.displaySiteDialog(
-                {
-                  imageType: "medal-fail-icon",
-                  title: "Audio Alert",
-                  message: "To reduce microphone interference, use headphones.",
+                if (newPref == true) {
+                    listenerApp.parameters.displaySiteDialog({
+                        imageType: "medal-fail-icon",
+                        title: "Audio Alert",
+                        message: "To reduce microphone interference, use headphones.",
+                    })
                 }
-              )
+
+                listenerApp.alterPreferences({
+                    metronomeSound: newPref
+                })
+
+                metronomeAudioButton.className = newPref ? "checked" : ""
+
+                updateSettingsViaNetwork({
+                    metronome_audio_on: newPref
+                })
             }
-
-            listenerApp.alterPreferences({
-              metronomeSound: newPref
-            })
-
-            metronomeAudioButton.className = newPref ? "checked" : ""
-
-            updateSettingsViaNetwork({metronome_audio_on: newPref})
-          }
         }
     }
 
@@ -368,7 +366,7 @@ var EasyScoreUtil = function() {
 
         console.log("Making metronome for " + this.exercise.time_signature)
         var metronomeItemsToCreate = 1
-        switch(this.exercise.time_signature) {
+        switch (this.exercise.time_signature) {
             case "4/4":
                 metronomeItemsToCreate = 4
                 break
@@ -383,44 +381,45 @@ var EasyScoreUtil = function() {
         var metronomeContainer = document.getElementById(metronomeContainerName)
 
         if (metronomeContainer != null) {
-          metronomeContainer.style.display = "flex"
-          metronomeContainer.style.flexDirection = "row"
-          metronomeContainer.style.justifyContent = "space-around"
-          metronomeContainer.style.alignItems = "center"
+            metronomeContainer.style.display = "flex"
+            metronomeContainer.style.flexDirection = "row"
+            metronomeContainer.style.justifyContent = "space-around"
+            metronomeContainer.style.alignItems = "center"
 
+            var metronomeItemsObj = document.createElement("div")
+            metronomeItemsObj.id = "metronomeItems"
+            document.getElementById(metronomeContainerName).appendChild(metronomeItemsObj)
 
-          var metronomeItemsObj = document.createElement("div")
-          metronomeItemsObj.id = "metronomeItems"
-          document.getElementById(metronomeContainerName).appendChild(metronomeItemsObj)
-
-          for (var i = 0; i < metronomeItemsToCreate; i++) {
-              var metronomeItemObj = document.createElement("span")
-              metronomeItemObj.className = "metronomeItem"
-              if (i == 0)
-                  metronomeItemObj.className += " highlighted"
-              document.getElementById("metronomeItems").appendChild(metronomeItemObj)
-          }
-
-          var tempoMarkingObj = document.getElementById("tempoMarking")
-          tempoMarkingObj.value = listenerApp.getTempo()
-
-          tempoMarkingObj.onchange = function(val) {
-            var bpm = Number(val.target.value)
-            if (isNaN(bpm) || ((bpm < 40 || bpm > 220) )) {
-              alert("Invalid tempo")
-              val.target.value = listenerApp.getTempo()
-              return
+            for (var i = 0; i < metronomeItemsToCreate; i++) {
+                var metronomeItemObj = document.createElement("span")
+                metronomeItemObj.className = "metronomeItem"
+                if (i == 0)
+                    metronomeItemObj.className += " highlighted"
+                document.getElementById("metronomeItems").appendChild(metronomeItemObj)
             }
-            listenerApp.alterPreferences({bpm: bpm})
-            var metronomeSlider = document.getElementById('metronomeSlider')
-            metronomeSlider.value = bpm
 
-          }
+            var tempoMarkingObj = document.getElementById("tempoMarking")
+            tempoMarkingObj.value = listenerApp.getTempo()
+
+            tempoMarkingObj.onchange = function(val) {
+                var bpm = Number(val.target.value)
+                if (isNaN(bpm) || ((bpm < 40 || bpm > 220))) {
+                    alert("Invalid tempo")
+                    val.target.value = listenerApp.getTempo()
+                    return
+                }
+                listenerApp.alterPreferences({
+                    bpm: bpm
+                })
+                var metronomeSlider = document.getElementById('metronomeSlider')
+                metronomeSlider.value = bpm
+
+            }
         }
     }
 
     //make a new system (measure) of a given width
-    this.makeSystem = function(options,vf) {
+    this.makeSystem = function(options, vf) {
 
         if (options == undefined) options = {}
 
@@ -430,8 +429,8 @@ var EasyScoreUtil = function() {
             width += this.firstBarAddition
 
             if (options.pickup_bar == true) {
-              //TODO: dimensions for pickup bar
-              //width /= 1.5
+                //TODO: dimensions for pickup bar
+                //width /= 1.5
             }
 
             this.scorePositionX = this.scorePositionInitialX
@@ -444,7 +443,12 @@ var EasyScoreUtil = function() {
             //pm_log("SAME LINE")
         }
 
-        var system = vf.System({ x: this.scorePositionX, y: this.scorePositionY, width: width, spaceBetweenStaves: 10 });
+        var system = vf.System({
+            x: this.scorePositionX,
+            y: this.scorePositionY,
+            width: width,
+            spaceBetweenStaves: 10
+        });
 
         this.measureCounter += 1
         this.scorePositionX += width;
@@ -455,7 +459,9 @@ var EasyScoreUtil = function() {
     //Take the current exercise (as generated by generateExerciseEasyScoreCode) and notate it on the screen,
     this.notateExercise = function() {
 
-        var totalBars = this.exercise.systems.reduce(function(total, cur) { return total + cur.bars.length },0)
+        var totalBars = this.exercise.systems.reduce(function(total, cur) {
+            return total + cur.bars.length
+        }, 0)
 
         //pm_log("Total bars: " + totalBars,10)
 
@@ -465,208 +471,221 @@ var EasyScoreUtil = function() {
 
         for (lineIndex in this.exercise.systems) {
 
-          var curPageNumber = Math.floor(lineIndex / this.numberOfSystemsPerPage)
+            var curPageNumber = Math.floor(lineIndex / this.numberOfSystemsPerPage)
 
-          //is it the beginning of a new page
-          var isNewPage = (curPageNumber == lineIndex / this.numberOfSystemsPerPage)
+            //is it the beginning of a new page
+            var isNewPage = (curPageNumber == lineIndex / this.numberOfSystemsPerPage)
 
-          if (isNewPage) {
-            this.scorePositionY = 0
-          }
+            if (isNewPage) {
+                this.scorePositionY = 0
+            }
 
-          console.log("Page: " + curPageNumber)
+            console.log("Page: " + curPageNumber)
 
-          var curVf = this.vfs[curPageNumber]
+            var curVf = this.vfs[curPageNumber]
 
-          var curScore = this.scores[curPageNumber]
+            var curScore = this.scores[curPageNumber]
 
-          curScore.set({time: this.exercise.time_signature})
+            curScore.set({
+                time: this.exercise.time_signature
+            })
 
-          var curLine = this.exercise.systems[lineIndex]
+            var curLine = this.exercise.systems[lineIndex]
 
-          for (barIndex in curLine.bars) {
-              //pm_log("Notating bar " + barIndex,10)
-              var curBar = curLine.bars[barIndex]
+            for (barIndex in curLine.bars) {
+                //pm_log("Notating bar " + barIndex,10)
+                var curBar = curLine.bars[barIndex]
 
-              if (curBar.extra_attributes != undefined && curBar.extra_attributes.clef != undefined) {
-                currentClef = curBar.extra_attributes.clef
-              }
-
-              var barTime = this.exercise.time_signature
-
-              if (curBar.extra_attributes != undefined && curBar.extra_attributes.alternate_timeSignature != undefined) {
-                barTime = curBar.extra_attributes.alternate_timeSignature
-              }
-
-              var barOptions = { barsInSystem: curLine.bars.length, positionInLine: barIndex }
-
-              if (curBar.extra_attributes != undefined && curBar.extra_attributes.pickup_bar != undefined) {
-                if (curBar.extra_attributes.pickup_bar == true) {
-                  barOptions["pickup_bar"] = true
+                if (curBar.extra_attributes != undefined && curBar.extra_attributes.clef != undefined) {
+                    currentClef = curBar.extra_attributes.clef
                 }
-              }
 
-              var system = this.makeSystem(barOptions,curVf)
+                var barTime = this.exercise.time_signature
 
-              this.systems.push(system)
+                if (curBar.extra_attributes != undefined && curBar.extra_attributes.alternate_timeSignature != undefined) {
+                    barTime = curBar.extra_attributes.alternate_timeSignature
+                }
 
-              var notesArray = Array()
-              //add all the notes
+                var barOptions = {
+                    barsInSystem: curLine.bars.length,
+                    positionInLine: barIndex
+                }
 
-              //console.log("Groups:")
-              //console.log(curBar.groups)
-
-              for (groupIndex in curBar.groups) {
-                  var curGroup = curBar.groups[groupIndex]
-
-                  var notesString = ""
-
-                  //take the notes and make a string that EasyScore can read, while giving each note a unique ID
-
-                  //console.log("Cur group:")
-                  //console.log(curGroup)
-                  var brokenUpNotes = curGroup.notes//[0].split(",")
-
-                  for (var noteIndex in brokenUpNotes) {
-                      var note = brokenUpNotes[noteIndex]
-
-                      if (note.note == undefined) {
-                        note = {
-                          note: note,
-                          id: "note" + this.noteIDNumber,
-                          attributes: []
-                        }
-                        brokenUpNotes[noteIndex] = note
-                      }
-
-                      if (noteIndex > 0) {
-                          notesString += ","
-                      }
-                      notesString += note.note
-
-                      //pm_log("Creating note id " + this.noteIDNumber,10)
-
-                      notesString += "[id=\"" + note.id + "\"]"
-
-                      //find the note
-                      var otherNote = this.exercise.notes.find(function(n) { return n.noteId == note.id })
-                      if (otherNote != null) {
-                        //console.log("Assigning page " + curPageNumber + " to note " + note.id)
-                        otherNote.page = curPageNumber
-                      }
-
-                      this.noteIDNumber++
-                  }
-
-                  var additionalInfo = {}
-
-                  additionalInfo.clef = currentClef
-
-                  if (curGroup.stem_direction != undefined) {
-                      additionalInfo.stem = curGroup.stem_direction
-                  }
-
-                  var notes = curScore.notes(notesString,additionalInfo)
-
-                  //console.log("Notes:")
-                  //console.log(notes)
-
-                  //center the whole rests
-                  brokenUpNotes.forEach(function(noteInfo) {
-                    var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
-                    if (note.duration == 'w' && note.noteType == 'r') {
-                      note.align_center = true
-                      note.x_shift = 0
+                if (curBar.extra_attributes != undefined && curBar.extra_attributes.pickup_bar != undefined) {
+                    if (curBar.extra_attributes.pickup_bar == true) {
+                        barOptions["pickup_bar"] = true
                     }
-                  })
+                }
 
-                  brokenUpNotes.forEach(function(noteInfo) {
-                    //console.log("Searching for note: " + noteInfo.id)
-                    var note = notes.find(function(n) { return n.attrs.id == noteInfo.id})
-                    //console.log("Found note:")
-                    //console.log(note)
-                    noteInfo.attributes.forEach(function(attr) {
-                      switch(attr.key) {
-                        case "bowing":
-                          var symbol = function(bowDirection) {
-                            return bowDirection == 'up' ? 'a|' : 'am'
-                          }(attr.value)
-                          note.addArticulation(0, new VF.Articulation(symbol).setPosition(3));
-                          break
-                        case "textAnnotation":
-                          note.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3));
-                          break
-                        default:
-                          console.warn("Unknown note attribute: ")
-                          console.log(attr)
-                      }
+                var system = this.makeSystem(barOptions, curVf)
+
+                this.systems.push(system)
+
+                var notesArray = Array()
+                    //add all the notes
+
+                //console.log("Groups:")
+                //console.log(curBar.groups)
+
+                for (groupIndex in curBar.groups) {
+                    var curGroup = curBar.groups[groupIndex]
+
+                    var notesString = ""
+
+                    //take the notes and make a string that EasyScore can read, while giving each note a unique ID
+
+                    //console.log("Cur group:")
+                    //console.log(curGroup)
+                    var brokenUpNotes = curGroup.notes //[0].split(",")
+
+                    for (var noteIndex in brokenUpNotes) {
+                        var note = brokenUpNotes[noteIndex]
+
+                        if (note.note == undefined) {
+                            note = {
+                                note: note,
+                                id: "note" + this.noteIDNumber,
+                                attributes: []
+                            }
+                            brokenUpNotes[noteIndex] = note
+                        }
+
+                        if (noteIndex > 0) {
+                            notesString += ","
+                        }
+                        notesString += note.note
+
+                        //pm_log("Creating note id " + this.noteIDNumber,10)
+
+                        notesString += "[id=\"" + note.id + "\"]"
+
+                        //find the note
+                        var otherNote = this.exercise.notes.find(function(n) {
+                            return n.noteId == note.id
+                        })
+                        if (otherNote != null) {
+                            //console.log("Assigning page " + curPageNumber + " to note " + note.id)
+                            otherNote.page = curPageNumber
+                        }
+
+                        this.noteIDNumber++
+                    }
+
+                    var additionalInfo = {}
+
+                    additionalInfo.clef = currentClef
+
+                    if (curGroup.stem_direction != undefined) {
+                        additionalInfo.stem = curGroup.stem_direction
+                    }
+
+                    var notes = curScore.notes(notesString, additionalInfo)
+
+                    //console.log("Notes:")
+                    //console.log(notes)
+
+                    //center the whole rests
+                    brokenUpNotes.forEach(function(noteInfo) {
+                        var note = notes.find(function(n) {
+                            return n.attrs.id == noteInfo.id
+                        })
+                        if (note.duration == 'w' && note.noteType == 'r') {
+                            note.align_center = true
+                            note.x_shift = 0
+                        }
                     })
-                  })
 
-                  //check if it's beamed
-                  if (curGroup.beam === true) {
-                      notes = curScore.beam(notes)
-                  }
+                    brokenUpNotes.forEach(function(noteInfo) {
+                        //console.log("Searching for note: " + noteInfo.id)
+                        var note = notes.find(function(n) {
+                                return n.attrs.id == noteInfo.id
+                            })
+                            //console.log("Found note:")
+                            //console.log(note)
+                        noteInfo.attributes.forEach(function(attr) {
+                            switch (attr.key) {
+                                case "bowing":
+                                    var symbol = function(bowDirection) {
+                                        return bowDirection == 'up' ? 'a|' : 'am'
+                                    }(attr.value)
+                                    note.addArticulation(0, new VF.Articulation(symbol).setPosition(3));
+                                    break
+                                case "textAnnotation":
+                                    note.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3));
+                                    break
+                                default:
+                                    console.warn("Unknown note attribute: ")
+                                    console.log(attr)
+                            }
+                        })
+                    })
 
-                  notesArray.push(
-                      notes
-                  )
+                    //check if it's beamed
+                    if (curGroup.beam === true) {
+                        notes = curScore.beam(notes)
+                    }
 
-              }
+                    notesArray.push(
+                        notes
+                    )
 
+                }
 
-              //create the measure and connect all the groups with the reduce(concat) function
-              var stave = system.addStave(
-                { voices: [
-                    curScore.voice(notesArray.reduce(concat),{time: barTime})]
+                //create the measure and connect all the groups with the reduce(concat) function
+                var stave = system.addStave({
+                    voices: [
+                        curScore.voice(notesArray.reduce(concat), {
+                            time: barTime
+                        })
+                    ]
                 });
 
-              //get the extra_attributes if there are any
-              if (curBar.extra_attributes != undefined) {
-                  for (attr in curBar.extra_attributes) {
-                      var value = curBar.extra_attributes[attr]
-                      switch(attr) {
-                          case "time_signature":
-                              stave.addTimeSignature(value)
-                              break
-                          case "clef":
-                              stave.addClef(value)
-                              break
-                          case "key_signature":
-                              stave.addKeySignature(value)
-                              break
-                          case "barlines":
-                              if (value.length == 0) break
-                              value.forEach(function(barline) {
-                                switch(barline.repeatType) {
-                                case "begin":
-                                  stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN);
-                                  break
-                                case "end":
-                                  stave.setEndBarType(VF.Barline.type.REPEAT_END)
-                                  break
-                                default:
-                                  pm_log("Unknown attribute:" + attr,10)
-                                }
-                              })
+                //get the extra_attributes if there are any
+                if (curBar.extra_attributes != undefined) {
+                    for (attr in curBar.extra_attributes) {
+                        var value = curBar.extra_attributes[attr]
+                        switch (attr) {
+                            case "time_signature":
+                                stave.addTimeSignature(value)
+                                break
+                            case "clef":
+                                stave.addClef(value)
+                                break
+                            case "key_signature":
+                                stave.addKeySignature(value)
+                                break
+                            case "barlines":
+                                if (value.length == 0) break
+                                value.forEach(function(barline) {
+                                    switch (barline.repeatType) {
+                                        case "begin":
+                                            stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN);
+                                            break
+                                        case "end":
+                                            stave.setEndBarType(VF.Barline.type.REPEAT_END)
+                                            break
+                                        default:
+                                            pm_log("Unknown attribute:" + attr, 10)
+                                    }
+                                })
 
-                              break
-                          default:
-                              pm_log("Unknown attribute:" + attr,10)
-                              break
-                      }
-                  }
-              }
+                                break
+                            default:
+                                pm_log("Unknown attribute:" + attr, 10)
+                                break
+                        }
+                    }
+                }
 
-              //if it's the last bar, make the bar line the correct end bar
-              if (barCounter == totalBars - 1) {
-                  stave.setEndBarType(VF.Barline.type.END)
-              }
-              barCounter+= 1
+                //if it's the last bar, make the bar line the correct end bar
+                if (barCounter == totalBars - 1) {
+                    stave.setEndBarType(VF.Barline.type.END)
+                }
+                barCounter += 1
 
-          }
+            }
 
-          curVf.draw();
+            curVf.draw();
 
         }
 
@@ -678,18 +697,18 @@ var EasyScoreUtil = function() {
     }
 
     this.showPageNumber = function(pageNum) {
-      this.currentVisiblePageNumber = pageNum
-      var allPages = document.getElementsByClassName("notationPage")
-      Array.from(allPages).forEach(function(el) {
+        this.currentVisiblePageNumber = pageNum
+        var allPages = document.getElementsByClassName("notationPage")
+        Array.from(allPages).forEach(function(el) {
             el.className = "notationPage"
             el.style.display = "none"
-      })
+        })
 
-      var pageToShow = document.getElementById("notationPage_" + "page" + pageNum)
-      pageToShow.className += " pageVisible"
-      pageToShow.style.display = "block"
+        var pageToShow = document.getElementById("notationPage_" + "page" + pageNum)
+        pageToShow.className += " pageVisible"
+        pageToShow.style.display = "block"
 
-      this.setPaginationControlsState()
+        this.setPaginationControlsState()
     }
 
     //given a certain beat, return the elements (notes) that surround it.
@@ -697,69 +716,69 @@ var EasyScoreUtil = function() {
     //percent at 0.5
     this.getElementsForBeat = function(beat) {
 
-            //current position to scan
-            var currentPosition = 0
+        //current position to scan
+        var currentPosition = 0
 
-            //these will be the elements we store and return
-            var beginningItem = null
-            var endingItem = null
+        //these will be the elements we store and return
+        var beginningItem = null
+        var endingItem = null
 
-            //the beat positions of those elements
-            var firstItemBeatPosition = 0
-            var lastItemBeatPosition = 0
+        //the beat positions of those elements
+        var firstItemBeatPosition = 0
+        var lastItemBeatPosition = 0
 
-            //percentage between the elements that the beat exists in
-            var percent = null
+        //percentage between the elements that the beat exists in
+        var percent = null
 
-            //pm_log("Searching for beat " + beat + " in",10)
-            //pm_log(this.exercise.notes,10)
+        //pm_log("Searching for beat " + beat + " in",10)
+        //pm_log(this.exercise.notes,10)
 
-            //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
-            for (index in this.exercise.notes) {
-                var item = this.exercise.notes[index]
+        //this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
+        for (index in this.exercise.notes) {
+            var item = this.exercise.notes[index]
 
-                var duration = item.duration
+            var duration = item.duration
 
-                if (currentPosition <= beat) {
+            if (currentPosition <= beat) {
+                beginningItem = item
+                endingItem = item
+
+                firstItemBeatPosition = currentPosition
+                lastNoteBeatPosition = currentPosition
+            } else {
+                if (beginningItem == null) {
                     beginningItem = item
-                    endingItem = item
-
                     firstItemBeatPosition = currentPosition
-                    lastNoteBeatPosition = currentPosition
-                } else {
-                    if (beginningItem == null) {
-                        beginningItem = item
-                        firstItemBeatPosition = currentPosition
-                    }
-                    //set the end item index
-                    endingItem = item
-                    lastItemBeatPosition = currentPosition
-
-                    if (currentPosition >= beat) {
-                        break
-                    }
                 }
+                //set the end item index
+                endingItem = item
+                lastItemBeatPosition = currentPosition
 
-                currentPosition += duration
-
+                if (currentPosition >= beat) {
+                    break
+                }
             }
 
-            var distanceBetween = lastItemBeatPosition - firstItemBeatPosition
-            var beatDistanceFromFirstItem = beat - firstItemBeatPosition
+            currentPosition += duration
 
-            percent = beatDistanceFromFirstItem / distanceBetween
+        }
 
-            if (percent < 0 || isNaN(percent)) percent = 0
+        var distanceBetween = lastItemBeatPosition - firstItemBeatPosition
+        var beatDistanceFromFirstItem = beat - firstItemBeatPosition
 
-            //console.log("Current page: " + currentItemPage + " Next: " + nextItemPage)
+        percent = beatDistanceFromFirstItem / distanceBetween
 
-            //pm_log("End pos: " + currentPosition)
-            return {
-                currentItem: beginningItem, //item at or before the beat
-                nextItem: endingItem, //item after the beat
-                percent : percent //percent that describes the distance
-            }
-     }
+        if (percent < 0 || isNaN(percent)) percent = 0
+
+        //console.log("Current page: " + currentItemPage + " Next: " + nextItemPage)
+
+        //pm_log("End pos: " + currentPosition)
+        return {
+            currentItem: beginningItem, //item at or before the beat
+            nextItem: endingItem, //item after the beat
+            percent: percent //percent that describes the distance
+        }
+    }
 
     //get the position (coordinates) for a certain beat
     this.getPositionForBeat = function(beat) {
@@ -780,28 +799,26 @@ var EasyScoreUtil = function() {
         var distance = this.middlePositionOfItem(nextItem) - this.middlePositionOfItem(currentItem)
 
         if (
-          (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y)
-          ||
-          (currentItem.stave.getBoundingBox().x > nextItem.stave.getBoundingBox().x)
-           ) {
+            (currentItem.stave.getBoundingBox().y != nextItem.stave.getBoundingBox().y) ||
+            (currentItem.stave.getBoundingBox().x > nextItem.stave.getBoundingBox().x)
+        ) {
             //the nextItem appears on the next line
             //or, if the nextItem is before the current item due to a repeat
             distance = currentItem.stave.end_x - this.middlePositionOfItem(currentItem)
         }
 
         return {
-                x: (initialPos + distance * ts.percent),
-                y: staveYPos,
-                page: ts.currentItem.page
-            }
+            x: (initialPos + distance * ts.percent),
+            y: staveYPos,
+            page: ts.currentItem.page
+        }
 
-
-      }
+    }
 
     //helper function to find the middle of an item
-     this.middlePositionOfItem = function(item) {
-              return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
-      }
+    this.middlePositionOfItem = function(item) {
+        return item.getAbsoluteX() + item.getBoundingBox().w / 2.0
+    }
 
     //get a basic representation of the stave, for things like height
     this.getBasicStave = function() {
@@ -816,40 +833,40 @@ var EasyScoreUtil = function() {
     }
 
     this.getPageForBeat = function(beat) {
-      var ts = this.getElementsForBeat(beat)
-      return ts.currentItem.page
+        var ts = this.getElementsForBeat(beat)
+        return ts.currentItem.page
     }
 
     //draw the indicator line (blue line that shows current position)
     this.drawIndicatorLine = function(canvas, beat) {
 
-            var indicatorPosition = this.getPositionForBeat(beat)
+        var indicatorPosition = this.getPositionForBeat(beat)
 
-            var indicatorOverflow = 20 * this.contentScaleFactor
+        var indicatorOverflow = 20 * this.contentScaleFactor
 
-            var stave = this.getBasicStave()
-            var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
+        var stave = this.getBasicStave()
+        var staveHeight = stave.getYForLine(4) - stave.getYForLine(0)
 
-            var topY = indicatorPosition.y - indicatorOverflow
-            var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
+        var topY = indicatorPosition.y - indicatorOverflow
+        var bottomY = indicatorPosition.y + staveHeight + indicatorOverflow
 
-            if (canvas.getContext) {
+        if (canvas.getContext) {
 
-            	   // use getContext to use the canvas for drawing
-            	   var ctx = canvas.getContext('2d');
+            // use getContext to use the canvas for drawing
+            var ctx = canvas.getContext('2d');
 
-                   ctx.strokeStyle = '#4990E2';
-                   ctx.lineWidth = 3;
+            ctx.strokeStyle = '#4990E2';
+            ctx.lineWidth = 3;
 
-            	   // Stroked path
-            	   ctx.beginPath();
-            	   ctx.moveTo(indicatorPosition.x * this.contentScaleFactor,bottomY * this.contentScaleFactor);
-            	   ctx.lineTo(indicatorPosition.x * this.contentScaleFactor,topY * this.contentScaleFactor);
-            	   ctx.closePath();
-            	   ctx.stroke();
+            // Stroked path
+            ctx.beginPath();
+            ctx.moveTo(indicatorPosition.x * this.contentScaleFactor, bottomY * this.contentScaleFactor);
+            ctx.lineTo(indicatorPosition.x * this.contentScaleFactor, topY * this.contentScaleFactor);
+            ctx.closePath();
+            ctx.stroke();
 
-              }
         }
+    }
 
     //get the Y coordinate for feedback items
     this.getFeedbackYPosition = function(topStaveY) {
@@ -858,7 +875,7 @@ var EasyScoreUtil = function() {
         return pos
     }
 
-    this.createFeedbackHTMLElement = function(feedbackType,feedbackItemsArray, beat) {
+    this.createFeedbackHTMLElement = function(feedbackType, feedbackItemsArray, beat) {
         var positionForBeat = this.getPositionForBeat(beat)
         var x = positionForBeat.x
         var y = this.getFeedbackYPosition(positionForBeat.y)
@@ -871,19 +888,19 @@ var EasyScoreUtil = function() {
         //console.log("Feedback type:")
         //console.log(feedbackType.name$)
 
-        switch(feedbackType.name$) {
-          case "Missed":
-            obj.className += " incorrect_note"
-            break;
-          case "Incorrect":
-            obj.className += " off_note"
-            break;
-          case "Correct":
-            obj.className += " correct"
-            break;
-          default:
-            pm_log("Error on type: " + feedbackType.name$,10)
-            break;
+        switch (feedbackType.name$) {
+            case "Missed":
+                obj.className += " incorrect_note"
+                break;
+            case "Incorrect":
+                obj.className += " off_note"
+                break;
+            case "Correct":
+                obj.className += " correct"
+                break;
+            default:
+                pm_log("Error on type: " + feedbackType.name$, 10)
+                break;
         }
 
         var feedbackItems = feedbackItemsArray.map(function(item) {
@@ -908,16 +925,15 @@ var EasyScoreUtil = function() {
         var feedbackContainerObj = document.getElementById(feedbackContainerDivId)
 
         if (feedbackContainerObj == undefined) {
-          feedbackContainerObj = document.createElement("div")
-          feedbackContainerObj.className = "feedbackItemContainer"
-          feedbackContainerObj.id = feedbackContainerDivId
+            feedbackContainerObj = document.createElement("div")
+            feedbackContainerObj.className = "feedbackItemContainer"
+            feedbackContainerObj.id = feedbackContainerDivId
         } else {
-          //make the separator
-          var separator = document.createElement("div")
-          separator.className = "feedbackSeparator"
-          feedbackContainerObj.appendChild(separator)
+            //make the separator
+            var separator = document.createElement("div")
+            separator.className = "feedbackSeparator"
+            feedbackContainerObj.appendChild(separator)
         }
-
 
         feedbackItems.forEach(function(item) {
             feedbackContainerObj.appendChild(item)
@@ -926,7 +942,7 @@ var EasyScoreUtil = function() {
         obj.appendChild(feedbackContainerObj)
 
         obj.style.position = "absolute"
-        obj.style.top = "" + y  * this.contentScaleFactor + "px"
+        obj.style.top = "" + y * this.contentScaleFactor + "px"
         obj.style.left = "" + x * this.contentScaleFactor - (feedbackWidth / 2) + "px"
 
         document.getElementById("notationPage_page" + pageNum).appendChild(obj)
