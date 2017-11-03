@@ -67,13 +67,33 @@ var jsMusicXMLConverter = function() {
         return this.convertJSON(input, infoAttributes)
     }
 
+    this.extractTempo = function (part) {
+        var firstBar = part.measure[0]
+        var directionBpm = 120;
+
+        if (firstBar.direction != undefined) {
+            console.log("First bar:")
+
+            if (!(firstBar.direction instanceof Array)) {
+                firstBar.direction = [firstBar.direction]
+            }
+
+            firstBar.direction.forEach(function(dir) {
+                var metronomeInfo = dir.directiontype.metronome
+                if (metronomeInfo != undefined) {
+                    directionBpm = Number(metronomeInfo.perminute)
+                }
+            })
+        }
+        return directionBpm
+    }
+
     this.convertJSON = function(input) {
         //temp for testing
 
         if (input == null || input.length == 0) {
             alert("Error: need input");
             return
-            //input = JSON.parse(testInput3)
         }
 
         //console.log("Going to convert json object:")
@@ -83,32 +103,7 @@ var jsMusicXMLConverter = function() {
         //get the part out
         var part = input.scorepartwise.part
 
-        var tempo = //infoAttributes.tempo
-            function() {
-                var firstBar = part.measure[0]
-                var directionBpm = 120;
-
-                if (firstBar.direction != undefined) {
-                    console.log("First bar:")
-
-                    if (!(firstBar.direction instanceof Array)) {
-                        firstBar.direction = [firstBar.direction]
-                    }
-
-                    firstBar.direction.forEach(function(dir) {
-                        var metronomeInfo = dir.directiontype.metronome
-                        if (metronomeInfo != undefined) {
-                            directionBpm = Number(metronomeInfo.perminute)
-                        }
-                    })
-
-                    //            var metronomeInfo = firstBar.direction.directiontype.metronome
-                    //            if (metronomeInfo != undefined) {
-                    //              return Number(metronomeInfo.perminute)
-                    //            }
-                }
-                return directionBpm
-            }()
+        var tempo = this.extractTempo(part)
 
         var transposition = function() {
             var firstBar = part.measure[0]
@@ -137,11 +132,13 @@ var jsMusicXMLConverter = function() {
                     return false
             }
         }()
+
         var comparisonFlags = {
             testPitch: true,
             testRhythm: true,
             testDuration: true,
         }
+
         if (isPercussionClef) {
             comparisonFlags.testPitch = false
             comparisonFlags.testDuration = false
@@ -235,10 +232,6 @@ var jsMusicXMLConverter = function() {
         return {
             easyScoreInfo: generatedEasyScoreInfo,
         }
-
-        //this.writeEasyScoreFunction(JSON.stringify(generatedEasyScoreInfo, null, 4))
-
-        //return this.output
     }
 
     this.getMidiInfoFromNoteObject = function(note, divisions) {
@@ -352,8 +345,32 @@ var jsMusicXMLConverter = function() {
                     switch (measure.attributes.key.fifths) {
                         case "0":
                             return "C"
+                        case "-1":
+                            return "F"
                         case "-2":
                             return "Bb"
+                        case "-3":
+                            return "Eb"
+                        case "-4":
+                            return "Ab"
+                        case "-5":
+                            return "Db"
+                        case "-6":
+                            return "Gb"
+                        case "1":
+                            return "G"
+                        case "2":
+                            return "D"
+                        case "3":
+                            return "A"
+                        case "4":
+                            return "E"
+                        case "5":
+                            return "B"
+                        case "6":
+                            return "F#"
+                        case "7":
+                            return "C#"
                     }
                 }()
 
