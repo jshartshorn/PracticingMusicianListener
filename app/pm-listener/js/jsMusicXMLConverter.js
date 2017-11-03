@@ -119,7 +119,6 @@ var jsMusicXMLConverter = function() {
             var firstBar = part.measure[0]
             var time = firstBar.attributes.time
             return time.beats + '/' + time.beattype
-            return "4/4"
         }()
 
         //get the comparison flags
@@ -596,11 +595,24 @@ var jsMusicXMLConverter = function() {
 
         var repeats = []
 
-        var barCounter = 0
-        var noteCounter = 0
+        var toRetNotes = this.extractNotesFromSystems(toRetSystems)
 
+        console.log("Repeats: ")
+        console.log(repeats)
+
+        console.log("Total notes:")
+        console.log(toRetNotes.length)
+
+        return {
+            systems: toRetSystems,
+            notes: toRetNotes
+        }
+    }
+
+    this.extractNotesFromSystems = function(systems) {
         var toRetNotes = []
-        toRetSystems.forEach(function(system) {
+
+        systems.forEach(function(system) {
             system.bars.forEach(function(bar) {
 
                 if (bar.extra_attributes.barlines != undefined) {
@@ -636,29 +648,15 @@ var jsMusicXMLConverter = function() {
                                 var repeatedSection = repeats[repeats.length - 1]
                                 var slice = toRetNotes.slice(repeatedSection.open, repeatedSection.close)
 
-                                console.log("Going to append slice:")
-                                console.log(slice)
-
                                 toRetNotes.push.apply(toRetNotes, slice)
                             }
                         }
                     })
                 }
-
-                barCounter++
             })
         })
 
-        console.log("Repeats: ")
-        console.log(repeats)
-
-        console.log("Total notes:")
-        console.log(toRetNotes.length)
-
-        return {
-            systems: toRetSystems,
-            notes: toRetNotes
-        }
+        return toRetNotes
     }
 
     this.createSystemObject = function() {
