@@ -303,7 +303,7 @@ var EasyScoreUtil = function() {
                 listenerApp.alterPreferences({
                         bpm: event.target.value
                     })
-                    //TODO: store this data with the server
+                    //Don't store this with the server -- keep the default tempo
                     //updateSettingsViaNetwork()
             }
         }
