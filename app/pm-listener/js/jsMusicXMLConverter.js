@@ -63,6 +63,9 @@ var jsMusicXMLConverter = function() {
 	}
 
 	this.extractTempo = function (part) {
+	  console.log("Part: ")
+	  console.log(part)
+
 		var firstBar = part.measure[0]
 		var directionBpm = 120
 
@@ -97,6 +100,10 @@ var jsMusicXMLConverter = function() {
 
 		//get the part out
 		var part = input.scorepartwise.part
+
+    if (!Array.isArray(part.measure)) {
+      part.measure = [part.measure]
+    }
 
 		var tempo = this.extractTempo(part)
 
