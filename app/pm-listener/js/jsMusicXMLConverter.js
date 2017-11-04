@@ -427,6 +427,11 @@ var jsMusicXMLConverter = function() {
 			}
 
 			notes.forEach(function(note) {
+			  if (note._printobject != undefined) {
+			    if (note._printobject == "no") {
+			      return
+			    }
+			  }
 				if (note.beam != undefined) {
 					if (note.beam.__text == "begin") {
 						//push the old and make a new
@@ -564,7 +569,9 @@ var jsMusicXMLConverter = function() {
 				bar.groups.push(group)
 
 			//get the full duration of the bar and put an alternate time signature in if needed
-			var calculatedDuration = notes.reduce(function(total, item) {
+			var calculatedDuration = notes.filter(function(note) {
+			   return (note.voice == "1")
+			}).reduce(function(total, item) {
 				return total + Number(item.duration) / divisions
 			}, 0)
 
@@ -644,6 +651,9 @@ var jsMusicXMLConverter = function() {
 				}
 			})
 		})
+
+    console.log("Extracted notes: ")
+    console.log(toRetNotes)
 
 		return toRetNotes
 	}

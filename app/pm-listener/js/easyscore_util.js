@@ -53,7 +53,7 @@ var EasyScoreUtil = function() {
 	this.barHeight = 160
 	this.firstBarAddition = 100
 
-	this.numberOfSystemsPerPage = 4
+	this.numberOfSystemsPerPage = 999 //avoids pagination for now
 	this.numberOfPages = -1 //will get set later
 
 	this.scoreWidth = 0
@@ -580,8 +580,8 @@ var EasyScoreUtil = function() {
 
 					var notes = curScore.notes(notesString, additionalInfo)
 
-					//console.log("Notes:")
-					//console.log(notes)
+					console.log("Notes:")
+					console.log(notesString)
 
 					//center the whole rests
 					brokenUpNotes.forEach(function(noteInfo) {
