@@ -313,7 +313,7 @@ var jsMusicXMLConverter = function() {
 			}
 
 			var bar = {
-				groups: [],
+				voices: {},
 				extra_attributes: {},
 			}
 
@@ -435,6 +435,10 @@ var jsMusicXMLConverter = function() {
       console.log(voices)
 
       Object.keys(voices).forEach(function(voiceKey) {
+
+        bar.voices[voiceKey] = {
+         groups: []
+        }
 
         console.log("Key: " + voiceKey)
 
@@ -560,6 +564,7 @@ var jsMusicXMLConverter = function() {
 
           var noteObj = {
             note: noteText,
+            voice: voiceKey,
             divisions: divisions,
             midiData: midiData,
             id: fullNoteId,
@@ -580,7 +585,7 @@ var jsMusicXMLConverter = function() {
 
               //push the old and make a new
               if (group.notes.length > 0)
-                bar.groups.push(group)
+                bar.voices[voiceKey].groups.push(group)
               group = null
             }
           }
@@ -591,7 +596,7 @@ var jsMusicXMLConverter = function() {
         //console.log(group)
 
         if (group != null)
-          bar.groups.push(group)
+          bar.voices[voiceKey].groups.push(group)
 
       })
 
@@ -653,13 +658,20 @@ var jsMusicXMLConverter = function() {
 					})
 				}
 
-				bar.groups.forEach(function(group) {
+        Object.keys(bar.voices).forEach(function(voiceKey) {
+            var voice = bar.voices[voiceKey]
+            var groups = voice.groups
 
-					group.notes.forEach(function(note) {
-						toRetNotes.push(note.midiData)
-					})
+            groups.forEach(function(group) {
 
-				})
+              group.notes.forEach(function(note) {
+                toRetNotes.push(note.midiData)
+              })
+
+            })
+        })
+
+
 
 				if (bar.extra_attributes.barlines != undefined) {
 					barlines.forEach(function(barline) {

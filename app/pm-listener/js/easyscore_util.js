@@ -520,124 +520,140 @@ var EasyScoreUtil = function() {
 
 				this.systems.push(system)
 
-				var notesArray = Array()
 				//add all the notes
 
 				//console.log("Groups:")
 				//console.log(curBar.groups)
 
-				for (var groupIndex in curBar.groups) {
-					var curGroup = curBar.groups[groupIndex]
+        //TODO: do each voice
 
-					var notesString = ""
+        var voices = []
 
-					//take the notes and make a string that EasyScore can read, while giving each note a unique ID
+        for (var voiceKey in curBar.voices) {
+          var notesArray = Array()
 
-					//console.log("Cur group:")
-					//console.log(curGroup)
-					var brokenUpNotes = curGroup.notes //[0].split(",")
+          var voice = curBar.voices[voiceKey]
 
-					for (var noteIndex in brokenUpNotes) {
-						var note = brokenUpNotes[noteIndex]
+          for (var groupIndex in voice.groups) {
+            var curGroup = voice.groups[groupIndex]
 
-						if (note.note == undefined) {
-							note = {
-								note: note,
-								id: "note" + this.noteIDNumber,
-								attributes: []
-							}
-							brokenUpNotes[noteIndex] = note
-						}
+            var notesString = ""
 
-						if (noteIndex > 0) {
-							notesString += ","
-						}
-						notesString += note.note
+            //take the notes and make a string that EasyScore can read, while giving each note a unique ID
 
-						//pm_log("Creating note id " + this.noteIDNumber,10)
+            //console.log("Cur group:")
+            //console.log(curGroup)
+            var brokenUpNotes = curGroup.notes //[0].split(",")
 
-						notesString += "[id=\"" + note.id + "\"]"
+            for (var noteIndex in brokenUpNotes) {
+              var note = brokenUpNotes[noteIndex]
 
-						//find the note
-						var otherNote = this.exercise.notes.find(function(n) {
-							return n.noteId == note.id
+              if (note.note == undefined) {
+                note = {
+                  note: note,
+                  id: "note" + this.noteIDNumber,
+                  attributes: []
+                }
+                brokenUpNotes[noteIndex] = note
+              }
+
+              if (noteIndex > 0) {
+                notesString += ","
+              }
+              notesString += note.note
+
+              //pm_log("Creating note id " + this.noteIDNumber,10)
+
+              notesString += "[id=\"" + note.id + "\"]"
+
+              //find the note
+              var otherNote = this.exercise.notes.find(function(n) {
+                return n.noteId == note.id
+              })
+              if (otherNote != null) {
+                //console.log("Assigning page " + curPageNumber + " to note " + note.id)
+                otherNote.page = curPageNumber
+              }
+
+              this.noteIDNumber++
+            }
+
+            var additionalInfo = {}
+
+            additionalInfo.clef = currentClef
+
+            if (curGroup.stem_direction != undefined) {
+              additionalInfo.stem = curGroup.stem_direction
+            }
+
+            var notes = curScore.notes(notesString, additionalInfo)
+
+            console.log("Notes:")
+            console.log(notesString)
+
+            //center the whole rests
+            brokenUpNotes.forEach(function(noteInfo) {
+              var note = notes.find(function(n) {
+                return n.attrs.id == noteInfo.id
+              })
+
+              if (note.duration == "w" && note.noteType == "r") {
+                note.align_center = true
+                note.x_shift = 0
+              }
+            })
+
+            brokenUpNotes.forEach(function(noteInfo) {
+              //console.log("Searching for note: " + noteInfo.id)
+              var note = notes.find(function(n) {
+                return n.attrs.id == noteInfo.id
+              })
+              //console.log("Found note:")
+              //console.log(note)
+              noteInfo.attributes.forEach(function(attr) {
+                switch (attr.key) {
+                case "bowing":
+                  var symbol = function(bowDirection) {
+                    return bowDirection == "up" ? "a|" : "am"
+                  }(attr.value)
+                  note.addArticulation(0, new VF.Articulation(symbol).setPosition(3))
+                  break
+                case "textAnnotation":
+                  note.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3))
+                  break
+                default:
+                  console.warn("Unknown note attribute: ")
+                  console.log(attr)
+                }
+              })
+            })
+
+            //check if it's beamed
+            if (curGroup.beam === true) {
+              notes = curScore.beam(notes)
+            }
+
+            notesArray.push(
+              notes
+            )
+
+          }
+
+          console.log("Going to add voice with:")
+          console.log(notesArray)
+          console.log("for voice " + voiceKey)
+
+          voices.push(
+            curScore.voice(notesArray.reduce(concat), {
+							time: barTime
 						})
-						if (otherNote != null) {
-							//console.log("Assigning page " + curPageNumber + " to note " + note.id)
-							otherNote.page = curPageNumber
-						}
+          )
+        }
 
-						this.noteIDNumber++
-					}
-
-					var additionalInfo = {}
-
-					additionalInfo.clef = currentClef
-
-					if (curGroup.stem_direction != undefined) {
-						additionalInfo.stem = curGroup.stem_direction
-					}
-
-					var notes = curScore.notes(notesString, additionalInfo)
-
-					console.log("Notes:")
-					console.log(notesString)
-
-					//center the whole rests
-					brokenUpNotes.forEach(function(noteInfo) {
-						var note = notes.find(function(n) {
-							return n.attrs.id == noteInfo.id
-						})
-
-						if (note.duration == "w" && note.noteType == "r") {
-							note.align_center = true
-							note.x_shift = 0
-						}
-					})
-
-					brokenUpNotes.forEach(function(noteInfo) {
-						//console.log("Searching for note: " + noteInfo.id)
-						var note = notes.find(function(n) {
-							return n.attrs.id == noteInfo.id
-						})
-						//console.log("Found note:")
-						//console.log(note)
-						noteInfo.attributes.forEach(function(attr) {
-							switch (attr.key) {
-							case "bowing":
-								var symbol = function(bowDirection) {
-									return bowDirection == "up" ? "a|" : "am"
-								}(attr.value)
-								note.addArticulation(0, new VF.Articulation(symbol).setPosition(3))
-								break
-							case "textAnnotation":
-								note.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3))
-								break
-							default:
-								console.warn("Unknown note attribute: ")
-								console.log(attr)
-							}
-						})
-					})
-
-					//check if it's beamed
-					if (curGroup.beam === true) {
-						notes = curScore.beam(notes)
-					}
-
-					notesArray.push(
-						notes
-					)
-
-				}
 
 				//create the measure and connect all the groups with the reduce(concat) function
 				var stave = system.addStave({
-					voices: [
-						curScore.voice(notesArray.reduce(concat), {
-							time: barTime
-						})
-					]
+					voices: voices
 				})
 
 				//get the extra_attributes if there are any
