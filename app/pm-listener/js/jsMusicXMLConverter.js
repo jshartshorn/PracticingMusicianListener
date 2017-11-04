@@ -415,168 +415,188 @@ var jsMusicXMLConverter = function() {
 
 			bar.extra_attributes.barlines = repeatInfo
 
-			var group = {
-				notes: []
+      var allNotes = measure.note
+
+			if (allNotes.forEach == undefined) {
+				allNotes = [allNotes]
 			}
 
-			//add the groups
-			var notes = measure.note
+			//split them up into different voices
+			var voices = allNotes.reduce(function(acc,note){
+        var voiceNumber = note.voice
+        if (acc[voiceNumber] == undefined) {
+          acc[voiceNumber] = {notes:[]}
+        }
+        acc[voiceNumber].notes.push(note)
+        return acc
+			},{})
 
-			if (notes.forEach == undefined) {
-				notes = [notes]
-			}
+      console.log("Voices:")
+      console.log(voices)
 
-			var durationMap = {
-				0.5: "8",
-				1: "q",
-				2: "h",
-				4: "w"
-			}
+      Object.keys(voices).forEach(function(voiceKey) {
 
-			notes.forEach(function(note) {
-			  if (note._printobject != undefined) {
-			    if (note._printobject == "no") {
-			      return
-			    }
-			  }
-				if (note.beam != undefined) {
-					if (note.beam.__text == "begin") {
-						//push the old and make a new
-						if (group != null && group.notes.length > 0)
-							bar.groups.push(group)
-						group = null
-					}
-				}
+        console.log("Key: " + voiceKey)
 
-				if (group == null) {
-					group = {
-						notes: []
-					}
-				}
+        var notes = voices[voiceKey].notes
 
-				var key = function() {
+        var group = {
+          notes: []
+        }
 
-					if (note.rest != undefined) {
-						if (note.duration / divisions == 4.0) {
-							if (clef == "treble" || clef == "percussion")
-								return "D5"
-							else if (clef == "alto")
-								return "E4"
-							else if (clef == "bass")
-								return "F3"
-						}
-						//console.warn("Rest duration: " + note.duration)
-						if (clef == "treble" || clef == "percussion")
-							return "B4"
-						else if (clef == "alto")
-							return "C4"
-						else if (clef == "bass")
-							return "D3"
-					}
+        var durationMap = {
+          0.5: "8",
+          1: "q",
+          2: "h",
+          4: "w"
+        }
 
-					if (note.unpitched != undefined) {
-						return note.unpitched.displaystep + "" + note.unpitched.displayoctave
-					}
+        notes.forEach(function(note) {
+          if (note._printobject != undefined) {
+            if (note._printobject == "no") {
+              return
+            }
+          }
+          if (note.beam != undefined) {
+            if (note.beam.__text == "begin") {
+              //push the old and make a new
+              if (group != null && group.notes.length > 0)
+                bar.groups.push(group)
+              group = null
+            }
+          }
 
-					var step = note.pitch.step
+          if (group == null) {
+            group = {
+              notes: []
+            }
+          }
 
-					step += function() {
-						if (note.accidental != undefined) {
-							var accidental = note.accidental
+          var key = function() {
 
-							if (accidental.__text != undefined) {
-								accidental = accidental.__text
-							}
+            if (note.rest != undefined) {
+              if (note.duration / divisions == 4.0) {
+                if (clef == "treble" || clef == "percussion")
+                  return "D5"
+                else if (clef == "alto")
+                  return "E4"
+                else if (clef == "bass")
+                  return "F3"
+              }
+              //console.warn("Rest duration: " + note.duration)
+              if (clef == "treble" || clef == "percussion")
+                return "B4"
+              else if (clef == "alto")
+                return "C4"
+              else if (clef == "bass")
+                return "D3"
+            }
 
-							switch (accidental) {
-							case "sharp":
-								return "#"
-							case "flat":
-								return "b"
-							case "natural":
-								return "n"
-							default:
-								return ""
-							}
-						}
-						return ""
-					}()
+            if (note.unpitched != undefined) {
+              return note.unpitched.displaystep + "" + note.unpitched.displayoctave
+            }
 
-					return step + "" + note.pitch.octave
-				}()
+            var step = note.pitch.step
 
-				var restVal = note.rest != undefined ? "/r" : ""
+            step += function() {
+              if (note.accidental != undefined) {
+                var accidental = note.accidental
 
-				var noteText = key + "/" + durationMap[note.duration / divisions] + restVal
+                if (accidental.__text != undefined) {
+                  accidental = accidental.__text
+                }
 
-				var attrs = []
+                switch (accidental) {
+                case "sharp":
+                  return "#"
+                case "flat":
+                  return "b"
+                case "natural":
+                  return "n"
+                default:
+                  return ""
+                }
+              }
+              return ""
+            }()
 
-				if (note.lyric != undefined) {
-					attrs.push({
-						key: "textAnnotation",
-						value: note.lyric.text
-					})
-				}
+            return step + "" + note.pitch.octave
+          }()
 
-				if (note.notations != undefined) {
-					if (note.notations.technical != undefined) {
-						if (note.notations.technical.downbow != undefined) {
-							attrs.push({
-								key: "bowing",
-								value: "down"
-							})
-						}
-						if (note.notations.technical.upbow != undefined) {
-							attrs.push({
-								key: "bowing",
-								value: "up"
-							})
-						}
-					}
-				}
+          var restVal = note.rest != undefined ? "/r" : ""
 
-				var fullNoteId = "note" + noteId
+          var noteText = key + "/" + durationMap[note.duration / divisions] + restVal
 
-				var midiData = getMidiInfoFromNoteObject(note, divisions)
-				midiData.noteId = fullNoteId
+          var attrs = []
 
-				var noteObj = {
-					note: noteText,
-					divisions: divisions,
-					midiData: midiData,
-					id: fullNoteId,
-					attributes: attrs,
-				}
+          if (note.lyric != undefined) {
+            attrs.push({
+              key: "textAnnotation",
+              value: note.lyric.text
+            })
+          }
 
-				noteId++
+          if (note.notations != undefined) {
+            if (note.notations.technical != undefined) {
+              if (note.notations.technical.downbow != undefined) {
+                attrs.push({
+                  key: "bowing",
+                  value: "down"
+                })
+              }
+              if (note.notations.technical.upbow != undefined) {
+                attrs.push({
+                  key: "bowing",
+                  value: "up"
+                })
+              }
+            }
+          }
 
-				group.notes.push(noteObj)
+          var fullNoteId = "note" + noteId
 
-				//should we end it and push it?
+          var midiData = getMidiInfoFromNoteObject(note, divisions)
+          midiData.noteId = fullNoteId
 
-				if (note.beam != undefined) {
-					if (note.beam.__text == "end") {
-						//set the stem direction
-						group.beam = true
-						group.stem_direction = note.stem
+          var noteObj = {
+            note: noteText,
+            divisions: divisions,
+            midiData: midiData,
+            id: fullNoteId,
+            attributes: attrs,
+          }
 
-						//push the old and make a new
-						if (group.notes.length > 0)
-							bar.groups.push(group)
-						group = null
-					}
-				}
+          noteId++
 
-			})
+          group.notes.push(noteObj)
 
-			//console.log("Pushing group:")
-			//console.log(group)
+          //should we end it and push it?
 
-			if (group != null)
-				bar.groups.push(group)
+          if (note.beam != undefined) {
+            if (note.beam.__text == "end") {
+              //set the stem direction
+              group.beam = true
+              group.stem_direction = note.stem
+
+              //push the old and make a new
+              if (group.notes.length > 0)
+                bar.groups.push(group)
+              group = null
+            }
+          }
+
+        })
+
+        //console.log("Pushing group:")
+        //console.log(group)
+
+        if (group != null)
+          bar.groups.push(group)
+
+      })
 
 			//get the full duration of the bar and put an alternate time signature in if needed
-			var calculatedDuration = notes.filter(function(note) {
+			var calculatedDuration = allNotes.filter(function(note) {
 			   return (note.voice == "1")
 			}).reduce(function(total, item) {
 				return total + Number(item.duration) / divisions
