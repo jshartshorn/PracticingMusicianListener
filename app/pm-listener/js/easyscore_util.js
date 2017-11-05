@@ -530,12 +530,20 @@ var EasyScoreUtil = function() {
         var voices = []
 
         for (var voiceKey in curBar.voices) {
+
+          console.log("Easy score voice:  " + voiceKey)
+
           var notesArray = Array()
 
           var voice = curBar.voices[voiceKey]
 
           for (var groupIndex in voice.groups) {
+
+            console.log("Group: " + groupIndex)
+
             var curGroup = voice.groups[groupIndex]
+
+            console.log(curGroup)
 
             var notesString = ""
 
@@ -586,10 +594,10 @@ var EasyScoreUtil = function() {
               additionalInfo.stem = curGroup.stem_direction
             }
 
-            var notes = curScore.notes(notesString, additionalInfo)
-
             console.log("Notes:")
             console.log(notesString)
+
+            var notes = curScore.notes(notesString, additionalInfo)
 
             //center the whole rests
             brokenUpNotes.forEach(function(noteInfo) {
@@ -608,8 +616,8 @@ var EasyScoreUtil = function() {
               var note = notes.find(function(n) {
                 return n.attrs.id == noteInfo.id
               })
-              //console.log("Found note:")
-              //console.log(note)
+              console.log("Found note:")
+              console.log(noteInfo)
               noteInfo.attributes.forEach(function(attr) {
                 switch (attr.key) {
                 case "bowing":
@@ -620,6 +628,11 @@ var EasyScoreUtil = function() {
                   break
                 case "textAnnotation":
                   note.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3))
+                  break
+                case "stem":
+                  var stem_direction = 1
+                  if (attr.value == "down") stem_direction = -1
+                  note.setStemDirection(stem_direction)
                   break
                 default:
                   console.warn("Unknown note attribute: ")
@@ -643,11 +656,14 @@ var EasyScoreUtil = function() {
           console.log(notesArray)
           console.log("for voice " + voiceKey)
 
-          voices.push(
-            curScore.voice(notesArray.reduce(concat), {
-							time: barTime
-						})
-          )
+          if (notesArray.length > 0) {
+            voices.push(
+              curScore.voice(notesArray.reduce(concat), {
+                time: barTime
+              })
+            )
+          }
+
         }
 
 

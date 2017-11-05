@@ -540,6 +540,13 @@ var jsMusicXMLConverter = function() {
             })
           }
 
+          if (note.stem != undefined) {
+            attrs.push({
+              key: "stem",
+              value: note.stem
+            })
+          }
+
           if (note.notations != undefined) {
             if (note.notations.technical != undefined) {
               if (note.notations.technical.downbow != undefined) {
@@ -584,8 +591,10 @@ var jsMusicXMLConverter = function() {
               group.stem_direction = note.stem
 
               //push the old and make a new
-              if (group.notes.length > 0)
+              if (group.notes.length > 0) {
+                console.log("Pushing group")
                 bar.voices[voiceKey].groups.push(group)
+              }
               group = null
             }
           }
@@ -595,8 +604,10 @@ var jsMusicXMLConverter = function() {
         //console.log("Pushing group:")
         //console.log(group)
 
-        if (group != null)
+        if (group != null && group.notes.length > 0) {
+          console.log("Pushing group")
           bar.voices[voiceKey].groups.push(group)
+        }
 
       })
 
