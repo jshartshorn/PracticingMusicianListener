@@ -547,6 +547,13 @@ var jsMusicXMLConverter = function() {
             })
           }
 
+          if (note.notehead != undefined) {
+            attrs.push({
+              key: "notehead",
+              value: note.notehead
+            })
+          }
+
           if (note.notations != undefined) {
             if (note.notations.technical != undefined) {
               if (note.notations.technical.downbow != undefined) {

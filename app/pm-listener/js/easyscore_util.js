@@ -568,6 +568,7 @@ var EasyScoreUtil = function() {
               if (noteIndex > 0) {
                 notesString += ","
               }
+
               notesString += note.note
 
               //pm_log("Creating note id " + this.noteIDNumber,10)
@@ -633,6 +634,10 @@ var EasyScoreUtil = function() {
                   var stem_direction = 1
                   if (attr.value == "down") stem_direction = -1
                   note.setStemDirection(stem_direction)
+                  break
+                case "notehead":
+                  console.log("Working on note:")
+                  console.log(note)
                   break
                 default:
                   console.warn("Unknown note attribute: ")
