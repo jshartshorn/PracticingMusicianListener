@@ -496,21 +496,23 @@ var jsMusicXMLConverter = function() {
                   noteOctave = "3"
                   //return "F3"
                 }
+              } else {
+                //console.warn("Rest duration: " + note.duration)
+                if (clef == "treble" || clef == "percussion") {
+                  notePitch = "B"
+                  noteOctave = "4"
+                  //return "B4"
+                } else if (clef == "alto") {
+                  notePitch = "C"
+                  noteOctave = "4"
+                  //return "C4"
+                } else if (clef == "bass") {
+                  notePitch = "D"
+                  noteOctave = "3"
+                  //return "D3"
+                }
               }
-              //console.warn("Rest duration: " + note.duration)
-              if (clef == "treble" || clef == "percussion") {
-                notePitch = "B"
-                noteOctave = "4"
-                //return "B4"
-              } else if (clef == "alto") {
-                notePitch = "C"
-                noteOctave = "4"
-                //return "C4"
-              } else if (clef == "bass") {
-                notePitch = "D"
-                noteOctave = "3"
-                //return "D3"
-              }
+
             }
 
             if (note.unpitched != undefined) {
@@ -561,7 +563,7 @@ var jsMusicXMLConverter = function() {
               octave: noteOctave,
               accidental: accidental,
               rest: note.rest != undefined ? true : false,
-              duration: (note.duration / divisions)
+              duration: durationMap[note.duration / divisions]
             }
 
           }()

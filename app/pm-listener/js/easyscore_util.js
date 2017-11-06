@@ -527,6 +527,45 @@ var EasyScoreUtil = function() {
 
 				var stave = this.makeStave(barOptions,curVf);
         stave.setContext(curVf.context);
+
+
+        if (curBar.extra_attributes != undefined) {
+					for (var attr in curBar.extra_attributes) {
+						var value = curBar.extra_attributes[attr]
+						switch (attr) {
+						case "time_signature":
+							stave.addTimeSignature(value)
+							break
+						case "clef":
+							stave.addClef(value)
+							break
+						case "key_signature":
+							stave.addKeySignature(value)
+							break
+						case "barlines":
+							if (value.length == 0) break
+							value.forEach(function(barline) {
+								switch (barline.repeatType) {
+								case "begin":
+									stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN)
+									break
+								case "end":
+									stave.setEndBarType(VF.Barline.type.REPEAT_END)
+									break
+								default:
+									pm_log("Unknown attribute:" + attr, 10)
+								}
+							})
+
+							break
+						default:
+							pm_log("Unknown attribute:" + attr, 10)
+							break
+						}
+					}
+				}
+
+
         stave.draw();
 
         var vfVoices = []
@@ -564,10 +603,51 @@ var EasyScoreUtil = function() {
               console.log(note)
 
               var vfNote = curVf.StaveNote({
-                keys: [note.pitch.toLowerCase() + "/" + note.octave],
-                duration: "" + note.duration,
-                id: "note" + this.noteIDNumber
+                keys: [note.pitch.toLowerCase() + "/" + note.octave], //TODO: notehead for percussion (in key)
+                duration: "" + note.duration + (note.rest ? "r" : ""),
+                id: "note" + this.noteIDNumber,
+                clef: currentClef,
               })
+
+              //TODO: check naturals
+              if (note.accidental != "") {
+                vfNote.addAccidental(0, new VF.Accidental(note.accidental))
+              }
+
+              note.attributes.forEach(function(attr) {
+                switch (attr.key) {
+                case "bowing":
+                  var symbol = function(bowDirection) {
+                    return bowDirection == "up" ? "a|" : "am"
+                  }(attr.value)
+                  vfNote.addArticulation(0, new VF.Articulation(symbol).setPosition(3))
+                  break
+                case "textAnnotation":
+                  vfNote.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3))
+                  break
+                case "stem":
+                  var stem_direction = 1
+                  if (attr.value == "down") stem_direction = -1
+                  vfNote.setStemDirection(stem_direction)
+                  break
+                case "notehead":
+                  console.log("Working on note:")
+                  console.log(note)
+                  break
+                default:
+                  console.warn("Unknown note attribute: ")
+                  console.log(attr)
+                }
+              })
+
+
+              //TODO: set ID
+              //TODO: annotation/articulation
+              //TODO: stem direction
+              //TODO: barlines / repeats
+              //TODO: beaming
+              //TODO: whole rest centering
+
 
               console.log("note:")
               console.log(vfNote)
