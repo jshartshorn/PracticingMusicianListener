@@ -478,58 +478,99 @@ var jsMusicXMLConverter = function() {
 
           var key = function() {
 
+            var notePitch = null
+            var noteOctave = null
+
             if (note.rest != undefined) {
               if (note.duration / divisions == 4.0) {
-                if (clef == "treble" || clef == "percussion")
-                  return "D5"
-                else if (clef == "alto")
-                  return "E4"
-                else if (clef == "bass")
-                  return "F3"
+                if (clef == "treble" || clef == "percussion") {
+                  notePitch = "D"
+                  noteOctave = "5"
+                  //return "D5"
+                } else if (clef == "alto") {
+                  notePitch = "E"
+                  noteOctave = "4"
+                  //return "E4"
+                } else if (clef == "bass") {
+                  notePitch = "F"
+                  noteOctave = "3"
+                  //return "F3"
+                }
               }
               //console.warn("Rest duration: " + note.duration)
-              if (clef == "treble" || clef == "percussion")
-                return "B4"
-              else if (clef == "alto")
-                return "C4"
-              else if (clef == "bass")
-                return "D3"
+              if (clef == "treble" || clef == "percussion") {
+                notePitch = "B"
+                noteOctave = "4"
+                //return "B4"
+              } else if (clef == "alto") {
+                notePitch = "C"
+                noteOctave = "4"
+                //return "C4"
+              } else if (clef == "bass") {
+                notePitch = "D"
+                noteOctave = "3"
+                //return "D3"
+              }
             }
 
             if (note.unpitched != undefined) {
-              return note.unpitched.displaystep + "" + note.unpitched.displayoctave
+              notePitch = note.unpitched.displaystep
+              noteOctave = note.unpitched.displayoctave
+              //return note.unpitched.displaystep + "" + note.unpitched.displayoctave
             }
 
-            var step = note.pitch.step
+            var step = ""
+            var accidental = ""
 
-            step += function() {
-              if (note.accidental != undefined) {
-                var accidental = note.accidental
+            if (note.pitch != undefined) {
 
-                if (accidental.__text != undefined) {
-                  accidental = accidental.__text
+              var step = note.pitch.step
+
+              var accidental = function() {
+                if (note.accidental != undefined) {
+                  var accidental = note.accidental
+
+                  if (accidental.__text != undefined) {
+                    accidental = accidental.__text
+                  }
+
+                  switch (accidental) {
+                  case "sharp":
+                    return "#"
+                  case "flat":
+                    return "b"
+                  case "natural":
+                    return "n"
+                  default:
+                    return ""
+                  }
                 }
+                return ""
+              }()
+            }
 
-                switch (accidental) {
-                case "sharp":
-                  return "#"
-                case "flat":
-                  return "b"
-                case "natural":
-                  return "n"
-                default:
-                  return ""
-                }
-              }
-              return ""
-            }()
 
-            return step + "" + note.pitch.octave
+            if (notePitch == null || noteOctave == null) {
+              notePitch = step
+              noteOctave = note.pitch.octave
+            }
+
+            return {
+              easyScoreInfo: notePitch + accidental + noteOctave,
+              pitch: notePitch,
+              octave: noteOctave,
+              accidental: accidental,
+              rest: note.rest != undefined ? true : false,
+              duration: (note.duration / divisions)
+            }
+
           }()
 
-          var restVal = note.rest != undefined ? "/r" : ""
+          var restVal = key.rest ? "/r" : ""
 
-          var noteText = key + "/" + durationMap[note.duration / divisions] + restVal
+          var noteText = key.easyScoreInfo + "/" + durationMap[key.duration] + restVal
+
+          key.note = noteText
 
           var attrs = []
 
@@ -571,23 +612,22 @@ var jsMusicXMLConverter = function() {
             }
           }
 
+          key.attributes = attrs
+
           var fullNoteId = "note" + noteId
+          key.id = fullNoteId
 
           var midiData = getMidiInfoFromNoteObject(note, divisions)
           midiData.noteId = fullNoteId
+          key.midiData = midiData
 
-          var noteObj = {
-            note: noteText,
-            voice: voiceKey,
-            divisions: divisions,
-            midiData: midiData,
-            id: fullNoteId,
-            attributes: attrs,
-          }
+          key.divisions = divisions
+          key.voice = voiceKey
+
 
           noteId++
 
-          group.notes.push(noteObj)
+          group.notes.push(key)
 
           //should we end it and push it?
 
