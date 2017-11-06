@@ -492,6 +492,11 @@ var EasyScoreUtil = function() {
 	}
 
   this.notateExercise = function() {
+
+    var totalBars = this.exercise.systems.reduce(function(total, cur) {
+      return total + cur.bars.length
+    }, 0)
+
     var curVf = this.vfs[0]
 
     var barCounter = 0
@@ -502,6 +507,8 @@ var EasyScoreUtil = function() {
       var curLine = this.exercise.systems[lineIndex]
 
       for (var barIndex in curLine.bars) {
+        var beams = []
+
 				var curBar = curLine.bars[barIndex]
 
 				if (curBar.extra_attributes != undefined && curBar.extra_attributes.clef != undefined) {
@@ -565,6 +572,11 @@ var EasyScoreUtil = function() {
 					}
 				}
 
+				//if it's the last bar, make the bar line the correct end bar
+				if (barCounter == totalBars - 1) {
+					stave.setEndBarType(VF.Barline.type.END)
+				}
+
 
         stave.draw();
 
@@ -596,6 +608,8 @@ var EasyScoreUtil = function() {
 
             var brokenUpNotes = curGroup.notes //[0].split(",")
 
+            var groupNotes = []
+
             for (var noteIndex in brokenUpNotes) {
               var note = brokenUpNotes[noteIndex]
 
@@ -609,7 +623,6 @@ var EasyScoreUtil = function() {
                 clef: currentClef,
               })
 
-              //TODO: check naturals
               if (note.accidental != "") {
                 vfNote.addAccidental(0, new VF.Accidental(note.accidental))
               }
@@ -642,19 +655,21 @@ var EasyScoreUtil = function() {
 
 
               //TODO: set ID
-              //TODO: annotation/articulation
-              //TODO: stem direction
-              //TODO: barlines / repeats
-              //TODO: beaming
+              //TODO: pagination
               //TODO: whole rest centering
-
 
               console.log("note:")
               console.log(vfNote)
 
               vfNotes.push(vfNote)
+              groupNotes.push(vfNote)
 
               this.noteIDNumber++
+            }
+
+            if (curGroup.beam === true) {
+              var beam = curVf.Beam({notes: groupNotes})
+              beams.push(beam)
             }
 
           }
@@ -668,6 +683,11 @@ var EasyScoreUtil = function() {
 
         vfVoices.forEach(function(voice) {
           voice.draw(curVf.context,stave)
+        })
+
+        beams.forEach(function(beam) {
+          console.log("Drawing beam")
+          beam.draw()
         })
 
         barCounter++;
