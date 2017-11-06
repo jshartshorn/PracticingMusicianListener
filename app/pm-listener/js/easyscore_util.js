@@ -44,7 +44,7 @@ var EasyScoreUtil = function() {
 
 	//array of systems (really measures...) that have been added to the screen
 	//useful for getting placement information later
-	this.systems = Array()
+	this.staves = Array()
 
 	//formatting info for the notation
 	this.contentScaleFactor = 1.0
@@ -504,7 +504,7 @@ var EasyScoreUtil = function() {
 
 				var stave = this.makeStave(barOptions,curVf);
         stave.setContext(curVf.context);
-
+        this.staves.push(stave)
 
         if (curBar.extra_attributes != undefined) {
 					for (var attr in curBar.extra_attributes) {
@@ -589,9 +589,13 @@ var EasyScoreUtil = function() {
               var vfNote = curVf.StaveNote({
                 keys: [note.pitch.toLowerCase() + "/" + note.octave], //TODO: notehead for percussion (in key)
                 duration: "" + note.duration + (note.rest ? "r" : ""),
-                id: "note" + this.noteIDNumber,
                 clef: currentClef,
               })
+
+              //set the page number so that we can find it later
+              var otherNote = this.exercise.notes.find(function(n) {
+                return n.noteId == note.id
+              }).page = curPageNumber
 
               if (note.duration == "w" && note.rest) {
                 vfNote.align_center = true
@@ -629,7 +633,7 @@ var EasyScoreUtil = function() {
               })
 
 
-              this.notesById["note" + this.noteIDNumber] = vfNote
+              this.notesById[note.id] = vfNote
 
               console.log("note:")
               console.log(vfNote)
@@ -707,8 +711,8 @@ var EasyScoreUtil = function() {
 		//percentage between the elements that the beat exists in
 		var percent = null
 
-		//pm_log("Searching for beat " + beat + " in",10)
-		//pm_log(this.exercise.notes,10)
+//		pm_log("Searching for beat " + beat + " in",10)
+//		pm_log(this.exercise.notes,10)
 
 		//this pulls from generatedExercise, which is the non-EasyScore set of notes and durations
 		for (var index in this.exercise.notes) {
@@ -799,7 +803,7 @@ var EasyScoreUtil = function() {
 
 	//get a basic representation of the stave, for things like height
 	this.getBasicStave = function() {
-		return this.systems[0].parts[0].stave
+		return this.staves[0]
 	}
 
 	this.getStaveForBeat = function(beat) {
