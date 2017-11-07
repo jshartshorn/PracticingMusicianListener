@@ -594,12 +594,8 @@ var EasyScoreUtil = function() {
               }
               //set the page number so that we can find it later
               //TODO: reimplement getting page number
-              console.log("Finding in:")
-              console.log(this.exercise.notes.find)
               var otherNote = this.exercise.notes.find(function(n) {
-                return n.find()
-                //return true
-                //return n.noteId == note.id
+                return n.noteId == notes[0].id
               }).page = curPageNumber
 
               //console.log("Making note out of:")
