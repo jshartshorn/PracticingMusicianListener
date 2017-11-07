@@ -591,10 +591,11 @@ var jsMusicXMLConverter = function() {
           }
 
           if (note.notehead != undefined) {
-            attrs.push({
-              key: "notehead",
-              value: note.notehead
-            })
+            key.notehead = note.notehead
+//            attrs.push({
+//              key: "notehead",
+//              value: note.notehead
+//            })
           }
 
           if (note.notations != undefined) {

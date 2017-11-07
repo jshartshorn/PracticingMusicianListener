@@ -555,12 +555,12 @@ var EasyScoreUtil = function() {
 
         for (var voiceKey in curBar.voices) {
 
+          //TODO: it's not getting the second voice
           console.log("Easy score voice:  " + voiceKey)
-
-          var notesArray = Array()
 
           var voice = curBar.voices[voiceKey]
 
+          console.log(voice)
 
           var vfVoice = curVf.Voice();
           vfVoice.setStrict(false) //TODO: remove this and set the time
@@ -583,11 +583,12 @@ var EasyScoreUtil = function() {
             for (var noteIndex in brokenUpNotes) {
               var note = brokenUpNotes[noteIndex]
 
-              console.log("Making note out of:")
-              console.log(note)
+              //console.log("Making note out of:")
+              //console.log(note)
+              var notehead = (note.notehead == undefined ? "" : "/" + note.notehead + "2") //warning brittle
 
               var vfNote = curVf.StaveNote({
-                keys: [note.pitch.toLowerCase() + "/" + note.octave], //TODO: notehead for percussion (in key)
+                keys: [note.pitch + "/" + note.octave + notehead],
                 duration: "" + note.duration + (note.rest ? "r" : ""),
                 clef: currentClef,
               })
@@ -623,8 +624,8 @@ var EasyScoreUtil = function() {
                   vfNote.setStemDirection(stem_direction)
                   break
                 case "notehead":
-                  console.log("Working on note:")
-                  console.log(note)
+                  //console.log("Working on note:")
+                  //console.log(note)
                   break
                 default:
                   console.warn("Unknown note attribute: ")
@@ -635,8 +636,8 @@ var EasyScoreUtil = function() {
 
               this.notesById[note.id] = vfNote
 
-              console.log("note:")
-              console.log(vfNote)
+              //console.log("note:")
+              //console.log(vfNote)
 
               vfNotes.push(vfNote)
               groupNotes.push(vfNote)
@@ -652,6 +653,9 @@ var EasyScoreUtil = function() {
           }
 
           vfVoice.addTickables(vfNotes)
+          console.log("Tickables:")
+          if (vfVoice.tickables.length == 0)
+            vfVoices.splice(vfVoices.indexOf(vfVoice))
 
         }
 
