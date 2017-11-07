@@ -581,58 +581,71 @@ var EasyScoreUtil = function() {
             var groupNotes = []
 
             for (var noteIndex in brokenUpNotes) {
-              var note = brokenUpNotes[noteIndex]
+              var notes = brokenUpNotes[noteIndex]
+
+              var keys = []
+              var duration = ""
+              for (var i in notes) {
+                var note = notes[i]
+                var notehead = (note.notehead == undefined ? "" : "/" + note.notehead + "2") //warning brittle
+                var key = note.pitch + "/" + note.octave + notehead
+                duration = "" + note.duration + (note.rest ? "r" : "")
+                keys.push(key)
+              }
+              //set the page number so that we can find it later
+              //TODO: reimplement getting page number
+              console.log("Finding in:")
+              console.log(this.exercise.notes.find)
+              var otherNote = this.exercise.notes.find(function(n) {
+                return n.find()
+                //return true
+                //return n.noteId == note.id
+              }).page = curPageNumber
 
               //console.log("Making note out of:")
               //console.log(note)
-              var notehead = (note.notehead == undefined ? "" : "/" + note.notehead + "2") //warning brittle
 
               var vfNote = curVf.StaveNote({
-                keys: [note.pitch + "/" + note.octave + notehead],
-                duration: "" + note.duration + (note.rest ? "r" : ""),
+                keys: keys,
+                duration: duration,
                 clef: currentClef,
               })
 
-              //set the page number so that we can find it later
-              var otherNote = this.exercise.notes.find(function(n) {
-                return n.noteId == note.id
-              }).page = curPageNumber
+              for (var i in notes) {
+                var note = notes[i]
 
-              if (note.duration == "w" && note.rest) {
-                vfNote.align_center = true
-                vfNote.x_shift = 0
-              }
-
-              if (note.accidental != "") {
-                vfNote.addAccidental(0, new VF.Accidental(note.accidental))
-              }
-
-              note.attributes.forEach(function(attr) {
-                switch (attr.key) {
-                case "bowing":
-                  var symbol = function(bowDirection) {
-                    return bowDirection == "up" ? "a|" : "am"
-                  }(attr.value)
-                  vfNote.addArticulation(0, new VF.Articulation(symbol).setPosition(3))
-                  break
-                case "textAnnotation":
-                  vfNote.addAnnotation(0, new VF.Annotation(attr.value).setPosition(3))
-                  break
-                case "stem":
-                  var stem_direction = 1
-                  if (attr.value == "down") stem_direction = -1
-                  vfNote.setStemDirection(stem_direction)
-                  break
-                case "notehead":
-                  //console.log("Working on note:")
-                  //console.log(note)
-                  break
-                default:
-                  console.warn("Unknown note attribute: ")
-                  console.log(attr)
+                if (note.duration == "w" && note.rest) {
+                  vfNote.align_center = true
+                  vfNote.x_shift = 0
                 }
-              })
 
+                if (note.accidental != "") {
+                  vfNote.addAccidental(0, new VF.Accidental(note.accidental))
+                }
+
+                note.attributes.forEach(function(attr) {
+                  switch (attr.key) {
+                  case "bowing":
+                    var symbol = function(bowDirection) {
+                      return bowDirection == "up" ? "a|" : "am"
+                    }(attr.value)
+                    vfNote.addArticulation(i, new VF.Articulation(symbol).setPosition(3))
+                    break
+                  case "textAnnotation":
+                    vfNote.addAnnotation(i, new VF.Annotation(attr.value).setPosition(3))
+                    break
+                  case "stem":
+                    var stem_direction = 1
+                    if (attr.value == "down") stem_direction = -1
+                    vfNote.setStemDirection(stem_direction)
+                    break
+                  default:
+                    console.warn("Unknown note attribute: ")
+                    console.log(attr)
+                  }
+                })
+
+              }
 
               this.notesById[note.id] = vfNote
 

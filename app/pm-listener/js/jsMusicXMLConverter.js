@@ -440,8 +440,6 @@ var jsMusicXMLConverter = function() {
          groups: []
         }
 
-        console.log("Key: " + voiceKey)
-
         var notes = voices[voiceKey].notes
 
         var group = {
@@ -551,6 +549,10 @@ var jsMusicXMLConverter = function() {
               }()
             }
 
+            var notehead = undefined
+            if (note.notehead != undefined) {
+              notehead = note.notehead
+            }
 
             if (notePitch == null || noteOctave == null) {
               notePitch = step
@@ -563,7 +565,8 @@ var jsMusicXMLConverter = function() {
               octave: noteOctave,
               accidental: accidental,
               rest: note.rest != undefined ? true : false,
-              duration: durationMap[note.duration / divisions]
+              duration: durationMap[note.duration / divisions],
+              notehead: notehead
             }
 
           }()
@@ -573,6 +576,7 @@ var jsMusicXMLConverter = function() {
           var noteText = key.easyScoreInfo + "/" + durationMap[key.duration] + restVal
 
           key.note = noteText
+
 
           var attrs = []
 
@@ -588,14 +592,6 @@ var jsMusicXMLConverter = function() {
               key: "stem",
               value: note.stem
             })
-          }
-
-          if (note.notehead != undefined) {
-            key.notehead = note.notehead
-//            attrs.push({
-//              key: "notehead",
-//              value: note.notehead
-//            })
           }
 
           if (note.notations != undefined) {
@@ -630,7 +626,16 @@ var jsMusicXMLConverter = function() {
 
           noteId++
 
-          group.notes.push(key)
+          if (note.chord != undefined) {
+            console.log("CHORD!")
+
+            //get the last item and add to it
+            group.notes[group.notes.length - 1].push(key)
+
+
+          } else {
+            group.notes.push([key])
+          }
 
           //should we end it and push it?
 
@@ -655,7 +660,6 @@ var jsMusicXMLConverter = function() {
         //console.log(group)
 
         if (group != null && group.notes.length > 0) {
-          console.log("Pushing group")
           bar.voices[voiceKey].groups.push(group)
         }
 
@@ -663,7 +667,7 @@ var jsMusicXMLConverter = function() {
 
 			//get the full duration of the bar and put an alternate time signature in if needed
 			var calculatedDuration = allNotes.filter(function(note) {
-			   return (note.voice == "1")
+			   return (note.voice == "1") //TODO -- don't use if it's a chord
 			}).reduce(function(total, item) {
 				return total + Number(item.duration) / divisions
 			}, 0)
@@ -726,7 +730,7 @@ var jsMusicXMLConverter = function() {
             groups.forEach(function(group) {
 
               group.notes.forEach(function(note) {
-                toRetNotes.push(note.midiData)
+                toRetNotes.push(note)
               })
 
             })
