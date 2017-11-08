@@ -730,7 +730,7 @@ var jsMusicXMLConverter = function() {
             groups.forEach(function(group) {
 
               group.notes.forEach(function(note) {
-                toRetNotes.push(note[0].midiData) //TODO -- may need to fix this
+                toRetNotes.push(note[0].midiData) //TODO -- may need to fix this and include both notes of the chord?
               })
 
             })

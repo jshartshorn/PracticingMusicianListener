@@ -593,7 +593,7 @@ var EasyScoreUtil = function() {
                 keys.push(key)
               }
               //set the page number so that we can find it later
-              //TODO: reimplement getting page number
+
               var otherNote = this.exercise.notes.find(function(n) {
                 return n.noteId == notes[0].id
               }).page = curPageNumber
@@ -616,7 +616,7 @@ var EasyScoreUtil = function() {
                 }
 
                 if (note.accidental != "") {
-                  vfNote.addAccidental(0, new VF.Accidental(note.accidental))
+                  vfNote.addAccidental(i, new VF.Accidental(note.accidental))
                 }
 
                 note.attributes.forEach(function(attr) {
