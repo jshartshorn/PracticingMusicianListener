@@ -53,6 +53,8 @@ var EasyScoreUtil = function() {
 	this.barHeight = 160
 	this.firstBarAddition = 100
 
+	this.feedbackMargin = 20
+
 	this.numberOfSystemsPerPage = 999 //avoids pagination for now
 	this.numberOfPages = -1 //will get set later
 
@@ -861,7 +863,7 @@ var EasyScoreUtil = function() {
 	//get the Y coordinate for feedback items
 	this.getFeedbackYPosition = function(topStaveY) {
 		var stave = this.getBasicStave()
-		var pos = stave.height + topStaveY + 40
+		var pos = stave.height + topStaveY + this.feedbackMargin
 		return pos
 	}
 
@@ -869,11 +871,23 @@ var EasyScoreUtil = function() {
 		var positionForBeat = this.getPositionForBeat(beat)
 		var x = positionForBeat.x
 		var y = this.getFeedbackYPosition(positionForBeat.y)
+
+		//see if we need to increment it because of a repeat
+		var feedbackObjectID = ""
+		while (true) {
+		  feedbackObjectID = "__feedbackItem_x" + x + "_y" + y
+		  if (document.getElementById(feedbackObjectID) == undefined) {
+		    break
+		  }
+		  y += this.feedbackMargin
+		}
+
 		var pageNum = positionForBeat.page
 
 		var feedbackWidth = 16 * this.contentScaleFactor
 		var obj = document.createElement("div")
 		obj.className = "feedbackItem"
+		obj.id = feedbackObjectID
 
 		//console.log("Feedback type:")
 		//console.log(feedbackType.name$)
@@ -911,6 +925,8 @@ var EasyScoreUtil = function() {
 			return itemObj
 		})
 
+    //see if there's already one at that location
+    //TODO: should be redundant now with above check for feedbackItem
 		var feedbackContainerDivId = "feedbackItem_x" + x + "_y" + y
 		var feedbackContainerObj = document.getElementById(feedbackContainerDivId)
 
