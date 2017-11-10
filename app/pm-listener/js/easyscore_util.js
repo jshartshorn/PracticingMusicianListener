@@ -555,12 +555,9 @@ var EasyScoreUtil = function() {
 
         for (var voiceKey in curBar.voices) {
 
-          //TODO: it's not getting the second voice
-          console.log("Easy score voice:  " + voiceKey)
+          //console.log("Easy score voice:  " + voiceKey)
 
           var voice = curBar.voices[voiceKey]
-
-          console.log(voice)
 
           var vfVoice = curVf.Voice();
           vfVoice.setStrict(false) //TODO: remove this and set the time
@@ -570,7 +567,7 @@ var EasyScoreUtil = function() {
 
           for (var groupIndex in voice.groups) {
 
-            console.log("Group: " + groupIndex)
+            //console.log("Group: " + groupIndex)
 
             var curGroup = voice.groups[groupIndex]
 
@@ -662,7 +659,6 @@ var EasyScoreUtil = function() {
           }
 
           vfVoice.addTickables(vfNotes)
-          console.log("Tickables:")
           if (vfVoice.tickables.length == 0)
             vfVoices.splice(vfVoices.indexOf(vfVoice))
 

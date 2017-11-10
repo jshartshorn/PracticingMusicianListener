@@ -706,6 +706,8 @@ var jsMusicXMLConverter = function() {
 		var toRetNotes = []
 		var repeats = []
 
+    //TODO: maybe split these up by voice?
+
 		systems.forEach(function(system) {
 			system.bars.forEach(function(bar) {
 
