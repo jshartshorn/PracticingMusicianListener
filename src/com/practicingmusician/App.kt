@@ -255,8 +255,8 @@ public class ListenerApp {
     fun doResizeActions() {
         pm_log("Resized window w/ container: " + this.parameters.notationContainerName,10)
 
-        val oldSVG = document.getElementsByTagName("svg").get(0) as Element
-        oldSVG.parentNode?.removeChild(oldSVG)
+        val oldSVG = document.getElementsByTagName("svg").get(0)
+        oldSVG?.parentNode?.removeChild(oldSVG)
 
         listenerApp.makeScore(this.parameters.notationContainerName,this.parameters.controlsContainerName)
         val copyOfFeedbackItems = listenerApp.currentFeedbackItems.toList()
@@ -269,6 +269,7 @@ public class ListenerApp {
         //clear the previous indicator first
         val indicatorCanvas = document.getElementById("indicatorCanvas") as? HTMLCanvasElement
         indicatorCanvas?.getContext("2d").asDynamic().clearRect(0, 0, indicatorCanvas?.width, indicatorCanvas?.height);
+        this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat))
         this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
     }
 
@@ -306,11 +307,6 @@ public class ListenerApp {
     //add a feedback item to a certain beat
     fun addFeedbackItem(feedbackItem : FeedbackItem) {
         if (currentFeedbackItems.indexOf(feedbackItem) == -1) currentFeedbackItems += feedbackItem
-        val positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat)
-        //pm_log("Position for beat: ",10)
-        //pm_log(positionForBeat,10)
-        val positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
-        //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
-        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),positionForBeat.x,positionY)
+        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),feedbackItem.beat)
     }
 }
