@@ -21,7 +21,6 @@ var PracticingMusician = function (_, Kotlin) {
   var last = Kotlin.kotlin.collections.last_2p1efm$;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var mapOf = Kotlin.kotlin.collections.mapOf_qfcya0$;
-  var get_indices = Kotlin.kotlin.collections.get_indices_gzk92b$;
   var println = Kotlin.kotlin.io.println_s8jyv4$;
   var IntRange = Kotlin.kotlin.ranges.IntRange;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
@@ -178,17 +177,17 @@ var PracticingMusician = function (_, Kotlin) {
       Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Completed_getInstance());
   };
   ListenerApp.prototype.doResizeActions = function () {
-    var tmp$, tmp$_0;
+    var tmp$;
     pm_log('Resized window w/ container: ' + this.parameters.notationContainerName, 10);
-    var oldSVG = Kotlin.isType(tmp$ = document.getElementsByTagName('svg')[0], Element) ? tmp$ : Kotlin.throwCCE();
-    (tmp$_0 = oldSVG.parentNode) != null ? tmp$_0.removeChild(oldSVG) : null;
+    var oldSVG = document.getElementsByTagName('svg')[0];
+    (tmp$ = oldSVG != null ? oldSVG.parentNode : null) != null ? tmp$.removeChild(oldSVG) : null;
     listenerApp.makeScore_puj7f4$(this.parameters.notationContainerName, this.parameters.controlsContainerName);
     var copyOfFeedbackItems = toList_0(listenerApp.currentFeedbackItems);
     listenerApp.clearFeedbackItems();
-    var tmp$_1;
-    tmp$_1 = copyOfFeedbackItems.iterator();
-    while (tmp$_1.hasNext()) {
-      var element = tmp$_1.next();
+    var tmp$_0;
+    tmp$_0 = copyOfFeedbackItems.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
       listenerApp.addFeedbackItem_775p9r$(element);
     }
   };
@@ -196,6 +195,7 @@ var PracticingMusician = function (_, Kotlin) {
     var tmp$;
     var indicatorCanvas = Kotlin.isType(tmp$ = document.getElementById('indicatorCanvas'), HTMLCanvasElement) ? tmp$ : null;
     (indicatorCanvas != null ? indicatorCanvas.getContext('2d') : null).clearRect(0, 0, indicatorCanvas != null ? indicatorCanvas.width : null, indicatorCanvas != null ? indicatorCanvas.height : null);
+    this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat));
     this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat);
   };
   ListenerApp.prototype.highlightMetronomeItem_za3lpa$ = function (itemNumber) {
@@ -230,12 +230,10 @@ var PracticingMusician = function (_, Kotlin) {
     if (this.currentFeedbackItems.indexOf_11rb$(feedbackItem) === -1) {
       this.currentFeedbackItems.add_11rb$(feedbackItem);
     }
-    var positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat);
-    var positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y);
     var tmp$ = this.scoreUtil;
     var tmp$_0 = feedbackItem.type;
     var $receiver = feedbackItem.feedbackItemType;
-    tmp$.createFeedbackHTMLElement(tmp$_0, Kotlin.kotlin.collections.copyToArray($receiver), positionForBeat.x, positionY);
+    tmp$.createFeedbackHTMLElement(tmp$_0, Kotlin.kotlin.collections.copyToArray($receiver), feedbackItem.beat);
   };
   ListenerApp.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -465,9 +463,10 @@ var PracticingMusician = function (_, Kotlin) {
   SimpleJSNoteObject.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.noteNumber, other.noteNumber) && Kotlin.equals(this.duration, other.duration) && Kotlin.equals(this.id, other.id)))));
   };
-  function BeatPosition(x, y) {
+  function BeatPosition(x, y, page) {
     this.x = x;
     this.y = y;
+    this.page = page;
   }
   BeatPosition.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -480,20 +479,24 @@ var PracticingMusician = function (_, Kotlin) {
   BeatPosition.prototype.component2 = function () {
     return this.y;
   };
-  BeatPosition.prototype.copy_lu1900$ = function (x, y) {
-    return new BeatPosition(x === void 0 ? this.x : x, y === void 0 ? this.y : y);
+  BeatPosition.prototype.component3 = function () {
+    return this.page;
+  };
+  BeatPosition.prototype.copy_syxxoe$ = function (x, y, page) {
+    return new BeatPosition(x === void 0 ? this.x : x, y === void 0 ? this.y : y, page === void 0 ? this.page : page);
   };
   BeatPosition.prototype.toString = function () {
-    return 'BeatPosition(x=' + Kotlin.toString(this.x) + (', y=' + Kotlin.toString(this.y)) + ')';
+    return 'BeatPosition(x=' + Kotlin.toString(this.x) + (', y=' + Kotlin.toString(this.y)) + (', page=' + Kotlin.toString(this.page)) + ')';
   };
   BeatPosition.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.x) | 0;
     result = result * 31 + Kotlin.hashCode(this.y) | 0;
+    result = result * 31 + Kotlin.hashCode(this.page) | 0;
     return result;
   };
   BeatPosition.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y) && Kotlin.equals(this.page, other.page)))));
   };
   function TunerModes(name, ordinal) {
     Enum.call(this);
@@ -850,6 +853,7 @@ var PracticingMusician = function (_, Kotlin) {
   function ExerciseManager$setup$lambda(this$ExerciseManager) {
     return function (it) {
       var tmp$;
+      listenerApp.scoreUtil.changePlayButton('stopped');
       this$ExerciseManager.audioManager.cancelAllAudio();
       this$ExerciseManager.metronome.cancelAllUIUpdates();
       var samplesLength = this$ExerciseManager.pitchTracker.samples.size / 44100.0;
@@ -1601,10 +1605,6 @@ var PracticingMusician = function (_, Kotlin) {
       doNotTestBeyond = testEndingBeat;
     }
     var functionStartTimestamp = window.performance.now();
-    console.log('Comparing: ');
-    console.log(ideal);
-    console.log('To:');
-    console.log(toTest);
     tmp$ = until(0, ideal.size);
     tmp$_0 = tmp$.first;
     tmp$_1 = tmp$.last;
@@ -1709,7 +1709,12 @@ var PracticingMusician = function (_, Kotlin) {
       }
       if (testItem.note.noteNumber === -1 && idealItem.noteNumber !== -1 || (testItem.note.noteNumber !== -1 && idealItem.noteNumber === -1)) {
         console.log('MISMATCHED!');
-        feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'REST'));
+        if (idealItem.noteNumber !== -1) {
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'Not played'));
+        }
+         else {
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'rest'));
+        }
         throwSafeIncorrectSwitch(feedbackItem);
         feedbackItem.type = FeedbackType$Missed_getInstance();
       }
@@ -2085,35 +2090,6 @@ var PracticingMusician = function (_, Kotlin) {
   };
   Metronome.prototype.updateMetronomeUI_za3lpa$ = function (beat) {
     listenerApp.highlightMetronomeItem_za3lpa$(beat % this.timeSignature);
-  };
-  Metronome.prototype.getBeatOfTimestamp_14dthe$ = function (timestamp) {
-    var tmp$, tmp$_0, tmp$_1, tmp$_2;
-    var firstItem = -1.0;
-    var secondItem = -1.0;
-    var lastItemBefore;
-    tmp$ = get_indices(this.beatTimes);
-    tmp$_0 = tmp$.first;
-    tmp$_1 = tmp$.last;
-    tmp$_2 = tmp$.step;
-    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
-      var beat = this.beatTimes.get_za3lpa$(index);
-      if (beat > timestamp) {
-        lastItemBefore = index - 1 | 0;
-        if (lastItemBefore === -1) {
-          return -1.0;
-        }
-        firstItem = this.beatTimes.get_za3lpa$(lastItemBefore);
-        secondItem = beat;
-        break;
-      }
-    }
-    if (firstItem === -1.0) {
-      return -1.0;
-    }
-    var distanceBetweenBeats = secondItem - firstItem;
-    var distanceFromStampToFirstBeat = timestamp - firstItem;
-    var percentageThroughBeat = distanceFromStampToFirstBeat / distanceBetweenBeats;
-    return percentageThroughBeat;
   };
   Metronome.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
