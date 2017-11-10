@@ -524,8 +524,8 @@ var jsMusicXMLConverter = function() {
 
         })
 
-        console.log("Pushing group:")
-        console.log(group)
+        //console.log("Pushing group:")
+        //console.log(group)
 
         if (group != null)
           bar.groups.push(group)

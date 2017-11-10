@@ -55,6 +55,14 @@ div#notationPmLogo {
     background-image: url("pm-listener/images/print-icon.svg");
 }
 
+span.paginationLink.pageForward {
+    background-image: url("pm-listener/images/page-forward-icon.svg");
+}
+
+span.paginationLink.pageBackward {
+    background-image: url("pm-listener/images/page-back-icon.svg");
+}
+
 #metronomeAudioButton {
     background-image: url("pm-listener/images/volume-off-icon.svg");
 }
@@ -121,7 +129,7 @@ div#notationPmLogo {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
-            xmlUrl: "pm-listener/xml/AltoClefQuarterRests.xml",
+            xmlUrl: "pm-listener/xml/Drumkit - 5 - Hi-Hat And Snare Coordination.xml",
             audioAssetPath: "pm-listener/audio/",
 
             metronomeSound: false,

@@ -60,10 +60,10 @@ class IncrementalComparisonEngine {
 
     val functionStartTimestamp = window.performance.now()
 
-    console.log("Comparing: ")
-    console.log(ideal)
-    console.log("To:")
-    console.log(toTest)
+    //console.log("Comparing: ")
+    //console.log(ideal)
+    //console.log("To:")
+    //console.log(toTest)
 
     //loop through the ideal items to test against
     //don't start before the stuff that we've already analyzed (based on idealIndexPosition)
