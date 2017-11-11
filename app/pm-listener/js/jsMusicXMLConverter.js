@@ -206,11 +206,8 @@ var jsMusicXMLConverter = function() {
 			console.log("Original notes:")
 			console.log(notes)
 			notes = notes.map(function(item) {
-				return {
-					noteNumber: item.noteNumber + transposition,
-					duration: item.duration,
-					id: item.id
-				}
+				item.noteNumber = item.noteNumber + transposition
+				return item
 			})
 			console.log("Transposed:")
 			console.log(notes)
