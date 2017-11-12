@@ -524,7 +524,19 @@ var EasyScoreUtil = function() {
 						case "barlines":
 							if (value.length == 0) break
 							value.forEach(function(barline) {
+
+                switch (barline.style) {
+                  case "LightHeavy":
+                    stave.setEndBarType(VF.Barline.type.END)
+                    break;
+                  default:
+                    break;
+                }
+
 								switch (barline.repeatType) {
+								case "":
+								  //nothing to include
+								  break
 								case "begin":
 									stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN)
 									break
@@ -546,7 +558,7 @@ var EasyScoreUtil = function() {
 
 				//if it's the last bar, make the bar line the correct end bar
 				if (barCounter == totalBars - 1) {
-					stave.setEndBarType(VF.Barline.type.END)
+					//stave.setEndBarType(VF.Barline.type.END)
 				}
 
 
