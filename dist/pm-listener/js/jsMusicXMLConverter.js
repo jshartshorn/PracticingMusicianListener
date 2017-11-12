@@ -389,20 +389,31 @@ var jsMusicXMLConverter = function() {
 
 				barlines.forEach(function(barline) {
 					var repeatType = ""
+          var barStyle = ""
 
-					if (barline.repeat == undefined) return
+          switch(barline.barstyle) {
+            case "light-heavy":
+              barStyle = "LightHeavy"
+              break
+            default:
+              break;
+          }
 
-					switch (barline.repeat._direction) {
-					case "forward":
-						repeatType = "begin"
-						break
-					case "backward":
-					default:
-						repeatType = "end"
-					}
+          if (barline.repeat != undefined) {
+            switch (barline.repeat._direction) {
+              case "forward":
+                repeatType = "begin"
+                break
+              case "backward":
+              default:
+                repeatType = "end"
+            }
+          }
+
 
 					toRet.push({
-						repeatType: repeatType
+						repeatType: repeatType,
+						style: barStyle
 					})
 
 				})
@@ -741,6 +752,12 @@ var jsMusicXMLConverter = function() {
 					barlines.forEach(function(barline) {
 						if (barline.repeatType != undefined) {
 							if (barline.repeatType == "end") {
+
+							  //what if there's no open repeat?
+							  if (repeats.length == 0) {
+							    repeats.push({open: 0, close: null})
+							  }
+
 								repeats[repeats.length - 1].close = toRetNotes.length //the last note
 
 								//copy the subset of the array
