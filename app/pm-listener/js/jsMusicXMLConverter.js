@@ -471,7 +471,7 @@ var jsMusicXMLConverter = function() {
             if (note.beam.__text == "begin") {
               //push the old and make a new
               if (group != null && group.notes.length > 0)
-                bar.groups.push(group)
+                bar.voices[voiceKey].groups.push(group)
               group = null
             }
           }
