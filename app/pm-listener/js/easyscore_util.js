@@ -336,7 +336,7 @@ var EasyScoreUtil = function() {
 
 				if (newPref == true) {
 					listenerApp.parameters.displaySiteDialog({
-						modalType: "audio"
+						modalType: "audio",
 						message: "To reduce microphone interference, use headphones.",
 					})
 				}
