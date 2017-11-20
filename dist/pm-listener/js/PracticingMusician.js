@@ -240,10 +240,11 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'ListenerApp',
     interfaces: []
   };
-  function DialogParams(imageType, title, message) {
-    this.imageType = imageType;
-    this.title = title;
+  function DialogParams(type, image, message, metric) {
+    this.type = type;
+    this.image = image;
     this.message = message;
+    this.metric = metric;
   }
   DialogParams.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -251,29 +252,33 @@ var PracticingMusician = function (_, Kotlin) {
     interfaces: []
   };
   DialogParams.prototype.component1 = function () {
-    return this.imageType;
+    return this.type;
   };
   DialogParams.prototype.component2 = function () {
-    return this.title;
+    return this.image;
   };
   DialogParams.prototype.component3 = function () {
     return this.message;
   };
-  DialogParams.prototype.copy_6hosri$ = function (imageType, title, message) {
-    return new DialogParams(imageType === void 0 ? this.imageType : imageType, title === void 0 ? this.title : title, message === void 0 ? this.message : message);
+  DialogParams.prototype.component4 = function () {
+    return this.metric;
+  };
+  DialogParams.prototype.copy_w74nik$ = function (type, image, message, metric) {
+    return new DialogParams(type === void 0 ? this.type : type, image === void 0 ? this.image : image, message === void 0 ? this.message : message, metric === void 0 ? this.metric : metric);
   };
   DialogParams.prototype.toString = function () {
-    return 'DialogParams(imageType=' + Kotlin.toString(this.imageType) + (', title=' + Kotlin.toString(this.title)) + (', message=' + Kotlin.toString(this.message)) + ')';
+    return 'DialogParams(type=' + Kotlin.toString(this.type) + (', image=' + Kotlin.toString(this.image)) + (', message=' + Kotlin.toString(this.message)) + (', metric=' + Kotlin.toString(this.metric)) + ')';
   };
   DialogParams.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.imageType) | 0;
-    result = result * 31 + Kotlin.hashCode(this.title) | 0;
+    result = result * 31 + Kotlin.hashCode(this.type) | 0;
+    result = result * 31 + Kotlin.hashCode(this.image) | 0;
     result = result * 31 + Kotlin.hashCode(this.message) | 0;
+    result = result * 31 + Kotlin.hashCode(this.metric) | 0;
     return result;
   };
   DialogParams.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.imageType, other.imageType) && Kotlin.equals(this.title, other.title) && Kotlin.equals(this.message, other.message)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.type, other.type) && Kotlin.equals(this.image, other.image) && Kotlin.equals(this.message, other.message) && Kotlin.equals(this.metric, other.metric)))));
   };
   function FlashMessage(type, message) {
     this.type = type;
@@ -878,7 +883,7 @@ var PracticingMusician = function (_, Kotlin) {
           listenerApp.addFeedbackItem_775p9r$(element_0);
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
-        listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
+        listenerApp.parameters.displaySiteDialog(new DialogParams('results', iconType, 'Overall accuracy', '' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
         listenerApp.scoreUtil.displayMedal(iconType);
         if (UserSettings_getInstance().isDefaultTempo) {
           ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);

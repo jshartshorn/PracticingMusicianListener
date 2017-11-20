@@ -336,8 +336,7 @@ var EasyScoreUtil = function() {
 
 				if (newPref == true) {
 					listenerApp.parameters.displaySiteDialog({
-						imageType: "medal-fail-icon",
-						title: "Audio Alert",
+						modalType: "audio"
 						message: "To reduce microphone interference, use headphones.",
 					})
 				}
