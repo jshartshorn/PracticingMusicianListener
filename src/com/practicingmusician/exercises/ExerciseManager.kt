@@ -122,7 +122,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                 }()
 
                 //show the user the results
-                listenerApp.parameters.displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
+                listenerApp.parameters.displaySiteDialog(DialogParams("results",iconType,"Overall accuracy", "" + results.correct + "/" + results.attempted))
 
                 //update the medal
                 listenerApp.scoreUtil.displayMedal(iconType)
