@@ -282,8 +282,39 @@ var EasyScoreUtil = function() {
 		networkRequest(settingsUrl, settingsObj)
 	}
 
+  this.setupToleranceControls = function() {
+    var toleranceDiv = document.getElementById("toleranceControls")
+    if (toleranceDiv != null) return
+
+    toleranceDiv = document.createElement("div")
+    toleranceDiv.id = "toleranceControls"
+
+    toleranceDiv.innerHTML = '<h2>Tolerance controls</h2>'
+ + '      <style>'
+ + '        span.toleranceLabel {'
+ + '          width: 300px;'
+ + '          display: inline-block;'
+ + '        }'
+ + '        div#toleranceControls input {'
+ + '          width: 70px;'
+ + '        }'
+ + '      </style>'
+ + '      <span class="toleranceLabel">allowableCentsMargin (0-50)</span><input type="text" id="allowableCentsMargin"/><br/>'
+ + '      <span class="toleranceLabel">allowableRhythmMargin (0-1.0)</span><input type="text" id="allowableRhythmMargin"/><br/>'
+ + '      <span class="toleranceLabel">allowableDurationRatio (0-1.0)</span><input type="text" id="allowableDurationRatio"/><br/>'
+ + '      <br/>'
+ + '      <br/>'
+ + '      <span class="toleranceLabel">largestBeatDifference (0-1.0)</span><input type="text" id="largestBeatDifference"/><br/>'
+ + '      <span class="toleranceLabel">largestDurationRatioDifference(0-1.0)</span><input type="text" id="largestDurationRatioDifference"/><br/>'
+ + '      <span class="toleranceLabel">minDurationInBeats(0-1.0)</span><input type="text" id="minDurationInBeats"/><br/>'
+
+    document.getElementById("notationWindow").insertBefore(toleranceDiv,document.getElementById('notationHeader'))
+  }
+
 	this.setupControls = function() {
 		console.log("Setting on controls")
+
+    this.setupToleranceControls()
 
 		var metronomeSlider = document.getElementById("metronomeSlider")
 		if (metronomeSlider != null) {
