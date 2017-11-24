@@ -59,14 +59,15 @@ interface AppSetupParameters {
     //path to the XML file to load
     val xmlUrl : String
 
+    //TODO: turn these back into val instead of var -- used for tolerance controls
     //the margins in which a note can vary from the ideal and still be considered acceptable
-    val allowableCentsMargin : Int
-    val allowableRhythmMargin : Double
-    val allowableDurationRatio : Double
+    var allowableCentsMargin : Int
+    var allowableRhythmMargin : Double
+    var allowableDurationRatio : Double
 
-    val largestDurationRatioDifference : Double
-    val largestBeatDifference : Double
-    val minDurationInBeats : Double
+    var largestDurationRatioDifference : Double
+    var largestBeatDifference : Double
+    var minDurationInBeats : Double
 
     val displaySiteDialog : (params : DialogParams) -> Unit
 
