@@ -36,13 +36,13 @@ class MockParameters : AppSetupParameters {
   override  val audioAssetPath : String = ""
 
     //the margins in which a note can vary from the ideal and still be considered acceptable
-  override  val allowableCentsMargin : Int = 40
-  override  val allowableRhythmMargin : Double = 0.25
-  override val allowableDurationRatio: Double = 0.5
+  override  var allowableCentsMargin : Int = 40
+  override  var allowableRhythmMargin : Double = 0.25
+  override var allowableDurationRatio: Double = 0.5
 
-  override val minDurationInBeats: Double = 0.24
-  override val largestDurationRatioDifference: Double = 0.5
-  override val largestBeatDifference = 1.0
+  override var minDurationInBeats: Double = 0.24
+  override var largestDurationRatioDifference: Double = 0.5
+  override var largestBeatDifference = 1.0
 
   override val bpm: Int = 120
   override val metronomeSound = true
