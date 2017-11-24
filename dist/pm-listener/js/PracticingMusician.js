@@ -1134,23 +1134,77 @@ var PracticingMusician = function (_, Kotlin) {
     var duration = average(destination_1);
     var tmp$_2 = void 0;
     var tmp$_3 = void 0;
-    var tmp$_4 = this.correct;
-    var tmp$_5 = this.attempted;
+    var tmp$_4 = void 0;
+    var tmp$_5 = this.correct;
+    var tmp$_6 = this.attempted;
     var $receiver_2 = this.finalResults;
-    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
+    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
   };
   CompareResults.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
     simpleName: 'CompareResults',
     interfaces: []
   };
-  function ResultsForDatabase(userID, exerciseID, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+  function ToleranceLevels(allowableCentsMargin, allowableRhythmMargin, allowableDurationRatio, largestBeatDifference, largestDurationRatioDifference, minDurationInBeats) {
+    this.allowableCentsMargin = allowableCentsMargin;
+    this.allowableRhythmMargin = allowableRhythmMargin;
+    this.allowableDurationRatio = allowableDurationRatio;
+    this.largestBeatDifference = largestBeatDifference;
+    this.largestDurationRatioDifference = largestDurationRatioDifference;
+    this.minDurationInBeats = minDurationInBeats;
+  }
+  ToleranceLevels.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ToleranceLevels',
+    interfaces: []
+  };
+  ToleranceLevels.prototype.component1 = function () {
+    return this.allowableCentsMargin;
+  };
+  ToleranceLevels.prototype.component2 = function () {
+    return this.allowableRhythmMargin;
+  };
+  ToleranceLevels.prototype.component3 = function () {
+    return this.allowableDurationRatio;
+  };
+  ToleranceLevels.prototype.component4 = function () {
+    return this.largestBeatDifference;
+  };
+  ToleranceLevels.prototype.component5 = function () {
+    return this.largestDurationRatioDifference;
+  };
+  ToleranceLevels.prototype.component6 = function () {
+    return this.minDurationInBeats;
+  };
+  ToleranceLevels.prototype.copy_30umf0$ = function (allowableCentsMargin, allowableRhythmMargin, allowableDurationRatio, largestBeatDifference, largestDurationRatioDifference, minDurationInBeats) {
+    return new ToleranceLevels(allowableCentsMargin === void 0 ? this.allowableCentsMargin : allowableCentsMargin, allowableRhythmMargin === void 0 ? this.allowableRhythmMargin : allowableRhythmMargin, allowableDurationRatio === void 0 ? this.allowableDurationRatio : allowableDurationRatio, largestBeatDifference === void 0 ? this.largestBeatDifference : largestBeatDifference, largestDurationRatioDifference === void 0 ? this.largestDurationRatioDifference : largestDurationRatioDifference, minDurationInBeats === void 0 ? this.minDurationInBeats : minDurationInBeats);
+  };
+  ToleranceLevels.prototype.toString = function () {
+    return 'ToleranceLevels(allowableCentsMargin=' + Kotlin.toString(this.allowableCentsMargin) + (', allowableRhythmMargin=' + Kotlin.toString(this.allowableRhythmMargin)) + (', allowableDurationRatio=' + Kotlin.toString(this.allowableDurationRatio)) + (', largestBeatDifference=' + Kotlin.toString(this.largestBeatDifference)) + (', largestDurationRatioDifference=' + Kotlin.toString(this.largestDurationRatioDifference)) + (', minDurationInBeats=' + Kotlin.toString(this.minDurationInBeats)) + ')';
+  };
+  ToleranceLevels.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.allowableCentsMargin) | 0;
+    result = result * 31 + Kotlin.hashCode(this.allowableRhythmMargin) | 0;
+    result = result * 31 + Kotlin.hashCode(this.allowableDurationRatio) | 0;
+    result = result * 31 + Kotlin.hashCode(this.largestBeatDifference) | 0;
+    result = result * 31 + Kotlin.hashCode(this.largestDurationRatioDifference) | 0;
+    result = result * 31 + Kotlin.hashCode(this.minDurationInBeats) | 0;
+    return result;
+  };
+  ToleranceLevels.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.allowableCentsMargin, other.allowableCentsMargin) && Kotlin.equals(this.allowableRhythmMargin, other.allowableRhythmMargin) && Kotlin.equals(this.allowableDurationRatio, other.allowableDurationRatio) && Kotlin.equals(this.largestBeatDifference, other.largestBeatDifference) && Kotlin.equals(this.largestDurationRatioDifference, other.largestDurationRatioDifference) && Kotlin.equals(this.minDurationInBeats, other.minDurationInBeats)))));
+  };
+  function ResultsForDatabase(userID, exerciseID, toleranceLevels, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
     if (userID === void 0)
       userID = -1;
     if (exerciseID === void 0)
       exerciseID = -1;
+    if (toleranceLevels === void 0)
+      toleranceLevels = new ToleranceLevels(0, 0.0, 0.0, 0.0, 0.0, 0.0);
     this.userID = userID;
     this.exerciseID = exerciseID;
+    this.toleranceLevels = toleranceLevels;
     this.correct = correct;
     this.attempted = attempted;
     this.exerciseAveragePitch = exerciseAveragePitch;
@@ -1170,33 +1224,37 @@ var PracticingMusician = function (_, Kotlin) {
     return this.exerciseID;
   };
   ResultsForDatabase.prototype.component3 = function () {
-    return this.correct;
+    return this.toleranceLevels;
   };
   ResultsForDatabase.prototype.component4 = function () {
-    return this.attempted;
+    return this.correct;
   };
   ResultsForDatabase.prototype.component5 = function () {
-    return this.exerciseAveragePitch;
+    return this.attempted;
   };
   ResultsForDatabase.prototype.component6 = function () {
-    return this.exerciseAverageRhythm;
+    return this.exerciseAveragePitch;
   };
   ResultsForDatabase.prototype.component7 = function () {
-    return this.exerciseAverageDuration;
+    return this.exerciseAverageRhythm;
   };
   ResultsForDatabase.prototype.component8 = function () {
+    return this.exerciseAverageDuration;
+  };
+  ResultsForDatabase.prototype.component9 = function () {
     return this.notePerformances;
   };
-  ResultsForDatabase.prototype.copy_sixtfu$ = function (userID, exerciseID, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
-    return new ResultsForDatabase(userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
+  ResultsForDatabase.prototype.copy_yu6ykh$ = function (userID, exerciseID, toleranceLevels, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    return new ResultsForDatabase(userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, toleranceLevels === void 0 ? this.toleranceLevels : toleranceLevels, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
   };
   ResultsForDatabase.prototype.toString = function () {
-    return 'ResultsForDatabase(userID=' + Kotlin.toString(this.userID) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
+    return 'ResultsForDatabase(userID=' + Kotlin.toString(this.userID) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', toleranceLevels=' + Kotlin.toString(this.toleranceLevels)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
   };
   ResultsForDatabase.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.userID) | 0;
     result = result * 31 + Kotlin.hashCode(this.exerciseID) | 0;
+    result = result * 31 + Kotlin.hashCode(this.toleranceLevels) | 0;
     result = result * 31 + Kotlin.hashCode(this.correct) | 0;
     result = result * 31 + Kotlin.hashCode(this.attempted) | 0;
     result = result * 31 + Kotlin.hashCode(this.exerciseAveragePitch) | 0;
@@ -1206,7 +1264,7 @@ var PracticingMusician = function (_, Kotlin) {
     return result;
   };
   ResultsForDatabase.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.toleranceLevels, other.toleranceLevels) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
   };
   function IndividualNotePerformanceInfo(idealBeat, actualBeat, idealPitch, actualPitch, idealDuration, actualDuration) {
     this.idealBeat = idealBeat;
@@ -1786,9 +1844,13 @@ var PracticingMusician = function (_, Kotlin) {
     networkRequest(urlString, data);
   };
   ListenerNetworkManager.prototype.buildAndSendRequest_fhpv3e$ = function (results) {
+    var tmp$, tmp$_0;
     var dbResults = results.generateResultForDatabase();
     dbResults.userID = listenerApp.parameters.userID;
     dbResults.exerciseID = listenerApp.parameters.exerciseID;
+    tmp$ = listenerApp.parameters.allowableCentsMargin;
+    tmp$_0 = listenerApp.parameters.allowableDurationRatio;
+    dbResults.toleranceLevels = new ToleranceLevels(tmp$, listenerApp.parameters.allowableRhythmMargin, tmp$_0, listenerApp.parameters.largestBeatDifference, listenerApp.parameters.largestDurationRatioDifference, listenerApp.parameters.minDurationInBeats);
     var performanceWrapper = new PerformanceWrapper(dbResults);
     ListenerNetworkManager_getInstance().makePostRequest_l6nar7$(listenerApp.parameters.databaseEndpoint, performanceWrapper);
   };
@@ -3006,6 +3068,7 @@ var PracticingMusician = function (_, Kotlin) {
   package$finals.FeedbackItem = FeedbackItem;
   package$finals.throwSafeIncorrectSwitch_a2klfm$ = throwSafeIncorrectSwitch;
   package$finals.CompareResults = CompareResults;
+  package$finals.ToleranceLevels = ToleranceLevels;
   package$finals.ResultsForDatabase = ResultsForDatabase;
   package$finals.IndividualNotePerformanceInfo = IndividualNotePerformanceInfo;
   package$finals.NotePlacement = NotePlacement;
