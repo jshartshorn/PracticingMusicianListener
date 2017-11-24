@@ -309,6 +309,14 @@ var EasyScoreUtil = function() {
  + '      <span class="toleranceLabel">minDurationInBeats(0-1.0)</span><input type="text" id="minDurationInBeats"/><br/>'
 
     document.getElementById("notationWindow").insertBefore(toleranceDiv,document.getElementById('notationHeader'))
+
+    document.getElementById('allowableCentsMargin').value = listenerApp.parameters.allowableCentsMargin
+    document.getElementById('allowableRhythmMargin').value = listenerApp.parameters.allowableRhythmMargin
+    document.getElementById('allowableDurationRatio').value = listenerApp.parameters.allowableDurationRatio
+
+    document.getElementById('largestBeatDifference').value = listenerApp.parameters.largestBeatDifference
+    document.getElementById('largestDurationRatioDifference').value = listenerApp.parameters.largestDurationRatioDifference
+    document.getElementById('minDurationInBeats').value = listenerApp.parameters.minDurationInBeats
   }
 
 	this.setupControls = function() {
