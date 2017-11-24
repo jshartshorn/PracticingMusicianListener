@@ -7,10 +7,7 @@ import com.practicingmusician.finals.FeedbackMetric
 import com.practicingmusician.finals.FeedbackType
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
-import org.w3c.dom.Element
-import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.get
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -223,6 +220,17 @@ public class ListenerApp {
 
     @JsName("toggleState")
     fun toggleState() {
+        //update the parameters
+        this.parameters.allowableCentsMargin = (document.getElementById("allowableCentsMargin") as HTMLInputElement).value.toInt()
+        this.parameters.allowableRhythmMargin = (document.getElementById("allowableRhythmMargin") as HTMLInputElement).value.toDouble()
+        this.parameters.allowableDurationRatio = (document.getElementById("allowableDurationRatio") as HTMLInputElement).value.toDouble()
+
+        this.parameters.largestBeatDifference = (document.getElementById("largestBeatDifference") as HTMLInputElement).value.toDouble()
+        this.parameters.largestDurationRatioDifference = (document.getElementById("largestDurationRatioDifference") as HTMLInputElement).value.toDouble()
+        this.parameters.minDurationInBeats = (document.getElementById("minDurationInBeats") as HTMLInputElement).value.toDouble()
+
+
+
         when (exerciseManager.timeKeeper.state) {
             TimeKeeper.TimeKeeperState.Stopped -> {
 
