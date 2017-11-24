@@ -4,6 +4,8 @@ if (typeof kotlin === 'undefined') {
 var PracticingMusician = function (_, Kotlin) {
   'use strict';
   var toList = Kotlin.kotlin.collections.toList_us0mfu$;
+  var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
+  var toDouble = Kotlin.kotlin.text.toDouble_pdl1vz$;
   var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
@@ -13,7 +15,6 @@ var PracticingMusician = function (_, Kotlin) {
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var split = Kotlin.kotlin.text.split_o64adg$;
   var first = Kotlin.kotlin.collections.first_2p1efm$;
-  var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
   var average = Kotlin.kotlin.collections.average_l63kqw$;
   var zip = Kotlin.kotlin.collections.zip_45mdf7$;
   var IntCompanionObject = Kotlin.kotlin.js.internal.IntCompanionObject;
@@ -159,9 +160,15 @@ var PracticingMusician = function (_, Kotlin) {
     this.scoreUtil.notateExercise();
   };
   ListenerApp.prototype.toggleState = function () {
-    var tmp$;
-    tmp$ = this.exerciseManager.timeKeeper.state;
-    if (Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Stopped_getInstance())) {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5;
+    this.parameters.allowableCentsMargin = toInt((Kotlin.isType(tmp$ = document.getElementById('allowableCentsMargin'), HTMLInputElement) ? tmp$ : Kotlin.throwCCE()).value);
+    this.parameters.allowableRhythmMargin = toDouble((Kotlin.isType(tmp$_0 = document.getElementById('allowableRhythmMargin'), HTMLInputElement) ? tmp$_0 : Kotlin.throwCCE()).value);
+    this.parameters.allowableDurationRatio = toDouble((Kotlin.isType(tmp$_1 = document.getElementById('allowableDurationRatio'), HTMLInputElement) ? tmp$_1 : Kotlin.throwCCE()).value);
+    this.parameters.largestBeatDifference = toDouble((Kotlin.isType(tmp$_2 = document.getElementById('largestBeatDifference'), HTMLInputElement) ? tmp$_2 : Kotlin.throwCCE()).value);
+    this.parameters.largestDurationRatioDifference = toDouble((Kotlin.isType(tmp$_3 = document.getElementById('largestDurationRatioDifference'), HTMLInputElement) ? tmp$_3 : Kotlin.throwCCE()).value);
+    this.parameters.minDurationInBeats = toDouble((Kotlin.isType(tmp$_4 = document.getElementById('minDurationInBeats'), HTMLInputElement) ? tmp$_4 : Kotlin.throwCCE()).value);
+    tmp$_5 = this.exerciseManager.timeKeeper.state;
+    if (Kotlin.equals(tmp$_5, TimeKeeper$TimeKeeperState$Stopped_getInstance())) {
       if (!audioAnalyzer.isFunctional || !audioAnalyzer.hasMicrophoneAccess) {
         displayFlashMessages([new FlashMessage('danger', 'Audio not working.  Please make sure you are using either Chrome or Firefox and have enabled microphone access.')]);
         return;
@@ -171,10 +178,10 @@ var PracticingMusician = function (_, Kotlin) {
       this.exerciseManager.loadExercise();
       this.exerciseManager.run();
     }
-     else if (Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Running_getInstance()))
+     else if (Kotlin.equals(tmp$_5, TimeKeeper$TimeKeeperState$Running_getInstance()))
       this.exerciseManager.stop();
     else
-      Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Completed_getInstance());
+      Kotlin.equals(tmp$_5, TimeKeeper$TimeKeeperState$Completed_getInstance());
   };
   ListenerApp.prototype.doResizeActions = function () {
     var tmp$;
@@ -2515,31 +2522,49 @@ var PracticingMusician = function (_, Kotlin) {
   Object.defineProperty(MockParameters.prototype, 'allowableCentsMargin', {
     get: function () {
       return this.allowableCentsMargin_7mvjxd$_0;
+    },
+    set: function (allowableCentsMargin) {
+      this.allowableCentsMargin_7mvjxd$_0 = allowableCentsMargin;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'allowableRhythmMargin', {
     get: function () {
       return this.allowableRhythmMargin_7mvjxd$_0;
+    },
+    set: function (allowableRhythmMargin) {
+      this.allowableRhythmMargin_7mvjxd$_0 = allowableRhythmMargin;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'allowableDurationRatio', {
     get: function () {
       return this.allowableDurationRatio_7mvjxd$_0;
+    },
+    set: function (allowableDurationRatio) {
+      this.allowableDurationRatio_7mvjxd$_0 = allowableDurationRatio;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'minDurationInBeats', {
     get: function () {
       return this.minDurationInBeats_7mvjxd$_0;
+    },
+    set: function (minDurationInBeats) {
+      this.minDurationInBeats_7mvjxd$_0 = minDurationInBeats;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'largestDurationRatioDifference', {
     get: function () {
       return this.largestDurationRatioDifference_7mvjxd$_0;
+    },
+    set: function (largestDurationRatioDifference) {
+      this.largestDurationRatioDifference_7mvjxd$_0 = largestDurationRatioDifference;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'largestBeatDifference', {
     get: function () {
       return this.largestBeatDifference_7mvjxd$_0;
+    },
+    set: function (largestBeatDifference) {
+      this.largestBeatDifference_7mvjxd$_0 = largestBeatDifference;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'bpm', {
