@@ -859,7 +859,7 @@ var PracticingMusician = function (_, Kotlin) {
       if (percentage > 0.55) {
         return 'medal-bronze-icon';
       }
-      return '';
+      return 'medal-fail-icon';
     };
   }
   function ExerciseManager$setup$lambda(this$ExerciseManager) {
