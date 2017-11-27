@@ -247,8 +247,8 @@ var PracticingMusician = function (_, Kotlin) {
     simpleName: 'ListenerApp',
     interfaces: []
   };
-  function DialogParams(type, image, message, metric) {
-    this.type = type;
+  function DialogParams(modalType, image, message, metric) {
+    this.modalType = modalType;
     this.image = image;
     this.message = message;
     this.metric = metric;
@@ -259,7 +259,7 @@ var PracticingMusician = function (_, Kotlin) {
     interfaces: []
   };
   DialogParams.prototype.component1 = function () {
-    return this.type;
+    return this.modalType;
   };
   DialogParams.prototype.component2 = function () {
     return this.image;
@@ -270,22 +270,22 @@ var PracticingMusician = function (_, Kotlin) {
   DialogParams.prototype.component4 = function () {
     return this.metric;
   };
-  DialogParams.prototype.copy_w74nik$ = function (type, image, message, metric) {
-    return new DialogParams(type === void 0 ? this.type : type, image === void 0 ? this.image : image, message === void 0 ? this.message : message, metric === void 0 ? this.metric : metric);
+  DialogParams.prototype.copy_w74nik$ = function (modalType, image, message, metric) {
+    return new DialogParams(modalType === void 0 ? this.modalType : modalType, image === void 0 ? this.image : image, message === void 0 ? this.message : message, metric === void 0 ? this.metric : metric);
   };
   DialogParams.prototype.toString = function () {
-    return 'DialogParams(type=' + Kotlin.toString(this.type) + (', image=' + Kotlin.toString(this.image)) + (', message=' + Kotlin.toString(this.message)) + (', metric=' + Kotlin.toString(this.metric)) + ')';
+    return 'DialogParams(modalType=' + Kotlin.toString(this.modalType) + (', image=' + Kotlin.toString(this.image)) + (', message=' + Kotlin.toString(this.message)) + (', metric=' + Kotlin.toString(this.metric)) + ')';
   };
   DialogParams.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.type) | 0;
+    result = result * 31 + Kotlin.hashCode(this.modalType) | 0;
     result = result * 31 + Kotlin.hashCode(this.image) | 0;
     result = result * 31 + Kotlin.hashCode(this.message) | 0;
     result = result * 31 + Kotlin.hashCode(this.metric) | 0;
     return result;
   };
   DialogParams.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.type, other.type) && Kotlin.equals(this.image, other.image) && Kotlin.equals(this.message, other.message) && Kotlin.equals(this.metric, other.metric)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.modalType, other.modalType) && Kotlin.equals(this.image, other.image) && Kotlin.equals(this.message, other.message) && Kotlin.equals(this.metric, other.metric)))));
   };
   function FlashMessage(type, message) {
     this.type = type;
