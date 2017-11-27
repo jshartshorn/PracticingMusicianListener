@@ -118,7 +118,7 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                   if (percentage > 0.55) {
                     return "medal-bronze-icon"
                   }
-                  return ""
+                  return "medal-fail-icon"
                 }()
 
                 //show the user the results
