@@ -336,9 +336,6 @@ class IncrementalComparisonEngine {
         results.correct += 1
       }
 
-      curBeatPosition += idealValue.duration
-
-
       //store the individual peroformance data on each note
       val notePerformance = IndividualNotePerformanceInfo(
         idealBeat = curBeatPosition,
@@ -348,6 +345,10 @@ class IncrementalComparisonEngine {
         idealDuration = idealItem.duration,
         actualDuration = testItem.note.duration
       )
+      //This should happen after storing the data -- otherwise the values are off by one
+      curBeatPosition += idealValue.duration
+
+
       results.finalResults.add(notePerformance)
     }
 
