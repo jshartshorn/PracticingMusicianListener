@@ -152,6 +152,7 @@ var jsMusicXMLConverter = function() {
 			comparisonFlags.testDuration = false
 		}
 
+    //IGNORE DURATION ON SPECIFIC INSTRUMENTS
 		var durationIgnoredInstruments =
 		  [
 		    "Glockenspiel",
