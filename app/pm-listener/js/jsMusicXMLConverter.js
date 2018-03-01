@@ -107,6 +107,13 @@ var jsMusicXMLConverter = function() {
 
 		var tempo = this.extractTempo(part)
 
+    //get the instrument
+    var partName = function() {
+      return input.scorepartwise.partlist.scorepart.partname
+    }()
+
+    console.log("Part name: " + partName)
+
 		var transposition = function() {
 			var firstBar = part.measure[0]
 			var attributes = firstBar.attributes
@@ -143,6 +150,25 @@ var jsMusicXMLConverter = function() {
 		if (isPercussionClef) {
 			comparisonFlags.testPitch = false
 			comparisonFlags.testDuration = false
+		}
+
+		var durationIgnoredInstruments =
+		  [
+		    "Glockenspiel",
+
+		    "Acoustic Guitar",
+		    "Electric Guitar",
+
+		    "Acoustic Bass",
+		    "Electric Bass",
+
+		    "Violin",
+		    "Viola",
+		    "Cello",
+		    "Contrabass"
+		  ]
+		if (durationIgnoredInstruments.indexOf(partName) != -1) {
+		  comparisonFlags.testDuration = false
 		}
 
 		var beats_in_firstBar = function() {
