@@ -326,6 +326,12 @@ class IncrementalComparisonEngine {
         }
       }
 
+      //IGNORE RESTS
+      if (idealItem.noteNumber == -1) {
+        feedbackItem.type = FeedbackType.Correct
+      }
+
+
       //feedbackItemTypes.add("" + testItem.note.noteNumber)
       //feedbackItemTypes += FeedbackMetric("Note #","" + testItem.note.noteNumber)
 
