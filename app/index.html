@@ -130,7 +130,7 @@ span.paginationLink.pageBackward {
     window.onload = function() {
         listenerApp.runApp({
             url: "",
-            xmlUrl: "pm-listener/xml/Alto Finals/4 - Rhythm 101/1 - Quarter March.xml",
+            xmlUrl: "pm-listener/xml/Duration Issues/1760.xml",
             audioAssetPath: "pm-listener/audio/",
 
             metronomeSound: false,
@@ -145,14 +145,15 @@ span.paginationLink.pageBackward {
             databaseEndpoint: "db",
 
             allowableCentsMargin : 40,
-            allowableRhythmMargin : 0.33,
-            allowableDurationRatio : 0.35,
+            allowableRhythmMargin : 0.40,
+            allowableDurationRatio : 0.40,
 
             largestBeatDifference: 1.0,
             largestDurationRatioDifference: 0.2,
             minDurationInBeats: 0.1,
 
             displaySiteDialog: function(params) {
+              console.log(params)
               alert(
                 "Image: " + params.imageType + "\n" +
                 "Title: " + params.title + "\n" +
