@@ -892,9 +892,7 @@ var PracticingMusician = function (_, Kotlin) {
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
         listenerApp.parameters.displaySiteDialog(new DialogParams('results', iconType, 'Overall accuracy', '' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
         listenerApp.scoreUtil.displayMedal(iconType);
-        if (UserSettings_getInstance().isDefaultTempo) {
-          ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
-        }
+        ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
       }
     };
   }
@@ -1135,10 +1133,13 @@ var PracticingMusician = function (_, Kotlin) {
     var tmp$_2 = void 0;
     var tmp$_3 = void 0;
     var tmp$_4 = void 0;
-    var tmp$_5 = this.correct;
-    var tmp$_6 = this.attempted;
+    var tmp$_5 = void 0;
+    var tmp$_6 = void 0;
+    var tmp$_7 = void 0;
+    var tmp$_8 = this.correct;
+    var tmp$_9 = this.attempted;
     var $receiver_2 = this.finalResults;
-    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
+    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, tmp$_7, tmp$_8, tmp$_9, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
   };
   CompareResults.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -1195,16 +1196,25 @@ var PracticingMusician = function (_, Kotlin) {
   ToleranceLevels.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.allowableCentsMargin, other.allowableCentsMargin) && Kotlin.equals(this.allowableRhythmMargin, other.allowableRhythmMargin) && Kotlin.equals(this.allowableDurationRatio, other.allowableDurationRatio) && Kotlin.equals(this.largestBeatDifference, other.largestBeatDifference) && Kotlin.equals(this.largestDurationRatioDifference, other.largestDurationRatioDifference) && Kotlin.equals(this.minDurationInBeats, other.minDurationInBeats)))));
   };
-  function ResultsForDatabase(userID, exerciseID, toleranceLevels, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+  function ResultsForDatabase(api_version, userID, exerciseID, toleranceLevels, tempo, isDefaultTempo, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    if (api_version === void 0)
+      api_version = 2;
     if (userID === void 0)
       userID = -1;
     if (exerciseID === void 0)
       exerciseID = -1;
     if (toleranceLevels === void 0)
       toleranceLevels = new ToleranceLevels(0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    if (tempo === void 0)
+      tempo = -1.0;
+    if (isDefaultTempo === void 0)
+      isDefaultTempo = true;
+    this.api_version = api_version;
     this.userID = userID;
     this.exerciseID = exerciseID;
     this.toleranceLevels = toleranceLevels;
+    this.tempo = tempo;
+    this.isDefaultTempo = isDefaultTempo;
     this.correct = correct;
     this.attempted = attempted;
     this.exerciseAveragePitch = exerciseAveragePitch;
@@ -1218,43 +1228,55 @@ var PracticingMusician = function (_, Kotlin) {
     interfaces: []
   };
   ResultsForDatabase.prototype.component1 = function () {
-    return this.userID;
+    return this.api_version;
   };
   ResultsForDatabase.prototype.component2 = function () {
-    return this.exerciseID;
+    return this.userID;
   };
   ResultsForDatabase.prototype.component3 = function () {
-    return this.toleranceLevels;
+    return this.exerciseID;
   };
   ResultsForDatabase.prototype.component4 = function () {
-    return this.correct;
+    return this.toleranceLevels;
   };
   ResultsForDatabase.prototype.component5 = function () {
-    return this.attempted;
+    return this.tempo;
   };
   ResultsForDatabase.prototype.component6 = function () {
-    return this.exerciseAveragePitch;
+    return this.isDefaultTempo;
   };
   ResultsForDatabase.prototype.component7 = function () {
-    return this.exerciseAverageRhythm;
+    return this.correct;
   };
   ResultsForDatabase.prototype.component8 = function () {
-    return this.exerciseAverageDuration;
+    return this.attempted;
   };
   ResultsForDatabase.prototype.component9 = function () {
+    return this.exerciseAveragePitch;
+  };
+  ResultsForDatabase.prototype.component10 = function () {
+    return this.exerciseAverageRhythm;
+  };
+  ResultsForDatabase.prototype.component11 = function () {
+    return this.exerciseAverageDuration;
+  };
+  ResultsForDatabase.prototype.component12 = function () {
     return this.notePerformances;
   };
-  ResultsForDatabase.prototype.copy_yu6ykh$ = function (userID, exerciseID, toleranceLevels, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
-    return new ResultsForDatabase(userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, toleranceLevels === void 0 ? this.toleranceLevels : toleranceLevels, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
+  ResultsForDatabase.prototype.copy_dmhvve$ = function (api_version, userID, exerciseID, toleranceLevels, tempo, isDefaultTempo, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    return new ResultsForDatabase(api_version === void 0 ? this.api_version : api_version, userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, toleranceLevels === void 0 ? this.toleranceLevels : toleranceLevels, tempo === void 0 ? this.tempo : tempo, isDefaultTempo === void 0 ? this.isDefaultTempo : isDefaultTempo, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
   };
   ResultsForDatabase.prototype.toString = function () {
-    return 'ResultsForDatabase(userID=' + Kotlin.toString(this.userID) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', toleranceLevels=' + Kotlin.toString(this.toleranceLevels)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
+    return 'ResultsForDatabase(api_version=' + Kotlin.toString(this.api_version) + (', userID=' + Kotlin.toString(this.userID)) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', toleranceLevels=' + Kotlin.toString(this.toleranceLevels)) + (', tempo=' + Kotlin.toString(this.tempo)) + (', isDefaultTempo=' + Kotlin.toString(this.isDefaultTempo)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
   };
   ResultsForDatabase.prototype.hashCode = function () {
     var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.api_version) | 0;
     result = result * 31 + Kotlin.hashCode(this.userID) | 0;
     result = result * 31 + Kotlin.hashCode(this.exerciseID) | 0;
     result = result * 31 + Kotlin.hashCode(this.toleranceLevels) | 0;
+    result = result * 31 + Kotlin.hashCode(this.tempo) | 0;
+    result = result * 31 + Kotlin.hashCode(this.isDefaultTempo) | 0;
     result = result * 31 + Kotlin.hashCode(this.correct) | 0;
     result = result * 31 + Kotlin.hashCode(this.attempted) | 0;
     result = result * 31 + Kotlin.hashCode(this.exerciseAveragePitch) | 0;
@@ -1264,7 +1286,7 @@ var PracticingMusician = function (_, Kotlin) {
     return result;
   };
   ResultsForDatabase.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.toleranceLevels, other.toleranceLevels) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.api_version, other.api_version) && Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.toleranceLevels, other.toleranceLevels) && Kotlin.equals(this.tempo, other.tempo) && Kotlin.equals(this.isDefaultTempo, other.isDefaultTempo) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
   };
   function IndividualNotePerformanceInfo(idealBeat, actualBeat, idealPitch, actualPitch, idealDuration, actualDuration) {
     this.idealBeat = idealBeat;
@@ -1820,11 +1842,14 @@ var PracticingMusician = function (_, Kotlin) {
           pm_log('PERFECT');
         }
       }
+      if (idealItem.noteNumber === -1) {
+        feedbackItem.type = FeedbackType$Correct_getInstance();
+      }
       if (feedbackItem.type === FeedbackType$Correct_getInstance()) {
         results.correct = results.correct + 1 | 0;
       }
-      curBeatPosition += idealValue.duration;
       var notePerformance = new IndividualNotePerformanceInfo(curBeatPosition, toTestBeatPositionAtIndexToTest, idealItem.getFrequency(), (tmp$_9 = testItem.note.avgFreq) != null ? tmp$_9 : -1.0, idealItem.duration, testItem.note.duration);
+      curBeatPosition += idealValue.duration;
       results.finalResults.add_11rb$(notePerformance);
     }
     var functionEndTimestamp = window.performance.now();
@@ -1848,6 +1873,8 @@ var PracticingMusician = function (_, Kotlin) {
     var dbResults = results.generateResultForDatabase();
     dbResults.userID = listenerApp.parameters.userID;
     dbResults.exerciseID = listenerApp.parameters.exerciseID;
+    dbResults.tempo = UserSettings_getInstance().tempo;
+    dbResults.isDefaultTempo = UserSettings_getInstance().isDefaultTempo;
     tmp$ = listenerApp.parameters.allowableCentsMargin;
     tmp$_0 = listenerApp.parameters.allowableDurationRatio;
     dbResults.toleranceLevels = new ToleranceLevels(tmp$, listenerApp.parameters.allowableRhythmMargin, tmp$_0, listenerApp.parameters.largestBeatDifference, listenerApp.parameters.largestDurationRatioDifference, listenerApp.parameters.minDurationInBeats);
