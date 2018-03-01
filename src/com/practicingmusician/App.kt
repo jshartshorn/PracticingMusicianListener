@@ -66,7 +66,7 @@ public class ListenerApp {
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
 
-      this.parameters = parameters
+        this.parameters = parameters
 
         loadXml(parameters.xmlUrl,{ callbackData ->
 

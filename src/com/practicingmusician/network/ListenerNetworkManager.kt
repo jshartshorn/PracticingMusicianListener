@@ -1,6 +1,7 @@
 package com.practicingmusician.network
 
 import com.practicingmusician.ListenerApp
+import com.practicingmusician.UserSettings
 import com.practicingmusician.finals.CompareResults
 import com.practicingmusician.finals.ResultsForDatabase
 import com.practicingmusician.finals.ToleranceLevels
@@ -26,6 +27,9 @@ object ListenerNetworkManager {
         val dbResults = results.generateResultForDatabase()
         dbResults.userID = listenerApp.parameters.userID
         dbResults.exerciseID = listenerApp.parameters.exerciseID
+
+        dbResults.tempo = UserSettings.tempo
+        dbResults.isDefaultTempo = UserSettings.isDefaultTempo
 
         dbResults.toleranceLevels = ToleranceLevels(
           allowableCentsMargin = listenerApp.parameters.allowableCentsMargin,
