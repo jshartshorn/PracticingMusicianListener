@@ -29,6 +29,12 @@ var AudioAnalyzer = function() {
               return
             }
 
+            navigator.mediaDevices.enumerateDevices().then(function(deviceInfos) {
+              for (var i = 0; i !== deviceInfos.length; ++i) {
+                console.log(deviceInfos[i])
+              }
+            })
+
             this.audioContext = new AudioContext();
             var constraints = { audio: {latency: 0.002}, video: false }
             var analyzerObj = this
