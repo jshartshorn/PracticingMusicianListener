@@ -282,8 +282,47 @@ var EasyScoreUtil = function() {
 		networkRequest(settingsUrl, settingsObj)
 	}
 
+  this.setupToleranceControls = function() {
+    var toleranceDiv = document.getElementById("toleranceControls")
+    if (toleranceDiv != null) return
+
+    toleranceDiv = document.createElement("div")
+    toleranceDiv.id = "toleranceControls"
+
+    toleranceDiv.innerHTML = '<h2>Tolerance controls</h2>'
+ + '      <style>'
+ + '        span.toleranceLabel {'
+ + '          width: 300px;'
+ + '          display: inline-block;'
+ + '        }'
+ + '        div#toleranceControls input {'
+ + '          width: 70px;'
+ + '        }'
+ + '      </style>'
+ + '      <span class="toleranceLabel">allowableCentsMargin (0-50)</span><input type="text" id="allowableCentsMargin"/><br/>'
+ + '      <span class="toleranceLabel">allowableRhythmMargin (0-1.0)</span><input type="text" id="allowableRhythmMargin"/><br/>'
+ + '      <span class="toleranceLabel">allowableDurationRatio (0-1.0)</span><input type="text" id="allowableDurationRatio"/><br/>'
+ + '      <br/>'
+ + '      <br/>'
+ + '      <span class="toleranceLabel">largestBeatDifference (0-1.0)</span><input type="text" id="largestBeatDifference"/><br/>'
+ + '      <span class="toleranceLabel">largestDurationRatioDifference(0-1.0)</span><input type="text" id="largestDurationRatioDifference"/><br/>'
+ + '      <span class="toleranceLabel">minDurationInBeats(0-1.0)</span><input type="text" id="minDurationInBeats"/><br/>'
+
+    document.getElementById("notationWindow").insertBefore(toleranceDiv,document.getElementById('notationHeader'))
+
+    document.getElementById('allowableCentsMargin').value = listenerApp.parameters.allowableCentsMargin
+    document.getElementById('allowableRhythmMargin').value = listenerApp.parameters.allowableRhythmMargin
+    document.getElementById('allowableDurationRatio').value = listenerApp.parameters.allowableDurationRatio
+
+    document.getElementById('largestBeatDifference').value = listenerApp.parameters.largestBeatDifference
+    document.getElementById('largestDurationRatioDifference').value = listenerApp.parameters.largestDurationRatioDifference
+    document.getElementById('minDurationInBeats').value = listenerApp.parameters.minDurationInBeats
+  }
+
 	this.setupControls = function() {
 		console.log("Setting on controls")
+
+    this.setupToleranceControls()
 
 		var metronomeSlider = document.getElementById("metronomeSlider")
 		if (metronomeSlider != null) {
@@ -336,8 +375,7 @@ var EasyScoreUtil = function() {
 
 				if (newPref == true) {
 					listenerApp.parameters.displaySiteDialog({
-						imageType: "medal-fail-icon",
-						title: "Audio Alert",
+						modalType: "audio",
 						message: "To reduce microphone interference, use headphones.",
 					})
 				}
@@ -524,7 +562,19 @@ var EasyScoreUtil = function() {
 						case "barlines":
 							if (value.length == 0) break
 							value.forEach(function(barline) {
+
+                switch (barline.style) {
+                  case "LightHeavy":
+                    stave.setEndBarType(VF.Barline.type.END)
+                    break;
+                  default:
+                    break;
+                }
+
 								switch (barline.repeatType) {
+								case "":
+								  //nothing to include
+								  break
 								case "begin":
 									stave.setBegBarType(VF.Barline.type.REPEAT_BEGIN)
 									break
@@ -546,7 +596,7 @@ var EasyScoreUtil = function() {
 
 				//if it's the last bar, make the bar line the correct end bar
 				if (barCounter == totalBars - 1) {
-					stave.setEndBarType(VF.Barline.type.END)
+					//stave.setEndBarType(VF.Barline.type.END)
 				}
 
 

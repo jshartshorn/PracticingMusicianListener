@@ -107,6 +107,13 @@ var jsMusicXMLConverter = function() {
 
 		var tempo = this.extractTempo(part)
 
+    //get the instrument
+    var partName = function() {
+      return input.scorepartwise.partlist.scorepart.partname
+    }()
+
+    console.log("Part name: " + partName)
+
 		var transposition = function() {
 			var firstBar = part.measure[0]
 			var attributes = firstBar.attributes
@@ -143,6 +150,26 @@ var jsMusicXMLConverter = function() {
 		if (isPercussionClef) {
 			comparisonFlags.testPitch = false
 			comparisonFlags.testDuration = false
+		}
+
+    //IGNORE DURATION ON SPECIFIC INSTRUMENTS
+		var durationIgnoredInstruments =
+		  [
+		    "Glockenspiel",
+
+		    "Acoustic Guitar",
+		    "Electric Guitar",
+
+		    "Acoustic Bass",
+		    "Electric Bass",
+
+		    "Violin",
+		    "Viola",
+		    "Cello",
+		    "Contrabass"
+		  ]
+		if (durationIgnoredInstruments.indexOf(partName) != -1) {
+		  comparisonFlags.testDuration = false
 		}
 
 		var beats_in_firstBar = function() {
@@ -389,20 +416,31 @@ var jsMusicXMLConverter = function() {
 
 				barlines.forEach(function(barline) {
 					var repeatType = ""
+          var barStyle = ""
 
-					if (barline.repeat == undefined) return
+          switch(barline.barstyle) {
+            case "light-heavy":
+              barStyle = "LightHeavy"
+              break
+            default:
+              break;
+          }
 
-					switch (barline.repeat._direction) {
-					case "forward":
-						repeatType = "begin"
-						break
-					case "backward":
-					default:
-						repeatType = "end"
-					}
+          if (barline.repeat != undefined) {
+            switch (barline.repeat._direction) {
+              case "forward":
+                repeatType = "begin"
+                break
+              case "backward":
+              default:
+                repeatType = "end"
+            }
+          }
+
 
 					toRet.push({
-						repeatType: repeatType
+						repeatType: repeatType,
+						style: barStyle
 					})
 
 				})
@@ -460,7 +498,7 @@ var jsMusicXMLConverter = function() {
             if (note.beam.__text == "begin") {
               //push the old and make a new
               if (group != null && group.notes.length > 0)
-                bar.groups.push(group)
+                bar.voices[voiceKey].groups.push(group)
               group = null
             }
           }
@@ -741,6 +779,12 @@ var jsMusicXMLConverter = function() {
 					barlines.forEach(function(barline) {
 						if (barline.repeatType != undefined) {
 							if (barline.repeatType == "end") {
+
+							  //what if there's no open repeat?
+							  if (repeats.length == 0) {
+							    repeats.push({open: 0, close: null})
+							  }
+
 								repeats[repeats.length - 1].close = toRetNotes.length //the last note
 
 								//copy the subset of the array
