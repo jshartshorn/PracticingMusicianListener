@@ -70,6 +70,9 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         //This will happen at the end of a run, or if the pause/stop button is pressed
         timeKeeper.finishedActions.add {
 
+            //change the play button
+            listenerApp.scoreUtil.changePlayButton("stopped")
+
             //make sure any future audio calls are cancelled (that would happen after the current timestamp)
             audioManager.cancelAllAudio()
 
@@ -115,17 +118,20 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
                   if (percentage > 0.55) {
                     return "medal-bronze-icon"
                   }
-                  return ""
+                  return "medal-fail-icon"
                 }()
 
                 //show the user the results
-                listenerApp.parameters.displaySiteDialog(DialogParams(iconType,"Results","Overall accuracy: " + results.correct + "/" + results.attempted))
+                listenerApp.parameters.displaySiteDialog(DialogParams("results",iconType,"Overall accuracy", "" + results.correct + "/" + results.attempted))
+
+                //update the medal
+                listenerApp.scoreUtil.displayMedal(iconType)
 
                 //only send the network request if the tempo is the default one
                 //contact the server with a network request
-                if (UserSettings.isDefaultTempo) {
+                //if (UserSettings.isDefaultTempo) {
                   ListenerNetworkManager.buildAndSendRequest(results)
-                }
+                //}
             }
         }
 
@@ -140,12 +146,14 @@ class ExerciseManager(am : AudioManager) : TimeKeeperAnalyzer {
         metronome.start()
         pitchTracker.start()
         timeKeeper.start()
+        listenerApp.scoreUtil.changePlayButton("playing")
     }
 
     fun stop() {
         timeKeeper.stop()
         metronome.stop()
         pitchTracker.stop()
+        listenerApp.scoreUtil.changePlayButton("stopped")
     }
 
     @JsName("loadExercise")

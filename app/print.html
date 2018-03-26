@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practicing Musician</title>
+
+    <link rel="stylesheet" type="text/css" href="pm-listener/sass/notation.scss">
+
+    <script src="pm-listener/js/local_copies/jquery.js"></script>
+    <script src="pm-listener/js/local_copies/vexflow.js"></script>
+
+
+    <script type="text/javascript" src="pm-listener/js/logger.js"></script>
+
+    <script type="text/javascript" src="../out/production/PracticingMusician/lib/kotlin.js"></script>
+    <script type="text/javascript" src="../out/production/PracticingMusician/PracticingMusician.js"></script>
+
+    <script src="pm-listener/js/audio.js"></script>
+
+    <script src="pm-listener/js/easyscore_util.js"></script>
+
+    <script src="pm-listener/js/index.js"></script>
+
+    <script src="pm-listener/js/jsMusicXMLConverter.js"></script>
+
+</head>
+<body>
+
+
+<div id="notationWindow">
+    <div id="notationBody">
+        <!-- this gets filled dynamically -->
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = function() {
+        listenerApp.runApp({
+            url: "",
+            xmlUrl: "pm-listener/xml/BassClefRests.xml",
+            audioAssetPath: "pm-listener/audio/",
+
+            metronomeSound: false,
+
+            controlsContainerName : "listenerControls",
+            notationContainerName : "notationBody",
+            metronomeContainerName : "metronomeContainer",
+
+            userID: 1234,
+            exerciseID: 1235,
+
+            databaseEndpoint: "db",
+
+            allowableCentsMargin : 40,
+            allowableRhythmMargin : 0.33,
+            allowableDurationRatio : 0.35,
+
+            largestBeatDifference: 1.0,
+            largestDurationRatioDifference: 0.2,
+            minDurationInBeats: 0.1,
+
+            displaySiteDialog: function(params) {
+              alert(
+                "Image: " + params.imageType + "\n" +
+                "Title: " + params.title + "\n" +
+                 "Message: " + params.message
+              );
+            },
+        })
+    }
+</script>
+
+
+</body>
+</html>

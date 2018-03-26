@@ -14,7 +14,7 @@ import com.practicingmusician.finals.FeedbackType
 external fun pm_log(msg : Any, level : Int = definedExternally)
 external fun displayFlashMessages(messages : Array<FlashMessage>)
 
-data class DialogParams(val imageType : String, val title : String, val message : String)
+data class DialogParams(val modalType : String, val image : String, val message : String, val metric : String)
 
 data class FlashMessage(val type : String, val message : String)
 
@@ -59,14 +59,15 @@ interface AppSetupParameters {
     //path to the XML file to load
     val xmlUrl : String
 
+    //TODO: turn these back into val instead of var -- used for tolerance controls
     //the margins in which a note can vary from the ideal and still be considered acceptable
-    val allowableCentsMargin : Int
-    val allowableRhythmMargin : Double
-    val allowableDurationRatio : Double
+    var allowableCentsMargin : Int
+    var allowableRhythmMargin : Double
+    var allowableDurationRatio : Double
 
-    val largestDurationRatioDifference : Double
-    val largestBeatDifference : Double
-    val minDurationInBeats : Double
+    var largestDurationRatioDifference : Double
+    var largestBeatDifference : Double
+    var minDurationInBeats : Double
 
     val displaySiteDialog : (params : DialogParams) -> Unit
 
@@ -109,6 +110,10 @@ external class EasyScoreUtil  {
     var exercise : EasyScoreCode?
     lateinit var containerElementName : String
 
+    fun changePlayButton(buttonClass : String)
+
+    fun displayMedal(medalClass : String)
+
     fun setupOnElement(elementID : String)
 
     fun setupMetronome(elementID : String)
@@ -120,10 +125,13 @@ external class EasyScoreUtil  {
     fun notateExercise()
     fun drawIndicatorLine(canvas : dynamic, beat : Double)
 
+    fun getPageForBeat(beat : Double) : Int
+    fun showPageNumber(pageNumber : Int)
+
     fun getPositionForBeat(beat: Double) : BeatPosition
     fun getFeedbackYPosition(staveTopY : Double) : Double
 
-    fun createFeedbackHTMLElement(type: FeedbackType, items : Array<FeedbackMetric>, x : Double, y : Double)
+    fun createFeedbackHTMLElement(type: FeedbackType, items : Array<FeedbackMetric>, beat : Double)
 }
 
-data class BeatPosition(val x : Double, val y : Double)
+data class BeatPosition(val x : Double, val y : Double, val page : Int)

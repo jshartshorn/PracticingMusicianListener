@@ -7,10 +7,7 @@ import com.practicingmusician.finals.FeedbackMetric
 import com.practicingmusician.finals.FeedbackType
 import com.practicingmusician.notes.Note
 import com.practicingmusician.steppable.TimeKeeper
-import org.w3c.dom.Element
-import org.w3c.dom.HTMLCanvasElement
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.get
+import org.w3c.dom.*
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -69,7 +66,7 @@ public class ListenerApp {
     @JsName("runApp")
     fun runApp(parameters: AppSetupParameters) {
 
-      this.parameters = parameters
+        this.parameters = parameters
 
         loadXml(parameters.xmlUrl,{ callbackData ->
 
@@ -203,9 +200,9 @@ public class ListenerApp {
         //setup the score
         this.scoreUtil.setupOnElement(containerElementName)
 
-        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
-
         this.scoreUtil.setupControls(controlsElementName)
+
+        this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName)
 
         this.scoreUtil.buildTitleElements(containerElementName)
 
@@ -223,6 +220,17 @@ public class ListenerApp {
 
     @JsName("toggleState")
     fun toggleState() {
+        //update the parameters
+        this.parameters.allowableCentsMargin = (document.getElementById("allowableCentsMargin") as HTMLInputElement).value.toInt()
+        this.parameters.allowableRhythmMargin = (document.getElementById("allowableRhythmMargin") as HTMLInputElement).value.toDouble()
+        this.parameters.allowableDurationRatio = (document.getElementById("allowableDurationRatio") as HTMLInputElement).value.toDouble()
+
+        this.parameters.largestBeatDifference = (document.getElementById("largestBeatDifference") as HTMLInputElement).value.toDouble()
+        this.parameters.largestDurationRatioDifference = (document.getElementById("largestDurationRatioDifference") as HTMLInputElement).value.toDouble()
+        this.parameters.minDurationInBeats = (document.getElementById("minDurationInBeats") as HTMLInputElement).value.toDouble()
+
+
+
         when (exerciseManager.timeKeeper.state) {
             TimeKeeper.TimeKeeperState.Stopped -> {
 
@@ -233,6 +241,7 @@ public class ListenerApp {
                   )
                   return
                 }
+
 
                 exerciseManager.createSteppables()
                 exerciseManager.setup()
@@ -254,8 +263,8 @@ public class ListenerApp {
     fun doResizeActions() {
         pm_log("Resized window w/ container: " + this.parameters.notationContainerName,10)
 
-        val oldSVG = document.getElementsByTagName("svg").get(0) as Element
-        oldSVG.parentNode?.removeChild(oldSVG)
+        val oldSVG = document.getElementsByTagName("svg").get(0)
+        oldSVG?.parentNode?.removeChild(oldSVG)
 
         listenerApp.makeScore(this.parameters.notationContainerName,this.parameters.controlsContainerName)
         val copyOfFeedbackItems = listenerApp.currentFeedbackItems.toList()
@@ -268,6 +277,7 @@ public class ListenerApp {
         //clear the previous indicator first
         val indicatorCanvas = document.getElementById("indicatorCanvas") as? HTMLCanvasElement
         indicatorCanvas?.getContext("2d").asDynamic().clearRect(0, 0, indicatorCanvas?.width, indicatorCanvas?.height);
+        this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat))
         this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat)
     }
 
@@ -305,11 +315,6 @@ public class ListenerApp {
     //add a feedback item to a certain beat
     fun addFeedbackItem(feedbackItem : FeedbackItem) {
         if (currentFeedbackItems.indexOf(feedbackItem) == -1) currentFeedbackItems += feedbackItem
-        val positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat)
-        //pm_log("Position for beat: ",10)
-        //pm_log(positionForBeat,10)
-        val positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y)
-        //EasyScoreUtil.drawFeedbackAtPosition(feedbackCanvas,items,positionForBeat.x,positionY)
-        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),positionForBeat.x,positionY)
+        this.scoreUtil.createFeedbackHTMLElement(feedbackItem.type,feedbackItem.feedbackItemType.toTypedArray(),feedbackItem.beat)
     }
 }

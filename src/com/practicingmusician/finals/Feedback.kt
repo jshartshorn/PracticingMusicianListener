@@ -44,6 +44,8 @@ class CompareResults(val c : Int = 0, val a : Int = 0) {
     }
 }
 
-data class ResultsForDatabase(var userID : Int = -1, var exerciseID : Int = -1, val correct : Int, val attempted: Int, val exerciseAveragePitch : Double, val exerciseAverageRhythm: Double, val exerciseAverageDuration : Double, val notePerformances: Array<IndividualNotePerformanceInfo>)
+data class ToleranceLevels(val allowableCentsMargin : Int, val allowableRhythmMargin: Double, val allowableDurationRatio : Double, val largestBeatDifference : Double, val largestDurationRatioDifference : Double, val minDurationInBeats : Double )
+
+data class ResultsForDatabase(var api_version : Int = 2, var userID : Int = -1, var exerciseID : Int = -1, var toleranceLevels : ToleranceLevels = ToleranceLevels(0,0.0,0.0,0.0,0.0,0.0),var tempo : Double = -1.0, var isDefaultTempo : Boolean = true, val correct : Int, val attempted: Int, val exerciseAveragePitch : Double, val exerciseAverageRhythm: Double, val exerciseAverageDuration : Double, val notePerformances: Array<IndividualNotePerformanceInfo>)
 
 data class IndividualNotePerformanceInfo(val idealBeat: Double, val actualBeat: Double, val idealPitch : Double, val actualPitch: Double, val idealDuration: Double, val actualDuration : Double)

@@ -1,10 +1,7 @@
 div#notationWindow {
   display: flex;
-  flex-direction: column; }
-
-div#notationWindow span {
-  bor-der: 1px solid black;
-  /* temporary */ }
+  flex-direction: column;
+  padding: 20px; }
 
 div#notationHeader {
   height: 120px;
@@ -14,31 +11,39 @@ div#notationHeader {
   justify-content: space-around;
   align-items: center; }
 
+div#controlsContainer {
+  display: flex;
+  flex-direction: column; }
+
 /* Notation body stuff */
 div.notationBodyContainer {
   color: #4A4A4A;
-  min-width: 700px !important;
+  min-width: 640px !important;
   width: 100%;
   position: relative; }
 
-/* Title */
+/* Title and footer */
 div#titleContainer {
   text-align: center; }
 
 span#mainTitle {
-  font-size: 1.4em; }
+  font-size: 24px;
+  font-weight: 200;
+  color: #5c5c5c; }
 
 span#exerciseAuthor {
-  font-size: .8em;
-  margin-top: 4px; }
+  font-size: 11px;
+  margin-top: #5c5c5c; }
 
 div#titleContainer span {
   display: block; }
 
 div#copyrightContainer {
   text-align: center;
-  font-size: .8em;
-  margin-top: 60px; }
+  margin-top: 60px;
+  font-size: 9px;
+  color: #5c5c5c;
+  font-weight: 200; }
 
 div#notationPmLogo {
   background-image: url("../images/logo.png");
@@ -48,51 +53,36 @@ div#notationPmLogo {
   left: 0px;
   position: absolute; }
 
-/* Feedback */
-div.feedbackItem {
+/* Pagination */
+div#notationPaginationControls {
+  position: absolute;
+  bottom: 0px;
+  right: 0px; }
+
+span#paginationLabel {
+  font-weight: 600;
+  color: #5c5c5c;
+  letter-spacing: -0.01em; }
+
+span.paginationLink {
+  display: inline-block;
+  margin: 0px 6px;
+  cursor: pointer;
   width: 12px;
   height: 12px;
-  /* background-color: #C45462; */ }
+  vertical-align: middle; }
 
-div.feedbackItem.incorrect_note {
-  background-image: url("../images/incorrect-note.png"); }
+span.paginationLink.pageForward {
+  background-image: url("../images/page-forward-icon.svg"); }
 
-div.feedbackItem.off_note {
-  background-image: url("../images/off-note-icon.png"); }
+span.paginationLink.pageBackward {
+  background-image: url("../images/page-back-icon.svg"); }
 
-div.feedbackItemContainer {
-  display: none; }
+span.paginationLink.disabled {
+  color: #aaa;
+  cursor: auto; }
 
-div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
-div.feedbackItem.off_note:hover div.feedbackItemContainer {
-  display: block !important;
-  position: absolute;
-  top: 12px;
-  left: -64px;
-  width: 120px;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: #F8F8F8;
-  box-shadow: 0px 0px 6px #ccc;
-  z-index: 100; }
-
-span.feedbackKey, span.feedbackValue {
-  font-size: .9em;
-  display: inline-block;
-  text-transform: uppercase; }
-
-span.feedbackKey {
-  color: #9B9B9B;
-  width: 60%; }
-
-span.feedbackValue {
-  width: 40%;
-  text-align: right; }
-
-span.feedbackItemElement {
-  display: block; }
-
-/* Metronome Items */
+/* Metronome Items and controls */
 div#metronomeItems {
   min-width: 160px;
   display: flex;
@@ -100,10 +90,25 @@ div#metronomeItems {
   justify-content: space-around;
   align-items: center; }
 
-span#tempoMarking {
+div#listenerControls {
+  display: flex;
+  align-items: center; }
+
+input#tempoMarking {
   display: block;
-  color: #bbb;
-  text-align: center; }
+  margin-left: 10px;
+  padding: 14px;
+  background: #f5f5f5;
+  border: none;
+  width: 60px;
+  color: #5c5c5c;
+  font-size: 10px; }
+
+span#tempoMarkingMeta {
+  display: block;
+  margin-left: 10px;
+  color: #5c5c5c;
+  font-size: 10px; }
 
 span.metronomeItem {
   width: 12px;
@@ -115,27 +120,217 @@ span.metronomeItem.highlighted {
   width: 24px;
   height: 24px;
   border-radius: 12px;
-  background-color: #AD6039; }
+  background-color: #2b4d71; }
 
 /* header buttons */
-span#settingsButton, span#playPauseButton, span#repeatButton, span#medalIndicator, span#exitFullScreenButton {
+img#playPauseButton, img#metronomeAudioButton, img#printButton {
+  display: block;
   width: 24px;
-  height: 24px;
-  background-repeat: no-repeat; }
+  height: 24px; }
 
-span#settingsButton {
-  background-image: url("../images/ic_settings_24px.png"); }
+img#playPauseButton.stopped {
+  background-image: url("../images/play-arrow-icon.svg"); }
 
-span#playPauseButton {
-  background-image: url("../images/ic_play_arrow_24px.png"); }
+img#playPauseButton.playing {
+  background-image: url("../images/stop-icon.svg"); }
 
-span#repeatButton {
-  background-image: url("../images/ic_repeat_24px.png"); }
+img#playPauseButton.restart {
+  background-image: url("../images/restart-icon.svg"); }
 
-span#exitFullScreenButton {
-  background-image: url("../images/ic_fullscreen_exit_24px.png"); }
+img#printButton {
+  background-image: url("../images/print-icon.svg"); }
 
-span#medalIndicator {
-  background-image: url("../images/medal.png");
-  width: 60px;
-  height: 60px; }
+#metronomeAudioButton {
+  background-image: url("../images/volume-off-icon.svg"); }
+
+#metronomeAudioButton.checked {
+  background-image: url("../images/volume-on-icon.svg"); }
+
+#medalIndicator {
+  width: 36px;
+  height: 36px; }
+
+#medalIndicator.medal-gold-icon {
+  background-image: url("../images/medal-gold-icon.svg"); }
+
+#medalIndicator.medal-silver-icon {
+  background-image: url("../images/medal-silver-icon.svg"); }
+
+#medalIndicator.medal-bronze-icon {
+  background-image: url("../images/medal-bronze-icon.svg"); }
+
+/* metronome slider */
+div#sliderNumbers {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; }
+
+span.sliderNumber {
+  display: block;
+  color: #aaaaaa;
+  font-size: 10px;
+  font-weight: 300; }
+
+/*
+span.sliderNumber.highlighted {
+  color: #5c5c5c;
+  font-size: 22px;
+}
+*/
+span.sliderNumberSeparator {
+  display: block;
+  background-color: #f4f3f3;
+  height: 4px;
+  width: 4px;
+  border-radius: 2px; }
+
+input#metronomeSlider {
+  width: 400px !important;
+  background: none; }
+
+/* Feedback */
+div.feedbackItem {
+  width: 12px;
+  height: 12px;
+  /* background-color: #C45462; */ }
+
+div.feedbackItem.incorrect_note {
+  background-image: url("../images/miss-icon.svg"); }
+
+div.feedbackItem.off_note {
+  background-image: url("../images/hit-icon.svg"); }
+
+div.feedbackItemContainer {
+  display: none; }
+
+div.feedbackItem.incorrect_note:hover div.feedbackItemContainer,
+div.feedbackItem.off_note:hover div.feedbackItemContainer {
+  display: block !important;
+  position: absolute;
+  top: 12px;
+  left: -64px;
+  width: 140px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #F8F8F8;
+  box-shadow: 0px 0px 6px #ccc;
+  z-index: 100; }
+
+span.feedbackKey, span.feedbackValue {
+  font-size: 10px;
+  display: inline-block;
+  text-transform: uppercase; }
+
+span.feedbackKey {
+  color: #aaaaaa;
+  width: 50%;
+  font-weight: 800px; }
+
+span.feedbackValue {
+  width: 50%;
+  text-align: right; }
+
+span.feedbackItemElement {
+  display: block; }
+
+div.notationPage {
+  visibility: hidden; }
+
+div.notationPage.pageVisible {
+  visibility: visible; }
+
+div.feedbackSeparator {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px solid black;
+  margin: 4px 0px 4px 0px; }
+
+/* Slider stuff -- auto-generated */
+input[type=range] {
+  height: 14px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%; }
+
+input[type=range]:focus {
+  outline: none; }
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #2B4D71;
+  border-radius: 0px;
+  border: 0px solid #000000; }
+
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 8px;
+  width: 20px;
+  border-radius: 0px;
+  background: #2B4D71;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3.5px; }
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #2B4D71; }
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000;
+  background: #2B4D71;
+  border-radius: 0px;
+  border: 0px solid #000000; }
+
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 8px;
+  width: 20px;
+  border-radius: 0px;
+  background: #2B4D71;
+  cursor: pointer; }
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 1px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent; }
+
+input[type=range]::-ms-fill-lower {
+  background: #2B4D71;
+  border: 0px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000000; }
+
+input[type=range]::-ms-fill-upper {
+  background: #2B4D71;
+  border: 0px solid #000000;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px #000000; }
+
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 8px;
+  width: 20px;
+  border-radius: 0px;
+  background: #2B4D71;
+  cursor: pointer; }
+
+input[type=range]:focus::-ms-fill-lower {
+  background: #2B4D71; }
+
+input[type=range]:focus::-ms-fill-upper {
+  background: #2B4D71; }

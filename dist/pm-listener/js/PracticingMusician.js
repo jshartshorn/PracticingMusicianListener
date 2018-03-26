@@ -4,6 +4,8 @@ if (typeof kotlin === 'undefined') {
 var PracticingMusician = function (_, Kotlin) {
   'use strict';
   var toList = Kotlin.kotlin.collections.toList_us0mfu$;
+  var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
+  var toDouble = Kotlin.kotlin.text.toDouble_pdl1vz$;
   var toList_0 = Kotlin.kotlin.collections.toList_7wnvza$;
   var until = Kotlin.kotlin.ranges.until_dqglrj$;
   var removeAll = Kotlin.kotlin.collections.removeAll_qafx1e$;
@@ -13,7 +15,6 @@ var PracticingMusician = function (_, Kotlin) {
   var toMutableList = Kotlin.kotlin.collections.toMutableList_4c7yge$;
   var split = Kotlin.kotlin.text.split_o64adg$;
   var first = Kotlin.kotlin.collections.first_2p1efm$;
-  var toInt = Kotlin.kotlin.text.toInt_pdl1vz$;
   var average = Kotlin.kotlin.collections.average_l63kqw$;
   var zip = Kotlin.kotlin.collections.zip_45mdf7$;
   var IntCompanionObject = Kotlin.kotlin.js.internal.IntCompanionObject;
@@ -21,7 +22,6 @@ var PracticingMusician = function (_, Kotlin) {
   var last = Kotlin.kotlin.collections.last_2p1efm$;
   var to = Kotlin.kotlin.to_ujzrz7$;
   var mapOf = Kotlin.kotlin.collections.mapOf_qfcya0$;
-  var get_indices = Kotlin.kotlin.collections.get_indices_gzk92b$;
   var println = Kotlin.kotlin.io.println_s8jyv4$;
   var IntRange = Kotlin.kotlin.ranges.IntRange;
   var step = Kotlin.kotlin.ranges.step_xsgg7u$;
@@ -154,15 +154,21 @@ var PracticingMusician = function (_, Kotlin) {
     this.scoreUtil.exercise = this.exercise;
     pm_log('Setting up score on ' + containerElementName);
     this.scoreUtil.setupOnElement(containerElementName);
-    this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
     this.scoreUtil.setupControls(controlsElementName);
+    this.scoreUtil.setupMetronome(this.parameters.metronomeContainerName);
     this.scoreUtil.buildTitleElements(containerElementName);
     this.scoreUtil.notateExercise();
   };
   ListenerApp.prototype.toggleState = function () {
-    var tmp$;
-    tmp$ = this.exerciseManager.timeKeeper.state;
-    if (Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Stopped_getInstance())) {
+    var tmp$, tmp$_0, tmp$_1, tmp$_2, tmp$_3, tmp$_4, tmp$_5;
+    this.parameters.allowableCentsMargin = toInt((Kotlin.isType(tmp$ = document.getElementById('allowableCentsMargin'), HTMLInputElement) ? tmp$ : Kotlin.throwCCE()).value);
+    this.parameters.allowableRhythmMargin = toDouble((Kotlin.isType(tmp$_0 = document.getElementById('allowableRhythmMargin'), HTMLInputElement) ? tmp$_0 : Kotlin.throwCCE()).value);
+    this.parameters.allowableDurationRatio = toDouble((Kotlin.isType(tmp$_1 = document.getElementById('allowableDurationRatio'), HTMLInputElement) ? tmp$_1 : Kotlin.throwCCE()).value);
+    this.parameters.largestBeatDifference = toDouble((Kotlin.isType(tmp$_2 = document.getElementById('largestBeatDifference'), HTMLInputElement) ? tmp$_2 : Kotlin.throwCCE()).value);
+    this.parameters.largestDurationRatioDifference = toDouble((Kotlin.isType(tmp$_3 = document.getElementById('largestDurationRatioDifference'), HTMLInputElement) ? tmp$_3 : Kotlin.throwCCE()).value);
+    this.parameters.minDurationInBeats = toDouble((Kotlin.isType(tmp$_4 = document.getElementById('minDurationInBeats'), HTMLInputElement) ? tmp$_4 : Kotlin.throwCCE()).value);
+    tmp$_5 = this.exerciseManager.timeKeeper.state;
+    if (Kotlin.equals(tmp$_5, TimeKeeper$TimeKeeperState$Stopped_getInstance())) {
       if (!audioAnalyzer.isFunctional || !audioAnalyzer.hasMicrophoneAccess) {
         displayFlashMessages([new FlashMessage('danger', 'Audio not working.  Please make sure you are using either Chrome or Firefox and have enabled microphone access.')]);
         return;
@@ -172,23 +178,23 @@ var PracticingMusician = function (_, Kotlin) {
       this.exerciseManager.loadExercise();
       this.exerciseManager.run();
     }
-     else if (Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Running_getInstance()))
+     else if (Kotlin.equals(tmp$_5, TimeKeeper$TimeKeeperState$Running_getInstance()))
       this.exerciseManager.stop();
     else
-      Kotlin.equals(tmp$, TimeKeeper$TimeKeeperState$Completed_getInstance());
+      Kotlin.equals(tmp$_5, TimeKeeper$TimeKeeperState$Completed_getInstance());
   };
   ListenerApp.prototype.doResizeActions = function () {
-    var tmp$, tmp$_0;
+    var tmp$;
     pm_log('Resized window w/ container: ' + this.parameters.notationContainerName, 10);
-    var oldSVG = Kotlin.isType(tmp$ = document.getElementsByTagName('svg')[0], Element) ? tmp$ : Kotlin.throwCCE();
-    (tmp$_0 = oldSVG.parentNode) != null ? tmp$_0.removeChild(oldSVG) : null;
+    var oldSVG = document.getElementsByTagName('svg')[0];
+    (tmp$ = oldSVG != null ? oldSVG.parentNode : null) != null ? tmp$.removeChild(oldSVG) : null;
     listenerApp.makeScore_puj7f4$(this.parameters.notationContainerName, this.parameters.controlsContainerName);
     var copyOfFeedbackItems = toList_0(listenerApp.currentFeedbackItems);
     listenerApp.clearFeedbackItems();
-    var tmp$_1;
-    tmp$_1 = copyOfFeedbackItems.iterator();
-    while (tmp$_1.hasNext()) {
-      var element = tmp$_1.next();
+    var tmp$_0;
+    tmp$_0 = copyOfFeedbackItems.iterator();
+    while (tmp$_0.hasNext()) {
+      var element = tmp$_0.next();
       listenerApp.addFeedbackItem_775p9r$(element);
     }
   };
@@ -196,6 +202,7 @@ var PracticingMusician = function (_, Kotlin) {
     var tmp$;
     var indicatorCanvas = Kotlin.isType(tmp$ = document.getElementById('indicatorCanvas'), HTMLCanvasElement) ? tmp$ : null;
     (indicatorCanvas != null ? indicatorCanvas.getContext('2d') : null).clearRect(0, 0, indicatorCanvas != null ? indicatorCanvas.width : null, indicatorCanvas != null ? indicatorCanvas.height : null);
+    this.scoreUtil.showPageNumber(this.scoreUtil.getPageForBeat(beat));
     this.scoreUtil.drawIndicatorLine(indicatorCanvas, beat);
   };
   ListenerApp.prototype.highlightMetronomeItem_za3lpa$ = function (itemNumber) {
@@ -230,22 +237,21 @@ var PracticingMusician = function (_, Kotlin) {
     if (this.currentFeedbackItems.indexOf_11rb$(feedbackItem) === -1) {
       this.currentFeedbackItems.add_11rb$(feedbackItem);
     }
-    var positionForBeat = this.scoreUtil.getPositionForBeat(feedbackItem.beat);
-    var positionY = this.scoreUtil.getFeedbackYPosition(positionForBeat.y);
     var tmp$ = this.scoreUtil;
     var tmp$_0 = feedbackItem.type;
     var $receiver = feedbackItem.feedbackItemType;
-    tmp$.createFeedbackHTMLElement(tmp$_0, Kotlin.kotlin.collections.copyToArray($receiver), positionForBeat.x, positionY);
+    tmp$.createFeedbackHTMLElement(tmp$_0, Kotlin.kotlin.collections.copyToArray($receiver), feedbackItem.beat);
   };
   ListenerApp.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
     simpleName: 'ListenerApp',
     interfaces: []
   };
-  function DialogParams(imageType, title, message) {
-    this.imageType = imageType;
-    this.title = title;
+  function DialogParams(modalType, image, message, metric) {
+    this.modalType = modalType;
+    this.image = image;
     this.message = message;
+    this.metric = metric;
   }
   DialogParams.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -253,29 +259,33 @@ var PracticingMusician = function (_, Kotlin) {
     interfaces: []
   };
   DialogParams.prototype.component1 = function () {
-    return this.imageType;
+    return this.modalType;
   };
   DialogParams.prototype.component2 = function () {
-    return this.title;
+    return this.image;
   };
   DialogParams.prototype.component3 = function () {
     return this.message;
   };
-  DialogParams.prototype.copy_6hosri$ = function (imageType, title, message) {
-    return new DialogParams(imageType === void 0 ? this.imageType : imageType, title === void 0 ? this.title : title, message === void 0 ? this.message : message);
+  DialogParams.prototype.component4 = function () {
+    return this.metric;
+  };
+  DialogParams.prototype.copy_w74nik$ = function (modalType, image, message, metric) {
+    return new DialogParams(modalType === void 0 ? this.modalType : modalType, image === void 0 ? this.image : image, message === void 0 ? this.message : message, metric === void 0 ? this.metric : metric);
   };
   DialogParams.prototype.toString = function () {
-    return 'DialogParams(imageType=' + Kotlin.toString(this.imageType) + (', title=' + Kotlin.toString(this.title)) + (', message=' + Kotlin.toString(this.message)) + ')';
+    return 'DialogParams(modalType=' + Kotlin.toString(this.modalType) + (', image=' + Kotlin.toString(this.image)) + (', message=' + Kotlin.toString(this.message)) + (', metric=' + Kotlin.toString(this.metric)) + ')';
   };
   DialogParams.prototype.hashCode = function () {
     var result = 0;
-    result = result * 31 + Kotlin.hashCode(this.imageType) | 0;
-    result = result * 31 + Kotlin.hashCode(this.title) | 0;
+    result = result * 31 + Kotlin.hashCode(this.modalType) | 0;
+    result = result * 31 + Kotlin.hashCode(this.image) | 0;
     result = result * 31 + Kotlin.hashCode(this.message) | 0;
+    result = result * 31 + Kotlin.hashCode(this.metric) | 0;
     return result;
   };
   DialogParams.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.imageType, other.imageType) && Kotlin.equals(this.title, other.title) && Kotlin.equals(this.message, other.message)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.modalType, other.modalType) && Kotlin.equals(this.image, other.image) && Kotlin.equals(this.message, other.message) && Kotlin.equals(this.metric, other.metric)))));
   };
   function FlashMessage(type, message) {
     this.type = type;
@@ -465,9 +475,10 @@ var PracticingMusician = function (_, Kotlin) {
   SimpleJSNoteObject.prototype.equals = function (other) {
     return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.noteNumber, other.noteNumber) && Kotlin.equals(this.duration, other.duration) && Kotlin.equals(this.id, other.id)))));
   };
-  function BeatPosition(x, y) {
+  function BeatPosition(x, y, page) {
     this.x = x;
     this.y = y;
+    this.page = page;
   }
   BeatPosition.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -480,20 +491,24 @@ var PracticingMusician = function (_, Kotlin) {
   BeatPosition.prototype.component2 = function () {
     return this.y;
   };
-  BeatPosition.prototype.copy_lu1900$ = function (x, y) {
-    return new BeatPosition(x === void 0 ? this.x : x, y === void 0 ? this.y : y);
+  BeatPosition.prototype.component3 = function () {
+    return this.page;
+  };
+  BeatPosition.prototype.copy_syxxoe$ = function (x, y, page) {
+    return new BeatPosition(x === void 0 ? this.x : x, y === void 0 ? this.y : y, page === void 0 ? this.page : page);
   };
   BeatPosition.prototype.toString = function () {
-    return 'BeatPosition(x=' + Kotlin.toString(this.x) + (', y=' + Kotlin.toString(this.y)) + ')';
+    return 'BeatPosition(x=' + Kotlin.toString(this.x) + (', y=' + Kotlin.toString(this.y)) + (', page=' + Kotlin.toString(this.page)) + ')';
   };
   BeatPosition.prototype.hashCode = function () {
     var result = 0;
     result = result * 31 + Kotlin.hashCode(this.x) | 0;
     result = result * 31 + Kotlin.hashCode(this.y) | 0;
+    result = result * 31 + Kotlin.hashCode(this.page) | 0;
     return result;
   };
   BeatPosition.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.x, other.x) && Kotlin.equals(this.y, other.y) && Kotlin.equals(this.page, other.page)))));
   };
   function TunerModes(name, ordinal) {
     Enum.call(this);
@@ -844,12 +859,13 @@ var PracticingMusician = function (_, Kotlin) {
       if (percentage > 0.55) {
         return 'medal-bronze-icon';
       }
-      return '';
+      return 'medal-fail-icon';
     };
   }
   function ExerciseManager$setup$lambda(this$ExerciseManager) {
     return function (it) {
       var tmp$;
+      listenerApp.scoreUtil.changePlayButton('stopped');
       this$ExerciseManager.audioManager.cancelAllAudio();
       this$ExerciseManager.metronome.cancelAllUIUpdates();
       var samplesLength = this$ExerciseManager.pitchTracker.samples.size / 44100.0;
@@ -874,10 +890,9 @@ var PracticingMusician = function (_, Kotlin) {
           listenerApp.addFeedbackItem_775p9r$(element_0);
         }
         var iconType = ExerciseManager$setup$lambda$lambda$lambda(results)();
-        listenerApp.parameters.displaySiteDialog(new DialogParams(iconType, 'Results', 'Overall accuracy: ' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
-        if (UserSettings_getInstance().isDefaultTempo) {
-          ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
-        }
+        listenerApp.parameters.displaySiteDialog(new DialogParams('results', iconType, 'Overall accuracy', '' + Kotlin.toString(results.correct) + '/' + Kotlin.toString(results.attempted)));
+        listenerApp.scoreUtil.displayMedal(iconType);
+        ListenerNetworkManager_getInstance().buildAndSendRequest_fhpv3e$(results);
       }
     };
   }
@@ -896,11 +911,13 @@ var PracticingMusician = function (_, Kotlin) {
     this.metronome.start();
     this.pitchTracker.start();
     this.timeKeeper.start();
+    listenerApp.scoreUtil.changePlayButton('playing');
   };
   ExerciseManager.prototype.stop = function () {
     this.timeKeeper.stop();
     this.metronome.stop();
     this.pitchTracker.stop();
+    listenerApp.scoreUtil.changePlayButton('stopped');
   };
   ExerciseManager.prototype.loadExercise = function () {
     var tmp$;
@@ -1115,23 +1132,89 @@ var PracticingMusician = function (_, Kotlin) {
     var duration = average(destination_1);
     var tmp$_2 = void 0;
     var tmp$_3 = void 0;
-    var tmp$_4 = this.correct;
-    var tmp$_5 = this.attempted;
+    var tmp$_4 = void 0;
+    var tmp$_5 = void 0;
+    var tmp$_6 = void 0;
+    var tmp$_7 = void 0;
+    var tmp$_8 = this.correct;
+    var tmp$_9 = this.attempted;
     var $receiver_2 = this.finalResults;
-    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
+    return new ResultsForDatabase(tmp$_2, tmp$_3, tmp$_4, tmp$_5, tmp$_6, tmp$_7, tmp$_8, tmp$_9, pitch, rhythm, duration, Kotlin.kotlin.collections.copyToArray($receiver_2));
   };
   CompareResults.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
     simpleName: 'CompareResults',
     interfaces: []
   };
-  function ResultsForDatabase(userID, exerciseID, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+  function ToleranceLevels(allowableCentsMargin, allowableRhythmMargin, allowableDurationRatio, largestBeatDifference, largestDurationRatioDifference, minDurationInBeats) {
+    this.allowableCentsMargin = allowableCentsMargin;
+    this.allowableRhythmMargin = allowableRhythmMargin;
+    this.allowableDurationRatio = allowableDurationRatio;
+    this.largestBeatDifference = largestBeatDifference;
+    this.largestDurationRatioDifference = largestDurationRatioDifference;
+    this.minDurationInBeats = minDurationInBeats;
+  }
+  ToleranceLevels.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'ToleranceLevels',
+    interfaces: []
+  };
+  ToleranceLevels.prototype.component1 = function () {
+    return this.allowableCentsMargin;
+  };
+  ToleranceLevels.prototype.component2 = function () {
+    return this.allowableRhythmMargin;
+  };
+  ToleranceLevels.prototype.component3 = function () {
+    return this.allowableDurationRatio;
+  };
+  ToleranceLevels.prototype.component4 = function () {
+    return this.largestBeatDifference;
+  };
+  ToleranceLevels.prototype.component5 = function () {
+    return this.largestDurationRatioDifference;
+  };
+  ToleranceLevels.prototype.component6 = function () {
+    return this.minDurationInBeats;
+  };
+  ToleranceLevels.prototype.copy_30umf0$ = function (allowableCentsMargin, allowableRhythmMargin, allowableDurationRatio, largestBeatDifference, largestDurationRatioDifference, minDurationInBeats) {
+    return new ToleranceLevels(allowableCentsMargin === void 0 ? this.allowableCentsMargin : allowableCentsMargin, allowableRhythmMargin === void 0 ? this.allowableRhythmMargin : allowableRhythmMargin, allowableDurationRatio === void 0 ? this.allowableDurationRatio : allowableDurationRatio, largestBeatDifference === void 0 ? this.largestBeatDifference : largestBeatDifference, largestDurationRatioDifference === void 0 ? this.largestDurationRatioDifference : largestDurationRatioDifference, minDurationInBeats === void 0 ? this.minDurationInBeats : minDurationInBeats);
+  };
+  ToleranceLevels.prototype.toString = function () {
+    return 'ToleranceLevels(allowableCentsMargin=' + Kotlin.toString(this.allowableCentsMargin) + (', allowableRhythmMargin=' + Kotlin.toString(this.allowableRhythmMargin)) + (', allowableDurationRatio=' + Kotlin.toString(this.allowableDurationRatio)) + (', largestBeatDifference=' + Kotlin.toString(this.largestBeatDifference)) + (', largestDurationRatioDifference=' + Kotlin.toString(this.largestDurationRatioDifference)) + (', minDurationInBeats=' + Kotlin.toString(this.minDurationInBeats)) + ')';
+  };
+  ToleranceLevels.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.allowableCentsMargin) | 0;
+    result = result * 31 + Kotlin.hashCode(this.allowableRhythmMargin) | 0;
+    result = result * 31 + Kotlin.hashCode(this.allowableDurationRatio) | 0;
+    result = result * 31 + Kotlin.hashCode(this.largestBeatDifference) | 0;
+    result = result * 31 + Kotlin.hashCode(this.largestDurationRatioDifference) | 0;
+    result = result * 31 + Kotlin.hashCode(this.minDurationInBeats) | 0;
+    return result;
+  };
+  ToleranceLevels.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.allowableCentsMargin, other.allowableCentsMargin) && Kotlin.equals(this.allowableRhythmMargin, other.allowableRhythmMargin) && Kotlin.equals(this.allowableDurationRatio, other.allowableDurationRatio) && Kotlin.equals(this.largestBeatDifference, other.largestBeatDifference) && Kotlin.equals(this.largestDurationRatioDifference, other.largestDurationRatioDifference) && Kotlin.equals(this.minDurationInBeats, other.minDurationInBeats)))));
+  };
+  function ResultsForDatabase(api_version, userID, exerciseID, toleranceLevels, tempo, isDefaultTempo, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    if (api_version === void 0)
+      api_version = 2;
     if (userID === void 0)
       userID = -1;
     if (exerciseID === void 0)
       exerciseID = -1;
+    if (toleranceLevels === void 0)
+      toleranceLevels = new ToleranceLevels(0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    if (tempo === void 0)
+      tempo = -1.0;
+    if (isDefaultTempo === void 0)
+      isDefaultTempo = true;
+    this.api_version = api_version;
     this.userID = userID;
     this.exerciseID = exerciseID;
+    this.toleranceLevels = toleranceLevels;
+    this.tempo = tempo;
+    this.isDefaultTempo = isDefaultTempo;
     this.correct = correct;
     this.attempted = attempted;
     this.exerciseAveragePitch = exerciseAveragePitch;
@@ -1145,39 +1228,55 @@ var PracticingMusician = function (_, Kotlin) {
     interfaces: []
   };
   ResultsForDatabase.prototype.component1 = function () {
-    return this.userID;
+    return this.api_version;
   };
   ResultsForDatabase.prototype.component2 = function () {
-    return this.exerciseID;
+    return this.userID;
   };
   ResultsForDatabase.prototype.component3 = function () {
-    return this.correct;
+    return this.exerciseID;
   };
   ResultsForDatabase.prototype.component4 = function () {
-    return this.attempted;
+    return this.toleranceLevels;
   };
   ResultsForDatabase.prototype.component5 = function () {
-    return this.exerciseAveragePitch;
+    return this.tempo;
   };
   ResultsForDatabase.prototype.component6 = function () {
-    return this.exerciseAverageRhythm;
+    return this.isDefaultTempo;
   };
   ResultsForDatabase.prototype.component7 = function () {
-    return this.exerciseAverageDuration;
+    return this.correct;
   };
   ResultsForDatabase.prototype.component8 = function () {
+    return this.attempted;
+  };
+  ResultsForDatabase.prototype.component9 = function () {
+    return this.exerciseAveragePitch;
+  };
+  ResultsForDatabase.prototype.component10 = function () {
+    return this.exerciseAverageRhythm;
+  };
+  ResultsForDatabase.prototype.component11 = function () {
+    return this.exerciseAverageDuration;
+  };
+  ResultsForDatabase.prototype.component12 = function () {
     return this.notePerformances;
   };
-  ResultsForDatabase.prototype.copy_sixtfu$ = function (userID, exerciseID, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
-    return new ResultsForDatabase(userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
+  ResultsForDatabase.prototype.copy_dmhvve$ = function (api_version, userID, exerciseID, toleranceLevels, tempo, isDefaultTempo, correct, attempted, exerciseAveragePitch, exerciseAverageRhythm, exerciseAverageDuration, notePerformances) {
+    return new ResultsForDatabase(api_version === void 0 ? this.api_version : api_version, userID === void 0 ? this.userID : userID, exerciseID === void 0 ? this.exerciseID : exerciseID, toleranceLevels === void 0 ? this.toleranceLevels : toleranceLevels, tempo === void 0 ? this.tempo : tempo, isDefaultTempo === void 0 ? this.isDefaultTempo : isDefaultTempo, correct === void 0 ? this.correct : correct, attempted === void 0 ? this.attempted : attempted, exerciseAveragePitch === void 0 ? this.exerciseAveragePitch : exerciseAveragePitch, exerciseAverageRhythm === void 0 ? this.exerciseAverageRhythm : exerciseAverageRhythm, exerciseAverageDuration === void 0 ? this.exerciseAverageDuration : exerciseAverageDuration, notePerformances === void 0 ? this.notePerformances : notePerformances);
   };
   ResultsForDatabase.prototype.toString = function () {
-    return 'ResultsForDatabase(userID=' + Kotlin.toString(this.userID) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
+    return 'ResultsForDatabase(api_version=' + Kotlin.toString(this.api_version) + (', userID=' + Kotlin.toString(this.userID)) + (', exerciseID=' + Kotlin.toString(this.exerciseID)) + (', toleranceLevels=' + Kotlin.toString(this.toleranceLevels)) + (', tempo=' + Kotlin.toString(this.tempo)) + (', isDefaultTempo=' + Kotlin.toString(this.isDefaultTempo)) + (', correct=' + Kotlin.toString(this.correct)) + (', attempted=' + Kotlin.toString(this.attempted)) + (', exerciseAveragePitch=' + Kotlin.toString(this.exerciseAveragePitch)) + (', exerciseAverageRhythm=' + Kotlin.toString(this.exerciseAverageRhythm)) + (', exerciseAverageDuration=' + Kotlin.toString(this.exerciseAverageDuration)) + (', notePerformances=' + Kotlin.toString(this.notePerformances)) + ')';
   };
   ResultsForDatabase.prototype.hashCode = function () {
     var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.api_version) | 0;
     result = result * 31 + Kotlin.hashCode(this.userID) | 0;
     result = result * 31 + Kotlin.hashCode(this.exerciseID) | 0;
+    result = result * 31 + Kotlin.hashCode(this.toleranceLevels) | 0;
+    result = result * 31 + Kotlin.hashCode(this.tempo) | 0;
+    result = result * 31 + Kotlin.hashCode(this.isDefaultTempo) | 0;
     result = result * 31 + Kotlin.hashCode(this.correct) | 0;
     result = result * 31 + Kotlin.hashCode(this.attempted) | 0;
     result = result * 31 + Kotlin.hashCode(this.exerciseAveragePitch) | 0;
@@ -1187,7 +1286,7 @@ var PracticingMusician = function (_, Kotlin) {
     return result;
   };
   ResultsForDatabase.prototype.equals = function (other) {
-    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.api_version, other.api_version) && Kotlin.equals(this.userID, other.userID) && Kotlin.equals(this.exerciseID, other.exerciseID) && Kotlin.equals(this.toleranceLevels, other.toleranceLevels) && Kotlin.equals(this.tempo, other.tempo) && Kotlin.equals(this.isDefaultTempo, other.isDefaultTempo) && Kotlin.equals(this.correct, other.correct) && Kotlin.equals(this.attempted, other.attempted) && Kotlin.equals(this.exerciseAveragePitch, other.exerciseAveragePitch) && Kotlin.equals(this.exerciseAverageRhythm, other.exerciseAverageRhythm) && Kotlin.equals(this.exerciseAverageDuration, other.exerciseAverageDuration) && Kotlin.equals(this.notePerformances, other.notePerformances)))));
   };
   function IndividualNotePerformanceInfo(idealBeat, actualBeat, idealPitch, actualPitch, idealDuration, actualDuration) {
     this.idealBeat = idealBeat;
@@ -1598,10 +1697,6 @@ var PracticingMusician = function (_, Kotlin) {
       doNotTestBeyond = testEndingBeat;
     }
     var functionStartTimestamp = window.performance.now();
-    console.log('Comparing: ');
-    console.log(ideal);
-    console.log('To:');
-    console.log(toTest);
     tmp$ = until(0, ideal.size);
     tmp$_0 = tmp$.first;
     tmp$_1 = tmp$.last;
@@ -1706,7 +1801,12 @@ var PracticingMusician = function (_, Kotlin) {
       }
       if (testItem.note.noteNumber === -1 && idealItem.noteNumber !== -1 || (testItem.note.noteNumber !== -1 && idealItem.noteNumber === -1)) {
         console.log('MISMATCHED!');
-        feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'REST'));
+        if (idealItem.noteNumber !== -1) {
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('pitch', 'Not played'));
+        }
+         else {
+          feedbackItemTypes.add_11rb$(new FeedbackMetric('duration', 'rest'));
+        }
         throwSafeIncorrectSwitch(feedbackItem);
         feedbackItem.type = FeedbackType$Missed_getInstance();
       }
@@ -1742,11 +1842,14 @@ var PracticingMusician = function (_, Kotlin) {
           pm_log('PERFECT');
         }
       }
+      if (idealItem.noteNumber === -1) {
+        feedbackItem.type = FeedbackType$Correct_getInstance();
+      }
       if (feedbackItem.type === FeedbackType$Correct_getInstance()) {
         results.correct = results.correct + 1 | 0;
       }
-      curBeatPosition += idealValue.duration;
       var notePerformance = new IndividualNotePerformanceInfo(curBeatPosition, toTestBeatPositionAtIndexToTest, idealItem.getFrequency(), (tmp$_9 = testItem.note.avgFreq) != null ? tmp$_9 : -1.0, idealItem.duration, testItem.note.duration);
+      curBeatPosition += idealValue.duration;
       results.finalResults.add_11rb$(notePerformance);
     }
     var functionEndTimestamp = window.performance.now();
@@ -1766,9 +1869,15 @@ var PracticingMusician = function (_, Kotlin) {
     networkRequest(urlString, data);
   };
   ListenerNetworkManager.prototype.buildAndSendRequest_fhpv3e$ = function (results) {
+    var tmp$, tmp$_0;
     var dbResults = results.generateResultForDatabase();
     dbResults.userID = listenerApp.parameters.userID;
     dbResults.exerciseID = listenerApp.parameters.exerciseID;
+    dbResults.tempo = UserSettings_getInstance().tempo;
+    dbResults.isDefaultTempo = UserSettings_getInstance().isDefaultTempo;
+    tmp$ = listenerApp.parameters.allowableCentsMargin;
+    tmp$_0 = listenerApp.parameters.allowableDurationRatio;
+    dbResults.toleranceLevels = new ToleranceLevels(tmp$, listenerApp.parameters.allowableRhythmMargin, tmp$_0, listenerApp.parameters.largestBeatDifference, listenerApp.parameters.largestDurationRatioDifference, listenerApp.parameters.minDurationInBeats);
     var performanceWrapper = new PerformanceWrapper(dbResults);
     ListenerNetworkManager_getInstance().makePostRequest_l6nar7$(listenerApp.parameters.databaseEndpoint, performanceWrapper);
   };
@@ -2082,35 +2191,6 @@ var PracticingMusician = function (_, Kotlin) {
   };
   Metronome.prototype.updateMetronomeUI_za3lpa$ = function (beat) {
     listenerApp.highlightMetronomeItem_za3lpa$(beat % this.timeSignature);
-  };
-  Metronome.prototype.getBeatOfTimestamp_14dthe$ = function (timestamp) {
-    var tmp$, tmp$_0, tmp$_1, tmp$_2;
-    var firstItem = -1.0;
-    var secondItem = -1.0;
-    var lastItemBefore;
-    tmp$ = get_indices(this.beatTimes);
-    tmp$_0 = tmp$.first;
-    tmp$_1 = tmp$.last;
-    tmp$_2 = tmp$.step;
-    for (var index = tmp$_0; index <= tmp$_1; index += tmp$_2) {
-      var beat = this.beatTimes.get_za3lpa$(index);
-      if (beat > timestamp) {
-        lastItemBefore = index - 1 | 0;
-        if (lastItemBefore === -1) {
-          return -1.0;
-        }
-        firstItem = this.beatTimes.get_za3lpa$(lastItemBefore);
-        secondItem = beat;
-        break;
-      }
-    }
-    if (firstItem === -1.0) {
-      return -1.0;
-    }
-    var distanceBetweenBeats = secondItem - firstItem;
-    var distanceFromStampToFirstBeat = timestamp - firstItem;
-    var percentageThroughBeat = distanceFromStampToFirstBeat / distanceBetweenBeats;
-    return percentageThroughBeat;
   };
   Metronome.$metadata$ = {
     kind: Kotlin.Kind.CLASS,
@@ -2531,31 +2611,49 @@ var PracticingMusician = function (_, Kotlin) {
   Object.defineProperty(MockParameters.prototype, 'allowableCentsMargin', {
     get: function () {
       return this.allowableCentsMargin_7mvjxd$_0;
+    },
+    set: function (allowableCentsMargin) {
+      this.allowableCentsMargin_7mvjxd$_0 = allowableCentsMargin;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'allowableRhythmMargin', {
     get: function () {
       return this.allowableRhythmMargin_7mvjxd$_0;
+    },
+    set: function (allowableRhythmMargin) {
+      this.allowableRhythmMargin_7mvjxd$_0 = allowableRhythmMargin;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'allowableDurationRatio', {
     get: function () {
       return this.allowableDurationRatio_7mvjxd$_0;
+    },
+    set: function (allowableDurationRatio) {
+      this.allowableDurationRatio_7mvjxd$_0 = allowableDurationRatio;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'minDurationInBeats', {
     get: function () {
       return this.minDurationInBeats_7mvjxd$_0;
+    },
+    set: function (minDurationInBeats) {
+      this.minDurationInBeats_7mvjxd$_0 = minDurationInBeats;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'largestDurationRatioDifference', {
     get: function () {
       return this.largestDurationRatioDifference_7mvjxd$_0;
+    },
+    set: function (largestDurationRatioDifference) {
+      this.largestDurationRatioDifference_7mvjxd$_0 = largestDurationRatioDifference;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'largestBeatDifference', {
     get: function () {
       return this.largestBeatDifference_7mvjxd$_0;
+    },
+    set: function (largestBeatDifference) {
+      this.largestBeatDifference_7mvjxd$_0 = largestBeatDifference;
     }
   });
   Object.defineProperty(MockParameters.prototype, 'bpm', {
@@ -2997,6 +3095,7 @@ var PracticingMusician = function (_, Kotlin) {
   package$finals.FeedbackItem = FeedbackItem;
   package$finals.throwSafeIncorrectSwitch_a2klfm$ = throwSafeIncorrectSwitch;
   package$finals.CompareResults = CompareResults;
+  package$finals.ToleranceLevels = ToleranceLevels;
   package$finals.ResultsForDatabase = ResultsForDatabase;
   package$finals.IndividualNotePerformanceInfo = IndividualNotePerformanceInfo;
   package$finals.NotePlacement = NotePlacement;
