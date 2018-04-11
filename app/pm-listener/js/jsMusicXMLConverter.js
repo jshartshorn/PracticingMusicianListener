@@ -233,7 +233,12 @@ var jsMusicXMLConverter = function() {
 			console.log("Original notes:")
 			console.log(notes)
 			notes = notes.map(function(item) {
-				item.noteNumber = item.noteNumber + transposition
+
+			  if (item.noteNumber != -1)
+				  item.noteNumber = item.noteNumber + transposition
+				else
+				  console.log("Don't transpose rest")
+
 				return item
 			})
 			console.log("Transposed:")
